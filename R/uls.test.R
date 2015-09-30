@@ -40,10 +40,10 @@
 #' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
-#' @importFrom SpatialTools dist1 dist2
 #' @importFrom parallel mclapply
 #' @importFrom fields rdist.earth
 #' @importFrom smacpod noc
+#' @importFrom stats rmultinom
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
@@ -101,8 +101,7 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
   if (parallel) fcall = parallel::mclapply
   fcall_list = list(X = as.list(1:nsim), FUN = function(i){
     # simulate new data set
-    # ysim = rpois(length(e), lambda = e)
-    ysim = rmultinom(1, size = ty, prob = e)
+    ysim = stats::rmultinom(1, size = ty, prob = e)
     uz = uls.zones(ysim, pop, w, ubpop = ubpop)
     # cumulate the number of cases inside the successive windows
     yin = unlist(lapply(uz, function(x) sum(ysim[x])), use.names = FALSE)

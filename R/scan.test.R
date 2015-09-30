@@ -32,6 +32,7 @@
 #' @importFrom parallel mclapply
 #' @importFrom fields rdist.earth
 #' @importFrom smacpod noc
+#' @importFrom stats rmultinom
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
@@ -120,27 +121,11 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   
   tsim = numeric(nsim) # store test statistics for simulated data
   ty = sum(y) # sum of all cases
-  #   for(i in 1:nsim)
-  #   {
-  #     # simulate new data set
-  #     # ysim = rpois(length(e), lambda = e)
-  #     ysim = rmultinom(1, size = ty, prob = e)
-  #     # cumulate the number of cases inside the successive windows
-  #     yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])), use.names = FALSE)
-  #     yout = ty - yin
-  #     tall = yin * (log(yin) - log(ein)) + yout * (log(yout) - log(eout))
-  #     tall[yin/ein <= yout/eout] = 0
-  #     tsim[i] = max(tall)
-  #     if ((i%%nreport) == 0) cat(paste(i, ""))
-  #   }
-  
-  i_list = as.list(1:nsim)
   fcall = lapply
   if (parallel) fcall = parallel::mclapply
-  fcall_list = list(X = i_list, FUN = function(i){
+  fcall_list = list(X = as.list(1:nsim), FUN = function(i){
     # simulate new data set
-    # ysim = rpois(length(e), lambda = e)
-    ysim = rmultinom(1, size = ty, prob = e)
+    ysim = stats::rmultinom(1, size = ty, prob = e)
     # cumulate the number of cases inside the successive windows
     yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])), use.names = FALSE)
     yout = ty - yin
