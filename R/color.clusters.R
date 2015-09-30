@@ -1,6 +1,6 @@
 #' Color clusters
 #' 
-#' \code{color.clusters} is a simple helper function that makes it easier to color clusters of regions produced by an appropriate method, e.g., \code{spscan.test} or \code{uls.test}.  Regions/clusters that are not part of any cluster have no color.
+#' \code{color.clusters} is a simple helper function that makes it easier to color clusters of regions produced by an appropriate method, e.g., \code{scan.test} or \code{uls.test}.  Regions/clusters that are not part of any cluster have no color.
 #' 
 #' @param x An object of class scan produced by a function such as \code{scan.test}.
 #' @param col A vector of colors to color the clusters in \code{x}.  Should have same length as the number of clusters in \code{x}.

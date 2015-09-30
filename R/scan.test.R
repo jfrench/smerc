@@ -16,7 +16,7 @@
 #' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
 #' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
 #'
-#' @return Returns a list of length two of class spscan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{coords}{The centroid of the significant clusters.}
 #' \item{r}{The radius of the window of the clusters.}
 #' \item{pop}{The total population in the cluser window.}

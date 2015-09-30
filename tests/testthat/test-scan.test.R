@@ -1,3 +1,4 @@
+set.seed(1)
 coords = runif(8)
 
 test_that("sanity checks for scan.test arguments", {
@@ -60,9 +61,9 @@ test_that("sanity checks for scan.test arguments", {
 })
 
 data(nydf)
-out = with(nydf, (scan.test(coords = cbind(longitude, latitude), 
-                              cases = floor(cases), pop = population, 
-                              lonlat = TRUE, nsim = 999, alpha = .12)))
+out = scan.test(coords = cbind(nydf$longitude, nydf$latitude), 
+                cases = floor(nydf$cases), pop = nydf$population, 
+                lonlat = TRUE, nsim = 999, alpha = .12)
 
 test_that("check accuracy for scan.test with SatScan for NY data", {
   expect_that(out$clusters[[1]]$locids , 

@@ -32,7 +32,7 @@ uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
 \item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.}
 }
 \value{
-Returns a list of length two of class spscan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 \item{coords}{The centroid of the significant clusters.}
 \item{r}{The radius of the window of the clusters.}
 \item{pop}{The total population in the cluser window.}
