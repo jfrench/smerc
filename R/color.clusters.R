@@ -12,8 +12,10 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, alpha = 0.12, lonlat = TRUE,
-#'                   nsim = 499)
-#' ccol = color.clusters(out)
+#'                   nsim = 49)
+#' data(nypoly)
+#' library(sp)
+#' plot(nypoly, col = color.clusters(out))
 
 color.clusters = function(x, col = 2:(length(x$clusters) + 1))
 {

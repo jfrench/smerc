@@ -39,7 +39,8 @@
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases), 
-#'                   pop = nydf$pop, alpha = 0.12, lonlat = TRUE)
+#'                 pop = nydf$pop, nsim = 49, 
+#'                 alpha = 0.12, lonlat = TRUE)
 #' ## plot output for new york state
 #' # specify desired argument values
 #' mapargs = list(database = "state", region = "new york", 
@@ -58,7 +59,8 @@
 #' # from the example above.
 #' coords = with(nydf, cbind(y, x))
 #' out2 = scan.test(coords = coords, cases = floor(nydf$cases), 
-#'                   pop = nydf$pop, alpha = 0.12, lonlat = TRUE)
+#'                   pop = nydf$pop, nsim = 49, 
+#'                   alpha = 0.12, lonlat = TRUE)
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)

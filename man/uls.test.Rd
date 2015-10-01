@@ -57,7 +57,7 @@ coords = with(nydf, cbind(longitude, latitude))
 out = uls.test(coords = coords, cases = floor(nydf$cases),
                   pop = nydf$pop, w = nyw,
                   alpha = 0.12, lonlat = TRUE,
-                  nsim = 10)
+                  nsim = 10, ubpop = 0.1)
 ## plot output for new york state
 # specify desired argument values
 mapargs = list(database = "state", region = "new york",

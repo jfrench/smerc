@@ -1,15 +1,3 @@
-# data(nydf)
-# data(nyw)
-# cases = nydf$cases
-# pop = nydf$population
-# ex = sum(cases)/sum(pop)*pop
-# coords = cbind(nydf$longitude, nydf$latitude)
-# lonlat = TRUE
-# nreport = 100
-# alpha = 0.1
-# nsim = 100
-# parallel = TRUE
-
 #' Spatial Scan Test
 #' 
 #' \code{uls.test} performs Upper Level Set (ULS) scan test of Patil and Taillie (2004).
@@ -53,7 +41,7 @@
 #' out = uls.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, w = nyw, 
 #'                   alpha = 0.12, lonlat = TRUE,
-#'                   nsim = 10)
+#'                   nsim = 10, ubpop = 0.1)
 #' ## plot output for new york state
 #' # specify desired argument values
 #' mapargs = list(database = "state", region = "new york", 
