@@ -2,14 +2,14 @@
 % Please edit documentation in R/uls.test.R
 \name{uls.test}
 \alias{uls.test}
-\title{Spatial Scan Test}
+\title{Upper Level Set Spatial Scan Test}
 \usage{
 uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
   alpha = 0.1, nreport = nsim + 1, ubpop = 0.5, lonlat = FALSE,
   parallel = TRUE)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions..}
+\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
 \item{cases}{The number of cases in each region.}
 
@@ -33,8 +33,7 @@ uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
-\item{coords}{The centroid of the significant clusters.}
-\item{r}{The radius of the window of the clusters.}
+\item{locids}{The location ids of regions in a significant cluster.}
 \item{pop}{The total population in the cluser window.}
 \item{cases}{The observed number of cases in the cluster window.}
 \item{expected}{The expected number of cases in the cluster window.}
@@ -45,7 +44,7 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{uls.test} performs Upper Level Set (ULS) scan test of Patil and Taillie (2004).
+\code{uls.test} performs Upper Level Set (ULS) spatian scan test of Patil and Taillie (2004).
 }
 \details{
 The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are based on the Upper Level Sets proposed by Patil and Taillie (2004).  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).

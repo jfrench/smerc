@@ -21,7 +21,7 @@ flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{type}{The type of scan statistic to implement.  Default is "poisson".}
+\item{type}{The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".}
 
 \item{nsim}{The number of simulations from which to compute p-value.}
 
@@ -57,8 +57,10 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 out = flex.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, w = nyw, k = 3, nsim = 49,
+                w = nyw, k = 3,
+                pop = nydf$pop, nsim = 49,
                 alpha = 0.12, lonlat = TRUE)
+
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))

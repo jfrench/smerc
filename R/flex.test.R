@@ -10,7 +10,7 @@
 #' @param w An \eqn{n\times n} adjacenty matrix for the regions in the study area.
 #' @param k An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10
 #' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
-#' @param type The type of scan statistic to implement.  Default is "poisson".
+#' @param type The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".
 #' @param nsim The number of simulations from which to compute p-value.
 #' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
 #' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
@@ -40,98 +40,64 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' out = flex.test(coords = coords, cases = floor(nydf$cases), 
-#'                 pop = nydf$pop, w = nyw, k = 3, nsim = 49, 
+#' out = flex.test(coords = coords, cases = floor(nydf$cases),
+#'                 w = nyw, k = 3,  
+#'                 pop = nydf$pop, nsim = 49, 
 #'                 alpha = 0.12, lonlat = TRUE)
+#'                 
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
+
 flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop, 
                         type = "poisson",
                         nsim = 499, alpha = 0.1, nreport = nsim + 1, 
                         lonlat = FALSE, parallel = TRUE) 
 {
-  # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nreport, 0.5, lonlat, parallel, 
-                      k = k, w = w)
-  
-  # convert to proper format
+                      nreport, 0.5, lonlat, parallel, k = k, w = w)
   coords = as.matrix(coords)
   N = nrow(coords)
-  # shorten names
-  y = cases; e = ex
-  
-  # determine all zones meeting flexible scan criteria
+  y = cases
+  e = ex
   zones = flex.zones(coords, w, k, lonlat)
-  
-  # display sims completed, if appropriate
-  if (nreport <= nsim && !parallel) cat("sims completed: ")
-  
-  # determine the number of expected cases
-  # inside and outside each zone, total number of cases
+  if (nreport <= nsim && !parallel) 
+    cat("sims completed: ")
   ein = unlist(lapply(zones, function(x) sum(e[x])), use.names = FALSE)
-  ty = sum(y) # total number of cases
+  ty = sum(y)
   eout = ty - ein
-  
-  # determine call for simulations
   fcall = lapply
-  if (parallel) fcall = parallel::mclapply
-  fcall_list = list(X = as.list(1:nsim), FUN = function(i){
-    # simulate new data set
+  if (parallel) 
+    fcall = parallel::mclapply
+  fcall_list = list(X = as.list(1:nsim), FUN = function(i) {
     ysim = stats::rmultinom(1, size = ty, prob = e)
-    # determine the number of cases inside each zone
-    yin = unlist(lapply(zones, function(x) sum(ysim[x])), use.names = FALSE)
-    # calculate all test statistics
-    tall = scan.stat(yin, ein, eout, ty, type)
-    # update progress
+    yin = unlist(lapply(zones, function(x) sum(ysim[x])), 
+                 use.names = FALSE)
+    tall = scan.stat(yin, ein, ty - ein, ty, type)
     if ((i%%nreport) == 0) cat(paste(i, ""))
-    # return max of statistics for simulation
     return(max(tall))
   })
-  
-  # use mclapply or lapply to find max statistics for each simulation
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
-  
-  # determine yin for all zones
   yin = unlist(lapply(zones, function(x) sum(y[x])))
-  # yout = ty - yin
-  # number of nns for each observation
-  # nnn = unlist(lapply(mynn, length), use.names = FALSE)
-  
-  # factors related to number of neighbors
-  # each event location possesses
-  # fac = rep(1:N, times = nnn)
-  
-  ### calculate scan statistics for observed data
-  # of distance from observation centroid
-  tobs = scan.stat(yin, ein, ty - yin, ty, type = type)
-  # max scan statistic over all windows
+  tobs = scan.stat(yin, ein, ty - ein, ty, type = type)
   tscan = max(tobs)
-  # observed test statistics, split by centroid in order of successive windows
-  #tobs_split = split(tobs, fac)
   fac = sapply(zones, function(x) x[1])
-  # nz = tapply(fac, fac, length) # number of zones for each fac
-  # tmax = unname(tapply(tobs, fac, max))
   tmax_pos = tapply(tobs, fac, which.max)
   fac_idx = lapply(1:N, function(i) which(fac == i))
-  tmax_idx = mapply(function(idx, pos) idx[pos], idx = fac_idx, pos = tmax_pos)
+  tmax_idx = mapply(function(idx, pos) idx[pos], idx = fac_idx, 
+                    pos = tmax_pos)
   tmax = tobs[tmax_idx]
-  pvalue = sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 1))
+  pvalue = sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 
+                                                            1))
   sig = which(pvalue <= alpha)
-  
-  # if there are no significant clusters, return most likely cluster
-  if(length(sig) == 0)
-  {
+  if (length(sig) == 0) {
     sig = which.max(tmax)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
   sig = sig[order(tmax[sig], decreasing = TRUE)]
-  u = smacpod::noc(zones[sig])
+  u = smacpod::noc(zones[tmax_idx[sig]])
   usig = sig[u]
   usigidx = tmax_idx[usig]
-  # determine the location ids in each nonoverlapping significant cluster
   sig_regions = zones[usigidx]
   sig_tstat = tobs[usigidx]
   sig_p = pvalue[usig]
@@ -139,12 +105,10 @@ flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop
   sig_ein = ein[usigidx]
   sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
   sig_smr = sig_yin/sig_ein
-  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-  
-  # reformat output for return
+  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - 
+                                                  sig_popin))
   clusters = vector("list", length(u))
-  for(i in seq_along(clusters))
-  {
+  for (i in seq_along(clusters)) {
     clusters[[i]]$locids = sig_regions[[i]]
     clusters[[i]]$pop = sig_popin[i]
     clusters[[i]]$cases = sig_yin[i]
@@ -158,3 +122,4 @@ flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop
   class(outlist) = "scan"
   return(outlist)
 }
+

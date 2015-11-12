@@ -9,7 +9,7 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   ubpop = 0.5, lonlat = FALSE, parallel = TRUE)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions..}
+\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
 \item{cases}{The number of cases in each region.}
 
@@ -17,7 +17,7 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{type}{The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".}
+\item{type}{The type of scan statistic to implement.  Default is "poisson".}
 
 \item{nsim}{The number of simulations from which to compute p-value.}
 
@@ -33,6 +33,7 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+\item{locids}{The location ids of regions in a significant cluster.}
 \item{coords}{The centroid of the significant clusters.}
 \item{r}{The radius of the window of the clusters.}
 \item{pop}{The total population in the cluser window.}
@@ -75,7 +76,7 @@ plot(out, usemap = TRUE, mapargs = mapargs)
 coords = with(nydf, cbind(y, x))
 out2 = scan.test(coords = coords, cases = floor(nydf$cases),
                   pop = nydf$pop, nsim = 49,
-                  alpha = 0.12, lonlat = TRUE)
+                  alpha = 0.5, lonlat = TRUE)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
 c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)

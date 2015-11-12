@@ -14,6 +14,7 @@
 #' @importFrom spdep knearneigh
 #' @importFrom igraph graph_from_adjacency_matrix induced_subgraph count_components
 #' @importFrom parallel mclapply
+#' @importFrom utils combn
 #' @export
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
 #' @examples 
@@ -21,12 +22,7 @@
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' flex.zones(coords = coords, w = nyw, k = 3, lonlat = TRUE)
-# data(nydf)
-# data(nyw)
-# coords = cbind(nydf$longitude, nydf$latitude)
-# w = nyw
-# k = 10
-# lonlat = TRUE
+#' 
 flex.zones = function(coords, w, k = 10, lonlat = FALSE)
 {
   N = nrow(coords)
@@ -46,7 +42,7 @@ flex.zones = function(coords, w, k = 10, lonlat = FALSE)
   mynn = cbind(1:N, mynn)
   
   # determine all sets of 10 elements that include the first element
-  all_sets = unlist(lapply(as.list(0:(k-1)), FUN = function(x) combn(2:k, x, FUN = function(y) c(1, y), simplify = FALSE)), recursive = FALSE)
+  all_sets = unlist(lapply(as.list(0:(k-1)), FUN = function(x) utils::combn(2:k, x, FUN = function(y) c(1, y), simplify = FALSE)), recursive = FALSE)
   
   # for each centroid, determine which of the possible "all_sets" are connected zones
   # return the ones that are connected, return a NULL otherwise

@@ -1,10 +1,10 @@
-#' Spatial Scan Test
+#' Upper Level Set Spatial Scan Test
 #' 
-#' \code{uls.test} performs Upper Level Set (ULS) scan test of Patil and Taillie (2004).
+#' \code{uls.test} performs Upper Level Set (ULS) spatian scan test of Patil and Taillie (2004).
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are based on the Upper Level Sets proposed by Patil and Taillie (2004).  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions..
+#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
 #' @param cases The number of cases in each region.
 #' @param pop The population size of each region.
 #' @param w The binary spatial adjacency matrix.
@@ -17,8 +17,7 @@
 #' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
-#' \item{coords}{The centroid of the significant clusters.}
-#' \item{r}{The radius of the window of the clusters.}
+#' \item{locids}{The location ids of regions in a significant cluster.}
 #' \item{pop}{The total population in the cluser window.}
 #' \item{cases}{The observed number of cases in the cluster window.}
 #' \item{expected}{The expected number of cases in the cluster window.}
@@ -58,32 +57,19 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
                         ubpop = 0.5, lonlat = FALSE, parallel = TRUE) 
 {
   # sanity checking
-  N = nrow(coords)
-  if(ncol(coords) != 2) stop("coords must have two columns")
-  coords = as.matrix(coords)
-  if(length(cases) != N) stop("length(cases) != nrow(coords)")
-  if(!is.numeric(cases)) stop("cases should be a numeric vector")
-  if(length(pop) != N) stop("length(pop) != nrow(coords)")
-  if(!is.numeric(pop)) stop("pop should be a numeric vector")
-  if(length(ex) != N) stop("length(ex) != nrow(coords)")
-  if(!is.numeric(ex)) stop("ex should be a numeric vector")
-  if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
-  if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
-  if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
-  if(nsim < 1) stop("nsim should be an integer of at least 1")
-  if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
-  if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-  if(length(lonlat) != 1) stop("length(lonlat) != 1")
-  if(!is.logical(lonlat)) stop("lonlat should be a logical value")
-  if(length(parallel) != 1) stop("length(parallel) != 1")
-  if(!is.logical(parallel)) stop("parallel should be a logical value")
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
+                      nreport, ubpop, lonlat, parallel, 
+                      k = 1, w = w)
   
+  coords = as.matrix(coords)
+  N = nrow(coords)
+ 
   y = cases
   e = ex
   ty = sum(y) # sum of all cases
   
-  if (nreport <= nsim) 
-    cat(paste("sims completed: "))
+  # display sims completed, if appropriate
+  if (nreport <= nsim && !parallel) cat("sims completed: ")
   
   fcall = lapply
   if (parallel) fcall = parallel::mclapply
@@ -93,11 +79,9 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
     uz = uls.zones(ysim, pop, w, ubpop = ubpop)
     # cumulate the number of cases inside the successive windows
     yin = unlist(lapply(uz, function(x) sum(ysim[x])), use.names = FALSE)
-    yout = ty - yin
     ein = unlist(lapply(uz, function(x) sum(e[x])), use.names = FALSE)
-    eout = ty - ein
     # calculate all test statistics
-    tall = scan.stat(yin, ein, yout, eout)
+    tall = scan.stat(yin, ein, ty - ein, ty)
     # update progress
     if((i%%nreport) == 0) cat(i, " ")
     # return max of statistics for simulation
@@ -117,7 +101,7 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
   
   ### calculate scan statistics for observed data
   # of distance from observation centroid
-  tobs = scan.stat(yin, ein, yout, eout)
+  tobs = scan.stat(yin, ein, ty - ein, ty)
   # max scan statistic over all windows
   tscan = max(tobs)
  
@@ -180,4 +164,5 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
   class(outlist) = "scan"
   return(outlist)
 }
+
 

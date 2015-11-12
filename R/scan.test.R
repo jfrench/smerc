@@ -4,11 +4,11 @@
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions..
+#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
 #' @param cases The number of cases in each region.
 #' @param pop The population size of each region.
 #' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
-#' @param type The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".
+#' @param type The type of scan statistic to implement.  Default is "poisson".
 #' @param nsim The number of simulations from which to compute p-value.
 #' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
 #' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
@@ -16,7 +16,8 @@
 #' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
 #' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+#' \item{locids}{The location ids of regions in a significant cluster.} 
 #' \item{coords}{The centroid of the significant clusters.}
 #' \item{r}{The radius of the window of the clusters.}
 #' \item{pop}{The total population in the cluser window.}
@@ -60,7 +61,7 @@
 #' coords = with(nydf, cbind(y, x))
 #' out2 = scan.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, nsim = 49, 
-#'                   alpha = 0.12, lonlat = TRUE)
+#'                   alpha = 0.5, lonlat = TRUE)
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
@@ -69,31 +70,16 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
                         nsim = 499, alpha = 0.1, nreport = nsim + 1, 
                         ubpop = 0.5, lonlat = FALSE, parallel = TRUE) 
 {
-  # sanity checking
-  N = nrow(coords)
-  if(ncol(coords) != 2) stop("coords must have two columns")
-  coords = as.matrix(coords)
-  if(length(cases) != N) stop("length(cases) != nrow(coords)")
-  if(!is.numeric(cases)) stop("cases should be a numeric vector")
-  if(length(pop) != N) stop("length(pop) != nrow(coords)")
-  if(!is.numeric(pop)) stop("pop should be a numeric vector")
-  if(length(ex) != N) stop("length(ex) != nrow(coords)")
-  if(!is.numeric(ex)) stop("ex should be a numeric vector")
-  if(length(type) != 1) stop("type must be a single distribution")
-  if(!is.element(type, c("poisson", "bernoulli"))) stop("invalid type")
-  if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
-  if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
-  if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
-  if(nsim < 1) stop("nsim should be an integer of at least 1")
-  if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
-  if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-  if(length(lonlat) != 1) stop("length(lonlat) != 1")
-  if(!is.logical(lonlat)) stop("lonlat should be a logical value")
-  if(length(parallel) != 1) stop("length(parallel) != 1")
-  if(!is.logical(parallel)) stop("parallel should be a logical value")
+  # argument checking
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
+                      nreport, ubpop, lonlat, parallel, 
+                      k = 1, w = diag(nrow(coords)))
   
-  y = cases
-  e = ex
+  # convert to propert format
+  coords = as.matrix(coords)
+  N = nrow(coords)
+  # short names
+  y = cases; e = ex
   
   if(lonlat)
   {
@@ -103,39 +89,37 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
     d = SpatialTools::dist1(coords)
   }
   
-  # for each region, determine sorted nearest neighbors such that,
-  # for all regions, the max population size included in 
-  # any set of neighbors is no more than ubpop of the total population
-  # size
+  # for each region, determine sorted nearest neighbors
+  # subject to population constraint
   mynn = nnpop(d, pop, ubpop)
-  # number of nns for each observation
-  nnn = unlist(lapply(mynn, length), use.names = FALSE)
+
+  # mynn = spdep::knearneigh(coords, k = (k - 1), longlat = lonlat)$nn
+  # mynn = cbind(1:N, mynn)
   
-  if (nreport <= nsim) 
-    cat(paste("sims completed: "))
   
-  # determine the number of expected counts, population inside the windows for successive
-  # windows related to growing windows around each centroid out to the successive
-  # nearest neighbors stored in mynn
-  ein = unlist(lapply(mynn, function(x) cumsum(e[x])), use.names = FALSE)
-  eout = sum(e) - ein # counts expected outside the window
-  popin = unlist(lapply(mynn, function(x) cumsum(pop[x])), use.names = FALSE)
+  # display sims completed, if appropriate
+  if (nreport <= nsim && !parallel) cat("sims completed: ")
   
-  tsim = numeric(nsim) # store test statistics for simulated data
+  # determine the expected cases in/out each successive 
+  # window, total number of cases, total population
+  ein = unlist(lapply(mynn, function(x) cumsum(e[x])))
   ty = sum(y) # sum of all cases
+  eout = ty - ein # counts expected outside the window
+  popin = unlist(lapply(mynn, function(x) cumsum(pop[x])))
+  
+  # determine which call for simulations
   fcall = lapply
   if (parallel) fcall = parallel::mclapply
+  # setup list for call
   fcall_list = list(X = as.list(1:nsim), FUN = function(i){
     # simulate new data set
     ysim = stats::rmultinom(1, size = ty, prob = e)
     # cumulate the number of cases inside the successive windows
-    yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])), use.names = FALSE)
-    yout = ty - yin
+    yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
     # calculate all test statistics
-    tall = scan.stat(yin, ein, yout, eout, type = type)
+    tall = scan.stat(yin, ein, eout, ty, type)
     # update progress
-    # if ((i%%nreport) == 0) cat(paste(i, ""))
-    if((i%%nreport) == 0) cat(i, " ")
+    if ((i%%nreport) == 0) cat(paste(i, ""))
     # return max of statistics for simulation
     return(max(tall))
   })
@@ -144,19 +128,19 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
   
   # number of nns for each observation
-  nnn = unlist(lapply(mynn, length), use.names = FALSE)
+  nnn = unlist(lapply(mynn, length))
   
   # factors related to number of neighbors
   # each event location possesses
   fac = rep(1:N, times = nnn)
   
   # determine yin and yout for all windows for observed data
-  yin = unlist(lapply(mynn, function(x) cumsum(y[x])), use.names = FALSE)
+  yin = unlist(lapply(mynn, function(x) cumsum(y[x])))
   yout = ty - yin
   
   ### calculate scan statistics for observed data
   # of distance from observation centroid
-  tobs = scan.stat(yin, ein, yout, eout, type = type)
+  tobs = scan.stat(yin, ein, eout, ty, type = type)
   # max scan statistic over all windows
   tscan = max(tobs)
   # observed test statistics, split by centroid in order of successive windows
@@ -211,13 +195,7 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   sig_tstat = tmax[usigc]
   sig_p = pvalue[usigc]
   sig_coords = coords[usigc,, drop = FALSE]
-  if(lonlat)
-  {
-    sig_r = diag(fields::rdist.earth(sig_coords, coords[max_nn[usigc], , drop = FALSE], miles = FALSE))
-  }else
-  {
-    sig_r = diag(SpatialTools::dist2(sig_coords, coords[max_nn[usigc], , drop = FALSE]))
-  }
+  sig_r = d[cbind(usigc, max_nn[usigc])]
   sig_yin = (yin[tmax_idx])[usigc]
   sig_ein = (ein[tmax_idx])[usigc]
   sig_popin = (popin[tmax_idx])[usigc]
@@ -243,4 +221,37 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   class(outlist) = "scan"
   return(outlist)
 }
+
+# argument checking for all scan tests
+arg_check_scan_test = 
+  function(coords, cases, pop, ex, nsim, alpha, nreport,
+           ubpop, lonlat, parallel, k, w)
+{
+    if(ncol(coords) != 2) stop("coords must have two columns")
+    N = nrow(coords)
+    if(length(cases) != N) stop("length(cases) != nrow(coords)")
+    if(!is.numeric(cases)) stop("cases should be a numeric vector")
+    if(length(pop) != N) stop("length(pop) != nrow(coords)")
+    if(!is.numeric(pop)) stop("pop should be a numeric vector")
+    if(length(ex) != N) stop("length(ex) != nrow(coords)")
+    if(!is.numeric(ex)) stop("ex should be a numeric vector")
+    if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
+    if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
+    if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
+    if(nsim < 1) stop("nsim should be an integer of at least 1")
+    if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
+    if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
+    if(length(lonlat) != 1) stop("length(lonlat) != 1")
+    if(!is.logical(lonlat)) stop("lonlat should be a logical value")
+    if(length(parallel) != 1) stop("length(parallel) != 1")
+    if(!is.logical(parallel)) stop("parallel should be a logical value")
+    if(length(k) != 1) stop("k must have length 1")
+    if(k < 1) stop("k must be an integer >= 1")
+    if(!is.matrix(w)) stop("w must be a matrix")
+    if(nrow(w) != ncol(w)) stop("w much be a square matrix")
+    if(!is.numeric(w)) stop("w must be a numeric matrix")
+    if(nrow(w) != nrow(coords)) stop("nrow(w) != nrow(coords)")
+    if(floor(k) > nrow(coords)) stop("k cannot be more than the number of regions.")
+}
+
 

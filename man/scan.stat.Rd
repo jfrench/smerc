@@ -4,16 +4,16 @@
 \alias{scan.stat}
 \title{Scan Statistic}
 \usage{
-scan.stat(yin, ein, yout, eout, type = "poisson")
+scan.stat(yin, ein, eout, ty, type = "poisson")
 }
 \arguments{
 \item{yin}{The sum of the response values inside the window.  Generally, the sum of the cases.}
 
 \item{ein}{The expected value of the response in the window.  Generally, the estimated overall risk for all regions combined, multiplied by the population size of the window.}
 
-\item{yout}{The sum of the response values outside the window.}
-
 \item{eout}{The expected value of the response outside the window.}
+
+\item{ty}{The sum of all responses in the study area.  Generally, the total number of cases.}
 
 \item{type}{The type of scan statistic to implement.  Currently, only "poisson" is implemented.}
 }
@@ -21,16 +21,16 @@ scan.stat(yin, ein, yout, eout, type = "poisson")
 A vector of scan statistics.
 }
 \description{
-\code{scan.stat} calculates a scan statistic for various distributions.
+\code{scan.stat} calculates the scan statistic for various distributions.
 }
 \examples{
 # statistic for most likely cluster of New York leukemia data
-scan.stat(106, 62.13, 552 - 106, 552 - 62.13)
+scan.stat(106, 62.13, 552 - 62.13, 552)
 }
 \author{
 Joshua French
 }
 \references{
-Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
 
