@@ -201,6 +201,10 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   sig_popin = (popin[tmax_idx])[usigc]
   sig_smr = sig_yin/sig_ein
   sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
+  sig_w = lapply(sig_regions, function(x)
+  {
+    matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
+  })
   
   # reformat output for return
   clusters = vector("list", length(u))
@@ -216,6 +220,7 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
     clusters[[i]]$rr = sig_rr[i]
     clusters[[i]]$loglikrat = sig_tstat[[i]]
     clusters[[i]]$pvalue = sig_p[i]
+    clusters[[i]]$w = sig_w[[i]]
   }
   outlist = list(clusters = clusters, coords = coords)
   class(outlist) = "scan"

@@ -117,6 +117,7 @@ flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop
     clusters[[i]]$rr = sig_rr[i]
     clusters[[i]]$loglikrat = sig_tstat[[i]]
     clusters[[i]]$pvalue = sig_p[i]
+    clusters[[i]]$w = w[sig_regions[[i]], sig_regions[[i]]]
   }
   outlist = list(clusters = clusters, coords = coords)
   class(outlist) = "scan"

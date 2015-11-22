@@ -1,12 +1,22 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 0.2.2
-Date: 2015-11-12
+Version: 0.2.4
+Date: 2015-11-22
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
-Description: Provides statistical methods for the analysis of data areal data, with a focus on cluster detection.
+Description: Provides statistical methods for the analysis of data areal data,
+    with a focus on cluster detection.
 License: GPL (>=2)
 LazyLoad: yes
-Imports: SpatialTools, fields, parallel, maps, smacpod, igraph, spdep, utils
-Suggests: testthat, sp
+Imports:
+    SpatialTools,
+    fields,
+    parallel,
+    maps,
+    smacpod,
+    spdep
+Suggests:
+    testthat,
+    sp
+RoxygenNote: 5.0.1
