@@ -1,20 +1,16 @@
 #' Determine zones for flexibly shaped spatial scan test
 #' 
-#' \code{flex.zones} determines the unique zones to consider for the flexibly shaped spatial scan test of Tango and Takahashi (2005).
+#' \code{flex.zones} determines the unique zones to consider for the flexibly shaped spatial scan test of Tango and Takahashi (2005).  The algorithm uses a breadth-first search to find all subgraphs connected to each vertex (region) in the data set of size \eqn{k} or less.  
 #' 
-#' @param coords The number of cases in each region.
-#' @param w The binary spatial adjacency matrix.
+#' @param coords The centroid coordinates for each region.
+#' @param w The binary spatial adjacency matrix of the regions.
 #' @param k The maximum number of regions to include in a zone.
 #' @param lonlat A logical indioating whether the coordinates are longitude/latitude.  If so, the great circle distance is used in computing the nearest/neighbor distance matrix.
+#' @param parallel A logical value indicating whether the \code{parallel} package should be used to speedup computations.
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
-#' @importFrom fields rdist.earth
-#' @importFrom SpatialTools dist1
-#' @importFrom smacpod nn
 #' @importFrom spdep knearneigh
-#' @importFrom igraph graph_from_adjacency_matrix induced_subgraph count_components
 #' @importFrom parallel mclapply
-#' @importFrom utils combn
 #' @export
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
 #' @examples 
@@ -23,79 +19,67 @@
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' flex.zones(coords = coords, w = nyw, k = 3, lonlat = TRUE)
 #' 
-flex.zones = function(coords, w, k = 10, lonlat = FALSE)
+flex.zones = function(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
 {
   N = nrow(coords)
   
-#   if(lonlat)
-#   {
-#     d = fields::rdist.earth(coords, coords, miles = FALSE)
-#   }else
-#   {
-#     d = SpatialTools::dist1(as.matrix(coords))
-#   }
-#   
-#   # determine k nearest neighbors, based on distance
-#   mynn = smacpod::nn(d, k = k, method = "c", self = TRUE)},
+  mynn = cbind(1:N, spdep::knearneigh(as.matrix(coords), k = (k - 1), longlat = lonlat)$nn)
 
-  mynn = spdep::knearneigh(coords, k = (k - 1), longlat = lonlat)$nn
-  mynn = cbind(1:N, mynn)
-  
-  # determine all sets of 10 elements that include the first element
-  all_sets = unlist(lapply(as.list(0:(k-1)), FUN = function(x) utils::combn(2:k, x, FUN = function(y) c(1, y), simplify = FALSE)), recursive = FALSE)
-  
-  # for each centroid, determine which of the possible "all_sets" are connected zones
-  # return the ones that are connected, return a NULL otherwise
-  # microbenchmark(
-  # {
-  czones = unlist(parallel::mclapply(1:N, function(i)
+  fcall = lapply
+  if(parallel) fcall = parallel::mclapply
+  fcall_list = list(X = as.list(1:N), function(i)
   {
-    wi = igraph::graph_from_adjacency_matrix(w[mynn[i, ], mynn[i, ]])
-    zi = lapply(all_sets, function(set)
-    {
-      # get indices of regions in zone
-      # if the number of clusters is 1, the regions are connected, we should return 
-      # the indices of the regions in that zone
-      if(igraph::count_components(igraph::induced_subgraph(wi, v = set)) == 1)
-        return(mynn[i, ][set])
-    })
-    zi[!sapply(zi, is.null)]
-  }), recursive = FALSE, use.names = FALSE)
+    connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
+                        nn = mynn[i, ], k = k)
+  })
   
-  return(unique(parallel::mclapply(czones, sort)))
+  czones = unlist(do.call(fcall, fcall_list), 
+                  use.names = FALSE, 
+                  recursive = FALSE)
+  
+  if(parallel)
+  {
+    return(unique(parallel::mclapply(czones, sort)))
+  }else
+  {
+    return(unique(lapply(czones, sort)))
+  }
 }
 
-# mynn2 = knearneigh(coords, k = (k - 1))
-# mynn2$nn = mynn[, -1]
-# mynb = knn2nb(mynn2)
-# microbenchmark(
-#   czones = unlist(parallel::mclapply(1:N, function(i)
-#   {
-#     wi = igraph::graph_from_adjacency_matrix(w[mynn[i, ], mynn[i, ]])
-#     zi = lapply(all_sets, function(set)
-#     {
-#       # get indices of regions in zone
-#       # if the number of clusters is 1, the regions are connected, we should return 
-#       # the indices of the regions in that zone
-#       if(igraph::count_components(igraph::induced_subgraph(wi, v = set)) == 1)
-#         return(sort(mynn[i, ][set]))
-#     })
-#     zi[!sapply(zi, is.null)]
-#   }), recursive = FALSE, use.names = FALSE), times = 3L) 
-### much slower than one in code
-### this is implemented using functions in the spdep package
-# microbenchmark(
-# czones2 = unlist(parallel::mclapply(1:N, function(i)
-# {
-#   # wi = subset(mynb, is.element(1:N, c(i, mynn2$nn[i, ])))
-#   these_sets = lapply(all_sets, function(x) c(i, mynn2$nn[i, ])[x])
-#   zi = lapply(these_sets, function(set)
-#   {
-#     # get indices of regions in zone
-#     # if the number of clusters is 1, the regions are connected, we should return 
-#     # the indices of the regions in that zone
-#     if(n.comp.nb(subset(mynb, is.element(1:N, set)))$nc == 1)
-#     return(sort(set))
-#   })
-#   zi[!sapply(zi, is.null)]
-# }), recursive = FALSE), times = 3L)
+# takes a spatial adjacency matrix and the 
+# index of the locations in the spatial adjacency
+# matrix
+connected_subgraphs = function(w, nn, k)
+{
+  # storage list, of length k
+  listi = vector("list", k)
+  listi[[1]] = as.list(1)
+  
+  # index of neighbors for each region
+  nbi = apply(w, 2, function(x) which(x!=0))
+  
+  for(j in 2:k)
+  {
+    if(!is.null(listi[[j - 1]]))
+    {
+     newset = unique(unlist(
+      lapply(listi[[j - 1]], function(r)
+      {
+        sd = setdiff(unique(unlist(nbi[r])), r)
+        if(length(sd) > 0)
+        sapply(sd,
+               function(u) sort(c(r, u)), 
+               simplify = FALSE)
+      }), recursive = FALSE))
+     if(length(newset) > 0)
+     {
+       listi[[j]] = newset
+     }else
+     {
+       j = k + 1
+     }
+    }
+  }  
+  
+  return(sapply(unlist(listi, recursive = FALSE), function(l) nn[l]))
+}
