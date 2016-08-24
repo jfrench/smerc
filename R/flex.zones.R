@@ -2,11 +2,7 @@
 #' 
 #' \code{flex.zones} determines the unique zones to consider for the flexibly shaped spatial scan test of Tango and Takahashi (2005).  The algorithm uses a breadth-first search to find all subgraphs connected to each vertex (region) in the data set of size \eqn{k} or less.  
 #' 
-#' @param coords The centroid coordinates for each region.
-#' @param w The binary spatial adjacency matrix of the regions.
-#' @param k The maximum number of regions to include in a zone.
-#' @param lonlat A logical indioating whether the coordinates are longitude/latitude.  If so, the great circle distance is used in computing the nearest/neighbor distance matrix.
-#' @param parallel A logical value indicating whether the \code{parallel} package should be used to speedup computations.
+#' @inheritParams flex.test
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @importFrom spdep knearneigh

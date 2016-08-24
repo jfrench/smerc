@@ -11,9 +11,9 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{cases}{The number of cases in each region.}
+\item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size of each region.}
+\item{pop}{The population size associated with each region.}
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
@@ -21,28 +21,28 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 
 \item{nsim}{The number of simulations from which to compute p-value.}
 
-\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is 0.05.}
+\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
 \item{nreport}{The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.}
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{lonlat}{If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.}
+\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.}
+\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 \item{locids}{The location ids of regions in a significant cluster.} 
 \item{coords}{The centroid of the significant clusters.}
-\item{r}{The radius of the window of the clusters.}
-\item{pop}{The total population in the cluser window.}
-\item{cases}{The observed number of cases in the cluster window.}
-\item{expected}{The expected number of cases in the cluster window.}
-\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-\item{rr}{Relative risk in the cluster window.}
-\item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-\item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
+\item{r}{The radius of the cluster (the largest intercentroid distance for regions in the cluster).}
+\item{pop}{The total population of the regions in the cluster.}
+\item{cases}{The observed number of cases in the cluster.}
+\item{expected}{The expected number of cases in the cluster.}
+\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster.}
+\item{rr}{Relative risk in the cluster.}
+\item{loglikrat}{The loglikelihood ratio for the cluster (i.e., the log of the test statistic).}
+\item{pvalue}{The pvalue of the test statistic associated with the cluster.}
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{

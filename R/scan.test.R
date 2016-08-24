@@ -5,28 +5,28 @@
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
 #' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
+#' @param cases The number of cases observed in each region.
+#' @param pop The population size associated with each region.
 #' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
 #' @param type The type of scan statistic to implement.  Default is "poisson".
 #' @param nsim The number of simulations from which to compute p-value.
 #' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
 #' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
-#' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
-#' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
-#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
+#' @param alpha The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.
+#' @param lonlat The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance. 
+#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 #' \item{locids}{The location ids of regions in a significant cluster.} 
 #' \item{coords}{The centroid of the significant clusters.}
-#' \item{r}{The radius of the window of the clusters.}
-#' \item{pop}{The total population in the cluser window.}
-#' \item{cases}{The observed number of cases in the cluster window.}
-#' \item{expected}{The expected number of cases in the cluster window.}
-#' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-#' \item{rr}{Relative risk in the cluster window.}
-#' \item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-#' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
+#' \item{r}{The radius of the cluster (the largest intercentroid distance for regions in the cluster).}
+#' \item{pop}{The total population of the regions in the cluster.}
+#' \item{cases}{The observed number of cases in the cluster.}
+#' \item{expected}{The expected number of cases in the cluster.}
+#' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster.}
+#' \item{rr}{Relative risk in the cluster.}
+#' \item{loglikrat}{The loglikelihood ratio for the cluster (i.e., the log of the test statistic).}
+#' \item{pvalue}{The pvalue of the test statistic associated with the cluster.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
 #' @importFrom SpatialTools dist1 dist2
@@ -95,7 +95,6 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
 
   # mynn = spdep::knearneigh(coords, k = (k - 1), longlat = lonlat)$nn
   # mynn = cbind(1:N, mynn)
-  
   
   # display sims completed, if appropriate
   if (nreport <= nsim && !parallel) cat("sims completed: ")
@@ -232,6 +231,7 @@ arg_check_scan_test =
   function(coords, cases, pop, ex, nsim, alpha, nreport,
            ubpop, lonlat, parallel, k, w)
 {
+    if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
     if(ncol(coords) != 2) stop("coords must have two columns")
     N = nrow(coords)
     if(length(cases) != N) stop("length(cases) != nrow(coords)")

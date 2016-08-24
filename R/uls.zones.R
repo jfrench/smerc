@@ -4,10 +4,7 @@
 #' 
 #' The zones returned must have a total population less than ubpop * the total population of all regions in the study area.
 #' 
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
-#' @param w The binary spatial adjacency matrix.
-#' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
+#' @inheritParams uls.test
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export
@@ -18,6 +15,11 @@
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
 uls.zones = function(cases, pop, w, ubpop = 0.5)
 {
+  if(length(cases) != length(pop)) stop('length(cases) != length(pop)')
+  if(length(cases) != nrow(w)) stop('length(cases) != nrow(w)')
+  if(length(ubpop) != 1 | !is.numeric(ubpop)) stop("ubpop should be a single number")
+  if(ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
+  
   # order rates from largest to smallest
   or = order(cases/pop, decreasing = TRUE);
   # reorder rows and columns by order of r

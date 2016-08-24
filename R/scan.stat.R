@@ -14,7 +14,6 @@
 #' @examples 
 #' # statistic for most likely cluster of New York leukemia data
 #' scan.stat(106, 62.13, 552 - 62.13, 552)
-
 scan.stat = function(yin, ein, eout, ty, type = "poisson")
 {
   if(length(yin) != length(ein)) 
@@ -26,7 +25,7 @@ scan.stat = function(yin, ein, eout, ty, type = "poisson")
     yout = ty - yin
     tall = yin * (log(yin) - log(ein)) + yout * (log(yout) - log(eout))
     # correct test statistics 
-    tall[yin/ein <= yout/eout] = 0
+    tall[yin/ein <= yout/eout | is.nan(tall)] = 0
   }
   return(tall)
 }

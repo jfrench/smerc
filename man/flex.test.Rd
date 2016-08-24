@@ -11,27 +11,27 @@ flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{cases}{The number of cases in each region.}
+\item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size of each region.}
+\item{pop}{The population size associated with each region.}
 
-\item{w}{An \eqn{n\times n} adjacenty matrix for the regions in the study area.}
+\item{w}{The binary spatial adjacency matrix.}
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{type}{The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".}
+\item{type}{The type of scan statistic to implement.  Default is "poisson".}
 
 \item{nsim}{The number of simulations from which to compute p-value.}
 
-\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is 0.05.}
+\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
 \item{nreport}{The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.}
 
-\item{lonlat}{If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.}
+\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.}
+\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 

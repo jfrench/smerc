@@ -7,15 +7,15 @@
 flex.zones(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
 }
 \arguments{
-\item{coords}{The centroid coordinates for each region.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{w}{The binary spatial adjacency matrix of the regions.}
+\item{w}{The binary spatial adjacency matrix.}
 
-\item{k}{The maximum number of regions to include in a zone.}
+\item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
-\item{lonlat}{A logical indioating whether the coordinates are longitude/latitude.  If so, the great circle distance is used in computing the nearest/neighbor distance matrix.}
+\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical value indicating whether the \code{parallel} package should be used to speedup computations.}
+\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
 }
 \value{
 Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.

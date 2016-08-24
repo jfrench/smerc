@@ -7,9 +7,9 @@
 uls.zones(cases, pop, w, ubpop = 0.5)
 }
 \arguments{
-\item{cases}{The number of cases in each region.}
+\item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size of each region.}
+\item{pop}{The population size associated with each region.}
 
 \item{w}{The binary spatial adjacency matrix.}
 

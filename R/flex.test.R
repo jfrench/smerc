@@ -4,18 +4,9 @@
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
-#' @param w An \eqn{n\times n} adjacenty matrix for the regions in the study area.
 #' @param k An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10
-#' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
-#' @param type The type of scan statistic to implement.  Default is "poisson".  Alternative is "bernoulli".
-#' @param nsim The number of simulations from which to compute p-value.
-#' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
-#' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
-#' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
-#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
+#' @inheritParams scan.test
+#' @inheritParams uls.test
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{coords}{The centroid of the significant clusters.}
