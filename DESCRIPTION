@@ -16,8 +16,8 @@ Imports:
     maps,
     smacpod,
     spdep,
-    matrixStats
-Suggests:
-    testthat,
+    matrixStats,
     sp
+Suggests:
+    testthat
 RoxygenNote: 5.0.1

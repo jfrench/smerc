@@ -1,0 +1,170 @@
+#' Dynamic minimum spanning tree scan test
+#' 
+#' \code{dmst.test} implements the Dynamic Minimum Spanning Tree scan test of Assuncao et al. (2006).  Starting with a single region as a current zone, new candidate zones are constructed by combining the current zone with the connected zone that maximizes the likelihood function.  This is procedure repeated until the population or distance upper bound are reached.  The same procedure is repeated for each zone.  The maxima likelihood first scan test proposed by Yao et al. (2011) is an independent variant of this, but only searches from the starting region that maximizes the likelihood ratio scan statistic. 
+#' 
+#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
+#' @param cases The number of cases in each region.
+#' @param pop The population size of each region.
+#' @param w The binary spatial adjacency matrix.
+#' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
+#' @param nsim The number of simulations from which to compute p-value.
+#' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
+#' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
+#' @param ubd The upperbound for the proportion of the maximum intercentroid distance to allow for the maximum size of a zone.
+#' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
+#' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
+#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
+#'
+#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' \item{locids}{The location ids of regions in a significant cluster.}
+#' \item{pop}{The total population in the cluser window.}
+#' \item{cases}{The observed number of cases in the cluster window.}
+#' \item{expected}{The expected number of cases in the cluster window.}
+#' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
+#' \item{rr}{Relative risk in the cluster window.}
+#' \item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
+#' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
+#' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+#' @author Joshua French
+#' @importFrom parallel mclapply
+#' @importFrom sp spDists
+#' @importFrom stats rmultinom
+#' @importFrom utils tail
+#' @export
+#' @references Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
+#' 
+#' Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.
+#' @examples 
+#' data(nydf)
+#' data(nyw)
+#' coords = with(nydf, cbind(longitude, latitude))
+#' \dontrun{
+#' out = dmst.test(coords = coords, cases = floor(nydf$cases), 
+#'                 pop = nydf$pop, w = nyw, 
+#'                 alpha = 0.12, lonlat = TRUE,
+#'                 nsim = 5, ubpop = 0.1, ubd = 0.2)
+#' data(nypoly)
+#' library(sp)
+#' plot(nypoly, col = color.clusters(out))}
+#' 
+dmst.test = function (coords, cases, pop, w, 
+                     ex = sum(cases)/sum(pop)*pop,
+                     nsim = 499, alpha = 0.1, 
+                     nreport = nsim + 1, 
+                     ubpop = 0.5, ubd = 0.5,
+                     lonlat = FALSE, parallel = TRUE) 
+{
+  # sanity checking
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
+                      nreport, ubpop, lonlat, parallel, 
+                      k = 1, w = w)
+  
+  coords = as.matrix(coords) # ensure proper format
+  N = nrow(coords) # number of regions
+  ty = sum(cases) # sum of all cases
+
+  # intercentroid distances
+  d = sp::spDists(as.matrix(coords), longlat = TRUE)
+  # upperbound for distance between centroids in zone
+  max_dist = 0.5 * max(d)
+  # find all neighbors from each starting zone within distance upperbound
+  all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
+  
+  max_zones = dmst_zones_internal(all_neighbors = all_neighbors, 
+                                  cases = cases, pop = pop, w = w, ex = ex, ubpop = ubpop,
+                                  parallel = parallel, maxonly = FALSE)
+  
+  # set of zones with max test statistics from each starting region
+#  max_zones = dmst.zones(coords = coords, cases = cases,
+#                 pop = pop, w = w, ex = ex, ubpop = ubpop,
+#                 ubd = ubd, lonlat = lonlat, parallel = FALSE, maxonly = FALSE)
+#   
+  # extract statistics from each zone
+  tobs = sapply(max_zones, getElement, name = "loglikrat")
+  
+  # determine which call for simulations
+  fcall = lapply
+  if (parallel) fcall = parallel::mclapply
+  # setup list for call
+  fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i){
+    # simulate new data set
+    ysim = stats::rmultinom(1, size = ty, prob = ex)
+    # find max statistics for each candidate zone
+    tall = dmst_zones_internal(all_neighbors = all_neighbors, 
+                               cases = ysim, pop = pop, w = w, ex = ex, ubpop = ubpop,
+                               parallel = FALSE, maxonly = TRUE)
+    # update progress
+    if ((i%%nreport) == 0) cat(paste(i, ""))
+    # return max of statistics for simulation
+    return(max(tall))
+  })
+  
+  # get max statistics for simulated data sets
+  tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
+  
+  # p-values associated with these max statistics for each centroid
+  # pvalue = sapply((sum(tsim >= tobs) + 1)/(nsim + 1))
+  pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+  # determine which potential clusters are significant
+  sigc = which(pvalue <= alpha, useNames = FALSE)
+  
+  # if there are no significant clusters, return most likely cluster
+  if(length(sigc) == 0)
+  {
+    sigc = which.max(tobs)
+    warning("No significant clusters.  Returning most likely cluster.")
+  }
+  
+  # which statistics are significant
+  sig_tscan = unlist(tobs, use.names = FALSE)[sigc]
+  # order statistics from smallest to largest
+  o_sig = order(sig_tscan, decreasing = TRUE)
+  # idx of significant clusters in order of significance
+  sigc = sigc[o_sig]
+  
+  # determine the location ids in each significant cluster
+  sig_regions = sapply(sigc, function(i) max_zones[[i]]$locids)
+  # determine idx of unique non-overlapping clusters
+  u = smacpod::noc(sig_regions)
+  # return non-overlapping clusters (in order of significance)
+  sig_regions = sig_regions[u]
+  # unique significant clusters (in order of significance)
+  usigc = sigc[u]
+  
+  # for the unique, non-overlapping clusters in order of significance,
+  # find the associated test statistic, p-value, centroid,
+  # window radius, cases in window, expected cases in window, 
+  # population in window, standarized mortality ration, relative risk,
+  sig_tstat = tobs[usigc]
+  sig_p = pvalue[usigc]
+  sig_coords = coords[usigc,, drop = FALSE]
+  sig_r = d[cbind(usigc, sapply(sig_regions, tail, n = 1))]
+  sig_yin = sapply(usigc, function(x) max_zones[[x]]$cases)
+  sig_ein = sapply(usigc, function(x) max_zones[[x]]$expected)
+  sig_popin = sapply(usigc, function(x) max_zones[[x]]$population)
+  sig_smr = sig_yin/sig_ein
+  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
+
+  # reformat output for return
+  clusters = vector("list", length(u))
+  for(i in seq_along(clusters))
+  {
+    clusters[[i]]$locids = sig_regions[[i]]
+    clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
+    clusters[[i]]$r = sig_r[i]
+    clusters[[i]]$pop = sig_popin[i]
+    clusters[[i]]$cases = sig_yin[i]
+    clusters[[i]]$expected = sig_ein[i]
+    clusters[[i]]$smr = sig_smr[i]
+    clusters[[i]]$rr = sig_rr[i]
+    clusters[[i]]$loglikrat = sig_tstat[[i]]
+    clusters[[i]]$pvalue = sig_p[i]
+    clusters[[i]]$w = w[sig_regions[[i]], sig_regions[[i]]]
+  }
+  
+  outlist = list(clusters = clusters, coords = coords)
+  class(outlist) = "scan"
+  return(outlist)
+}
+
+

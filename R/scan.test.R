@@ -75,7 +75,7 @@ scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
                       nreport, ubpop, lonlat, parallel, 
                       k = 1, w = diag(nrow(coords)))
   
-  # convert to propert format
+  # convert to proper format
   coords = as.matrix(coords)
   N = nrow(coords)
   # short names
