@@ -4,9 +4,9 @@
 \alias{scan.test}
 \title{Spatial Scan Test}
 \usage{
-scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
-  type = "poisson", nsim = 499, alpha = 0.1, nreport = nsim + 1,
-  ubpop = 0.5, lonlat = FALSE, parallel = TRUE)
+scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop, nsim = 499,
+  alpha = 0.1, nreport = nsim + 1, ubpop = 0.5, lonlat = FALSE,
+  parallel = TRUE, type = "poisson")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -17,9 +17,7 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{type}{The type of scan statistic to implement.  Default is "poisson".}
-
-\item{nsim}{The number of simulations from which to compute p-value.}
+\item{nsim}{The number of simulations from which to compute the p-value.}
 
 \item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
@@ -30,9 +28,11 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
+
+\item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:
 \item{locids}{The location ids of regions in a significant cluster.} 
 \item{coords}{The centroid of the significant clusters.}
 \item{r}{The radius of the cluster (the largest intercentroid distance for regions in the cluster).}
@@ -49,7 +49,7 @@ The second element of the list is the centroid coordinates.  This is needed for 
 \code{scan.test} performs the spatial scan test of Kulldorf (1997).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 }
 \examples{
 data(nydf)
@@ -81,10 +81,9 @@ out2 = scan.test(coords = coords, cases = floor(nydf$cases),
 # the second set of results match
 c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
 }
-\author{
-Joshua French
-}
 \references{
 Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
-
+\author{
+Joshua French
+}

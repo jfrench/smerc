@@ -11,7 +11,7 @@ uls.zones(cases, pop, w, ubpop = 0.5)
 
 \item{pop}{The population size associated with each region.}
 
-\item{w}{The binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix.}
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 }
@@ -29,10 +29,9 @@ data(nydf)
 data(nyw)
 uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
 }
-\author{
-Joshua French
-}
 \references{
 Patil, G. P., and Taillie, C. (2004). Upper level set scan statistic for detecting arbitrarily shaped hotspots. Environmental and Ecological Statistics, 11(2), 183-197.
 }
-
+\author{
+Joshua French
+}

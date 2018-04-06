@@ -1,34 +1,28 @@
-#' Determine zones using the dynamic minimum spanning tree scan test of Assuncao et al. (2006) 
-#' 
-#' \code{dmst.zones} determines the zones that produce the largest test statistic using a greedy algorithm.  Specifically, starting individually with each region as a starting zone, new (connected) regions are added to the current zone in the order that results in the largest test statistic.  This is used to implement the static minimum spanning tree (dmst) scan test of Assuncao et al. (2006).  See also the maxima likelihood first scan method of Yao et al. (2011).
-#' 
-#' Every zone considered must have a total population less than \code{ubpop * the total population across all regions} in the study area.  Additionally, the maximum intercentroid distance for the regions within a zone must be no more than \code{ubd * the maximum intercentroid distance across all regions}. 
-#' 
-#' @param coords	\eqn{An n \times 2} matrix of centroid coordinates for the regions.
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
-#' @param w The binary spatial adjacency matrix.
-#' @param ex The expected number of cases for each region. The default is calculated under the constant risk hypothesis.
-#' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
-#' @param ubd The upperbound of the proportion of the maximum intercentroid distance across all regions.  Default is 1.
-#' @param lonlat A logical value indicating whether Euclidean (\code{lonlat = FALSE}) or great circle distance (\code{lonlat = TRUE}) should be used to calculate intercentroid distance.  The default is \code{FALSE}.
-#' @param parallel A logical value indicating whether finding candidate zones should use multiple cores.  The default is \code{FALSE}.  Multiple cores are used if \code{paralle = TRUE}.
+#' Determine zones using the dynamic minimum spanning tree scan test of Assuncao et al. (2006)
+#'
+#' \code{dmst.zones} determines the zones that produce the largest test statistic using a greedy algorithm.  Specifically, starting individually with each region as a starting zone, new (connected) regions are added to the current zone in the order that results in the largest likelihood ratio test statistic.  This is used to implement the dynamic minimum spanning tree (dmst) scan test of Assuncao et al. (2006).
+#'
+#' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+#'
+#' Every zone considered must have a total population less than \code{ubpop * sum(pop)}.  Additionally, the maximum intercentroid distance for the regions within a zone must be no more than \code{ubd * the maximum intercentroid distance across all regions}.
+#'
+#' @inheritParams dmst.test
 #' @param maxonly A logical value indicating whether to return only the maximum test statistic across all candidate zones.  Default is \code{FALSE}.
 
-#' @return Returns a list of zones to consider for clustering that includes the location id of each zone and the associated test statistic, counts, expected counts, and population in the zone. If \code{maxonly = TRUE}, then only the maximum test statistic across all of these zones is returned.
+#' @return Returns a list of zones to consider for clustering that includes the location id of each zone and the associated test statistic, number of cases, expected number of cases, and the population in the zone. If \code{maxonly = TRUE}, then only the maximum test statistic across all of these zones is returned.
 #' @author Joshua French
 #' @importFrom matrixStats colMaxs
+#' @importFrom utils head
 #' @references Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
-#' 
-#' Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International Journal of Health Geographics, 10(1), 1.
+#'
 #' @export
-#' @examples 
+#' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' # find zone with max statistic starting from each individual region
-#' max_zones = dmst.zones(coords, cases = floor(nydf$cases), 
-#'                        nydf$pop, w = nyw, ubpop = 0.25, 
+#' max_zones = dmst.zones(coords, cases = floor(nydf$cases),
+#'                        nydf$pop, w = nyw, ubpop = 0.25,
 #'                        ubd = .25, lonlat = TRUE)
 #' head(max_zones)
 

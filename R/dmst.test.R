@@ -1,20 +1,12 @@
 #' Dynamic minimum spanning tree scan test
 #' 
-#' \code{dmst.test} implements the Dynamic Minimum Spanning Tree scan test of Assuncao et al. (2006).  Starting with a single region as a current zone, new candidate zones are constructed by combining the current zone with the connected zone that maximizes the likelihood function.  This is procedure repeated until the population or distance upper bound are reached.  The same procedure is repeated for each zone.  The maxima likelihood first scan test proposed by Yao et al. (2011) is an independent variant of this, but only searches from the starting region that maximizes the likelihood ratio scan statistic. 
+#' \code{dmst.test} implements the Dynamic Minimum Spanning Tree scan test of Assuncao et al. (2006).  Starting with a single region as a current zone, new candidate zones are constructed by combining the current zone with the connected region that maximizes the resulting likelihood ratio test statistic.  This is procedure repeated until the population or distance upper bound are reached.  The same procedure is repeated for each region.  The maxima likelihood first scan test proposed by Yao et al. (2011) is an independent variant of this, but only searches from the starting region that maximizes the likelihood ratio scan statistic. The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
-#' @param w The binary spatial adjacency matrix.
-#' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
-#' @param nsim The number of simulations from which to compute p-value.
-#' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
-#' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
-#' @param ubd The upperbound for the proportion of the maximum intercentroid distance to allow for the maximum size of a zone.
-#' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
-#' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
-#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
-#'
+#' The maximum intercentroid distance can be found by executing the command: \code{sp::spDists(as.matrix(coords), longlat = lonlat)}, based on the specified values of \code{coords} and \code{lonlat}.
+#' 
+#' @inheritParams scan.test
+#' @inheritParams uls.test
+#' @param ubd The upperbound for the radius of a cluster.  This should be a proportion in (0, 1].  The value is the proportion of the maximum intercentroid distance between any two locations in \code{coords}. See Details.
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{locids}{The location ids of regions in a significant cluster.}
 #' \item{pop}{The total population in the cluser window.}
@@ -66,7 +58,7 @@ dmst.test = function (coords, cases, pop, w,
   # intercentroid distances
   d = sp::spDists(as.matrix(coords), longlat = TRUE)
   # upperbound for distance between centroids in zone
-  max_dist = 0.5 * max(d)
+  max_dist = ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
   all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
   
@@ -74,11 +66,6 @@ dmst.test = function (coords, cases, pop, w,
                                   cases = cases, pop = pop, w = w, ex = ex, ubpop = ubpop,
                                   parallel = parallel, maxonly = FALSE)
   
-  # set of zones with max test statistics from each starting region
-#  max_zones = dmst.zones(coords = coords, cases = cases,
-#                 pop = pop, w = w, ex = ex, ubpop = ubpop,
-#                 ubd = ubd, lonlat = lonlat, parallel = FALSE, maxonly = FALSE)
-#   
   # extract statistics from each zone
   tobs = sapply(max_zones, getElement, name = "loglikrat")
   
@@ -123,7 +110,7 @@ dmst.test = function (coords, cases, pop, w,
   sigc = sigc[o_sig]
   
   # determine the location ids in each significant cluster
-  sig_regions = sapply(sigc, function(i) max_zones[[i]]$locids)
+  sig_regions = lapply(sigc, function(i) max_zones[[i]]$locids)
   # determine idx of unique non-overlapping clusters
   u = smacpod::noc(sig_regions)
   # return non-overlapping clusters (in order of significance)

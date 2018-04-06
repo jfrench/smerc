@@ -15,15 +15,15 @@ flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
 
 \item{pop}{The population size associated with each region.}
 
-\item{w}{The binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix.}
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{type}{The type of scan statistic to implement.  Default is "poisson".}
+\item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
 
-\item{nsim}{The number of simulations from which to compute p-value.}
+\item{nsim}{The number of simulations from which to compute the p-value.}
 
 \item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
@@ -65,10 +65,9 @@ data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))
 }
-\author{
-Joshua French
-}
 \references{
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
-
+\author{
+Joshua French
+}

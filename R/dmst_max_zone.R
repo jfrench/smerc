@@ -1,6 +1,6 @@
 ## Determine sequence of constrained greedy zones.
 ## 
-## \code{dmst_max_zone} finds the sequence of connected regions that maximize the likelihood from a starting region.  The sequence continues until no region can be added to the current zone due to constraints.
+## \code{dmst_max_zone} finds the sequence of connected regions that maximize the likelihood ration test statistic from a starting region.  The sequence continues until no region can be added to the current zone due to constraints.
 ## @param start The region to start extending the zone from.
 ## @param neighbors A vector containing the neighbors for a region (in ascending order of distance from the region).  The region itself is included in its neighbors.
 ## @param cases The number of cases in each region.
@@ -121,11 +121,12 @@ dmst_max_zone = function(start, neighbors, cases, pop, w, ex, ty, max_pop, type 
                 population = popin[which_max]))
   }else if(type == "all")
   {
-    return(list(locids = uz,
-                loglikrat = loglikrat,
-                cases = yin,
-                expected = ein,
-                population = popin))
+    # return only non-zero elements
+    return(list(locids = uz[1:i],
+                loglikrat = loglikrat[1:i],
+                cases = yin[1:i],
+                expected = ein[1:i],
+                population = popin[1:i]))
   }
 }
 

@@ -61,24 +61,29 @@ plot.scan = function(x, ..., ccol = NULL, cpch = NULL, add = FALSE, usemap = FAL
   
   graphics::points(coords, ...)
   # plot clusters
-  for(i in 1:nc)
-  {
-    graphics::points(coords[x$clusters[[i]]$locids,1], coords[x$clusters[[i]]$locids,2], col = ccol[i], pch = cpch[i])
-    seg = w2segments(x$clusters[[i]]$w, coords[x$clusters[[i]]$locids, ])
-    graphics::segments(seg[,1], seg[,2], seg[,3], seg[,4], 
-                       col = ccol[i], pch = cpch[i])
+  for (i in 1:nc)   {
+    graphics::points(coords[x$clusters[[i]]$locids,1], 
+                     coords[x$clusters[[i]]$locids,2], 
+                     col = ccol[i], 
+                     pch = cpch[i])
+    
+    if (!is.null(x$clusters[[i]]$w)) {
+      if (length(x$clusters[[i]]$w) > 1) {
+      seg = w2segments(x$clusters[[i]]$w, coords[x$clusters[[i]]$locids, ])
+      graphics::segments(seg[,1], seg[,2], seg[,3], seg[,4], 
+                         col = ccol[i], pch = cpch[i])
+      }
+    }
   }
 }
 
 # takes binary spatial proximity matrix and associated
 # coordinates, returns segments connecting neighbors
-w2segments = function(w, coords)
-{
+w2segments = function(w, coords) {
   nnb = sum(w != 0)
   count = 0
   seg = matrix(0, nrow = nnb, ncol = 4)
-  for(i in 1:nrow(w))
-  {
+  for (i in 1:nrow(w)) {
     nbi = which(w[i,] != 0)
     nnbi = length(nbi)
     seg[count + 1:nnbi, 1] = coords[i, 1]

@@ -30,4 +30,3 @@ plot(nypoly, col = color.clusters(out))
 \author{
 Joshua French
 }
-

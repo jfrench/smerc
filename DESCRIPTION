@@ -1,8 +1,8 @@
 Package: smerc
 Type: Package
 Title: Scanning Methods for Regional Counts
-Version: 0.3.1
-Date: 2016-03-17
+Version: 0.4.0
+Date: 2016-08-30
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 Description: Implements several scanning methods for the analysis of areal data,
@@ -20,4 +20,4 @@ Imports:
     sp
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

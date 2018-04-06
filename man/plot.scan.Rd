@@ -43,4 +43,3 @@ plot(out, usemap = TRUE, mapargs = mapargs)
 \seealso{
 \code{\link[maps]{map}}
 }
-

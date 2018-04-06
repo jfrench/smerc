@@ -3,7 +3,6 @@
 #' \code{scan.zones} determines the unique zones to consider for the spatial scan test of Kulldorff (1997).
 #' 
 #' @inheritParams scan.test
-#' @importFrom utils head
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export

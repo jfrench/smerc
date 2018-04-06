@@ -27,10 +27,9 @@ coords = cbind(nydf$longitude, nydf$latitude)
 scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, lonlat = TRUE)
 
 }
-\author{
-Joshua French
-}
 \references{
 Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
-
+\author{
+Joshua French
+}

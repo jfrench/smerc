@@ -9,7 +9,7 @@ flex.zones(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{w}{The binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix.}
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
@@ -30,10 +30,9 @@ coords = cbind(nydf$longitude, nydf$latitude)
 flex.zones(coords = coords, w = nyw, k = 3, lonlat = TRUE)
 
 }
-\author{
-Joshua French
-}
 \references{
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
 }
-
+\author{
+Joshua French
+}

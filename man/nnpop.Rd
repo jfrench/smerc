@@ -31,4 +31,3 @@ nnout = nnpop(d, pop = nydf$pop, ubpop = 0.5)
 \author{
 Joshua French
 }
-

@@ -27,10 +27,9 @@ A vector of scan statistics.
 # statistic for most likely cluster of New York leukemia data
 scan.stat(106, 62.13, 552 - 62.13, 552)
 }
-\author{
-Joshua French
-}
 \references{
 Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
-
+\author{
+Joshua French
+}

@@ -1,10 +1,10 @@
 #' Upper Level Set Spatial Scan Test
 #' 
-#' \code{uls.test} performs Upper Level Set (ULS) spatian scan test of Patil and Taillie (2004).
+#' \code{uls.test} performs Upper Level Set (ULS) spatial scan test of Patil and Taillie (2004).
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are based on the Upper Level Sets proposed by Patil and Taillie (2004).  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param w The binary spatial adjacency matrix.
+#' @param w A binary spatial adjacency matrix.
 #' @inheritParams scan.test
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
