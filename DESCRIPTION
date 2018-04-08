@@ -1,12 +1,13 @@
 Package: smerc
 Type: Package
-Title: Scanning Methods for Regional Counts
-Version: 0.4.0
-Date: 2018-04-06
+Title: Statistical Methods for Regional Counts
+Version: 0.4.1
+Date: 2018-04-07
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
-Description: Implements several scanning methods for the analysis of areal data,
-    with a focus on cluster detection.
+Description: Implements several statistical methods for 
+analyzing areal count data, with a focus on the 
+detection of spatial clusters or clustering.
 License: GPL (>=2)
 LazyLoad: yes
 Imports:

@@ -44,7 +44,7 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{uls.test} performs Upper Level Set (ULS) spatial scan test of Patil and Taillie (2004).
+\code{uls.test} performs the Upper Level Set (ULS) spatial scan test of Patil and Taillie (2004).
 }
 \details{
 The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are based on the Upper Level Sets proposed by Patil and Taillie (2004).  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).

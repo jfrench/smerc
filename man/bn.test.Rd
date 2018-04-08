@@ -34,7 +34,7 @@ The modified version replaces cstar with \code{yin}.
 The default is \code{FALSE}.}
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+Returns a list of length two of class \code{scan}. The first element (clusters) is a list containing the significant clusters and has the the following components: 
 \item{locids}{The location ids of regions in a significant cluster.}
 \item{coords}{The centroid of the initial region.}
 \item{r}{The maximum radius of the cluster (in terms of intercentroid distance from the starting region).}
@@ -49,8 +49,8 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{besag.test} implements the Besag-Newell test of 
-Besag and Newell (1991).
+\code{bn.test} implements the Besag-Newell test of 
+Besag and Newell (1991) for finding disease clusters.
 }
 \examples{
 data(nydf)
@@ -71,7 +71,8 @@ Besag, J. and Newell, J.  (1991). The detection of clusters in rare diseases, Jo
 \seealso{
 \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
 \code{\link{scan.test}}, \code{\link{flex.test}}, 
-\code{\link{dmst.test}}, \code{\link{uls.test}}
+\code{\link{dmst.test}}, \code{\link{uls.test}},
+\code{\link{mlf.test}}
 }
 \author{
 Joshua French
