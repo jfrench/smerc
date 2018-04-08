@@ -23,7 +23,7 @@ total cases and class probabilities \code{pop/sum(pop)}.
 \value{
 Returns a list of class \code{tango} with elements: 
 \item{tstat}{Tango's index}
-\item{tstat.chisq}{The approximately chi-square proposed by Tango that is derived from \code{tstat}}
+\item{tstat.chisq}{The approximately chi-squared statistic proposed by Tango that is derived from \code{tstat}}
 \item{dfc}{The degrees of freedom of \code{tstat.chisq}}
 \item{pvalue.chisq}{The p-value associated with \code{tstat.chisq}}
 \item{tstat.sim}{The vector of test statistics from the simulated data if \code{nsim > 0}}
@@ -52,10 +52,10 @@ w = dweights(coords, kappa = 1)
 results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 }
 \references{
-Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
+Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14, 2323-2334.
 
 Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square 
-Goodness-of-fit Test.  Geographical Analysis. 31:130-147
+Goodness-of-fit Test.  Geographical Analysis. 31, 130-147
 
 Tango, T.  (2010) Statistical Methods for Disease Clustering.  Springer.
 

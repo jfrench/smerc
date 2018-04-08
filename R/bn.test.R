@@ -1,7 +1,7 @@
 #' Besag-Newell Test
 #' 
-#' \code{besag.test} implements the Besag-Newell test of 
-#' Besag and Newell (1991).
+#' \code{bn.test} implements the Besag-Newell test of 
+#' Besag and Newell (1991) for finding disease clusters.
 #' 
 #' @param noc A logical value indicating whether all significant 
 #' clusters should be returned (\code{FALSE}) or only the 
@@ -16,7 +16,7 @@
 #' @inheritParams scan.test
 #' @inheritParams casewin
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' @return Returns a list of length two of class \code{scan}. The first element (clusters) is a list containing the significant clusters and has the the following components: 
 #' \item{locids}{The location ids of regions in a significant cluster.}
 #' \item{coords}{The centroid of the initial region.}
 #' \item{r}{The maximum radius of the cluster (in terms of intercentroid distance from the starting region).}
@@ -32,7 +32,8 @@
 #' @author Joshua French
 #' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
 #' \code{\link{scan.test}}, \code{\link{flex.test}}, 
-#' \code{\link{dmst.test}}, \code{\link{uls.test}}
+#' \code{\link{dmst.test}}, \code{\link{uls.test}},
+#' \code{\link{mlf.test}}
 #' @export
 #' @references Besag, J. and Newell, J.  (1991). The detection of clusters in rare diseases, Journal of the Royal Statistical Society, Series A, 154, 327-333.
 #' @examples 
@@ -86,7 +87,12 @@ bn.test = function(coords, cases, pop, cstar,
     u = smacpod::noc(cwins[op])
     op = op[u]
     # return only significant clusters
-    op = op[which(pvalue[op] <= alpha)]
+    if(pvalue[op][1] > alpha) {
+      warning("No significant clusters.  Returning most likely cluster.")
+      op = op[1]
+    } else {
+      op = op[which(pvalue[op] <= alpha)]
+    }
   }
  
   # for the unique, non-overlapping clusters in order of significance,
