@@ -2,7 +2,7 @@
 #' 
 #' \code{scan.test} performs the spatial scan test of Kulldorf (1997).
 #' 
-#' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+#' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most  cflikely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
 #' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
 #' @param cases The number of cases observed in each region.
@@ -28,6 +28,9 @@
 #' \item{loglikrat}{The loglikelihood ratio for the cluster (i.e., the log of the test statistic).}
 #' \item{pvalue}{The pvalue of the test statistic associated with the cluster.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+#' \code{\link{uls.test}}, \code{\link{flex.test}}, 
+#' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @author Joshua French
 #' @importFrom SpatialTools dist1 dist2
 #' @importFrom parallel mclapply
@@ -65,7 +68,7 @@
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
-scan.test = function (coords, cases, pop, ex = sum(cases)/sum(pop)*pop, 
+scan.test = function(coords, cases, pop, ex = sum(cases)/sum(pop)*pop, 
                       nsim = 499, alpha = 0.1, nreport = nsim + 1, 
                       ubpop = 0.5, lonlat = FALSE, parallel = TRUE,
                       type = "poisson") 

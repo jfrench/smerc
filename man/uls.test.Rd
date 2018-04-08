@@ -72,6 +72,11 @@ plot(nypoly, col = color.clusters(out))
 \references{
 Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
+\seealso{
+\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+\code{\link{scan.test}}, \code{\link{flex.test}}, 
+\code{\link{dmst.test}}, \code{\link{bn.test}}
+}
 \author{
 Joshua French
 }

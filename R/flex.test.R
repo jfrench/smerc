@@ -26,6 +26,9 @@
 #' @importFrom smacpod noc
 #' @importFrom stats rmultinom
 #' @export
+#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+#' \code{\link{scan.test}}, \code{\link{uls.test}}, 
+#' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
 #' data(nydf)

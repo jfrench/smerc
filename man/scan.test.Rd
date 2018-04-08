@@ -49,7 +49,7 @@ The second element of the list is the centroid coordinates.  This is needed for 
 \code{scan.test} performs the spatial scan test of Kulldorf (1997).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most  cflikely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 }
 \examples{
 data(nydf)
@@ -83,6 +83,11 @@ c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
 }
 \references{
 Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+}
+\seealso{
+\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+\code{\link{uls.test}}, \code{\link{flex.test}}, 
+\code{\link{dmst.test}}, \code{\link{bn.test}}
 }
 \author{
 Joshua French

@@ -18,6 +18,9 @@
 #' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
+#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+#' \code{\link{scan.test}}, \code{\link{flex.test}}, 
+#' \code{\link{dmst.test}}, \code{\link{bn.test}} 
 #' @importFrom parallel mclapply
 #' @importFrom fields rdist.earth
 #' @importFrom smacpod noc

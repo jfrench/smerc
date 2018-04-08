@@ -70,6 +70,11 @@ Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection
 
 Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.
 }
+\seealso{
+\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
+\code{\link{scan.test}}, \code{\link{flex.test}}, 
+\code{\link{uls.test}}, \code{\link{bn.test}}
+}
 \author{
 Joshua French
 }
