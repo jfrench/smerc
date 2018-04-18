@@ -29,9 +29,12 @@ order of significance.  The default is \code{TRUE}.}
 \item{modified}{A logical value indicating whether a 
 modified version of the test should be performed.  The 
 original paper recommends computing the p-value for each
-region as \code{1 - ppois(cstar - 1, lambda = expected)}.
-The modified version replaces cstar with \code{yin}.
-The default is \code{FALSE}.}
+cluster as \code{1 - ppois(cstar - 1, lambda = expected)}.
+The modified version replaces \code{cstar} with 
+\code{cases}, the observed number of cases in the region, 
+and computes the p-value for the cluster as 
+\code{1 - ppois(cases - 1, lambda = ex)}.
+The default is \code{modified = FALSE}.}
 }
 \value{
 Returns a list of length two of class \code{scan}. The first element (clusters) is a list containing the significant clusters and has the the following components: 

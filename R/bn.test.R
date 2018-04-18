@@ -10,9 +10,12 @@
 #' @param modified A logical value indicating whether a 
 #' modified version of the test should be performed.  The 
 #' original paper recommends computing the p-value for each
-#' region as \code{1 - ppois(cstar - 1, lambda = expected)}.
-#' The modified version replaces cstar with \code{yin}.
-#' The default is \code{FALSE}.
+#' cluster as \code{1 - ppois(cstar - 1, lambda = expected)}.
+#' The modified version replaces \code{cstar} with 
+#' \code{cases}, the observed number of cases in the region, 
+#' and computes the p-value for the cluster as 
+#' \code{1 - ppois(cases - 1, lambda = ex)}.
+#' The default is \code{modified = FALSE}.
 #' @inheritParams scan.test
 #' @inheritParams casewin
 #'
@@ -73,8 +76,7 @@ bn.test = function(coords, cases, pop, cstar,
   ex = r * ncwins
   
   if (!modified) {
-    # pvalue = stats::ppois(cstar - 1, lambda = ex, lower.tail = FALSE)
-    pvalue = stats::ppois(cstar, lambda = ex, lower.tail = FALSE)
+    pvalue = stats::ppois(cstar - 1, lambda = ex, lower.tail = FALSE)
     } else {
     pvalue = stats::ppois(case_cwins - 1, lambda = ex, lower.tail = FALSE)
   }

@@ -91,7 +91,7 @@ tango.test <- function(cases, pop, w, nsim = 0) {
     out$sa.sim = sa.sim
     out$tstat.sim = tstat.sim
     pvalue.sim = (1 + sum(tstat.sim >= tstat))/(1 + nsim)
-    out$pvalue.sim
+    out$pvalue.sim = pvalue.sim
   }
   class(out) = "tango"
   return(out)

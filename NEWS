@@ -1,0 +1,2 @@
+0.4.5 Fix small bug in computing p-value for bn.test
+      (unmodified).  Add test for bn.test (modified).  

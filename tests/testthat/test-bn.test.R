@@ -33,3 +33,31 @@ test_that("check accuracy for bn.test for NY data", {
   expect_equal(bn23$clusters[[1]]$pop, 19615)
   expect_equal(round(bn23$clusters[[1]]$cases, 2), 25.46)
 })
+
+bn23mod = bn.test(coords = coords,
+               cases = cases,
+               pop = pop,
+               cstar = 23, 
+               modified = TRUE)
+
+bnse23 = SpatialEpi::besag_newell(geo = coords, 
+                                 cases = cases, 
+                                 population = pop, 
+                                 k = 23,
+                                 alpha = 0.1)
+
+test_that("check accuracy for bn.test modified for NY data", {
+  expect_equal(bn23mod$clusters[[1]]$locids, bnse23$clusters[[1]]$location.IDs.included)
+  expect_equal(bn23mod$clusters[[1]]$pop, bnse23$clusters[[1]]$population)
+  expect_equal(bn23mod$clusters[[1]]$ex, bnse23$clusters[[1]]$expected)
+  expect_equal(bn23mod$clusters[[1]]$cases, bnse23$clusters[[1]]$number.of.cases)
+  expect_equal(bn23mod$clusters[[1]]$pvalue, bnse23$clusters[[1]]$p.value)
+
+  expect_equal(bn23mod$clusters[[2]]$locids, bnse23$clusters[[2]]$location.IDs.included)
+  expect_equal(bn23mod$clusters[[2]]$pop, bnse23$clusters[[2]]$population)
+  expect_equal(bn23mod$clusters[[2]]$ex, bnse23$clusters[[2]]$expected)
+  expect_equal(bn23mod$clusters[[2]]$cases, bnse23$clusters[[2]]$number.of.cases)
+  expect_equal(bn23mod$clusters[[2]]$pvalue, bnse23$clusters[[2]]$p.value)
+  1 - ppois(bn23mod$clusters[[2]]$cases - 1, bn23mod$clusters[[2]]$ex)
+  
+  })
