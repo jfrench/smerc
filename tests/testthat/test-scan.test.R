@@ -62,23 +62,31 @@ test_that("sanity checks for scan.test arguments", {
 data(nydf)
 out = scan.test(coords = cbind(nydf$longitude, nydf$latitude), 
                 cases = floor(nydf$cases), pop = nydf$population, 
-                lonlat = TRUE, nsim = 999, alpha = .50)
+                lonlat = TRUE, nsim = 49, alpha = .50)
+# clusters from satscan.  it's not clear how satscan does 
+# lon/lat distance.  they seem to match up very well
+# with fields::rdist.earth, but sp::spDists should be more 
+# accurate
+cl1 = c(52, 50, 53, 38, 49, 48, 15, 39, 37, 1, 16, 44, 47, 
+        40, 14, 2, 51, 13,
+        43, 45, 17, 55, 11, 3, 12, 46, 36, 35, 54, 10, 5)
+cl2 = c(88, 87, 92, 86, 89, 91, 93, 85, 90)
+cl3 = c(113, 117, 116, 112, 220, 118, 115, 123, 
+        124, 111, 114, 125, 219, 122, 126, 119)
+diff1 = setdiff(out$clusters[[1]]$locids, cl1)
+diff2 = setdiff(out$clusters[[2]]$locids, cl2)
+diff3 = setdiff(out$clusters[[3]]$locids, cl3)
 
 test_that("check accuracy for scan.test with SatScan for NY data", {
-  expect_that(out$clusters[[1]]$locids , 
-              equals(c(52, 50, 53, 38, 49, 48, 15, 39, 37, 1, 16, 44, 47, 40, 14, 2, 51, 13,
-                       43, 45, 17, 55, 11, 3, 12, 46, 36, 35, 54, 10, 5)))
-  expect_that(out$clusters[[2]]$locids , 
-              equals(c(88, 87, 92, 86, 89, 91, 93, 85, 90)))
-  expect_that(out$clusters[[3]]$locids , 
-              equals(c(113, 117, 116, 112, 220, 118, 115, 123, 124, 111, 114, 125, 219, 122,
-                       126, 119)))
-  expect_that(out$clusters[[1]]$pop, equals(119050))
-  expect_that(out$clusters[[1]]$cases, equals(106))
-  expect_that(round(out$clusters[[1]]$exp, 2), equals(62.13))
-  expect_that(round(out$clusters[[1]]$smr, 2), equals(1.71))
-  expect_that(round(out$clusters[[1]]$rr, 2), equals(1.87))
-  expect_that(round(out$clusters[[1]]$loglik, 2), equals(14.78))
+  expect_equal(length(diff1), 0)
+  expect_equal(length(diff2), 0)
+  expect_equal(length(diff3), 0)
+  expect_equal(out$clusters[[1]]$pop, 119050)
+  expect_equal(out$clusters[[1]]$cases, 106)
+  expect_equal(round(out$clusters[[1]]$exp, 2), 62.13)
+  expect_equal(round(out$clusters[[1]]$smr, 2), 1.71)
+  expect_equal(round(out$clusters[[1]]$rr, 2), 1.87)
+  expect_equal(round(out$clusters[[1]]$loglik, 2), 14.78)
   
   expect_that(out$clusters[[2]]$pop, equals(40696))
   expect_that(out$clusters[[2]]$cases, equals(42))

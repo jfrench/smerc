@@ -9,7 +9,7 @@ flex.zones(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{w}{A binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix for the regions.}
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 

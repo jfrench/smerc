@@ -7,7 +7,9 @@
 casewin(d, cases, cstar)
 }
 \arguments{
-\item{d}{An \eqn{n\times n} square distance matrix containing the intercentroid distance between the \eqn{n} region centroids.}
+\item{d}{An \eqn{n\times n} square distance matrix
+containing the intercentroid distance between the
+\eqn{n} region centroids.}
 
 \item{cases}{A vector of length \eqn{n} containing the 
 observed number of cases for the \eqn{n} region centroids.}

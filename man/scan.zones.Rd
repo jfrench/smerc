@@ -2,7 +2,7 @@
 % Please edit documentation in R/scan.zones.R
 \name{scan.zones}
 \alias{scan.zones}
-\title{Determine zones for spatial scan test}
+\title{Determine zones for the spatial scan test}
 \usage{
 scan.zones(coords, pop, ubpop = 0.5, lonlat = FALSE)
 }
@@ -16,19 +16,24 @@ scan.zones(coords, pop, ubpop = 0.5, lonlat = FALSE)
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 }
 \value{
-Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
+Returns a list of zones to consider for
+  clustering.  Each element of the list contains a vector
+  with the location ids of the regions in that zone.
 }
 \description{
-\code{scan.zones} determines the unique zones to consider for the spatial scan test of Kulldorff (1997).
+\code{scan.zones} determines the unique candidate 
+zones to consider
+for the spatial scan test of Kulldorff (1997).
 }
 \examples{
 data(nydf)
 coords = cbind(nydf$longitude, nydf$latitude)
 scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, lonlat = TRUE)
-
 }
 \references{
-Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial scan
+  statistic. Communications in Statistics -- Theory and
+  Methods 26, 1481-1496.
 }
 \author{
 Joshua French

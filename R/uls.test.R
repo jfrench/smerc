@@ -4,7 +4,7 @@
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The windows are based on the Upper Level Sets proposed by Patil and Taillie (2004).  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param w A binary spatial adjacency matrix.
+#' @param w A binary spatial adjacency matrix for the regions.
 #' @inheritParams scan.test
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
@@ -22,7 +22,6 @@
 #' \code{\link{scan.test}}, \code{\link{flex.test}}, 
 #' \code{\link{dmst.test}}, \code{\link{bn.test}} 
 #' @importFrom parallel mclapply
-#' @importFrom fields rdist.earth
 #' @importFrom smacpod noc
 #' @importFrom stats rmultinom
 #' @export

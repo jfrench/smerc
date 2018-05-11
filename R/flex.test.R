@@ -20,9 +20,7 @@
 #' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
-#' @importFrom SpatialTools dist1 dist2
 #' @importFrom parallel mclapply
-#' @importFrom fields rdist.earth
 #' @importFrom smacpod noc
 #' @importFrom stats rmultinom
 #' @export

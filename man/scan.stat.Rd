@@ -2,33 +2,43 @@
 % Please edit documentation in R/scan.stat.R
 \name{scan.stat}
 \alias{scan.stat}
-\title{Scan Statistic}
+\title{Spatial scan statistic}
 \usage{
 scan.stat(yin, ein, eout, ty, type = "poisson")
 }
 \arguments{
-\item{yin}{The sum of the response values inside the window.  Generally, the sum of the cases.}
+\item{yin}{The total number of cases in the zone.}
 
-\item{ein}{The expected value of the response in the window.  Generally, the estimated overall risk for all regions combined, multiplied by the population size of the window.}
+\item{ein}{The expected number of cases in the zone.
+Conventionally, this is the estimated overall 
+  disease risk across the study area, multiplied by the 
+  total population size of the zone.}
 
-\item{eout}{The expected value of the response outside the window.}
+\item{eout}{The expected number of cases outside the 
+zone.  This should be \code{ty - ein}, but
+this is not done for efficiency purposes.}
 
-\item{ty}{The sum of all responses in the study area.  Generally, the total number of cases.}
+\item{ty}{The total number of cases in the study area.}
 
-\item{type}{The type of scan statistic to implement.  Currently, only "poisson" is implemented.}
+\item{type}{The type of scan statistic to implement. 
+Currently, only \code{"poisson"} is implemented.}
 }
 \value{
 A vector of scan statistics.
 }
 \description{
-\code{scan.stat} calculates the scan statistic for various distributions.
+\code{scan.stat} calculates the spatial scan statistic 
+for a zone (set of spatial regions).
 }
 \examples{
-# statistic for most likely cluster of New York leukemia data
+# statistic for most likely cluster of 
+# New York leukemia data
 scan.stat(106, 62.13, 552 - 62.13, 552)
 }
 \references{
-Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial scan 
+  statistic. Communications in Statistics -- Theory and 
+  Methods 26, 1481-1496.
 }
 \author{
 Joshua French

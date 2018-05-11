@@ -15,7 +15,7 @@ flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
 
 \item{pop}{The population size associated with each region.}
 
-\item{w}{A binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix for the regions.}
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 

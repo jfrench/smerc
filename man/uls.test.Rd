@@ -15,7 +15,7 @@ uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
 
 \item{pop}{The population size associated with each region.}
 
-\item{w}{A binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix for the regions.}
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 

@@ -1,32 +1,31 @@
-#' Determine zones for spatial scan test
+#' Determine zones for the spatial scan test
 #' 
-#' \code{scan.zones} determines the unique zones to consider for the spatial scan test of Kulldorff (1997).
+#' \code{scan.zones} determines the unique candidate 
+#' zones to consider
+#' for the spatial scan test of Kulldorff (1997).
 #' 
 #' @inheritParams scan.test
-#' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
+#' @return Returns a list of zones to consider for
+#'   clustering.  Each element of the list contains a vector
+#'   with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export
-#' @references Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+#' @references Kulldorff, M. (1997) A spatial scan
+#'   statistic. Communications in Statistics -- Theory and
+#'   Methods 26, 1481-1496.
 #' @examples 
 #' data(nydf)
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, lonlat = TRUE)
-#' 
-scan.zones = function(coords, pop, ubpop = 0.5, lonlat = FALSE)
-{
+scan.zones = function(coords, pop, ubpop = 0.5, lonlat = FALSE) {
   # argument checking
   arg_check_scan_zones(coords, pop, ubpop, lonlat)
   # number of regions
   N = nrow(coords)
   # ensure coords is a matrix
   coords = as.matrix(coords)
-  if(lonlat)
-  {
-    d = fields::rdist.earth(coords, coords, miles = FALSE)
-  }else
-  {
-    d = SpatialTools::dist1(coords)
-  }
+  # compute intercentroid distance
+  d = sp::spDists(as.matrix(coords), longlat = lonlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint

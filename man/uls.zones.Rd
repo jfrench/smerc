@@ -11,7 +11,7 @@ uls.zones(cases, pop, w, ubpop = 0.5)
 
 \item{pop}{The population size associated with each region.}
 
-\item{w}{A binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix for the regions.}
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 }

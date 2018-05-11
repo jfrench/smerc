@@ -32,9 +32,7 @@
 #' \code{\link{uls.test}}, \code{\link{flex.test}}, 
 #' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @author Joshua French
-#' @importFrom SpatialTools dist1 dist2
 #' @importFrom parallel mclapply
-#' @importFrom fields rdist.earth
 #' @importFrom smacpod noc
 #' @importFrom stats rmultinom
 #' @export
@@ -68,10 +66,11 @@
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
-scan.test = function(coords, cases, pop, ex = sum(cases)/sum(pop)*pop, 
-                      nsim = 499, alpha = 0.1, nreport = nsim + 1, 
-                      ubpop = 0.5, lonlat = FALSE, parallel = TRUE,
-                      type = "poisson") 
+scan.test = function(coords, cases, pop, 
+                     ex = sum(cases)/sum(pop)*pop, 
+                     nsim = 499, alpha = 0.1, nreport = nsim + 1, 
+                     ubpop = 0.5, lonlat = FALSE, parallel = TRUE,
+                     type = "poisson") 
 {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
@@ -83,14 +82,8 @@ scan.test = function(coords, cases, pop, ex = sum(cases)/sum(pop)*pop,
   N = nrow(coords)
   # short names
   y = cases; e = ex
-  
-  if(lonlat)
-  {
-    d = fields::rdist.earth(coords, coords, miles = FALSE)
-  }else
-  {
-    d = SpatialTools::dist1(coords)
-  }
+  # compute inter-centroid distances
+  d = sp::spDists(as.matrix(coords), longlat = lonlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint

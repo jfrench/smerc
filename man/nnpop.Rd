@@ -7,26 +7,42 @@
 nnpop(d, pop, ubpop)
 }
 \arguments{
-\item{d}{An \eqn{n\times n} square distance matrix containing the intercentroid distance between the \eqn{n} region centroids.}
+\item{d}{An \eqn{n\times n} square distance matrix
+containing the intercentroid distance between the
+\eqn{n} region centroids.}
 
-\item{pop}{A vector of length \eqn{n} containing the population values of the \eqn{n} region centroids.}
+\item{pop}{A vector of length \eqn{n} containing the
+population values of the \eqn{n} region centroids.}
 
-\item{ubpop}{A proportion between 0 and 1 containing the upperbound for the proportion of total population contained collectively among a set of nearest neighbors.}
+\item{ubpop}{A proportion between 0 and 1 containing the
+upperbound for the proportion of total population
+contained collectively among a set of nearest
+neighbors.}
 }
 \value{
-Returns the indexes of the nearest neighbors as a list.  For each element of the list, the indexes are ordered from nearest to farthest from each centroid.
+Returns the indexes of the nearest neighbors as a
+  list.  For each element of the list, the indexes are
+  ordered from nearest to farthest from each centroid.
 }
 \description{
-\code{nnpop} determines the nearest neighbors for a set of observations based on the distance matrix according to a population upperbound.
+\code{nnpop} determines the nearest neighbors for a set
+of observations based on the distance matrix according to
+a population upperbound.
 }
 \details{
-This function determines the nearest neighbors of each centroid based on the intercentroid distance.  The number of nearest neighbors is limited by the sum of the population values among the nearest neighbors.  The set of nearest neighbors can contain no more than \code{ubpop * sum(pop)} members of the population.  The nearest neighbors are ordered from nearest to farthest.
+This function determines the nearest neighbors of each
+centroid based on the intercentroid distance.  The number
+of nearest neighbors is limited by the sum of the
+population values among the nearest neighbors.  The set
+of nearest neighbors can contain no more than \code{ubpop
+* sum(pop)} members of the population.  The nearest
+neighbors are ordered from nearest to farthest.
 }
 \examples{
 data(nydf)
-d = SpatialTools::dist1(as.matrix(nydf[,c("longitude", "latitude")]))
+coords = as.matrix(nydf[,c("longitude", "latitude")])
+d = as.matrix(dist(coords))
 nnout = nnpop(d, pop = nydf$pop, ubpop = 0.5)
-
 }
 \author{
 Joshua French
