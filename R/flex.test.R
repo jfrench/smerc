@@ -20,9 +20,6 @@
 #' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
-#' @importFrom parallel mclapply
-#' @importFrom smacpod noc
-#' @importFrom stats rmultinom
 #' @export
 #' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
 #' \code{\link{scan.test}}, \code{\link{uls.test}}, 
@@ -43,30 +40,26 @@
 
 flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop, 
                         type = "poisson",
-                        nsim = 499, alpha = 0.1, nreport = nsim + 1, 
-                        lonlat = FALSE, parallel = TRUE) 
+                        nsim = 499, alpha = 0.1, 
+                        lonlat = FALSE, cl = NULL) 
 {
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nreport, 0.5, lonlat, parallel, k = k, w = w)
+                      nsim + 1, 0.5, lonlat, FALSE, k = k, w = w)
   coords = as.matrix(coords)
   N = nrow(coords)
   y = cases
   e = ex
   zones = flex.zones(coords, w, k, lonlat)
-  if (nreport <= nsim && !parallel) 
-    cat("sims completed: ")
   ein = unlist(lapply(zones, function(x) sum(e[x])), use.names = FALSE)
   ty = sum(y)
   eout = ty - ein
-  fcall = lapply
-  if (parallel) 
-    fcall = parallel::mclapply
+  
+  fcall = pbapply::pblapply
   fcall_list = list(X = as.list(1:nsim), FUN = function(i) {
     ysim = stats::rmultinom(1, size = ty, prob = e)
     yin = unlist(lapply(zones, function(x) sum(ysim[x])), 
                  use.names = FALSE)
     tall = scan.stat(yin, ein, ty - ein, ty, type)
-    if ((i%%nreport) == 0) cat(paste(i, ""))
     return(max(tall))
   })
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)

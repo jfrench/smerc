@@ -2,11 +2,11 @@
 % Please edit documentation in R/dmst.zones.R
 \name{dmst.zones}
 \alias{dmst.zones}
-\title{Determine zones using the dynamic minimum spanning tree scan test of Assuncao et al. (2006)}
+\title{Determine zones for the dynamic minimum spanning tree
+scan test of Assuncao et al. (2006)}
 \usage{
 dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, lonlat = FALSE, parallel = FALSE,
-  maxonly = FALSE)
+  ubpop = 0.5, ubd = 1, lonlat = FALSE, type = "maxonly", cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -21,24 +21,62 @@ dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the radius of a cluster.  This should be a proportion in (0, 1].  The value is the proportion of the maximum intercentroid distance between any two locations in \code{coords}. See Details.}
+\item{ubd}{The upperbound for the radius of a cluster. 
+This should be a proportion in (0, 1].  The value is
+the proportion of the maximum intercentroid distance
+between any two locations in \code{coords}. See
+Details.}
 
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
+\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
+\code{"all"}.  See Details.}
 
-\item{maxonly}{A logical value indicating whether to return only the maximum test statistic across all candidate zones.  Default is \code{FALSE}.}
+\item{cl}{
+A cluster object created by \code{\link[parallel]{makeCluster}},
+or an integer to indicate number of child-processes
+(integer values are ignored on Windows) for parallel evaluations.
+}
 }
 \value{
-Returns a list of zones to consider for clustering that includes the location id of each zone and the associated test statistic, number of cases, expected number of cases, and the population in the zone. If \code{maxonly = TRUE}, then only the maximum test statistic across all of these zones is returned.
+Returns a list of relevant information.  See 
+  Details.
 }
 \description{
-\code{dmst.zones} determines the zones that produce the largest test statistic using a greedy algorithm.  Specifically, starting individually with each region as a starting zone, new (connected) regions are added to the current zone in the order that results in the largest likelihood ratio test statistic.  This is used to implement the dynamic minimum spanning tree (dmst) scan test of Assuncao et al. (2006).
+\code{dmst.zones} determines the zones that produce the
+largest test statistic using a greedy algorithm. 
+Specifically, starting individually with each region as a
+starting zone, new (connected) regions are added to the
+current zone in the order that results in the largest
+likelihood ratio test statistic.  This is used to
+implement the dynamic minimum spanning tree (dmst) scan
+test of Assuncao et al. (2006).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based
+on the Poisson test statistic and a fixed number of
+cases.  The first cluster is the most likely to be a
+cluster.  If no significant clusters are found, then the
+most likely cluster is returned (along with a warning).
 
-Every zone considered must have a total population less than \code{ubpop * sum(pop)}.  Additionally, the maximum intercentroid distance for the regions within a zone must be no more than \code{ubd * the maximum intercentroid distance across all regions}.
+Every zone considered must have a total population less
+than \code{ubpop * sum(pop)}.  Additionally, the maximum
+intercentroid distance for the regions within a zone must
+be no more than \code{ubd * the maximum intercentroid
+distance across all regions}.
+
+\code{type} is a character vector indicating what should 
+be returned by the function.  If \code{type = "maxonly"},
+then the maximum test statistic from each starting region
+is returned .  If \code{type = "pruned"}, the function
+returns a list that includes the location ids, test
+statistic, total cases, expected cases, and total
+population for the zone with the maximum test statistic
+for each starting region.  If \code{type = "all"}, the
+function returns a list of lists that includes the
+location ids, test statistic, total cases, expected
+cases, and total population for the sequence of candidate
+zones associated with each starting region.
 }
 \examples{
 data(nydf)
@@ -51,7 +89,10 @@ max_zones = dmst.zones(coords, cases = floor(nydf$cases),
 head(max_zones)
 }
 \references{
-Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
+Assuncao, R.M., Costa, M.A., Tavares, A. and
+  Neto, S.J.F. (2006). Fast detection of arbitrarily
+  shaped disease clusters, Statistics in Medicine, 25,
+  723-742.
 }
 \author{
 Joshua French

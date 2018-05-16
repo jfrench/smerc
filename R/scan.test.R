@@ -9,12 +9,11 @@
 #' @param pop The population size associated with each region.
 #' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
 #' @param nsim The number of simulations from which to compute the p-value.
-#' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
 #' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
 #' @param alpha The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.
 #' @param lonlat The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance. 
-#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.
 #' @param type The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.
+#' @inheritParams pbapply::pblapply
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:
 #' \item{locids}{The location ids of regions in a significant cluster.} 
@@ -32,9 +31,6 @@
 #' \code{\link{uls.test}}, \code{\link{flex.test}}, 
 #' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @author Joshua French
-#' @importFrom parallel mclapply
-#' @importFrom smacpod noc
-#' @importFrom stats rmultinom
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
@@ -68,13 +64,12 @@
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
 scan.test = function(coords, cases, pop, 
                      ex = sum(cases)/sum(pop)*pop, 
-                     nsim = 499, alpha = 0.1, nreport = nsim + 1, 
-                     ubpop = 0.5, lonlat = FALSE, parallel = TRUE,
-                     type = "poisson") 
-{
+                     nsim = 499, alpha = 0.1,  
+                     ubpop = 0.5, lonlat = FALSE, cl = NULL,
+                     type = "poisson") {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nreport, ubpop, lonlat, parallel, 
+                      nsim + 1, ubpop, lonlat, TRUE, 
                       k = 1, w = diag(nrow(coords)))
   
   # convert to proper format
@@ -89,38 +84,12 @@ scan.test = function(coords, cases, pop,
   # subject to population constraint
   mynn = nnpop(d, pop, ubpop)
 
-  # mynn = spdep::knearneigh(coords, k = (k - 1), longlat = lonlat)$nn
-  # mynn = cbind(1:N, mynn)
-  
-  # display sims completed, if appropriate
-  if (nreport <= nsim && !parallel) cat("sims completed: ")
-  
   # determine the expected cases in/out each successive 
   # window, total number of cases, total population
   ein = unlist(lapply(mynn, function(x) cumsum(e[x])))
   ty = sum(y) # sum of all cases
   eout = ty - ein # counts expected outside the window
   popin = unlist(lapply(mynn, function(x) cumsum(pop[x])))
-  
-  # determine which call for simulations
-  fcall = lapply
-  if (parallel) fcall = parallel::mclapply
-  # setup list for call
-  fcall_list = list(X = as.list(1:nsim), FUN = function(i){
-    # simulate new data set
-    ysim = stats::rmultinom(1, size = ty, prob = e)
-    # cumulate the number of cases inside the successive windows
-    yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
-    # calculate all test statistics
-    tall = scan.stat(yin, ein, eout, ty, type)
-    # update progress
-    if ((i%%nreport) == 0) cat(paste(i, ""))
-    # return max of statistics for simulation
-    return(max(tall))
-  })
-  
-  # use mclapply or lapply to find max statistics for each simulation
-  tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
   
   # number of nns for each observation
   nnn = unlist(lapply(mynn, length))
@@ -154,8 +123,28 @@ scan.test = function(coords, cases, pop,
   # value of statistic for most likely cluster centered at each centroid
   tmax = lapply(tobs_split, max, na.rm = TRUE)
   
-  # p-values associated with these max statistics for each centroid
-  pvalue = unname(sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+  # setup list for call
+  if (nsim > 0) {
+    fcall = pbapply::pblapply
+    fcall_list = list(X = seq_len(nsim), FUN = function(i){
+      # simulate new data set
+      ysim = stats::rmultinom(1, size = ty, prob = e)
+      # cumulate the number of cases inside the successive windows
+      yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
+      # calculate all test statistics
+      tall = scan.stat(yin, ein, eout, ty, type)
+      # return max of statistics for simulation
+      return(max(tall))
+    }, cl = cl)
+    
+    # use mclapply or lapply to find max statistics for each simulation
+    tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
+    
+    # p-values associated with these max statistics for each centroid
+    pvalue = unname(sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+  } else {
+    pvalue = rep(1, length(tmax))
+  }
   
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
@@ -239,7 +228,7 @@ arg_check_scan_test =
     if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
     if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
     if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
-    if(nsim < 1) stop("nsim should be an integer of at least 1")
+    if(nsim < 0) stop("nsim should be an non-negative integer")
     if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
     if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
     if(length(lonlat) != 1) stop("length(lonlat) != 1")

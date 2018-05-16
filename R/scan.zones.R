@@ -32,7 +32,7 @@ scan.zones = function(coords, pop, ubpop = 0.5, lonlat = FALSE) {
   mynn = nnpop(d, pop, ubpop)
   
   # use nearest neighbors to construct all zones
-  zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) head(x, i))), recursive = FALSE)
+  zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) utils::head(x, i))), recursive = FALSE)
   
   # return only unique zones
   return(unique(lapply(zones, sort)))

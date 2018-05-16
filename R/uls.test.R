@@ -21,9 +21,6 @@
 #' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
 #' \code{\link{scan.test}}, \code{\link{flex.test}}, 
 #' \code{\link{dmst.test}}, \code{\link{bn.test}} 
-#' @importFrom parallel mclapply
-#' @importFrom smacpod noc
-#' @importFrom stats rmultinom
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
@@ -45,13 +42,15 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,  
-                        nsim = 499, alpha = 0.1, nreport = nsim + 1, 
-                        ubpop = 0.5, lonlat = FALSE, parallel = TRUE) 
+uls.test = function(coords, cases, pop, w,
+                    ex = sum(cases)/sum(pop)*pop,  
+                    nsim = 499, alpha = 0.1, 
+                    ubpop = 0.5, lonlat = FALSE,
+                    cl = NULL) 
 {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nreport, ubpop, lonlat, parallel, 
+                      nsim + 1, ubpop, lonlat, TRUE, 
                       k = 1, w = w)
   
   coords = as.matrix(coords)
@@ -61,11 +60,7 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
   e = ex
   ty = sum(y) # sum of all cases
   
-  # display sims completed, if appropriate
-  if (nreport <= nsim && !parallel) cat("sims completed: ")
-  
-  fcall = lapply
-  if (parallel) fcall = parallel::mclapply
+  fcall = pbapply::pblapply
   fcall_list = list(X = as.list(1:nsim), FUN = function(i){
     # simulate new data set
     ysim = stats::rmultinom(1, size = ty, prob = e)
@@ -75,11 +70,9 @@ uls.test = function (coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop,
     ein = unlist(lapply(uz, function(x) sum(e[x])), use.names = FALSE)
     # calculate all test statistics
     tall = scan.stat(yin, ein, ty - ein, ty)
-    # update progress
-    if((i%%nreport) == 0) cat(i, " ")
     # return max of statistics for simulation
     return(max(tall))
-  })
+  }, cl = cl)
   
   # use mclapply or lapply to find max statistics for each simulation
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)

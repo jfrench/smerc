@@ -5,33 +5,38 @@
 \title{Maxima Likelihood First Scan Test}
 \usage{
 mlf.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
-  alpha = 0.1, nreport = nsim + 1, ubpop = 0.5, ubd = 0.5,
-  lonlat = FALSE, parallel = TRUE)
+  alpha = 0.1, ubpop = 0.5, ubd = 0.5, lonlat = FALSE, cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
 
-\item{cases}{The number of cases in each region.}
+\item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size of each region.}
+\item{pop}{The population size associated with each region.}
 
-\item{w}{The binary spatial adjacency matrix.}
+\item{w}{A binary spatial adjacency matrix for the regions.}
 
 \item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
 
-\item{nsim}{The number of simulations from which to compute p-value.}
+\item{nsim}{The number of simulations from which to compute the p-value.}
 
-\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is 0.05.}
-
-\item{nreport}{The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.}
+\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the proportion of the maximum intercentroid distance to allow for the maximum size of a zone.}
+\item{ubd}{The upperbound for the radius of a cluster. 
+This should be a proportion in (0, 1].  The value is
+the proportion of the maximum intercentroid distance
+between any two locations in \code{coords}. See
+Details.}
 
-\item{lonlat}{If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.}
+\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.}
+\item{cl}{
+A cluster object created by \code{\link[parallel]{makeCluster}},
+or an integer to indicate number of child-processes
+(integer values are ignored on Windows) for parallel evaluations.
+}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
@@ -48,10 +53,23 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{mlf.test} implements the Maxima Likelihood First scan test of Yao et al. (2011), which is actually a special case of the Dynamic Minimum Spanning Tree of Assuncao et al. (2006).  Find the single region that maximizes the likelihood ratio test statistic.  Starting with this single region as a current zone, new candidate zones are constructed by combining the current zone with the connected region that maximizes the likelihood ratio test static.  This procedure is repeated until the population upper bound is reached.
+\code{mlf.test} implements the Maxima Likelihood First 
+scan test of Yao et al. (2011), which is actually a 
+special case of the Dynamic Minimum Spanning Tree of 
+Assuncao et al. (2006).  Find the single region that 
+maximizes the likelihood ratio test statistic.  Starting 
+with this single region as a current zone, new candidate 
+zones are constructed by combining the current zone with 
+the connected region that maximizes the likelihood ratio 
+test statisic.  This procedure is repeated until the 
+population and/or distance upper bound is reached.
 }
 \details{
-Only a single cluster is ever returned because the algorithm only constructs a single sequence of starting zones, and overlapping zones are not returned.  Only the zone that maximizes the likelihood ratio test statistic is returned.
+Only a single candidate zone is ever returned because the 
+algorithm only constructs a single sequence of starting 
+zones, and overlapping zones are not returned.  Only the 
+zone that maximizes the likelihood ratio test statistic 
+is returned.
 }
 \examples{
 data(nydf)

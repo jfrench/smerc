@@ -5,8 +5,7 @@
 \title{Determine the candidate zone using the maxima likelihood first algorithm of Yao et al. (2011).}
 \usage{
 mlf.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, lonlat = FALSE, parallel = TRUE,
-  type = "pruned")
+  ubpop = 0.5, ubd = 1, lonlat = FALSE, type = "pruned")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -21,11 +20,13 @@ mlf.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the radius of a cluster.  This should be a proportion in (0, 1].  The value is the proportion of the maximum intercentroid distance between any two locations in \code{coords}. See Details.}
+\item{ubd}{The upperbound for the radius of a cluster. 
+This should be a proportion in (0, 1].  The value is
+the proportion of the maximum intercentroid distance
+between any two locations in \code{coords}. See
+Details.}
 
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
-
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
 
 \item{type}{One of \code{"maxonly"}, \code{"pruned"}, or \code{"all"}. Specifying \code{"maxonly"} returns only the maximum test statistic across all candidate zones, \code{"pruned"} returns information for the zone with the largest test statistic, while \code{"all"} returns information for all candidate zones.  Default is \code{"pruned"}.}
 }

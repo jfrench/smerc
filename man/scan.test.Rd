@@ -5,8 +5,8 @@
 \title{Spatial Scan Test}
 \usage{
 scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop, nsim = 499,
-  alpha = 0.1, nreport = nsim + 1, ubpop = 0.5, lonlat = FALSE,
-  parallel = TRUE, type = "poisson")
+  alpha = 0.1, ubpop = 0.5, lonlat = FALSE, cl = NULL,
+  type = "poisson")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -21,13 +21,15 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop, nsim = 499,
 
 \item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
-\item{nreport}{The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.}
-
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
+\item{cl}{
+A cluster object created by \code{\link[parallel]{makeCluster}},
+or an integer to indicate number of child-processes
+(integer values are ignored on Windows) for parallel evaluations.
+}
 
 \item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
 }

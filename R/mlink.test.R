@@ -1,36 +1,31 @@
-#' Dynamic minimum spanning tree scan test
+#' Maximum linkage spatial scan test
 #' 
-#' \code{dmst.test} implements the Dynamic Minimum Spanning
-#' Tree scan test of Assuncao et al. (2006).  Starting with
-#' a single region as a current zone, new candidate zones
-#' are constructed by combining the current zone with the
-#' connected region that maximizes the resulting likelihood
-#' ratio test statistic.  This is procedure repeated until
-#' the population or distance upper bound are reached.  The
-#' same procedure is repeated for each region.  The maxima
-#' likelihood first scan test proposed by Yao et al. (2011)
-#' is an independent variant of this, but only searches from
-#' the starting region that maximizes the likelihood ratio
-#' scan statistic. The clusters returned are
-#' non-overlapping, ordered from most significant to least
-#' significant.  The first cluster is the most likely to be
-#' a cluster.  If no significant clusters are found, then
-#' the most likely cluster is returned (along with a
-#' warning).
+#' \code{mlink.test} implements the Maximum Linkage spatial 
+#' scan test of Costa et al. (2012). 
+#' Starting with a single region as a current zone, new 
+#' candidate zones are constructed by combining the current 
+#' zone with the connected region that maximizes the 
+#' resulting likelihood ratio test statistic, with the 
+#' added constraint that the region must have at least
+#' two connection (i.e., shares a border with) at least
+#' two of the regoins in the current zone.  This  
+#' procedure is repeated until the population or distance 
+#' upper
+#' bounds are reached.  The same procedure is repeated for 
+#' each region.  The 
+#' clusters returned are non-overlapping, ordered from most 
+#' significant to least significant.  The first cluster is 
+#' the most likely to be a cluster.  If no significant 
+#' clusters are found, then the most likely cluster is 
+#' returned (along with a warning).
 #' 
-#' The maximum intercentroid distance can be found by
-#' executing the command:
-#' \code{sp::spDists(as.matrix(coords), longlat = lonlat)},
-#' based on the specified values of \code{coords} and
+#' The maximum intercentroid distance can be found by 
+#' executing the command: 
+#' \code{sp::spDists(as.matrix(coords), longlat = lonlat)}, 
+#' based on the specified values of \code{coords} and 
 #' \code{lonlat}.
 #' 
-#' @inheritParams scan.test
-#' @inheritParams uls.test
-#' @param ubd The upperbound for the radius of a cluster. 
-#'   This should be a proportion in (0, 1].  The value is
-#'   the proportion of the maximum intercentroid distance
-#'   between any two locations in \code{coords}. See
-#'   Details.
+#' @inheritParams dmst.test
 #' @return Returns a list of length two of class scan. The
 #'   first element (clusters) is a list containing the
 #'   significant, non-ovlappering clusters, and has the the
@@ -54,27 +49,27 @@
 #'   \code{\link{plot.scan}}, \code{\link{scan.test}},
 #'   \code{\link{flex.test}}, \code{\link{uls.test}},
 #'   \code{\link{bn.test}}
-#' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
-#'   Neto, S.J.F. (2006). Fast detection of arbitrarily
-#'   shaped disease clusters, Statistics in Medicine, 25,
-#'   723-742.
+#' @references Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
+#'   Constrained spanning tree algorithms for
+#'   irregularly-shaped spatial clustering, Computational
+#'   Statistics & Data Analysis, 56(6), 1771-1783.
 #' @examples 
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' \dontrun{
-#' out = dmst.test(coords = coords, cases = floor(nydf$cases), 
-#'                 pop = nydf$pop, w = nyw, 
-#'                 alpha = 0.12, lonlat = TRUE,
-#'                 nsim = 5, ubpop = 0.1, ubd = 0.2)
+#' out = mlink.test(coords = coords, cases = floor(nydf$cases), 
+#'                  pop = nydf$pop, w = nyw, 
+#'                  alpha = 0.12, lonlat = TRUE,
+#'                  nsim = 5, ubpop = 0.1, ubd = 0.2)
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))}
-dmst.test = function(coords, cases, pop, w,
-                    ex = sum(cases)/sum(pop)*pop,
-                    nsim = 499, alpha = 0.1, 
-                    ubpop = 0.5, ubd = 1,
-                    lonlat = FALSE, cl = NULL) {
+dc.test = function(coords, cases, pop, w,
+                   ex = sum(cases)/sum(pop)*pop,
+                   nsim = 499, alpha = 0.1, 
+                   ubpop = 0.5, ubd = 1,
+                   lonlat = FALSE, cl = NULL) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
                       nsim + 1, ubpop, lonlat, FALSE, 
@@ -93,8 +88,10 @@ dmst.test = function(coords, cases, pop, w,
   all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
   
   max_zones = lapply(seq_along(cases), function(i) {
-    mst.seq(i, all_neighbors[[i]], cases, 
-            pop, w, ex, ty, max_pop, "pruned")
+    mst.seq(i, all_neighbors[[i]], cases = cases, 
+            pop = pop, w = w, ex = es, ty = ty, 
+            max_pop = max_pop, type = "pruned", 
+            early = FALSE, nlinks = "max")
   })
   
   # extract statistics from each zone
@@ -109,9 +106,9 @@ dmst.test = function(coords, cases, pop, w,
       ysim = stats::rmultinom(1, size = ty, prob = ex)
       # find max statistics for each candidate zone
       tall = mst.all(all_neighbors = all_neighbors, 
-                     cases = ysim, pop = pop, w = w, ex = ex,
-                     ty = ty, max_pop = max_pop, 
-                     type = "maxonly")
+             cases = ysim, pop = pop, w = w, ex = ex,
+             ty = ty, max_pop = max_pop, type = "maxonly", 
+             early = FALSE, nlinks = "max")
       # return max of statistics for simulation
       return(max(tall))
     }, cl = cl)
@@ -124,11 +121,12 @@ dmst.test = function(coords, cases, pop, w,
   } else {
     pvalue = rep(1, length(tobs))
   }
+  
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
   
   # if there are no significant clusters, return most likely cluster
-  if(length(sigc) == 0)
+  if (length(sigc) == 0)
   {
     sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")

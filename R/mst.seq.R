@@ -135,7 +135,7 @@ mst.seq = function(start, neighbors, cases, pop, w,
       nconnect = matrixStats::colSums2(sw)
 
       if (nlinks == "two") {# double connection
-        connected = cmn[which(nconnect == 2)]
+        connected = cmn[which(nconnect >= 2)]
       } else if (nlinks == "max") {# mlink connection
         connected = cmn[which(nconnect == max(nconnect))]
       }
@@ -158,7 +158,7 @@ mst.seq = function(start, neighbors, cases, pop, w,
       
       # only update if new candidate statistics
       # are greater than old statistics
-      if (early & (max(stat_cand) < loglikrat[i])) {
+      if (early & (max(stat_cand) <= loglikrat[i])) {
         stop = TRUE
       } else {
         # index of max stat_cand

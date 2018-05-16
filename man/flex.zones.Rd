@@ -4,7 +4,7 @@
 \alias{flex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-flex.zones(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
+flex.zones(coords, w, k = 10, lonlat = FALSE, cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -15,7 +15,11 @@ flex.zones(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
 
 \item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
-\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is \code{TRUE}.  If \code{TRUE}, no progress will be reported.}
+\item{cl}{
+A cluster object created by \code{\link[parallel]{makeCluster}},
+or an integer to indicate number of child-processes
+(integer values are ignored on Windows) for parallel evaluations.
+}
 }
 \value{
 Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.

@@ -69,7 +69,7 @@ data(nyw)
 out = flex.test(coords = cbind(nydf$longitude, nydf$latitude), 
                 cases = floor(nydf$cases), pop = nydf$population, 
                 w = nyw, k = 5,
-                lonlat = TRUE, nsim = 99, alpha = .90, nreport = 5)
+                lonlat = TRUE, nsim = 99, alpha = .90)
 
 test_that("check accuracy for scan.test with FlexScan original for NY data", {
   expect_that(out$clusters[[1]]$locids , 

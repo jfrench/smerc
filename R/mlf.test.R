@@ -1,22 +1,24 @@
 #' Maxima Likelihood First Scan Test
 #' 
-#' \code{mlf.test} implements the Maxima Likelihood First scan test of Yao et al. (2011), which is actually a special case of the Dynamic Minimum Spanning Tree of Assuncao et al. (2006).  Find the single region that maximizes the likelihood ratio test statistic.  Starting with this single region as a current zone, new candidate zones are constructed by combining the current zone with the connected region that maximizes the likelihood ratio test static.  This procedure is repeated until the population upper bound is reached.
+#' \code{mlf.test} implements the Maxima Likelihood First 
+#' scan test of Yao et al. (2011), which is actually a 
+#' special case of the Dynamic Minimum Spanning Tree of 
+#' Assuncao et al. (2006).  Find the single region that 
+#' maximizes the likelihood ratio test statistic.  Starting 
+#' with this single region as a current zone, new candidate 
+#' zones are constructed by combining the current zone with 
+#' the connected region that maximizes the likelihood ratio 
+#' test statisic.  This procedure is repeated until the 
+#' population and/or distance upper bound is reached.
 #' 
-#' Only a single cluster is ever returned because the algorithm only constructs a single sequence of starting zones, and overlapping zones are not returned.  Only the zone that maximizes the likelihood ratio test statistic is returned.
+#' Only a single candidate zone is ever returned because the 
+#' algorithm only constructs a single sequence of starting 
+#' zones, and overlapping zones are not returned.  Only the 
+#' zone that maximizes the likelihood ratio test statistic 
+#' is returned.
 #' 
-#' @param coords An \eqn{n \times 2} matrix of centroid coordinates for the regions.
-#' @param cases The number of cases in each region.
-#' @param pop The population size of each region.
-#' @param w The binary spatial adjacency matrix.
-#' @param ex The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.  
-#' @param nsim The number of simulations from which to compute p-value.
-#' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
-#' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
-#' @param ubd The upperbound for the proportion of the maximum intercentroid distance to allow for the maximum size of a zone.
-#' @param alpha The significance level to determine whether a cluster is signficant.  Default is 0.05.
-#' @param lonlat If lonlat is TRUE, then the great circle distance is used to calculate the intercentroid distance.  The default is FALSE, which specifies that Euclidean distance should be used.
-#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel::mclapply function}.  Default is TRUE.  If TRUE, no progress will be reported.
-#'
+#' @inheritParams dmst.test
+#' 
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{locids}{The location ids of regions in a significant cluster.}
 #' \item{pop}{The total population in the cluser window.}
@@ -47,16 +49,14 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-mlf.test = function (coords, cases, pop, w, 
-                     ex = sum(cases)/sum(pop)*pop,
-                     nsim = 499, alpha = 0.1, 
-                     nreport = nsim + 1, 
-                     ubpop = 0.5, ubd = 0.5,
-                     lonlat = FALSE, parallel = TRUE) 
-{
+mlf.test = function(coords, cases, pop, w,
+                    ex = sum(cases)/sum(pop)*pop,
+                    nsim = 499, alpha = 0.1, 
+                    ubpop = 0.5, ubd = 0.5,
+                    lonlat = FALSE, cl = NULL) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nreport, ubpop, lonlat, parallel, 
+                      nsim + 1, ubpop, lonlat, FALSE, 
                       k = 1, w = w)
   
   coords = as.matrix(coords)
@@ -68,41 +68,42 @@ mlf.test = function (coords, cases, pop, w,
   eout = ty - ex
   tobs = scan.stat(cases, ex, eout, ty)
   
-  # determine starting region for maxima likelihood first algorithm
+  # determine starting region for maxima likelihood first 
+  # algorithm
   start = which.max(tobs)
   
   # intercentroid distances 
   d = sp::spDists(coords, longlat = lonlat)
   
   # upperbound for population in zone
-  max_pop = ubpop *sum(pop)
+  max_pop = ubpop * sum(pop)
   # upperbound for distance between centroids in zone
   max_dist = ubd * max(d)
   
-  # find neighbors of all regions
+  # find neighbors for starting region
   all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
   
   # return sequence of candidate zones (or a subset depending on type)
-  max_zone = dmst_max_zone(start, all_neighbors[[start]], cases, pop, w, ex, ty, max_pop, "pruned")
-  
+  # max_zone = dmst_max_zone(start, start_neighbors, cases, pop, w, ex, ty, max_pop, "pruned")
+  max_zone = mst.seq(start, all_neighbors[[start]], cases, 
+                     pop, w, ex, ty, max_pop, "pruned")
+    
   # determine which call for simulations
-  fcall = lapply
-  if (parallel) fcall = parallel::mclapply
+  fcall = pbapply::pblapply
   # setup list for call
   fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i){
     # simulate new data set
     ysim = stats::rmultinom(1, size = ty, prob = ex)
-    # 
+     
     sim_tstat = scan.stat(ysim, ex, eout, ty)
     # determine starting region for maxima likelihood first algorithm
     sim_start = which.max(sim_tstat)
 
-    # update progress
-    if ((i%%nreport) == 0) cat(paste(i, ""))
-    
     # find max statistic for best candidate zone
-    dmst_max_zone(sim_start, all_neighbors[[sim_start]], cases, pop, w, ex, ty, max_pop, type = "maxonly")
-  })
+    # dmst_max_zone(sim_start, all_neighbors[[sim_start]], cases, pop, w, ex, ty, max_pop, type = "maxonly")
+    mst.seq(sim_start, all_neighbors[[sim_start]], cases, 
+            pop, w, ex, ty, max_pop, type = "maxonly")
+  }, cl = cl)
   
   # get max statistics for simulated data sets
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
@@ -111,8 +112,7 @@ mlf.test = function (coords, cases, pop, w,
   pvalue = (sum(tsim >= max_zone$loglikrat) + 1)/(nsim + 1)
   
    # if there are no significant clusters, return most likely cluster
-  if(pvalue >= alpha | nsim == 0)
-  {
+  if (pvalue >= alpha | nsim == 0) {
     warning("No significant clusters.  Returning most likely cluster.")
   }
   

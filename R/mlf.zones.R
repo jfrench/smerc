@@ -35,11 +35,12 @@
 # mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE)
 # mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE, type = "maxonly")
 # mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE, type = "all")
-
-mlf.zones = function(coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop, ubpop = 0.5, ubd = 1, lonlat = FALSE, parallel = TRUE, type = "pruned")
-{
+mlf.zones = function(coords, cases, pop, w, 
+                     ex = sum(cases)/sum(pop)*pop, 
+                     ubpop = 0.5, ubd = 1, lonlat = FALSE, 
+                     type = "pruned") {
   # sanity checking
-  arg_check_mlf_zones(coords, cases, pop, w, ex, ubpop, ubd, lonlat, parallel, type)
+  arg_check_mlf_zones(coords, cases, pop, w, ex, ubpop, ubd, lonlat, FALSE, type)
   
   # total number of cases
   ty = sum(cases)
@@ -55,7 +56,7 @@ mlf.zones = function(coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop, ubpop 
   d = sp::spDists(as.matrix(coords), longlat = lonlat)
 
   # upperbound for population in zone
-  max_pop = ubpop *sum(pop)
+  max_pop = ubpop * sum(pop)
   # upperbound for distance between centroids in zone
   max_dist = ubd * max(d)
 
@@ -63,7 +64,7 @@ mlf.zones = function(coords, cases, pop, w, ex = sum(cases)/sum(pop)*pop, ubpop 
   start_neighbors = which(d[start,] <= max_dist)
   
   # return sequence of candidate zones (or a subset depending on type)
-  dmst_max_zone(start, start_neighbors, cases, pop, w, ex, ty, max_pop, type)
+  mst.seq(start, start_neighbors, cases, pop, w, ex, ty, max_pop, type)
 }
 
 arg_check_mlf_zones = function(coords, cases, pop, w, ex, ubpop, ubd, lonlat, parallel, type)

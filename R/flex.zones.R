@@ -5,8 +5,6 @@
 #' @inheritParams flex.test
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
-#' @importFrom spdep knearneigh
-#' @importFrom parallel mclapply
 #' @export
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
 #' @examples 
@@ -15,31 +13,23 @@
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' flex.zones(coords = coords, w = nyw, k = 3, lonlat = TRUE)
 #' 
-flex.zones = function(coords, w, k = 10, lonlat = FALSE, parallel = TRUE)
+flex.zones = function(coords, w, k = 10, lonlat = FALSE, cl = NULL)
 {
   N = nrow(coords)
   
   mynn = cbind(1:N, spdep::knearneigh(as.matrix(coords), k = (k - 1), longlat = lonlat)$nn)
 
-  fcall = lapply
-  if(parallel) fcall = parallel::mclapply
-  fcall_list = list(X = as.list(1:N), function(i)
-  {
+  fcall = pbapply::pblapply
+  fcall_list = list(X = as.list(1:N), function(i) {
     connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
                         nn = mynn[i, ], k = k)
-  })
+  }, cl = cl)
   
   czones = unlist(do.call(fcall, fcall_list), 
                   use.names = FALSE, 
                   recursive = FALSE)
   
-  if(parallel)
-  {
-    return(unique(parallel::mclapply(czones, sort)))
-  }else
-  {
-    return(unique(lapply(czones, sort)))
-  }
+    return(unique(pbapply::pblapply(czones, sort, cl = cl)))
 }
 
 # takes a spatial adjacency matrix and the 

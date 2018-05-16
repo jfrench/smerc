@@ -53,25 +53,24 @@
 # lonlat = TRUE
 # parallel = FALSE 
 # maxonly = TRUE
-dmst_zones_internal = function(all_neighbors, cases, pop, w, ex, ubpop = 0.5, parallel = FALSE, maxonly = FALSE)
+dmst_zones_internal = function(all_neighbors, cases, pop, w, ex, ubpop = 0.5, cl = NULL, maxonly = FALSE)
 {
   # sanity checking
-  arg_check_dmst_zones_internal(all_neighbors, cases, pop, w, ex, ubpop, parallel)
+  arg_check_dmst_zones_internal(all_neighbors, cases, pop, w, ex, ubpop, FALSE)
   
   # setup various arguments and such
   ty = sum(cases)   # total number of cases
   # upperbound for population in zone
-  max_pop = ubpop *sum(pop)
+  max_pop = ubpop * sum(pop)
   # should only max be returned, or a pruned version
   type = ifelse(maxonly, "maxonly", "pruned")
   
   # set up finding zones with max stat from each starting region
-  fcall = lapply
-  if (parallel) fcall = parallel::mclapply
+  fcall = pbapply::pblapply
   fcall_list = list(X = as.list(seq_along(all_neighbors)), FUN = function(i){
     # find zone with max stat, starting from each region
     dmst_max_zone(i, all_neighbors[[i]], cases, pop, w, ex, ty, max_pop, type = type)
-  })
+  }, cl = cl)
 
   # obtain list of zones with maximum statistic from each starting region (or the max statistic)
   max_zones = do.call(fcall, fcall_list)
