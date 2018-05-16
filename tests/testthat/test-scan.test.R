@@ -24,9 +24,6 @@ test_that("sanity checks for scan.test arguments", {
   alpha = c(0.1, 0.3)
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha), throws_error())
   alpha = 0.1
-  nsim = 0
-  expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim), 
-              throws_error())
   nsim = c(10, 20)
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim), 
               throws_error())

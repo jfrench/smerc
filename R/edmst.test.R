@@ -87,7 +87,7 @@ edmst.test = function (coords, cases, pop, w,
   
   max_zones = lapply(seq_along(cases), function(i) {
     mst.seq(i, all_neighbors[[i]], cases = cases, 
-            pop = pop, w = w, ex = es, ty = ty, 
+            pop = pop, w = w, ex = ex, ty = ty, 
             max_pop = max_pop, type = "pruned", early = TRUE)
   })
   
