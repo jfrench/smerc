@@ -105,7 +105,7 @@ dc.test = function(coords, cases, pop, w,
       # simulate new data set
       ysim = stats::rmultinom(1, size = ty, prob = ex)
       # find max statistics for each candidate zone
-      tall = mst.all(all_neighbors = all_neighbors, 
+      tall = mst.all(neighbors = all_neighbors, 
              cases = ysim, pop = pop, w = w, ex = ex,
              ty = ty, max_pop = max_pop, type = "maxonly", 
              early = FALSE, nlinks = "max")
