@@ -12,12 +12,14 @@
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
-#' 
 flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
 {
   N = nrow(coords)
   
-  mynn = cbind(1:N, spdep::knearneigh(as.matrix(coords), k = (k - 1), longlat = longlat)$nn)
+  # mynn = cbind(1:N, spdep::knearneigh(as.matrix(coords), k = (k - 1), longlat = longlat)$nn)
+  # compute k nearest neighbors (including region itself)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  mynn = t(apply(d, 1, order)[seq_len(k), ])
 
   fcall = pbapply::pblapply
   fcall_list = list(X = as.list(1:N), function(i) {

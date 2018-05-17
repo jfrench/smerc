@@ -9,11 +9,9 @@ Description: Implements statistical methods for analyzing the counts of areal da
 License: GPL (>=2)
 LazyLoad: yes
 Imports:
-    parallel,
     pbapply, 
     maps,
     smacpod,
-    spdep,
     matrixStats,
     sp
 Suggests:
