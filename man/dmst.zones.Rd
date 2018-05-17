@@ -6,7 +6,7 @@
 scan test of Assuncao et al. (2006)}
 \usage{
 dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, lonlat = FALSE, type = "maxonly", cl = NULL)
+  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "maxonly", cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -27,7 +27,7 @@ the proportion of the maximum intercentroid distance
 between any two locations in \code{coords}. See
 Details.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
 \code{"all"}.  See Details.}
@@ -85,7 +85,7 @@ coords = as.matrix(nydf[,c("longitude", "latitude")])
 # find zone with max statistic starting from each individual region
 max_zones = dmst.zones(coords, cases = floor(nydf$cases),
                        nydf$pop, w = nyw, ubpop = 0.25,
-                       ubd = .25, lonlat = TRUE)
+                       ubd = .25, longlat = TRUE)
 head(max_zones)
 }
 \references{

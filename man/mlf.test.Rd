@@ -5,7 +5,7 @@
 \title{Maxima Likelihood First Scan Test}
 \usage{
 mlf.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
-  alpha = 0.1, ubpop = 0.5, ubd = 0.5, lonlat = FALSE, cl = NULL)
+  alpha = 0.1, ubpop = 0.5, ubd = 0.5, longlat = FALSE, cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -30,7 +30,7 @@ the proportion of the maximum intercentroid distance
 between any two locations in \code{coords}. See
 Details.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -77,7 +77,7 @@ data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 out = mlf.test(coords = coords, cases = floor(nydf$cases), 
                   pop = nydf$pop, w = nyw, 
-                  alpha = 0.12, lonlat = TRUE,
+                  alpha = 0.12, longlat = TRUE,
                   nsim = 10, ubpop = 0.1, ubd = 0.5)
 data(nypoly)
 library(sp)

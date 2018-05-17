@@ -4,7 +4,7 @@
 \alias{scan.zones}
 \title{Determine zones for the spatial scan test}
 \usage{
-scan.zones(coords, pop, ubpop = 0.5, lonlat = FALSE)
+scan.zones(coords, pop, ubpop = 0.5, longlat = FALSE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -13,7 +13,7 @@ scan.zones(coords, pop, ubpop = 0.5, lonlat = FALSE)
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 }
 \value{
 Returns a list of zones to consider for
@@ -28,7 +28,7 @@ for the spatial scan test of Kulldorff (1997).
 \examples{
 data(nydf)
 coords = cbind(nydf$longitude, nydf$latitude)
-scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, lonlat = TRUE)
+scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, longlat = TRUE)
 }
 \references{
 Kulldorff, M. (1997) A spatial scan

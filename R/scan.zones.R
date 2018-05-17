@@ -16,16 +16,16 @@
 #' @examples 
 #' data(nydf)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, lonlat = TRUE)
-scan.zones = function(coords, pop, ubpop = 0.5, lonlat = FALSE) {
+#' scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, longlat = TRUE)
+scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   # argument checking
-  arg_check_scan_zones(coords, pop, ubpop, lonlat)
+  arg_check_scan_zones(coords, pop, ubpop, longlat)
   # number of regions
   N = nrow(coords)
   # ensure coords is a matrix
   coords = as.matrix(coords)
   # compute intercentroid distance
-  d = sp::spDists(as.matrix(coords), longlat = lonlat)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
@@ -40,7 +40,7 @@ scan.zones = function(coords, pop, ubpop = 0.5, lonlat = FALSE) {
 
 # argument checking for all scan tests
 arg_check_scan_zones = 
-  function(coords, pop, ubpop, lonlat)
+  function(coords, pop, ubpop, longlat)
   {
     if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
     if(ncol(coords) != 2) stop("coords must have two columns")
@@ -49,8 +49,8 @@ arg_check_scan_zones =
     if(!is.numeric(pop)) stop("pop should be a numeric vector")
     if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
     if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-    if(length(lonlat) != 1) stop("length(lonlat) != 1")
-    if(!is.logical(lonlat)) stop("lonlat should be a logical value")
+    if(length(longlat) != 1) stop("length(longlat) != 1")
+    if(!is.logical(longlat)) stop("longlat should be a logical value")
   }
 
 

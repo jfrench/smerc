@@ -4,7 +4,7 @@
 \alias{dweights}
 \title{Distance-based weights}
 \usage{
-dweights(coords, kappa = 1, lonlat = FALSE, type = "basic",
+dweights(coords, kappa = 1, longlat = FALSE, type = "basic",
   cases = NULL, pop = NULL)
 }
 \arguments{
@@ -13,7 +13,7 @@ dweights(coords, kappa = 1, lonlat = FALSE, type = "basic",
 \item{kappa}{A positive constant related to strength of 
 spatial autocorrelation.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{type}{The type of weights matrix to construct.
 Current options are \code{"basic"}, \code{"tango"}, 

@@ -32,7 +32,7 @@
 #' out = flex.test(coords = coords, cases = floor(nydf$cases),
 #'                 w = nyw, k = 3,  
 #'                 pop = nydf$pop, nsim = 49, 
-#'                 alpha = 0.12, lonlat = TRUE)
+#'                 alpha = 0.12, longlat = TRUE)
 #'                 
 #' data(nypoly)
 #' library(sp)
@@ -41,15 +41,15 @@
 flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop, 
                         type = "poisson",
                         nsim = 499, alpha = 0.1, 
-                        lonlat = FALSE, cl = NULL) 
+                        longlat = FALSE, cl = NULL) 
 {
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, 0.5, lonlat, FALSE, k = k, w = w)
+                      nsim + 1, 0.5, longlat, FALSE, k = k, w = w)
   coords = as.matrix(coords)
   N = nrow(coords)
   y = cases
   e = ex
-  zones = flex.zones(coords, w, k, lonlat)
+  zones = flex.zones(coords, w, k, longlat)
   ein = unlist(lapply(zones, function(x) sum(e[x])), use.names = FALSE)
   ty = sum(y)
   eout = ty - ein

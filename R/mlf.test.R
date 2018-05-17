@@ -44,7 +44,7 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = mlf.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, w = nyw, 
-#'                   alpha = 0.12, lonlat = TRUE,
+#'                   alpha = 0.12, longlat = TRUE,
 #'                   nsim = 10, ubpop = 0.1, ubd = 0.5)
 #' data(nypoly)
 #' library(sp)
@@ -53,10 +53,10 @@ mlf.test = function(coords, cases, pop, w,
                     ex = sum(cases)/sum(pop)*pop,
                     nsim = 499, alpha = 0.1, 
                     ubpop = 0.5, ubd = 0.5,
-                    lonlat = FALSE, cl = NULL) {
+                    longlat = FALSE, cl = NULL) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, lonlat, FALSE, 
+                      nsim + 1, ubpop, longlat, FALSE, 
                       k = 1, w = w)
   
   coords = as.matrix(coords)
@@ -73,7 +73,7 @@ mlf.test = function(coords, cases, pop, w,
   start = which.max(tobs)
   
   # intercentroid distances 
-  d = sp::spDists(coords, longlat = lonlat)
+  d = sp::spDists(coords, longlat = longlat)
   
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
@@ -120,7 +120,7 @@ mlf.test = function(coords, cases, pop, w,
   # find the zone radius, p-value, standarized mortality ratio, relative risk, adjacency matrix
   # and max radius
   startpt = coords[start,] # starting region
-  max_zone$r = max(sp::spDistsN1(coords[max_zone$locids,], startpt, longlat = lonlat))
+  max_zone$r = max(sp::spDistsN1(coords[max_zone$locids,], startpt, longlat = longlat))
   max_zone$pvalue = pvalue
   max_zone$smr = max_zone$cases/max_zone$expected
   max_zone$rr = (max_zone$cases/max_zone$pop)/((ty - max_zone$cases)/(sum(pop) - max_zone$pop))

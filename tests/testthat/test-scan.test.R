@@ -41,25 +41,25 @@ test_that("sanity checks for scan.test arguments", {
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
                           ubpop = ubpop), throws_error())
   ubpop = 0.5
-  lonlat = 1:2
+  longlat = 1:2
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          ubpop = ubpop, lonlat = lonlat), throws_error())
-  lonlat = 1
+                          ubpop = ubpop, longlat = longlat), throws_error())
+  longlat = 1
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          ubpop = ubpop, lonlat = lonlat), throws_error())
-  lonlat = FALSE
+                          ubpop = ubpop, longlat = longlat), throws_error())
+  longlat = FALSE
   parallel = 1:2
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          ubpop = ubpop, lonlat = lonlat, parallel = parallel), throws_error())
+                          ubpop = ubpop, longlat = longlat, parallel = parallel), throws_error())
   parallel = 1
   expect_that(scan.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          ubpop = ubpop, lonlat = lonlat, parallel = parallel), throws_error())
+                          ubpop = ubpop, longlat = longlat, parallel = parallel), throws_error())
 })
 
 data(nydf)
 out = scan.test(coords = cbind(nydf$longitude, nydf$latitude), 
                 cases = floor(nydf$cases), pop = nydf$population, 
-                lonlat = TRUE, nsim = 49, alpha = .50)
+                longlat = TRUE, nsim = 49, alpha = .50)
 # clusters from satscan.  it's not clear how satscan does 
 # lon/lat distance.  they seem to match up very well
 # with fields::rdist.earth, but sp::spDists should be more 

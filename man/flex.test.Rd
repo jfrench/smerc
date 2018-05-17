@@ -5,7 +5,7 @@
 \title{Flexibly Shaped Spatial Scan Test}
 \usage{
 flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
-  type = "poisson", nsim = 499, alpha = 0.1, lonlat = FALSE,
+  type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
   cl = NULL)
 }
 \arguments{
@@ -27,7 +27,7 @@ flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
 
 \item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -61,7 +61,7 @@ coords = with(nydf, cbind(longitude, latitude))
 out = flex.test(coords = coords, cases = floor(nydf$cases),
                 w = nyw, k = 3,  
                 pop = nydf$pop, nsim = 49, 
-                alpha = 0.12, lonlat = TRUE)
+                alpha = 0.12, longlat = TRUE)
                 
 data(nypoly)
 library(sp)

@@ -18,7 +18,7 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = as.matrix(nydf[,c("x", "y")])
-#' mlf.zones(coords, cases = floor(nydf$cases), pop = nydf$pop, w = nyw, lonlat = TRUE)
+#' mlf.zones(coords, cases = floor(nydf$cases), pop = nydf$pop, w = nyw, longlat = TRUE)
 
 # data(nydf)
 # data(nyw)
@@ -29,18 +29,18 @@
 # ex = sum(cases)/sum(pop)*pop
 # ubpop = 0.5
 # ubd = 0.5
-# lonlat = TRUE
+# longlat = TRUE
 # parallel = FALSE 
 # maxonly = TRUE
-# mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE)
-# mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE, type = "maxonly")
-# mlf.zones(coords, cases, pop, w, ex, lonlat = TRUE, type = "all")
+# mlf.zones(coords, cases, pop, w, ex, longlat = TRUE)
+# mlf.zones(coords, cases, pop, w, ex, longlat = TRUE, type = "maxonly")
+# mlf.zones(coords, cases, pop, w, ex, longlat = TRUE, type = "all")
 mlf.zones = function(coords, cases, pop, w, 
                      ex = sum(cases)/sum(pop)*pop, 
-                     ubpop = 0.5, ubd = 1, lonlat = FALSE, 
+                     ubpop = 0.5, ubd = 1, longlat = FALSE, 
                      type = "pruned") {
   # sanity checking
-  arg_check_mlf_zones(coords, cases, pop, w, ex, ubpop, ubd, lonlat, FALSE, type)
+  arg_check_mlf_zones(coords, cases, pop, w, ex, ubpop, ubd, longlat, FALSE, type)
   
   # total number of cases
   ty = sum(cases)
@@ -53,7 +53,7 @@ mlf.zones = function(coords, cases, pop, w,
   start = which.max(tobs)
   
   # intercentroid distances 
-  d = sp::spDists(as.matrix(coords), longlat = lonlat)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
 
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
@@ -67,7 +67,7 @@ mlf.zones = function(coords, cases, pop, w,
   mst.seq(start, start_neighbors, cases, pop, w, ex, ty, max_pop, type)
 }
 
-arg_check_mlf_zones = function(coords, cases, pop, w, ex, ubpop, ubd, lonlat, parallel, type)
+arg_check_mlf_zones = function(coords, cases, pop, w, ex, ubpop, ubd, longlat, parallel, type)
 {
   if(ncol(coords) != 2) stop("coords should have 2 columns")
   if(nrow(coords) != length(cases)) stop("nrow(coords) != length(cases)")
@@ -79,7 +79,7 @@ arg_check_mlf_zones = function(coords, cases, pop, w, ex, ubpop, ubd, lonlat, pa
   if(ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
   if(length(ubd) != 1 | !is.numeric(ubd)) stop("ubd should be a single number")
   if(ubd <= 0 | ubd > 1) stop("ubd not in (0, 1]")
-  if(length(lonlat) != 1 || !is.logical(lonlat)) stop("lonlat must be a single logical value")
+  if(length(longlat) != 1 || !is.logical(longlat)) stop("longlat must be a single logical value")
   if(length(parallel) != 1 || !is.logical(parallel)) stop("parallel must be a single logical value")
   if(!is.element(type, c("maxonly", "pruned", "all"))) stop("invalid type")
 }

@@ -38,19 +38,19 @@ test_that("sanity checks for flex.test arguments", {
   expect_that(flex.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim,
                           k = k), throws_error())
   k = 2
-  lonlat = 1:2
+  longlat = 1:2
   expect_that(flex.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          k = k, lonlat = lonlat), throws_error())
-  lonlat = 1
+                          k = k, longlat = longlat), throws_error())
+  longlat = 1
   expect_that(flex.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          k = k, lonlat = lonlat), throws_error())
-  lonlat = FALSE
+                          k = k, longlat = longlat), throws_error())
+  longlat = FALSE
   parallel = 1:2
   expect_that(flex.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          k = k, lonlat = lonlat, parallel = parallel), throws_error())
+                          k = k, longlat = longlat, parallel = parallel), throws_error())
   parallel = 1
   expect_that(flex.test(coords, cases = cases, pop = pop, ex = ex, alpha = alpha, nsim = nsim, 
-                          k = k, lonlat = lonlat, parallel = parallel), throws_error())
+                          k = k, longlat = longlat, parallel = parallel), throws_error())
   parallel = TRUE
   w = 1:4
   expect_that(flex.test(coords, cases = cases, pop = pop, w = w), throws_error())
@@ -69,7 +69,7 @@ data(nyw)
 out = flex.test(coords = cbind(nydf$longitude, nydf$latitude), 
                 cases = floor(nydf$cases), pop = nydf$population, 
                 w = nyw, k = 5,
-                lonlat = TRUE, nsim = 99, alpha = .90)
+                longlat = TRUE, nsim = 99, alpha = .90)
 
 test_that("check accuracy for scan.test with FlexScan original for NY data", {
   expect_that(out$clusters[[1]]$locids , 

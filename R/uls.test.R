@@ -29,7 +29,7 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = uls.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, w = nyw, 
-#'                   alpha = 0.12, lonlat = TRUE,
+#'                   alpha = 0.12, longlat = TRUE,
 #'                   nsim = 10, ubpop = 0.1)
 #' ## plot output for new york state
 #' # specify desired argument values
@@ -45,12 +45,12 @@
 uls.test = function(coords, cases, pop, w,
                     ex = sum(cases)/sum(pop)*pop,  
                     nsim = 499, alpha = 0.1, 
-                    ubpop = 0.5, lonlat = FALSE,
+                    ubpop = 0.5, longlat = FALSE,
                     cl = NULL) 
 {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, lonlat, TRUE, 
+                      nsim + 1, ubpop, longlat, TRUE, 
                       k = 1, w = w)
   
   coords = as.matrix(coords)

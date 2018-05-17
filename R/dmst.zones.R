@@ -52,7 +52,7 @@
 #' # find zone with max statistic starting from each individual region
 #' max_zones = dmst.zones(coords, cases = floor(nydf$cases),
 #'                        nydf$pop, w = nyw, ubpop = 0.25,
-#'                        ubd = .25, lonlat = TRUE)
+#'                        ubd = .25, longlat = TRUE)
 #' head(max_zones)
 
 # data(nydf)
@@ -64,20 +64,20 @@
 # e = sum(cases)/sum(pop)*pop
 # ubpop = 0.5
 # ubd = 0.5
-# lonlat = TRUE
+# longlat = TRUE
 dmst.zones = function(coords, cases, pop, w, 
                       ex = sum(cases)/sum(pop)*pop, 
-                      ubpop = 0.5, ubd = 1, lonlat = FALSE, 
+                      ubpop = 0.5, ubd = 1, longlat = FALSE, 
                       type = "maxonly", 
                       cl = NULL)
 {
   # sanity checking
-  arg_check_dmst_zones(coords, cases, pop, w, ex, ubpop, ubd, lonlat, type)
+  arg_check_dmst_zones(coords, cases, pop, w, ex, ubpop, ubd, longlat, type)
   
   # setup various arguments and such
   ty = sum(cases)   # total number of cases
   # intercentroid distances
-  d = sp::spDists(as.matrix(coords), longlat = lonlat)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
   # upperbound for distance between centroids in zone
@@ -97,7 +97,7 @@ dmst.zones = function(coords, cases, pop, w,
   do.call(fcall, fcall_list)
 }
 
-arg_check_dmst_zones = function(coords, cases, pop, w, ex, ubpop, ubd, lonlat, type)
+arg_check_dmst_zones = function(coords, cases, pop, w, ex, ubpop, ubd, longlat, type)
 {
   if(ncol(coords) != 2) stop("coords should have 2 columns")
   if(nrow(coords) != length(cases)) stop("nrow(coords) != length(cases)")
@@ -108,6 +108,6 @@ arg_check_dmst_zones = function(coords, cases, pop, w, ex, ubpop, ubd, lonlat, t
   if(ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
   if(length(ubd) != 1 | !is.numeric(ubd)) stop("ubd should be a single number")
   if(ubd <= 0 | ubd > 1) stop("ubd not in (0, 1]")
-  if(length(lonlat) != 1 || !is.logical(lonlat)) stop("lonlat must be a single logical value")
+  if(length(longlat) != 1 || !is.logical(longlat)) stop("longlat must be a single logical value")
   if(!is.element(type, c("maxonly", "pruned", "all"))) stop("Invalid type.")
 }

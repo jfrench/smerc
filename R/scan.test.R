@@ -11,7 +11,7 @@
 #' @param nsim The number of simulations from which to compute the p-value.
 #' @param ubpop The upperbound of the proportion of the total population to consider for a cluster.
 #' @param alpha The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.
-#' @param lonlat The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance. 
+#' @param longlat The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance. 
 #' @param type The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.
 #' @inheritParams pbapply::pblapply
 #'
@@ -38,7 +38,7 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases), 
 #'                 pop = nydf$pop, nsim = 49, 
-#'                 alpha = 0.12, lonlat = TRUE)
+#'                 alpha = 0.12, longlat = TRUE)
 #' ## plot output for new york state
 #' # specify desired argument values
 #' mapargs = list(database = "state", region = "new york", 
@@ -58,18 +58,18 @@
 #' coords = with(nydf, cbind(y, x))
 #' out2 = scan.test(coords = coords, cases = floor(nydf$cases), 
 #'                   pop = nydf$pop, nsim = 49, 
-#'                   alpha = 0.5, lonlat = TRUE)
+#'                   alpha = 0.5, longlat = TRUE)
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
 scan.test = function(coords, cases, pop, 
                      ex = sum(cases)/sum(pop)*pop, 
                      nsim = 499, alpha = 0.1,  
-                     ubpop = 0.5, lonlat = FALSE, cl = NULL,
+                     ubpop = 0.5, longlat = FALSE, cl = NULL,
                      type = "poisson") {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, lonlat, TRUE, 
+                      nsim + 1, ubpop, longlat, TRUE, 
                       k = 1, w = diag(nrow(coords)))
   
   # convert to proper format
@@ -78,7 +78,7 @@ scan.test = function(coords, cases, pop,
   # short names
   y = cases; e = ex
   # compute inter-centroid distances
-  d = sp::spDists(as.matrix(coords), longlat = lonlat)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
@@ -214,7 +214,7 @@ scan.test = function(coords, cases, pop,
 # argument checking for all scan tests
 arg_check_scan_test = 
   function(coords, cases, pop, ex, nsim, alpha, nreport,
-           ubpop, lonlat, parallel, k, w)
+           ubpop, longlat, parallel, k, w)
 {
     if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
     if(ncol(coords) != 2) stop("coords must have two columns")
@@ -231,8 +231,8 @@ arg_check_scan_test =
     if(nsim < 0) stop("nsim should be an non-negative integer")
     if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
     if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-    if(length(lonlat) != 1) stop("length(lonlat) != 1")
-    if(!is.logical(lonlat)) stop("lonlat should be a logical value")
+    if(length(longlat) != 1) stop("length(longlat) != 1")
+    if(!is.logical(longlat)) stop("longlat should be a logical value")
     if(length(parallel) != 1) stop("length(parallel) != 1")
     if(!is.logical(parallel)) stop("parallel should be a logical value")
     if(length(k) != 1) stop("k must have length 1")

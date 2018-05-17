@@ -5,7 +5,7 @@
 \title{Determine the candidate zone using the maxima likelihood first algorithm of Yao et al. (2011).}
 \usage{
 mlf.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, lonlat = FALSE, type = "pruned")
+  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "pruned")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -26,7 +26,7 @@ the proportion of the maximum intercentroid distance
 between any two locations in \code{coords}. See
 Details.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{type}{One of \code{"maxonly"}, \code{"pruned"}, or \code{"all"}. Specifying \code{"maxonly"} returns only the maximum test statistic across all candidate zones, \code{"pruned"} returns information for the zone with the largest test statistic, while \code{"all"} returns information for all candidate zones.  Default is \code{"pruned"}.}
 }
@@ -45,7 +45,7 @@ Every zone considered must have a total population less than \code{ubpop * sum(p
 data(nydf)
 data(nyw)
 coords = as.matrix(nydf[,c("x", "y")])
-mlf.zones(coords, cases = floor(nydf$cases), pop = nydf$pop, w = nyw, lonlat = TRUE)
+mlf.zones(coords, cases = floor(nydf$cases), pop = nydf$pop, w = nyw, longlat = TRUE)
 }
 \references{
 Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.

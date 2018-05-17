@@ -5,7 +5,7 @@
 \title{Spatial Scan Test}
 \usage{
 scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop, nsim = 499,
-  alpha = 0.1, ubpop = 0.5, lonlat = FALSE, cl = NULL,
+  alpha = 0.1, ubpop = 0.5, longlat = FALSE, cl = NULL,
   type = "poisson")
 }
 \arguments{
@@ -23,7 +23,7 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop, nsim = 499,
 
 \item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -58,7 +58,7 @@ data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases), 
                 pop = nydf$pop, nsim = 49, 
-                alpha = 0.12, lonlat = TRUE)
+                alpha = 0.12, longlat = TRUE)
 ## plot output for new york state
 # specify desired argument values
 mapargs = list(database = "state", region = "new york", 
@@ -78,7 +78,7 @@ plot(out, usemap = TRUE, mapargs = mapargs)
 coords = with(nydf, cbind(y, x))
 out2 = scan.test(coords = coords, cases = floor(nydf$cases), 
                   pop = nydf$pop, nsim = 49, 
-                  alpha = 0.5, lonlat = TRUE)
+                  alpha = 0.5, longlat = TRUE)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
 c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)

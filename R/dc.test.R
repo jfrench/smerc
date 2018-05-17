@@ -22,9 +22,9 @@
 #' 
 #' The maximum intercentroid distance can be found by 
 #' executing the command: 
-#' \code{sp::spDists(as.matrix(coords), longlat = lonlat)}, 
+#' \code{sp::spDists(as.matrix(coords), longlat = longlat)}, 
 #' based on the specified values of \code{coords} and 
-#' \code{lonlat}.
+#' \code{longlat}.
 #' 
 #' @inheritParams dmst.test
 #' @return Returns a list of length two of class scan. The
@@ -61,7 +61,7 @@
 #' \dontrun{
 #' out = dc.test(coords = coords, cases = floor(nydf$cases), 
 #'                  pop = nydf$pop, w = nyw, 
-#'                  alpha = 0.12, lonlat = TRUE,
+#'                  alpha = 0.12, longlat = TRUE,
 #'                  nsim = 5, ubpop = 0.1, ubd = 0.2)
 #' data(nypoly)
 #' library(sp)
@@ -70,10 +70,10 @@ dc.test = function(coords, cases, pop, w,
                    ex = sum(cases)/sum(pop)*pop,
                    nsim = 499, alpha = 0.1, 
                    ubpop = 0.5, ubd = 1,
-                   lonlat = FALSE, cl = NULL) {
+                   longlat = FALSE, cl = NULL) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, lonlat, FALSE, 
+                      nsim + 1, ubpop, longlat, FALSE, 
                       k = 1, w = w)
   
   coords = as.matrix(coords) # ensure proper format

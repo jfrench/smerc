@@ -4,7 +4,7 @@
 \alias{flex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-flex.zones(coords, w, k = 10, lonlat = FALSE, cl = NULL)
+flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -13,7 +13,7 @@ flex.zones(coords, w, k = 10, lonlat = FALSE, cl = NULL)
 
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
-\item{lonlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{lonlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -31,7 +31,7 @@ Returns a list of zones to consider for clustering.  Each element of the list co
 data(nydf)
 data(nyw)
 coords = cbind(nydf$longitude, nydf$latitude)
-flex.zones(coords = coords, w = nyw, k = 3, lonlat = TRUE)
+flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
 
 }
 \references{

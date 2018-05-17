@@ -38,10 +38,10 @@
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' w = dweights(coords, kappa = 1)
-dweights <- function(coords, kappa = 1, lonlat = FALSE, type = "basic",
+dweights <- function(coords, kappa = 1, longlat = FALSE, type = "basic",
                      cases = NULL, pop = NULL) {
-  arg_check_dweights(coords, kappa, lonlat, type, cases, pop)
-  d <- sp::spDists(as.matrix(coords), longlat = lonlat)
+  arg_check_dweights(coords, kappa, longlat, type, cases, pop)
+  d <- sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
     w <- exp(-d/kappa)
   } else if (type == "rogerson") {
@@ -53,15 +53,15 @@ dweights <- function(coords, kappa = 1, lonlat = FALSE, type = "basic",
   return(w)
 }
 
-arg_check_dweights = function(coords, kappa, lonlat, type, 
+arg_check_dweights = function(coords, kappa, longlat, type, 
                               cases, pop) {
   if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
   if(ncol(coords) != 2) stop("coords must have two columns")
   N = nrow(coords)
   if(length(kappa) != 1 || !is.numeric(kappa)) stop("kappa should be a numeric vector of length 1")
   if(kappa <= 0) stop("kappa must be positive")
-  if(length(lonlat) != 1) stop("length(lonlat) != 1")
-  if(!is.logical(lonlat)) stop("lonlat should be a logical value")
+  if(length(longlat) != 1) stop("length(longlat) != 1")
+  if(!is.logical(longlat)) stop("longlat should be a logical value")
   if(length(type) != 1) stop("type must be a single character")
   if(!is.element(type, c("basic", "rogerson", "tango"))) stop("invalid type")
   if(!is.null(cases)) {

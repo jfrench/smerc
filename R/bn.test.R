@@ -53,10 +53,10 @@
 #' plot(nypoly, col = color.clusters(out))
 bn.test = function(coords, cases, pop, cstar,
                     alpha = 0.10,
-                    lonlat = FALSE, noc = TRUE,
+                    longlat = FALSE, noc = TRUE,
                     modified = FALSE) {
   # sanity checking
-  arg_check_bn_test(coords, cases, pop, cstar, lonlat,
+  arg_check_bn_test(coords, cases, pop, cstar, longlat,
                     alpha, noc)
 
   coords = as.matrix(coords)
@@ -64,7 +64,7 @@ bn.test = function(coords, cases, pop, cstar,
   # estimate of constant risk
   r = sum(cases)/sum(pop)
   # intercentroid distances 
-  d = sp::spDists(coords, longlat = lonlat)
+  d = sp::spDists(coords, longlat = longlat)
   
   # find smallest windows with at least c* cases
   cwins = casewin(d, cases, cstar)
@@ -135,7 +135,7 @@ bn.test = function(coords, cases, pop, cstar,
 }
 
 arg_check_bn_test = 
-  function(coords, cases, pop, cstar, lonlat, alpha, noc)
+  function(coords, cases, pop, cstar, longlat, alpha, noc)
   {
     if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
     if(ncol(coords) != 2) stop("coords must have two columns")
@@ -146,8 +146,8 @@ arg_check_bn_test =
     if(!is.numeric(pop)) stop("pop should be a numeric vector")
     if(length(cstar) != 1 || !is.numeric(cstar)) stop("cstar should be a numeric vector of length 1")
     if(cstar < 1 || cstar > sum(cases)) stop("cstar should be at least 1 and less than or equal to the sum(cases)")
-    if(length(lonlat) != 1) stop("length(lonlat) != 1")
-    if(!is.logical(lonlat)) stop("lonlat should be a logical value")
+    if(length(longlat) != 1) stop("length(longlat) != 1")
+    if(!is.logical(longlat)) stop("longlat should be a logical value")
     if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
     if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
     if(length(noc) != 1) stop("length(noc) != 1")

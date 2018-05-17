@@ -30,7 +30,7 @@ data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases), 
                 pop = nydf$pop, nsim = 49, 
-                lonlat = TRUE, alpha = 0.12) 
+                longlat = TRUE, alpha = 0.12) 
 ## plot output for new york state
 # specify desired argument values
 mapargs = list(database = "state", region = "new york", 

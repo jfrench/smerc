@@ -11,7 +11,7 @@
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases), 
-#'                   pop = nydf$pop, alpha = 0.12, lonlat = TRUE,
+#'                   pop = nydf$pop, alpha = 0.12, longlat = TRUE,
 #'                   nsim = 49)
 #' data(nypoly)
 #' library(sp)
