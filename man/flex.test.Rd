@@ -4,8 +4,8 @@
 \alias{flex.test}
 \title{Flexibly Shaped Spatial Scan Test}
 \usage{
-flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) * pop,
-  type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
+flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) *
+  pop, type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
   cl = NULL)
 }
 \arguments{

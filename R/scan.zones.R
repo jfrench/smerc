@@ -1,8 +1,8 @@
 #' Determine zones for the spatial scan test
 #' 
 #' \code{scan.zones} determines the unique candidate 
-#' zones to consider
-#' for the spatial scan test of Kulldorff (1997).
+#' zones to consider for the circular spatial scan test of 
+#' Kulldorff (1997).
 #' 
 #' @inheritParams scan.test
 #' @return Returns a list of zones to consider for
@@ -16,14 +16,14 @@
 #' @examples 
 #' data(nydf)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, longlat = TRUE)
+#' zones = scan.zones(coords = coords, pop = nydf$pop, 
+#'                    ubpop = 0.1, longlat = TRUE)
 scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   # argument checking
   arg_check_scan_zones(coords, pop, ubpop, longlat)
   # number of regions
   N = nrow(coords)
-  # ensure coords is a matrix
-  coords = as.matrix(coords)
+
   # compute intercentroid distance
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   
@@ -33,9 +33,9 @@ scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   
   # use nearest neighbors to construct all zones
   zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) utils::head(x, i))), recursive = FALSE)
-  
+
   # return only unique zones
-  return(unique(lapply(zones, sort)))
+  return(zones[distinct(zones)])
 }
 
 # argument checking for all scan tests

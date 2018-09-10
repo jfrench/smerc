@@ -22,13 +22,14 @@ Returns a list of zones to consider for
 }
 \description{
 \code{scan.zones} determines the unique candidate 
-zones to consider
-for the spatial scan test of Kulldorff (1997).
+zones to consider for the circular spatial scan test of 
+Kulldorff (1997).
 }
 \examples{
 data(nydf)
 coords = cbind(nydf$longitude, nydf$latitude)
-scan.zones(coords = coords, pop = nydf$pop, ubpop = 0.1, longlat = TRUE)
+zones = scan.zones(coords = coords, pop = nydf$pop, 
+                   ubpop = 0.1, longlat = TRUE)
 }
 \references{
 Kulldorff, M. (1997) A spatial scan

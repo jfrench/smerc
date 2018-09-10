@@ -4,7 +4,7 @@
 \alias{scan.stat}
 \title{Spatial scan statistic}
 \usage{
-scan.stat(yin, ein, eout, ty, type = "poisson")
+scan.stat(yin, ein, eout, ty, type = "poisson", a = 0, shape = 1)
 }
 \arguments{
 \item{yin}{The total number of cases in the zone.}
@@ -22,6 +22,12 @@ this is not done for efficiency purposes.}
 
 \item{type}{The type of scan statistic to implement. 
 Currently, only \code{"poisson"} is implemented.}
+
+\item{a}{A tunning parameter for the adjusted log-likelihood ratio.  See details.}
+
+\item{shape}{The shape of the ellipse, which is the ratio
+of the length of the longest and shortest axes of the ellipse.  The
+default is 1, meaning it is a circle.}
 }
 \value{
 A vector of scan statistics.
@@ -36,9 +42,8 @@ for a zone (set of spatial regions).
 scan.stat(106, 62.13, 552 - 62.13, 552)
 }
 \references{
-Kulldorff, M. (1997) A spatial scan 
-  statistic. Communications in Statistics -- Theory and 
-  Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Kulldorff, M., Huang, L., Pickle, L. and Duczmal, L. (2006) An elliptic spatial scan statistic. Statististics in Medicine, 25:3929-3943. doi:10.1002/sim.2490
 }
 \author{
 Joshua French

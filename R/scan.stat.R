@@ -14,17 +14,22 @@
 #' @param ty The total number of cases in the study area.
 #' @param type The type of scan statistic to implement. 
 #'   Currently, only \code{"poisson"} is implemented.
+#' @param shape The shape of the ellipse, which is the ratio
+#' of the length of the longest and shortest axes of the ellipse.  The
+#' default is 1, meaning it is a circle.
+#' @param a A tunning parameter for the adjusted log-likelihood ratio.  See details.
+
 #' @return A vector of scan statistics.
 #' @author Joshua French
 #' @export
-#' @references Kulldorff, M. (1997) A spatial scan 
-#'   statistic. Communications in Statistics -- Theory and 
-#'   Methods 26, 1481-1496.
+#' @references 
+#' Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+#' Kulldorff, M., Huang, L., Pickle, L. and Duczmal, L. (2006) An elliptic spatial scan statistic. Statististics in Medicine, 25:3929-3943. doi:10.1002/sim.2490
 #' @examples 
 #' # statistic for most likely cluster of 
 #' # New York leukemia data
 #' scan.stat(106, 62.13, 552 - 62.13, 552)
-scan.stat = function(yin, ein, eout, ty, type = "poisson") {
+scan.stat = function(yin, ein, eout, ty, type = "poisson", a = 0, shape = 1) {
   if (length(yin) != length(ein)) {
     stop("length(yin) != length(ein)")
   }
@@ -36,6 +41,10 @@ scan.stat = function(yin, ein, eout, ty, type = "poisson") {
     tall = yin * (log(yin) - log(ein)) + yout * (log(yout) - log(eout))
     # correct test statistics for NaNs
     tall[yin/ein <= yout/eout | is.nan(tall)] = 0
+    if (a > 0) {
+      wp = which(shape > 1)
+      tall[wp] = tall[wp] * ((4 * shape[wp])/(shape[wp] + 1)^2)^a
+    }
   }
   return(tall)
 }

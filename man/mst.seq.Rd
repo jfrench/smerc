@@ -4,8 +4,8 @@
 \alias{mst.seq}
 \title{Minimum spanning tree sequence}
 \usage{
-mst.seq(start, neighbors, cases, pop, w, ex, ty, max_pop, type = "maxonly",
-  nlinks = "one", early = FALSE)
+mst.seq(start, neighbors, cases, pop, w, ex, ty, max_pop,
+  type = "maxonly", nlinks = "one", early = FALSE)
 }
 \arguments{
 \item{start}{The initial region to start the candidate

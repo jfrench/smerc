@@ -36,7 +36,7 @@ nnpop = function(d, pop, ubpop) {
   tpop = sum(pop) # total population
   # order distances for each region
   # results has each column showing order of indexes from shorter to largest distance
-  od = apply(d, 2, order)
+  od = apply(d, 1, order)
 
   # for each row of ordered distance matrix
   # sum the cumulative population size for 

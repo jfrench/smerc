@@ -4,8 +4,9 @@
 \alias{dc.test}
 \title{Double Connected spatial scan test}
 \usage{
-dc.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop, nsim = 499,
-  alpha = 0.1, ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL)
+dc.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
+  nsim = 499, alpha = 0.1, ubpop = 0.5, ubd = 1, longlat = FALSE,
+  cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}

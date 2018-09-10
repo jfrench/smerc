@@ -4,8 +4,8 @@
 \alias{plot.tango}
 \title{Plots an object of class \code{tango}.}
 \usage{
-\method{plot}{tango}(x, ..., obs.list = list(pch = 20), sim.list = list(pch
-  = 2))
+\method{plot}{tango}(x, ..., obs.list = list(pch = 20),
+  sim.list = list(pch = 2))
 }
 \arguments{
 \item{x}{An object of class \code{tango} to be plotted.}

@@ -21,6 +21,7 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   mynn = t(apply(d, 1, order)[seq_len(k), ])
 
+  message("constructing connected subgraphs:")
   fcall = pbapply::pblapply
   fcall_list = list(X = as.list(1:N), function(i) {
     connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
@@ -30,8 +31,9 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
   czones = unlist(do.call(fcall, fcall_list), 
                   use.names = FALSE, 
                   recursive = FALSE)
-  
-    return(unique(pbapply::pblapply(czones, sort, cl = cl)))
+  message("determining unique zones:")
+  return(unique(pbapply::pblapply(czones, sort, cl = cl)))
+  # return(unique(lapply(czones, sort)))
 }
 
 # takes a spatial adjacency matrix and the 

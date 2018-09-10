@@ -6,7 +6,8 @@
 scan test of Assuncao et al. (2006)}
 \usage{
 dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "maxonly", cl = NULL)
+  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "maxonly",
+  cl = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
