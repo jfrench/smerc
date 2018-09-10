@@ -9,21 +9,32 @@ scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   cl = NULL, type = "poisson", min.cases = 2)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
 
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
-\item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
+\item{ex}{The expected number of cases for each region.
+The default is calculated under the constant risk
+hypothesis.}
 
-\item{nsim}{The number of simulations from which to compute the p-value.}
+\item{nsim}{The number of simulations from which to
+compute the p-value.}
 
-\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
+\item{alpha}{The significance level to determine whether
+a cluster is signficant.  Default is \code{0.10}.}
 
-\item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
 
-\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which
+specifies that Euclidean distance should be used.If
+\code{longlat} is \code{TRUE}, then the great circle
+distance is used to calculate the intercentroid
+distance.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -31,67 +42,94 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
 
-\item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
+\item{type}{The type of scan statistic to implement.
+Default is \code{"poisson"}.  Only \code{"poisson"} is
+currently implemented.}
 
-\item{min.cases}{The minimum number of cases required for a cluster.  The default is 2.}
+\item{min.cases}{The minimum number of cases required for
+a cluster.  The default is 2.}
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:
-\item{locids}{The location ids of regions in a significant cluster.} 
-\item{coords}{The centroid of the significant clusters.}
-\item{r}{The radius of the cluster (the largest intercentroid distance for regions in the cluster).}
-\item{pop}{The total population of the regions in the cluster.}
-\item{cases}{The observed number of cases in the cluster.}
-\item{expected}{The expected number of cases in the cluster.}
-\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster.}
-\item{rr}{Relative risk in the cluster.}
-\item{loglikrat}{The loglikelihood ratio for the cluster (i.e., the log of the test statistic).}
-\item{pvalue}{The pvalue of the test statistic associated with the cluster.}
-The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+Returns a list of length two of class scan. The
+  first element (clusters) is a list containing the
+  significant, non-overlappering clusters, and has the
+  the following components: \item{locids}{The location
+  ids of regions in a significant cluster.}
+  \item{coords}{The centroid of the significant
+  clusters.} \item{r}{The radius of the cluster (the
+  largest intercentroid distance for regions in the
+  cluster).} \item{pop}{The total population of the
+  regions in the cluster.} \item{cases}{The observed
+  number of cases in the cluster.} \item{expected}{The
+  expected number of cases in the cluster.}
+  \item{smr}{Standarized mortaility ratio
+  (observed/expected) in the cluster.} \item{rr}{Relative
+  risk in the cluster.} \item{loglikrat}{The
+  loglikelihood ratio for the cluster (i.e., the log of
+  the test statistic).} \item{pvalue}{The pvalue of the
+  test statistic associated with the cluster.} The second
+  element of the list is the centroid coordinates.  This
+  is needed for plotting purposes.
 }
 \description{
-\code{scan.test} performs the spatial scan test of Kulldorf (1997).
+\code{scan.test} performs the spatial scan test of
+Kulldorf (1997).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  Candidate zones are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most  cflikely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based
+on the Poisson test statistic and a fixed number of
+cases.  Candidate zones are circular and extend from the
+observed data locations.  The clusters returned are
+non-overlapping, ordered from most significant to least
+significant.  The first cluster is the most  cflikely to
+be a cluster.  If no significant clusters are found, then
+the most likely cluster is returned (along with a
+warning).
 }
 \examples{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
-out = scan.test(coords = coords, cases = floor(nydf$cases), 
-                pop = nydf$pop, nsim = 49, 
+out = scan.test(coords = coords, cases = floor(nydf$cases),
+                pop = nydf$pop, nsim = 49,
                 alpha = 0.12, longlat = TRUE)
 ## plot output for new york state
 # specify desired argument values
-mapargs = list(database = "state", region = "new york", 
+mapargs = list(database = "state", region = "new york",
 xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 # needed for "state" database (unless you execute library(maps))
-data(stateMapEnv, package = "maps") 
+data(stateMapEnv, package = "maps")
 plot(out, usemap = TRUE, mapargs = mapargs)
 
 # a second example to match the results of Waller and Gotway (2005)
 # in chapter 7 of their book (pp. 220-221).
-# Note that the 'longitude' and 'latitude' used by them has 
+# Note that the 'longitude' and 'latitude' used by them has
 # been switched.  When giving their input to SatScan, the coords
 # were given in the order 'longitude' and 'latitude'.
-# However, the SatScan program takes coordinates in the order 
+# However, the SatScan program takes coordinates in the order
 # 'latitude' and 'longitude', so the results are slightly different
 # from the example above.
 coords = with(nydf, cbind(y, x))
-out2 = scan.test(coords = coords, cases = floor(nydf$cases), 
-                  pop = nydf$pop, nsim = 49, 
-                  alpha = 0.5, longlat = TRUE)
+out2 = scan.test(coords = coords, cases = floor(nydf$cases),
+                  pop = nydf$pop, nsim = 0,
+                  alpha = 1, longlat = TRUE)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
 c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
 }
 \references{
-Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial
+  scan statistic. Communications in Statistics -- Theory
+  and Methods 26, 1481-1496.
+
+Waller, L.A. and Gotway, C.A. (2005).
+  Applied Spatial Statistics for Public Health Data.
+  Hoboken, NJ: Wiley.
 }
 \seealso{
-\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
-\code{\link{uls.test}}, \code{\link{flex.test}}, 
-\code{\link{dmst.test}}, \code{\link{bn.test}}
+\code{\link{scan.stat}},
+  \code{\link{plot.scan}}, \code{\link{uls.test}},
+  \code{\link{flex.test}}, \code{\link{dmst.test}},
+  \code{\link{bn.test}}
 }
 \author{
 Joshua French

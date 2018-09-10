@@ -8,12 +8,17 @@ dweights(coords, kappa = 1, longlat = FALSE, type = "basic",
   cases = NULL, pop = NULL)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
 
 \item{kappa}{A positive constant related to strength of 
 spatial autocorrelation.}
 
-\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which
+specifies that Euclidean distance should be used.If
+\code{longlat} is \code{TRUE}, then the great circle
+distance is used to calculate the intercentroid
+distance.}
 
 \item{type}{The type of weights matrix to construct.
 Current options are \code{"basic"}, \code{"tango"}, 
@@ -21,7 +26,8 @@ and \code{"rogerson"}.  Default is \code{"basic"}.  See Details.}
 
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 }
 \value{
 Returns an \eqn{n \times n} matrix of weights.

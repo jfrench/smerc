@@ -9,7 +9,8 @@ tango.stat(cases, pop, w)
 \arguments{
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
 \item{w}{An \eqn{n \times n} weights matrix.}
 }

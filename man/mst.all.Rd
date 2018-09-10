@@ -15,11 +15,14 @@ is included among the neighbors.}
 
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
 \item{w}{A binary spatial adjacency matrix for the regions.}
 
-\item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
+\item{ex}{The expected number of cases for each region.
+The default is calculated under the constant risk
+hypothesis.}
 
 \item{ty}{The total number of cases in the study area.}
 

@@ -10,19 +10,26 @@ elliptic.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   type = "poisson")
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
 
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
-\item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
+\item{ex}{The expected number of cases for each region.
+The default is calculated under the constant risk
+hypothesis.}
 
-\item{nsim}{The number of simulations from which to compute the p-value.}
+\item{nsim}{The number of simulations from which to
+compute the p-value.}
 
-\item{alpha}{The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.}
+\item{alpha}{The significance level to determine whether
+a cluster is signficant.  Default is \code{0.10}.}
 
-\item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
 
 \item{shape}{The ratios of the major and minor axes of the 
 desired ellipses.}
@@ -38,7 +45,9 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
 
-\item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
+\item{type}{The type of scan statistic to implement.
+Default is \code{"poisson"}.  Only \code{"poisson"} is
+currently implemented.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:

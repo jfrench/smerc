@@ -10,17 +10,22 @@ dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
   cl = NULL)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
 
 \item{cases}{The number of cases observed in each region.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
 \item{w}{A binary spatial adjacency matrix for the regions.}
 
-\item{ex}{The expected number of cases for each region.  The default is calculated under the constant risk hypothesis.}
+\item{ex}{The expected number of cases for each region.
+The default is calculated under the constant risk
+hypothesis.}
 
-\item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
 
 \item{ubd}{The upperbound for the radius of a cluster. 
 This should be a proportion in (0, 1].  The value is
@@ -28,7 +33,11 @@ the proportion of the maximum intercentroid distance
 between any two locations in \code{coords}. See
 Details.}
 
-\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which
+specifies that Euclidean distance should be used.If
+\code{longlat} is \code{TRUE}, then the great circle
+distance is used to calculate the intercentroid
+distance.}
 
 \item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
 \code{"all"}.  See Details.}

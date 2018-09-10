@@ -7,13 +7,20 @@
 scan.zones(coords, pop, ubpop = 0.5, longlat = FALSE)
 }
 \arguments{
-\item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
 
-\item{pop}{The population size associated with each region.}
+\item{pop}{The population size associated with each
+region.}
 
-\item{ubpop}{The upperbound of the proportion of the total population to consider for a cluster.}
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
 
-\item{longlat}{The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance.}
+\item{longlat}{The default is \code{FALSE}, which
+specifies that Euclidean distance should be used.If
+\code{longlat} is \code{TRUE}, then the great circle
+distance is used to calculate the intercentroid
+distance.}
 }
 \value{
 Returns a list of zones to consider for
