@@ -6,7 +6,7 @@
 \usage{
 scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson")
+  cl = NULL, type = "poisson", min.cases = 2)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid coordinates for the regions.}
@@ -32,6 +32,8 @@ or an integer to indicate number of child-processes
 }
 
 \item{type}{The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.}
+
+\item{min.cases}{The minimum number of cases required for a cluster.  The default is 2.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:

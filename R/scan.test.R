@@ -13,6 +13,7 @@
 #' @param alpha The significance level to determine whether a cluster is signficant.  Default is \code{0.10}.
 #' @param longlat The default is \code{FALSE}, which specifies that Euclidean distance should be used.If \code{longlat} is \code{TRUE}, then the great circle distance is used to calculate the intercentroid distance. 
 #' @param type The type of scan statistic to implement.  Default is \code{"poisson"}.  Only \code{"poisson"} is currently implemented.
+#' @param min.cases The minimum number of cases required for a cluster.  The default is 2.
 #' @inheritParams pbapply::pblapply
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-overlappering clusters, and has the the following components:
@@ -66,11 +67,15 @@ scan.test = function(coords, cases, pop,
                      ex = sum(cases)/sum(pop)*pop, 
                      nsim = 499, alpha = 0.1,  
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
-                     type = "poisson") {
+                     type = "poisson",
+                     min.cases = 2) {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
                       nsim + 1, ubpop, longlat, TRUE, 
                       k = 1, w = diag(nrow(coords)))
+  if (length(min.cases) != 1 | min.cases < 1) {
+    stop("min.cases must be a single number and >= 1")
+  }
   
   # convert to proper format
   coords = as.matrix(coords)
@@ -85,43 +90,31 @@ scan.test = function(coords, cases, pop,
   mynn = nnpop(d, pop, ubpop)
 
   # determine the expected cases in/out each successive 
-  # window, total number of cases, total population
+  # window, total number of cases
   ein = unlist(lapply(mynn, function(x) cumsum(e[x])))
   ty = sum(y) # sum of all cases
   eout = ty - ein # counts expected outside the window
-  popin = unlist(lapply(mynn, function(x) cumsum(pop[x])))
+
+  # determine distinct zones
+  zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) utils::head(x, i))), recursive = FALSE)
+  zones = zones[distinct(zones)]
+  # determine cases in zones
+  yzones = sapply(zones, function(x) sum(y[x]))
+  # determine expected in zones
+  ezones = sapply(zones, function(x) sum(e[x]))
+  # observed test statistics
+  tobs = scan.stat(yin = yzones, 
+                   ein = ezones, ty - ezones, 
+                   ty = ty, 
+                   type = type)
+  # remove zones without minimum number of cases
+  wmin = which(yzones < min.cases)
+  # remove zones with a test statistic of 0
+  w0 = which(tobs == 0)
   
-  # number of nns for each observation
-  nnn = unlist(lapply(mynn, length))
-  
-  # factors related to number of neighbors
-  # each event location possesses
-  fac = rep(1:N, times = nnn)
-  
-  # determine yin and yout for all windows for observed data
-  yin = unlist(lapply(mynn, function(x) cumsum(y[x])))
-  yout = ty - yin
-  
-  ### calculate scan statistics for observed data
-  # of distance from observation centroid
-  tobs = scan.stat(yin, ein, eout, ty, type = type)
-  # max scan statistic over all windows
-  tscan = max(tobs)
-  # observed test statistics, split by centroid in order of successive windows
-  tobs_split = split(tobs, fac)
-  
-  # position of most likely cluster centered at each centroid
-  tmax_pos = lapply(tobs_split, which.max)
-  
-  # determine the farthest neighbor of each centroid for
-  # which the maximum scan statistic occurs for that centroid
-  max_nn = mapply(function(a, b) a[b], a = mynn, b = tmax_pos)
-  # index of the the windows where the max statistic occurs for each centroid
-  # in the vector of all scan statistics
-  tmax_idx = cumsum(c(0, nnn[-N])) + unlist(tmax_pos)
-  
-  # value of statistic for most likely cluster centered at each centroid
-  tmax = lapply(tobs_split, max, na.rm = TRUE)
+  # remove zones with a test statistic of 0
+  zones = zones[-union(wmin, w0)]
+  tobs = tobs[-union(wmin, w0)]
   
   # setup list for call
   if (nsim > 0) {
@@ -141,59 +134,55 @@ scan.test = function(coords, cases, pop,
     tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
     
     # p-values associated with these max statistics for each centroid
-    pvalue = unname(sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+    pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
   } else {
-    pvalue = rep(1, length(tmax))
+    pvalue = rep(1, length(tobs))
   }
   
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
   
+  # only keep significant clusters
+  zones = zones[sigc]
+  tobs = tobs[sigc]
+  
   # if there are no significant clusters, return most likely cluster
-  if(length(sigc) == 0)
-  {
-    sigc = which.max(tmax)
+  if (length(sigc) == 0) {
+    sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
   
-  # which statistics are significant
-  sig_tscan = unlist(tmax, use.names = FALSE)[sigc]
-  # order statistics from smallest to largest
-  o_sig = order(sig_tscan, decreasing = TRUE)
-  # idx of significant clusters in order of significance
-  sigc = sigc[o_sig]
+  # order zones from largest to smallest test statistic
+  ozones = order(tobs, decreasing = TRUE)
+  zones = zones[ozones]
+  tobs = tobs[ozones]
   
-  # determine the location ids in each significant cluster
-  sig_regions = mapply(function(a, b) mynn[[a]][1:b], a = sigc, b = tmax_pos[sigc], SIMPLIFY = FALSE) 
-  # determine idx of unique non-overlapping clusters
-  u = smacpod::noc(sig_regions)
-  # return non-overlapping clusters (in order of significance)
-  sig_regions = sig_regions[u]
-  # unique significant clusters (in order of significance)
-  usigc = sigc[u]
-  
+  # determine significant non-overlapping clusters
+  sig = smacpod::noc(zones)
+
   # for the unique, non-overlapping clusters in order of significance,
   # find the associated test statistic, p-value, centroid,
   # window radius, cases in window, expected cases in window, 
   # population in window, standarized mortality ration, relative risk,
-  sig_tstat = tmax[usigc]
-  sig_p = pvalue[usigc]
-  sig_coords = coords[usigc,, drop = FALSE]
-  sig_r = d[cbind(usigc, max_nn[usigc])]
-  sig_yin = (yin[tmax_idx])[usigc]
-  sig_ein = (ein[tmax_idx])[usigc]
-  sig_popin = (popin[tmax_idx])[usigc]
+  sig_regions = zones[sig]
+  sig_tstat = tobs[sig]
+  sig_p = pvalue[ozones[sig]]
+  centroid = sapply(sig_regions, utils::head, n = 1)
+  boundary = sapply(sig_regions, utils::tail, n = 1)
+  sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
+  sig_r = d[cbind(centroid, boundary)]
+  sig_yin = sapply(sig_regions, function(x) sum(y[x]))
+  sig_ein = sapply(sig_regions, function(x) sum(e[x]))
+  sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
   sig_smr = sig_yin/sig_ein
   sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-  sig_w = lapply(sig_regions, function(x)
-  {
+  sig_w = lapply(sig_regions, function(x) {
     matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
   })
   
   # reformat output for return
-  clusters = vector("list", length(u))
-  for(i in seq_along(clusters))
-  {
+  clusters = vector("list", length(sig_regions))
+  for (i in seq_along(clusters)) {
     clusters[[i]]$locids = sig_regions[[i]]
     clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
     clusters[[i]]$r = sig_r[i]

@@ -1,6 +1,8 @@
 set.seed(1)
 coords = runif(8)
 
+context("check scan.test")
+
 test_that("sanity checks for scan.test arguments", {
   expect_that(scan.test(coords), throws_error())
   coords = data.frame(x = runif(4), y = runif(4))
@@ -99,3 +101,33 @@ test_that("check accuracy for scan.test with SatScan for NY data", {
   expect_that(round(out$clusters[[3]]$rr, 2), equals(1.92))
   expect_that(round(out$clusters[[3]]$loglik, 2), equals(7.20))
 })
+
+out2 = scan.test(coords = cbind(nydf$longitude, nydf$latitude), 
+                 cases = floor(nydf$cases), 
+                 pop = nydf$population, 
+                 longlat = FALSE, nsim = 0, alpha = 1)
+
+test_that("check accuracy for scan.test with SatScan for NY data, cartesian", {
+  locids1 = c(52, 50, 37, 49, 38, 48, 53, 39, 15, 47, 51, 1, 40, 44, 16, 2, 55, 36,
+              14, 43, 13, 45, 3, 35, 17, 11, 12, 46)
+  expect_equal(out2$clusters[[1]]$locids, locids1)
+  expect_equal(round(out2$clusters[[1]]$r, 3), 0.087)
+  expect_equal(out2$clusters[[1]]$pop, 111674)
+  expect_equal(out2$clusters[[1]]$cases, 100)
+  expect_equal(round(out2$clusters[[1]]$exp, 2), 58.28)
+  expect_equal(round(out2$clusters[[1]]$smr, 2), 1.72)
+  expect_equal(round(out2$clusters[[1]]$rr, 2), 1.87)
+  expect_equal(round(out2$clusters[[1]]$loglik, 6), 14.083511)
+  
+  locids6 = c(166, 159, 167)
+  expect_equal(out2$clusters[[6]]$locids, locids6)
+  expect_equal(round(out2$clusters[[6]]$r, 3), 0.012)
+  expect_equal(out2$clusters[[6]]$pop, 8839)
+  expect_equal(out2$clusters[[6]]$cases, 11)
+  expect_equal(round(out2$clusters[[6]]$exp, 2), 4.61)
+  expect_equal(round(out2$clusters[[6]]$smr, 2), 2.38)
+  expect_equal(round(out2$clusters[[6]]$rr, 2), 2.41)
+  expect_equal(round(out2$clusters[[6]]$loglik, 6), 3.209485)
+})
+
+
