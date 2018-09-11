@@ -45,7 +45,8 @@ elliptic.test = function(coords, cases, pop,
                      nangle = c(1, 4, 6, 9, 12, 15),
                      a = 0.5,
                      cl = NULL,
-                     type = "poisson") {
+                     type = "poisson", 
+                     min.cases = 2) {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
                       nsim + 1, ubpop, TRUE, TRUE,
@@ -78,56 +79,43 @@ elliptic.test = function(coords, cases, pop,
   ein = unlist(lapply(mynn, function(x) cumsum(e[x])))
   ty = sum(y) # sum of all cases
   eout = ty - ein # counts expected outside the window
-  popin = unlist(lapply(mynn, function(x) cumsum(pop[x])))
-  
+
   # determine yin and yout for all windows for observed data
   yin = unlist(lapply(mynn, function(x) cumsum(y[x])))
-  yout = ty - yin
-  
+
   # number of nns for each max ellipse
   nnn = unlist(lapply(mynn, length))
+  
+  shape_all = rep(rep(shape, times = 281 * nangle), 
+                  times = nnn)
+  
+  angle_all = unlist(sapply(seq_along(nangle), function(i) {
+       seq(90, 270, len = nangle[i] + 1)[-(nangle[i] + 1)]
+     }))
+  angle_all = rep(rep(angle_all, each = 281), times = nnn)
   
   ### calculate scan statistics for observed data
   # of distance from observation centroid
   tobs = scan.stat(yin, ein, eout, ty, type = type, a = a, 
-                   shape = rep(rep(shape, times = 281 * nangle), times = nnn))
+                   shape = shape_all)
 
-  # total number of elliptical shapes considered
-  nr = nrow(d)/N
-  # separate each ellipse by centroid
-  fac = rep(seq_along(mynn), times = nnn)
-  # determine centroid for each set of nn in mynn
-  fac2 = factor(rep(seq_len(N), times = nr))
+  # determine distinct zones
+  pri = randtoolbox::get.primes(N)
+  wdup = duplicated(unlist(lapply(mynn, function(x) cumsum(log(pri[x])))))
   
-  # split tobs by ellipse by centroid
-  tobs_split = split(tobs, fac)
-  tobs_split2 = split(tobs_split, fac2)
-  # detemine max tobs of each ellipse by centroid
-  tmax_split = sapply(tobs_split, max)
-  # determine position max ellipse by cnetroid
-  tmax_pos_split2 = tapply(tmax_split, fac2, which.max)
-  # tranform this position to index by ellipse by centroid
-  idx_max = (tmax_pos_split2 - 1) * N + 1:N
-  # position of max position in the MLC of each centroid
-  pos_max = sapply(tobs_split[idx_max], which.max)
-  # determine the set of location ids for the MLC of
-  # each centroid
-  nn_max = mapply(function(idx, pos) mynn[[idx]][seq_len(pos)], 
-                  idx = idx_max, pos = pos_max)
-  # determine the maximum test statistic for the MLC of 
-  # each centroid
-  tmax = mapply(function(idx, pos) tobs_split[[idx]][pos], 
-                idx = idx_max, pos = pos_max)
-  # determine the shape of the ellipse for the MLC of each
-  # centroid
-  shape_max = (rep(shape, times = 281 * nangle))[idx_max]
-  all.angles = unlist(sapply(seq_along(nangle), function(i) {
-    seq(90, 270, len = nangle[i] + 1)[-(nangle[i] + 1)]
-  }))
-  # determine the angle of the ellipse of the MLC of each
-  # centroid
-  angle_max = (rep(all.angles, each = 281))[idx_max]
+  # determine positions in mynn of all zones
+  allpos = cbind(rep(seq_along(mynn), times = nnn),
+                 unlist(sapply(nnn, seq_len)))
  
+  # remove zones with a test statistic of 0
+  # or fewer than minimum number of cases or
+  # indistinct
+  w0 = which(tobs == 0 | yin < min.cases | wdup)
+  tobs = tobs[-w0]
+  shape_all = shape_all[-w0]
+  angle_all = angle_all[-w0]
+  allpos = allpos[-w0,]
+
   # setup list for call
   if (nsim > 0) {
     fcall = pbapply::pblapply
@@ -146,55 +134,55 @@ elliptic.test = function(coords, cases, pop,
     tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
     
     # p-values associated with these max statistics for each centroid
-    pvalue = unname(sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+    pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
   } else {
-    pvalue = rep(1, length(tmax))
+    pvalue = rep(1, length(tobs))
   }
   
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
-  
+
   # if there are no significant clusters, return most likely cluster
   if (length(sigc) == 0) {
-    sigc = which.max(tmax)
+    sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
-  # which statistics are significant
-  sig_tscan = unlist(tmax, use.names = FALSE)[sigc]
-  # order statistics from smallest to largest
-  o_sig = order(sig_tscan, decreasing = TRUE)
-  # idx of significant clusters in order of significance
-  sigc = sigc[o_sig]
-  
-  # determine the location ids in each significant cluster
-  # = mapply(function(a, b) nn_max[[a]][1:b], a = sigc, b = tmax_pos[sigc], SIMPLIFY = FALSE) 
-  sig_regions = nn_max[sigc]
-  # determine idx of unique non-overlapping clusters
-  u = smacpod::noc(sig_regions)
-  # return non-overlapping clusters (in order of significance)
-  sig_regions = sig_regions[u]
-  # unique significant clusters (in order of significance)
-  usigc = sigc[u]
+
+  allpos = allpos[sigc, ]
+  tobs = tobs[sigc]
+  shape_all = shape_all[sigc]
+  angle_all = angle_all[sigc]
+
+  # construct all zones
+  zones = apply(allpos, 1, function(x) mynn[[x[1]]][seq_len(x[2])])
+
+  # order zones by most significant
+  ozones = order(tobs, decreasing = TRUE)
+  zones = zones[ozones]
+
+  # determine significant non-overlapping clusters
+  sig = smacpod::noc(zones)
   
   # for the unique, non-overlapping clusters in order of significance,
   # find the associated test statistic, p-value, centroid,
   # window radius, cases in window, expected cases in window, 
-  # population in window, standarized mortality ration, relative risk,
-  sig_tstat = tmax[usigc]
-  sig_p = pvalue[usigc]
-  sig_coords = coords[usigc,, drop = FALSE]
-  # sig_r = d[cbind(usigc, max_nn[usigc])]
-  sig_yin = unname(sapply(sig_regions, function(x) sum(y[x])))
-  sig_ein = unname(sapply(sig_regions, function(x) sum(e[x])))
-  sig_popin = unname(sapply(sig_regions, function(x) sum(pop[x])))
+  # population in window, standarized mortality ratio, relative risk,
+  sig_regions = zones[sig]
+  sig_tstat = tobs[ozones[sig]]
+  sig_p = pvalue[ozones[sig]]
+  sig_shape = shape_all[ozones[sig]]
+  sig_angle = angle_all[ozones[sig]]
+  centroid = sapply(sig_regions, utils::head, n = 1)
+  boundary = sapply(sig_regions, utils::tail, n = 1)
+  sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
+  sig_yin = sapply(sig_regions, function(x) sum(y[x]))
+  sig_ein = sapply(sig_regions, function(x) sum(e[x]))
+  sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
   sig_smr = sig_yin/sig_ein
   sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
   sig_w = lapply(sig_regions, function(x) {
     matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
   })
-  sig_shape = shape_max[usigc]
-  sig_angle = angle_max[usigc]
   sig_minor = unname(sapply(seq_along(sig_regions), function(i) {
     first = sig_regions[[i]][1]
     last = utils::tail(sig_regions[[i]], 1)
@@ -205,7 +193,7 @@ elliptic.test = function(coords, cases, pop,
   sig_major = sig_minor * sig_shape
   
   # reformat output for return
-  clusters = vector("list", length(u))
+  clusters = vector("list", length(sig_regions))
   for (i in seq_along(clusters)) {
     clusters[[i]]$locids = sig_regions[[i]]
     clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
@@ -228,37 +216,3 @@ elliptic.test = function(coords, cases, pop,
   class(outlist) = "scan"
   return(outlist)
 }
-
-# argument checking for all scan tests
-arg_check_scan_test = 
-  function(coords, cases, pop, ex, nsim, alpha, nreport,
-           ubpop, longlat, parallel, k, w) {
-    if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
-    if(ncol(coords) != 2) stop("coords must have two columns")
-    N = nrow(coords)
-    if(length(cases) != N) stop("length(cases) != nrow(coords)")
-    if(!is.numeric(cases)) stop("cases should be a numeric vector")
-    if(length(pop) != N) stop("length(pop) != nrow(coords)")
-    if(!is.numeric(pop)) stop("pop should be a numeric vector")
-    if(length(ex) != N) stop("length(ex) != nrow(coords)")
-    if(!is.numeric(ex)) stop("ex should be a numeric vector")
-    if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
-    if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
-    if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
-    if(nsim < 0) stop("nsim should be an non-negative integer")
-    if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
-    if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-    if(length(longlat) != 1) stop("length(longlat) != 1")
-    if(!is.logical(longlat)) stop("longlat should be a logical value")
-    if(length(parallel) != 1) stop("length(parallel) != 1")
-    if(!is.logical(parallel)) stop("parallel should be a logical value")
-    if(length(k) != 1) stop("k must have length 1")
-    if(k < 1) stop("k must be an integer >= 1")
-    if(!is.matrix(w)) stop("w must be a matrix")
-    if(nrow(w) != ncol(w)) stop("w much be a square matrix")
-    if(!is.numeric(w)) stop("w must be a numeric matrix")
-    if(nrow(w) != nrow(coords)) stop("nrow(w) != nrow(coords)")
-    if(floor(k) > nrow(coords)) stop("k cannot be more than the number of regions.")
-}
-
-

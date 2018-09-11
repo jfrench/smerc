@@ -135,15 +135,19 @@ scan.test = function(coords, cases, pop,
   ty = sum(y) # sum of all cases
   eout = ty - ein # counts expected outside the window
 
-  # determine distinct zones
-  zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) utils::head(x, i))), recursive = FALSE)
+  # determine zones
+  zones = unlist(lapply(mynn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
 
+  # determine distinct zones
+  pri = randtoolbox::get.primes(N)
+  wdup = duplicated(unlist(lapply(mynn, function(x) cumsum(log(pri[x])))))
+  
   # observed test statistics
   tobs = scan.stat(yin, ein, eout, ty, type = type)
   
   # remove zones with a test statistic of 0 or don't have
-  # min numbe rof cases
-  w0 = which(tobs == 0 | yin < min.cases)
+  # min number of cases or are duplicted
+  w0 = which(tobs == 0 | yin < min.cases | wdup)
   
   # remove zones with a test statistic of 0
   zones = zones[-w0]
@@ -175,15 +179,15 @@ scan.test = function(coords, cases, pop,
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
   
-  # only keep significant clusters
-  zones = zones[sigc]
-  tobs = tobs[sigc]
-  
   # if there are no significant clusters, return most likely cluster
   if (length(sigc) == 0) {
     sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
+
+  # only keep significant clusters
+  zones = zones[sigc]
+  tobs = tobs[sigc]
   
   # order zones from largest to smallest test statistic
   ozones = order(tobs, decreasing = TRUE)

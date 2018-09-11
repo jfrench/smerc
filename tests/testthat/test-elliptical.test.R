@@ -6,6 +6,8 @@ shape = c(1, 1.5, 2, 3, 4, 5)
 nangle = c(1, 4, 6, 9, 12, 15)
 ex = sum(cases)/sum(pop)*pop
 ubpop = 0.5
+cl = NULL
+min.cases = 2
 
 out0 = elliptic.test(coords, cases, pop, nsim = 0,
                     alpha = 1, a = 0)
@@ -63,6 +65,8 @@ test_that("check accuracy for elliptical.test a = 0.5", {
 
 locids1.1 = c(52, 53, 50, 38, 15, 49, 16, 44, 1, 48, 14, 39, 13, 2, 45, 17, 37, 43,
               11, 47, 46, 12, 40, 54, 3, 10, 51, 5, 18, 9, 41, 35)
+locids1.6 = c(266, 281, 265)
+locids1.7 = c(106, 103, 102, 77, 230)
 
 test_that("check accuracy for elliptical.test a = 1", {
   expect_equal(locids1.1, 
@@ -81,21 +85,36 @@ test_that("check accuracy for elliptical.test a = 1", {
   expect_equal(15.504490, round(out1$clusters[[1]]$test.statistic, 6))
   expect_equal(17.442551, round(out1$clusters[[1]]$loglikrat, 6))
   
-  expect_equal(locids1.1, 
-               out1$clusters[[1]]$locids)
-  expect_equal(0.056, 
-               round(out1$clusters[[1]]$semiminor.axis, 3))
-  expect_equal(0.11, 
-               round(out1$clusters[[1]]$semimajor.axis, 2))
-  expect_equal(90 + 90, out1$clusters[[1]]$angle)
-  expect_equal(2, out1$clusters[[1]]$shape)
-  expect_equal(124896, out1$clusters[[1]]$pop)
-  expect_equal(114, out1$clusters[[1]]$cases)
-  expect_equal(65.18, round(out1$clusters[[1]]$ex, 2))
-  expect_equal(1.75, round(out1$clusters[[1]]$smr, 2))
-  expect_equal(1.94, round(out1$clusters[[1]]$rr, 2))
-  expect_equal(15.504490, round(out1$clusters[[1]]$test.statistic, 6))
-  expect_equal(17.442551, round(out1$clusters[[1]]$loglikrat, 6))
+  expect_equal(locids1.6, 
+               out1$clusters[[6]]$locids)
+  expect_equal(0.017, 
+               round(out1$clusters[[6]]$semiminor.axis, 3))
+  expect_equal(0.026, 
+               round(out1$clusters[[6]]$semimajor.axis, 3))
+  expect_equal(90 + 90, out1$clusters[[6]]$angle)
+  expect_equal(1.5, out1$clusters[[6]]$shape)
+  expect_equal(8063, out1$clusters[[6]]$pop)
+  expect_equal(11, out1$clusters[[6]]$cases)
+  expect_equal(4.21, round(out1$clusters[[6]]$ex, 2))
+  expect_equal(2.61, round(out1$clusters[[6]]$smr, 2))
+  expect_equal(2.65, round(out1$clusters[[6]]$rr, 2))
+  expect_equal(3.667327, round(out1$clusters[[6]]$test.statistic, 6))
+  expect_equal(3.820132, round(out1$clusters[[6]]$loglikrat, 6))
   
+  expect_equal(locids1.7, 
+               out1$clusters[[7]]$locids)
+  expect_equal(0.087, 
+               round(out1$clusters[[7]]$semiminor.axis, 3))
+  expect_equal(0.35, 
+               round(out1$clusters[[7]]$semimajor.axis, 2))
+  expect_equal(90 + 45, out1$clusters[[7]]$angle)
+  expect_equal(4.00, out1$clusters[[7]]$shape)
+  expect_equal(15576, out1$clusters[[7]]$pop)
+  expect_equal(19, out1$clusters[[7]]$cases)
+  expect_equal(8.13, round(out1$clusters[[7]]$ex, 2))
+  expect_equal(2.34, round(out1$clusters[[7]]$smr, 2))
+  expect_equal(2.38, round(out1$clusters[[7]]$rr, 2))
+  expect_equal(3.436309, round(out1$clusters[[7]]$test.statistic, 6))
+  expect_equal(5.369233, round(out1$clusters[[7]]$loglikrat, 6))
 })
 
