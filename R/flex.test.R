@@ -37,25 +37,24 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-
-flex.test = function(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop)*pop, 
-                        type = "poisson",
-                        nsim = 499, alpha = 0.1, 
-                        longlat = FALSE, cl = NULL) 
-{
+flex.test = function(coords, cases, pop, w, k = 10, 
+                     ex = sum(cases)/sum(pop)*pop, 
+                     type = "poisson",
+                     nsim = 499, alpha = 0.1, 
+                     longlat = FALSE, cl = NULL) {
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
                       nsim + 1, 0.5, longlat, FALSE, k = k, w = w)
   coords = as.matrix(coords)
   N = nrow(coords)
   y = cases
   e = ex
-  zones = flex.zones(coords, w, k, longlat)
+  zones = flex.zones(coords, w, k, longlat, progress = FALSE)
   ein = unlist(lapply(zones, function(x) sum(e[x])), use.names = FALSE)
   ty = sum(y)
   eout = ty - ein
   
   fcall = pbapply::pblapply
-  fcall_list = list(X = as.list(1:nsim), FUN = function(i) {
+  fcall_list = list(X = seq_len(nsim), FUN = function(i) {
     ysim = stats::rmultinom(1, size = ty, prob = e)
     yin = unlist(lapply(zones, function(x) sum(ysim[x])), 
                  use.names = FALSE)

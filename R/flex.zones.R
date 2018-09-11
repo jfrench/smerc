@@ -3,6 +3,7 @@
 #' \code{flex.zones} determines the unique zones to consider for the flexibly shaped spatial scan test of Tango and Takahashi (2005).  The algorithm uses a breadth-first search to find all subgraphs connected to each vertex (region) in the data set of size \eqn{k} or less.  
 #' 
 #' @inheritParams flex.test
+#' @param progress A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.
 #' @return Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export
@@ -11,27 +12,28 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' zones = flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
-flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
-{
+#' zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
+flex.zones = function(coords, w, k = 10, longlat = FALSE, 
+                      cl = NULL, progress = TRUE) {
   N = nrow(coords)
   
-  # mynn = cbind(1:N, spdep::knearneigh(as.matrix(coords), k = (k - 1), longlat = longlat)$nn)
-  # compute k nearest neighbors (including region itself)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   mynn = t(apply(d, 1, order)[seq_len(k), ])
 
-  message("constructing connected subgraphs:")
-  fcall = pbapply::pblapply
-  fcall_list = list(X = as.list(1:N), function(i) {
+  if (progress) {
+    message("constructing connected subgraphs:")
+    fcall = pbapply::pblapply
+  } else {
+    fcall = lapply
+  }
+
+  fcall_list = list(X = as.list(1:N), function(i, ...) {
     connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
                         nn = mynn[i, ], k = k)
-  }, cl = cl)
-  
+  }, cl = cl)  
   czones = unlist(do.call(fcall, fcall_list), 
                   use.names = FALSE, 
                   recursive = FALSE)
-  message("determining unique zones:")
   czones[distinct(czones)]
 }
 

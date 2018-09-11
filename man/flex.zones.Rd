@@ -4,7 +4,8 @@
 \alias{flex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL)
+flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL,
+  progress = TRUE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -25,6 +26,8 @@ A cluster object created by \code{\link[parallel]{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
+
+\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
 }
 \value{
 Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
@@ -36,7 +39,7 @@ Returns a list of zones to consider for clustering.  Each element of the list co
 data(nydf)
 data(nyw)
 coords = cbind(nydf$longitude, nydf$latitude)
-zones = flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
+zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
 }
 \references{
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
