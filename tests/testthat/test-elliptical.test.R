@@ -1,3 +1,4 @@
+set.seed(8)
 data(nydf)
 coords = nydf[,c("longitude", "latitude")]
 pop = nydf$population
@@ -9,10 +10,10 @@ ubpop = 0.5
 cl = NULL
 min.cases = 2
 
-out0 = elliptic.test(coords, cases, pop, nsim = 0,
-                    alpha = 1, a = 0)
-out0.5 = elliptic.test(coords, cases, pop, nsim = 0,
-                     alpha = 1, a = 0.5)
+out0 = elliptic.test(coords, cases, pop, nsim = 9,
+                    alpha = 0.5, a = 0)
+out0.5 = elliptic.test(coords, cases, pop, nsim = 9,
+                     alpha = 0.5, a = 0.5)
 out1 = elliptic.test(coords, cases, pop, nsim = 0,
                        alpha = 1, a = 1)
 

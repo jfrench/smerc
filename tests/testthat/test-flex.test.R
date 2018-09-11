@@ -72,24 +72,31 @@ out = flex.test(coords = cbind(nydf$longitude, nydf$latitude),
                 longlat = TRUE, nsim = 99, alpha = .90)
 
 test_that("check accuracy for scan.test with FlexScan original for NY data", {
-  expect_that(out$clusters[[1]]$locids , 
+  expect_that(sort(out$clusters[[1]]$locids), 
               equals(c(86, 88, 89, 92)))
   expect_that(out$clusters[[1]]$cases, equals(24))
   expect_that(round(out$clusters[[1]]$exp, 2), equals(9.24))
   expect_that(round(out$clusters[[1]]$smr, 2), equals(2.60))
   expect_that(round(out$clusters[[1]]$loglik, 2), equals(8.35))
   
-  expect_that(out$clusters[[2]]$locids , 
+  expect_that(sort(out$clusters[[2]]$locids), 
               equals(c(1, 2, 13, 15, 49)))
   expect_that(out$clusters[[2]]$cases, equals(23))
   expect_that(round(out$clusters[[2]]$exp, 2), equals(10.03))
   expect_that(round(out$clusters[[2]]$smr, 2), equals(2.29))
   expect_that(round(out$clusters[[2]]$loglik, 2), equals(6.27))
   
-  expect_that(out$clusters[[3]]$locids , 
+  expect_that(sort(out$clusters[[3]]$locids), 
               equals(c(37, 38, 40, 43)))
   expect_that(out$clusters[[3]]$cases, equals(21))
   expect_that(round(out$clusters[[3]]$exp, 2), equals(8.91))
   expect_that(round(out$clusters[[3]]$smr, 2), equals(2.36))
   expect_that(round(out$clusters[[3]]$loglik, 2), equals(6.05))
+  
+  expect_that(sort(out$clusters[[8]]$locids), 
+              equals(c(46, 53, 54)))
+  expect_that(out$clusters[[8]]$cases, equals(15))
+  expect_that(round(out$clusters[[8]]$exp, 5), equals(6.82437))
+  expect_that(round(out$clusters[[8]]$smr, 5), equals(2.19801))
+  expect_that(round(out$clusters[[8]]$loglik, 5), equals(3.69923))
 })

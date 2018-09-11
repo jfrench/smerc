@@ -36,7 +36,7 @@ Returns a list of zones to consider for clustering.  Each element of the list co
 data(nydf)
 data(nyw)
 coords = cbind(nydf$longitude, nydf$latitude)
-flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
+zones = flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
 }
 \references{
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.

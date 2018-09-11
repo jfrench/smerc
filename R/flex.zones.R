@@ -11,7 +11,7 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
+#' zones = flex.zones(coords = coords, w = nyw, k = 3, longlat = TRUE)
 flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
 {
   N = nrow(coords)
@@ -32,15 +32,13 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE, cl = NULL)
                   use.names = FALSE, 
                   recursive = FALSE)
   message("determining unique zones:")
-  return(unique(pbapply::pblapply(czones, sort, cl = cl)))
-  # return(unique(lapply(czones, sort)))
+  czones[distinct(czones)]
 }
 
 # takes a spatial adjacency matrix and the 
 # index of the locations in the spatial adjacency
 # matrix
-connected_subgraphs = function(w, nn, k)
-{
+connected_subgraphs = function(w, nn, k) {
   # storage list, of length k
   listi = vector("list", k)
   listi[[1]] = as.list(1)
