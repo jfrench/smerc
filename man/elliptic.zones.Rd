@@ -7,9 +7,25 @@
 elliptic.zones(coords, pop, ubpop = 0.5, shape = c(1, 1.5, 2, 3, 4, 5),
   nangle = c(1, 4, 6, 9, 12, 15))
 }
+\arguments{
+\item{coords}{An \eqn{n \times 2} matrix of centroid
+coordinates for the regions.}
+
+\item{pop}{The population size associated with each
+region.}
+
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
+
+\item{shape}{The ratios of the major and minor axes of
+the desired ellipses.}
+
+\item{nangle}{The number of angles (between 0 and 180) to
+consider for each shape.}
+}
 \value{
 A list with all distinct zones, the associated
-shape parameter, and the associated angle parameter.
+shape parameters, and the associated angle parameters.
 }
 \description{
 Determine zones for \code{elliptic.test}

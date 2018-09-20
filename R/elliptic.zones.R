@@ -1,6 +1,6 @@
 #' Determine zones for \code{elliptic.test}
 #'
-#' @inheritParams elliptical.test
+#' @inheritParams elliptic.test
 #'
 #' @return A list with all distinct zones, the associated
 #' shape parameters, and the associated angle parameters.
