@@ -86,13 +86,13 @@ elliptic.test = function(coords, cases, pop,
   # number of nns for each max ellipse
   nnn = unlist(lapply(mynn, length))
   
-  shape_all = rep(rep(shape, times = 281 * nangle), 
+  shape_all = rep(rep(shape, times = N * nangle), 
                   times = nnn)
   
   angle_all = unlist(sapply(seq_along(nangle), function(i) {
        seq(90, 270, len = nangle[i] + 1)[-(nangle[i] + 1)]
      }))
-  angle_all = rep(rep(angle_all, each = 281), times = nnn)
+  angle_all = rep(rep(angle_all, each = N), times = nnn)
   
   ### calculate scan statistics for observed data
   # of distance from observation centroid
