@@ -122,7 +122,7 @@ scan.test = function(coords, cases, pop,
   # short names
   y = cases; e = ex
   # compute inter-centroid distances
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  d = sp::spDists(coords, longlat = longlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
