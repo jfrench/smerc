@@ -24,7 +24,6 @@
 #' @export
 #' @references 
 #' Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
-#' Kulldorff, M., Huang, L., Pickle, L. and Duczmal, L. (2006) An elliptic spatial scan statistic. Statististics in Medicine, 25:3929-3943. doi:10.1002/sim.2490
 #' @examples 
 #' # statistic for most likely cluster of 
 #' # New York leukemia data
