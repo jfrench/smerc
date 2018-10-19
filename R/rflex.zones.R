@@ -13,6 +13,12 @@
 #'   neighbors of each region, presumably produced by the
 #'   \code{\link{knn}} function.
 #' @param alpha1 The middle p-value threshold.
+#' @param type The parametric model to use for the test
+#'   statistic.  The default is \code{"poisson"}, with the
+#'   other choice being \code{"binomial"}.
+#' @param pop The population size associated with each
+#'   region.  The default is \code{NULL} since this argument
+#'   is only needed for \code{type = "binomial"}.
 #' @param progress A logical value indicating whether the
 #'   progress of constructing the zones should be reported.
 #'   The default is FALSE.
@@ -26,28 +32,40 @@
 #'   likelihood ratio for detecting disease clusters.
 #'   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 #' @seealso rflex.midp
-#' @examples 
+#' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
 #' nn = knn(coords, longlat = FALSE, k = 50)
 #' cases = floor(nydf$cases)
-#' ex = nydf$pop * sum(cases)/sum(nydf$pop)
-#' zones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
-rflex.zones = function(nn, w, cases, ex, 
-                       alpha1 = 0.2,
-                       cl = NULL, 
-                       progress = FALSE) {
-  N = nrow(nn)
-  
+#' pop = nydf$pop
+#' ex = pop * sum(cases)/sum(pop)
+#' # zones for poisson model
+#' pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+#' # zones for binomial model
+#' bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
+#'                      type = "binomial", pop = pop)
+rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2, 
+                       type = "poisson", pop = NULL, 
+                       cl = NULL, progress = FALSE) {
+  arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop, 
+                        progress)
+ 
   # compute mid p-value 
-  p = rflex.midp(cases, ex)
+  p = rflex.midp(cases, ex, type = type, pop = pop)
+  # determine which regions are "hot" (keep) or "cold" (remove)
   keep = which(p < alpha1)
-  remove = setdiff(seq_len(N), keep)
+  remove = setdiff(seq_along(ex), keep)
   
   # remove connections when p >= alpha1  
   w[,remove] = 0
   
+  fcall_list = list(X = keep, function(i, ...) {
+    idxi = intersect(nn[i, ], keep)
+    scsg(idxi, w[,idxi, drop = FALSE])
+  }, cl = cl)  
+  
+  # determine which apply function to use
   if (progress) {
     message("constructing connected subgraphs:")
     fcall = pbapply::pblapply
@@ -55,20 +73,31 @@ rflex.zones = function(nn, w, cases, ex,
     fcall = lapply
   }
 
-  # allcg = vector("list", length(keep))
-  # j = 1
-  # for (i in keep) {
-  #   idxi = intersect(nn[i, ], c(which(w[i, ] == 1), i))
-  #   allcg[[j]] = scsg(idxi, w[,idxi, drop = FALSE])
-  #   j = j + 1
-  # }
-  fcall_list = list(X = keep, function(i, ...) {
-    idxi = intersect(nn[i, ], keep)
-    scsg(idxi, w[,idxi, drop = FALSE])
-  }, cl = cl)  
+  # determine distinct zones
   czones = unlist(do.call(fcall, fcall_list), 
-                  use.names = FALSE, 
-                  recursive = FALSE)
+                  use.names = FALSE, recursive = FALSE)
   czones[distinct(czones)]
 }
 
+arg_check_rflex_zones = function(nn, w, cases, ex, 
+                                 alpha1, type, pop, 
+                                 progress) {
+  if (is.null(dim(nn))) stop("nn must be matrix-like with non-NULL dim")
+  N = nrow(nn)
+  if (nrow(w) != N) stop("nrow(w) must match nrow(nn)")
+  if (length(cases) != N) stop("length(cases) must match nrow(nn)")
+  if (length(alpha1) != 1 | alpha1 <= 0) {
+    stop("alpha1 must be in (0, 1]")
+  } 
+  if (!is.element(type, c("poisson", "binomial"))) {
+    stop("type must be 'poisson' or 'binomial'")
+  }
+  if (!is.null(pop)) {
+    if (length(pop) != N) {
+      stop("length(pop) != nrow(nn)")
+    }
+  }
+  if (length(progress) != 1 | !is.logical(progress)) {
+    stop("progress must be a logical value")
+  }
+}

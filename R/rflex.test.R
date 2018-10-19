@@ -45,9 +45,9 @@ rflex.test = function(coords, cases, pop, w, k = 50,
                      alpha1 = 0.2,
                      cl = NULL) {
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, 0.5, longlat, FALSE, k = k, w = w)
+                      nsim + 1, 0.5, longlat, FALSE, k = k, 
+                      w = w, type = type)
   coords = as.matrix(coords)
-  N = nrow(coords)
 
   # compute k nearest neighbors
   nn = knn(coords = coords, longlat = longlat, k = k)  
@@ -57,33 +57,30 @@ rflex.test = function(coords, cases, pop, w, k = 50,
                       cases = cases, ex = ex, alpha1 = alpha1,
                       cl = cl, progress = FALSE)
   # compute needed information
-  ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
   ty = sum(cases)
-  eout = ty - ein
   yin = unlist(lapply(zones, function(x) sum(cases[x])))
-  # compute observed scan statistics
-  tobs = scan.stat(yin, ein, ty - ein, ty, type = type)
-  tscan = max(tobs)
+  if (type == "binomial") tpop = sum(pop)
   
+  # compute test statistics for observed data
+  if (type == "poisson") {
+    ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
+    tobs = stat.poisson(yin, ty - yin, ein, ty - ein)
+  } else if (type == "binomial") {
+    popin = unlist(lapply(zones, function(x) sum(pop[x])), use.names = FALSE)
+    tobs = stat.binom(yin, ty - yin, ty, 
+                      popin, tpop - popin, tpop)
+  }
+
+  # compute test statistics for simulated data
   if (nsim > 1) {
     tsim = rflex.sim(nsim = nsim, nn = nn, w = w, ex = ex, 
-                     type = type, alpha1 = alpha1, cl = cl)
-    pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+                     alpha1 = alpha1, type = type, 
+                     pop = pop, cl = cl)
+    pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
   
-  # if (nsim >= 1) {
-  #   tsim = pbapply::pbsapply(X = seq_len(nsim),
-  #                            FUN = rflex.sim,
-  #                            nn = nn, w = w,
-  #                            ex = ex, type = type,
-  #                            alpha1 = alpha1, cl = cl)
-  #   pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
-  # } else {
-  #   pvalue = rep(1, length(tobs))
-  # }
-
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
   

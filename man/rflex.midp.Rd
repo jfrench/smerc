@@ -29,8 +29,14 @@ Poisson(ex) or Y ~ Binomial(n = pop, p = ex/pop).  This
 is middle p-value computed by Tango and Takahashi (2012).
 }
 \examples{
-rflex.midp(5, 3)
-1 - ppois(5, 3) + dpois(5, 3)/2
+data(nydf)
+cases = floor(nydf$cases)
+pop = nydf$pop
+ex = pop * sum(cases)/sum(pop)
+# zones for poisson model
+pp = rflex.midp(cases, ex)
+# zones for binomial model
+bp = rflex.midp(cases, ex, type = "binomial", pop = pop)
 }
 \references{
 Tango, T. and Takahashi, K. (2012), A

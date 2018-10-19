@@ -4,8 +4,8 @@
 \alias{rflex.sim}
 \title{Perform \code{rflex.test} on simualated data}
 \usage{
-rflex.sim(nsim = 1, nn, w, ex, type = "poisson", alpha1 = 0.2,
-  cl = NULL)
+rflex.sim(nsim = 1, nn, w, ex, alpha1 = 0.2, type = "poisson",
+  pop = NULL, cl = NULL)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -20,11 +20,14 @@ regions described by \code{w}.}
 The default is calculated under the constant risk
 hypothesis.}
 
+\item{alpha1}{The middle p-value threshold.}
+
 \item{type}{The type of scan statistic to implement.
 Default is \code{"poisson"}.  Only \code{"poisson"} is
 currently implemented.}
 
-\item{alpha1}{The middle p-value threshold.}
+\item{pop}{The population size associated with each
+region.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},

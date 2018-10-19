@@ -14,8 +14,14 @@
 #'   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 #'
 #' @examples
-#' rflex.midp(5, 3)
-#' 1 - ppois(5, 3) + dpois(5, 3)/2
+#' data(nydf)
+#' cases = floor(nydf$cases)
+#' pop = nydf$pop
+#' ex = pop * sum(cases)/sum(pop)
+#' # zones for poisson model
+#' pp = rflex.midp(cases, ex)
+#' # zones for binomial model
+#' bp = rflex.midp(cases, ex, type = "binomial", pop = pop)
 rflex.midp = function(cases, ex, type = "poisson", pop = NULL) {
   arg_check_rflex_midp(cases, ex, type, pop)
 
@@ -24,7 +30,7 @@ rflex.midp = function(cases, ex, type = "poisson", pop = NULL) {
       stats::dpois(cases, ex)/2
   } else if (type == "binomial") {
     p = stats::pbinom(cases, size = pop, prob = ex/pop, lower.tail = FALSE) + 
-      stats::dpois(cases, size = pop, prob = ex/pop)/2
+      stats::dbinom(cases, size = pop, prob = ex/pop)/2
   }
   return(p)
 }

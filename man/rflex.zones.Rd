@@ -4,8 +4,8 @@
 \alias{rflex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-rflex.zones(nn, w, cases, ex, alpha1 = 0.2, cl = NULL,
-  progress = FALSE)
+rflex.zones(nn, w, cases, ex, alpha1 = 0.2, type = "poisson",
+  pop = NULL, cl = NULL, progress = FALSE)
 }
 \arguments{
 \item{nn}{An n by k matrix providing the k nearest
@@ -21,6 +21,14 @@ The default is calculated under the constant risk
 hypothesis.}
 
 \item{alpha1}{The middle p-value threshold.}
+
+\item{type}{The parametric model to use for the test
+statistic.  The default is \code{"poisson"}, with the
+other choice being \code{"binomial"}.}
+
+\item{pop}{The population size associated with each
+region.  The default is \code{NULL} since this argument
+is only needed for \code{type = "binomial"}.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
@@ -52,8 +60,13 @@ data(nyw)
 coords = cbind(nydf$longitude, nydf$latitude)
 nn = knn(coords, longlat = FALSE, k = 50)
 cases = floor(nydf$cases)
-ex = nydf$pop * sum(cases)/sum(nydf$pop)
-zones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+pop = nydf$pop
+ex = pop * sum(cases)/sum(pop)
+# zones for poisson model
+pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+# zones for binomial model
+bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
+                     type = "binomial", pop = pop)
 }
 \references{
 Tango, T. and Takahashi, K. (2012), A
