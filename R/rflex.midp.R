@@ -1,8 +1,8 @@
 #' Compute middle p-value
 #'
 #' Computes P(Y > cases) + P(Y = cases)/2 when Y ~
-#' Poisson(ex).  This is middle p-value computed by Tango
-#' and Takahashi (2012)
+#' Poisson(ex) or Y ~ Binomial(n = pop, p = ex/pop).  This 
+#' is middle p-value computed by Tango and Takahashi (2012).
 #'
 #' @inheritParams scan.test
 #' @return A vector of middle p-values
@@ -16,13 +16,36 @@
 #' @examples
 #' rflex.midp(5, 3)
 #' 1 - ppois(5, 3) + dpois(5, 3)/2
-rflex.midp = function(cases, ex) {
+rflex.midp = function(cases, ex, type = "poisson", pop = NULL) {
+  arg_check_rflex_midp(cases, ex, type, pop)
+
+  if (type == "poisson") {
+    p = stats::ppois(cases, ex, lower.tail = FALSE) + 
+      stats::dpois(cases, ex)/2
+  } else if (type == "binomial") {
+    p = stats::pbinom(cases, size = pop, prob = ex/pop, lower.tail = FALSE) + 
+      stats::dpois(cases, size = pop, prob = ex/pop)/2
+  }
+  return(p)
+}
+
+arg_check_rflex_midp = function(cases, ex, type, pop) {
   if (length(cases) != length(ex)) {
     stop("length(cases) != length(ex)")
   }
   if (!is.numeric(cases) | !is.numeric(ex)) {
     stop("cases and ex must be numeric vectors")
   }
-  stats::ppois(cases, ex, lower.tail = FALSE) + 
-    stats::dpois(cases, ex)/2
+  if (length(type) != 1 | 
+      !is.element(type, c("poisson", "binomial"))) {
+    stop("type must be poisson or binomial")
+  }
+  if (type == "binomial" & is.null(pop)) {
+    stop("pop must be provided when type = 'binomial'")
+  }
+  if (!is.null(pop)) {
+    if (length(cases) != length(pop)) {
+      stop("length(case) != length(pop)")
+    }
+  }
 }

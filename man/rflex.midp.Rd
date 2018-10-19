@@ -4,7 +4,7 @@
 \alias{rflex.midp}
 \title{Compute middle p-value}
 \usage{
-rflex.midp(cases, ex)
+rflex.midp(cases, ex, type = "poisson", pop = NULL)
 }
 \arguments{
 \item{cases}{The number of cases observed in each region.}
@@ -12,14 +12,21 @@ rflex.midp(cases, ex)
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
 hypothesis.}
+
+\item{type}{The type of scan statistic to implement.
+Default is \code{"poisson"}.  Only \code{"poisson"} is
+currently implemented.}
+
+\item{pop}{The population size associated with each
+region.}
 }
 \value{
 A vector of middle p-values
 }
 \description{
 Computes P(Y > cases) + P(Y = cases)/2 when Y ~
-Poisson(ex).  This is middle p-value computed by Tango
-and Takahashi (2012)
+Poisson(ex) or Y ~ Binomial(n = pop, p = ex/pop).  This 
+is middle p-value computed by Tango and Takahashi (2012).
 }
 \examples{
 rflex.midp(5, 3)
