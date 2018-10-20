@@ -24,3 +24,4 @@ is a specific element of \code{tobs} and
 \examples{
 mc.pvalue(8:10, 1:9)
 }
+\keyword{internal}

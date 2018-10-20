@@ -11,7 +11,7 @@
 #'
 #' @return A vector of p-values.
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' mc.pvalue(8:10, 1:9)
 mc.pvalue = function(tobs, tsim) {

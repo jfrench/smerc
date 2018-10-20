@@ -8,11 +8,11 @@ Scanning method: Flexible spatial scan.
  Log likelihood ratio with restriction.
  (Pr{X>x}+0.5*Pr{X=x}<0.200000)
 
-Program run on: Mon Oct 15 09:41:24 2018
+Program run on: Fri Oct 19 16:54:52 2018
 
 Purely Spatial analysis
 scanning for clusters with
-high rates using the Poisson model.
+high rates using the Binomial model.
 
 --------------------------------------------------------
 
@@ -21,6 +21,7 @@ SUMMARY OF DATA
 Limit length of cluster: 50
 Number of census areas.: 281
 Total cases ...........: 552
+Total population ......: 1057673
 
 --------------------------------------------------------
 
@@ -29,9 +30,8 @@ MOST LIKELY CLUSTER
 1.Census areas included .: 1, 2, 13, 15, 27, 35, 37, 38, 43, 46, 47, 49, 51, 52, 53
   Maximum distance.......: 0.22483    (areas: 27 to 46)
   Number of cases .......: 79
-  (Expected number of cases: 36.1025)
-  Overall relative risk .: 2.18822
-  Statistic value .......: 20.8014
+  Population ............: 69175
+  Statistic value .......: 20.8156
   Monte Carlo rank ......: 1/1000
   P-value ...............: 0.001
 
@@ -42,99 +42,88 @@ SECONDARY CLUSTERS
 2.Census areas included .: 89, 90
   Maximum distance.......: 0.125172    (areas: 89 to 90)
   Number of cases .......: 13
-  (Expected number of cases: 3.46124)
-  Overall relative risk .: 3.75588
-  Statistic value .......: 7.74784
+  Population ............: 6632
+  Statistic value .......: 7.75475
   Monte Carlo rank ......: 325/1000
   P-value ...............: 0.325
 
 3.Census areas included .: 117, 123, 124, 125, 126
   Maximum distance.......: 0.0229766    (areas: 123 to 126)
   Number of cases .......: 19
-  (Expected number of cases: 7.22415)
-  Overall relative risk .: 2.63007
-  Statistic value .......: 6.72554
+  Population ............: 13842
+  Statistic value .......: 6.73062
   Monte Carlo rank ......: 482/1000
   P-value ...............: 0.482
 
 4.Census areas included .: 111, 119, 216, 217, 219, 220
   Maximum distance.......: 0.0574429    (areas: 119 to 216)
   Number of cases .......: 23
-  (Expected number of cases: 10.3451)
-  Overall relative risk .: 2.22327
-  Statistic value .......: 5.87065
+  Population ............: 19822
+  Statistic value .......: 5.87477
   Monte Carlo rank ......: 651/1000
   P-value ...............: 0.651
 
 5.Census areas included .: 85, 86, 92, 93
   Maximum distance.......: 0.219323    (areas: 85 to 93)
   Number of cases .......: 24
-  (Expected number of cases: 11.2449)
-  Overall relative risk .: 2.13431
-  Statistic value .......: 5.59191
-  Monte Carlo rank ......: 717/1000
-  P-value ...............: 0.717
+  Population ............: 21546
+  Statistic value .......: 5.59576
+  Monte Carlo rank ......: 718/1000
+  P-value ...............: 0.718
 
 6.Census areas included .: 120, 131, 132, 139, 150
   Maximum distance.......: 0.0298024    (areas: 120 to 150)
   Number of cases .......: 9
-  (Expected number of cases: 2.60011)
-  Overall relative risk .: 3.46139
-  Statistic value .......: 4.81257
+  Population ............: 4982
+  Statistic value .......: 4.81671
   Monte Carlo rank ......: 865/1000
   P-value ...............: 0.865
 
 7.Census areas included .: 64, 65, 67
   Maximum distance.......: 0.0249388    (areas: 64 to 65)
   Number of cases .......: 21
-  (Expected number of cases: 10.129)
-  Overall relative risk .: 2.07325
-  Statistic value .......: 4.55025
+  Population ............: 19408
+  Statistic value .......: 4.55336
   Monte Carlo rank ......: 907/1000
   P-value ...............: 0.907
 
 8.Census areas included .: 166, 167
   Maximum distance.......: 0.0116182    (areas: 166 to 167)
   Number of cases .......: 9
-  (Expected number of cases: 3.01554)
-  Overall relative risk .: 2.98454
-  Statistic value .......: 3.88929
+  Population ............: 5778
+  Statistic value .......: 3.89241
   Monte Carlo rank ......: 968/1000
   P-value ...............: 0.968
 
 9.Census areas included .: 265, 266, 281
   Maximum distance.......: 0.0282628    (areas: 265 to 281)
   Number of cases .......: 11
-  (Expected number of cases: 4.20808)
-  Overall relative risk .: 2.61402
-  Statistic value .......: 3.82013
+  Population ............: 8063
+  Statistic value .......: 3.82302
   Monte Carlo rank ......: 972/1000
   P-value ...............: 0.972
 
 10.Census areas included .: 102, 103, 106
   Maximum distance.......: 0.194769    (areas: 102 to 106)
   Number of cases .......: 11
-  (Expected number of cases: 4.76234)
-  Overall relative risk .: 2.30979
-  Statistic value .......: 3.00674
+  Population ............: 9125
+  Statistic value .......: 3.00889
   Monte Carlo rank ......: 998/1000
   P-value ...............: 0.998
 
 11.Census areas included .: 5, 12
   Maximum distance.......: 0.0099488    (areas: 5 to 12)
   Number of cases .......: 6
-  (Expected number of cases: 1.88824)
-  Overall relative risk .: 3.17757
-  Statistic value .......: 2.84034
+  Population ............: 3618
+  Statistic value .......: 2.84269
   Monte Carlo rank ......: 999/1000
   P-value ...............: 0.999
 
 12.Census areas included .: 135, 146, 208, 210
   Maximum distance.......: 0.030934    (areas: 146 to 208)
   Number of cases .......: 12
-  (Expected number of cases: 5.59582)
-  Overall relative risk .: 2.14446
-  Statistic value .......: 2.78814
+  Population ............: 10722
+  Statistic value .......: 2.79008
   Monte Carlo rank ......: 1000/1000
   P-value ...............: 1
 
@@ -143,8 +132,8 @@ SECONDARY CLUSTERS
 --------------------------------------------------------
 The statistic value required for an observed
 cluster to be significant at level
-... 0.01: 14.7024
-... 0.05: 11.884
+... 0.01: 14.7126
+... 0.05: 11.8923
 
 --------------------------------------------------------
 
@@ -152,14 +141,14 @@ PARAMETER SETTINGS
 
 Input Files
 -----------
-  Case File:        C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flex_nycases.txt
-  Coordinates File: C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flex_nycoords.txt
-  Matrix File:      C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flex_nyw.mt0
+  Case File:        C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flexscan_ny_cases_pop.txt
+  Coordinates File: C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flexscan_ny_coords.txt
+  Matrix File:      C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\flexscan_ny_w.mt0
 
 Analysis
 --------
   Type of Analysis     : Purely Spatial
-  Probability Model    : Poisson
+  Probability Model    : Binomial
   <STATISTICS>
    Log likelihood ratio with restriction. (Pr{X>x}+0.5*Pr{X=x}<0.200000)
 
@@ -177,10 +166,10 @@ Scanning Method
 
 Output
 ------
-  Results File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\testthat\rflex_results.txt
+  Results File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\rflex_test_ny_binomial_50nn_cartesian.out
   Criteria for Reporting Secondary Clusters : No Geographical Overlap
 
 --------------------------------------------------------
 
-Program completed  : Mon Oct 15 09:41:25 2018
+Program completed  : Fri Oct 19 16:54:53 2018
 Total Running Time : 1 seconds

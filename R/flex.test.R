@@ -1,6 +1,6 @@
-#' Flexibly Shaped Spatial Scan Test
+#' Flexibly-shaped Spatial Scan Test
 #' 
-#' \code{flex.test} performs the flexibly shaped spatial scan test of Tango and Takahashi (2005).
+#' \code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
@@ -43,68 +43,62 @@ flex.test = function(coords, cases, pop, w, k = 10,
                      nsim = 499, alpha = 0.1, 
                      longlat = FALSE, cl = NULL) {
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, 0.5, longlat, FALSE, k = k, w = w)
+                      nsim + 1, 0.5, longlat, FALSE, k = k, w = w,
+                      type = type)
   coords = as.matrix(coords)
-  N = nrow(coords)
-  y = cases
-  e = ex
-  zones = flex.zones(coords, w, k, longlat, progress = FALSE)
-  ein = unlist(lapply(zones, function(x) sum(e[x])), use.names = FALSE)
-  ty = sum(y)
-  eout = ty - ein
+
+  zones = flex.zones(coords, w, k, longlat)
+
+  # compute needed information
+  ty = sum(cases)
+  yin = unlist(lapply(zones, function(x) sum(cases[x])))
+
+  # compute test statistics for observed data
+  if (type == "poisson") {
+    ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
+    eout = ty - ein
+    popin = NULL
+    popout = NULL
+    tpop = NULL
+    tobs = stat.poisson(yin, ty - yin, ein, eout)
+  } else if (type == "binomial") {
+    ein = NULL
+    eout = NULL
+    tpop = sum(pop)
+    popin = unlist(lapply(zones, function(x) sum(pop[x])), use.names = FALSE)
+    popout = tpop - popin
+    tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
+  }
   
-  fcall = pbapply::pblapply
-  fcall_list = list(X = seq_len(nsim), FUN = function(i) {
-    ysim = stats::rmultinom(1, size = ty, prob = e)
-    yin = unlist(lapply(zones, function(x) sum(ysim[x])), 
-                 use.names = FALSE)
-    tall = scan.stat(yin, ein, ty - ein, ty, type)
-    return(max(tall))
-  })
-  tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
-  yin = unlist(lapply(zones, function(x) sum(y[x])))
-  tobs = scan.stat(yin, ein, ty - ein, ty, type = type)
-  tscan = max(tobs)
-  fac = sapply(zones, function(x) x[1])
-  tmax_pos = tapply(tobs, fac, which.max)
-  fac_idx = lapply(1:N, function(i) which(fac == i))
-  tmax_idx = mapply(function(idx, pos) idx[pos], idx = fac_idx, 
-                    pos = tmax_pos)
-  tmax = tobs[tmax_idx]
-  pvalue = sapply(tmax, function(x) (sum(tsim >= x) + 1)/(nsim + 
-                                                            1))
-  sig = which(pvalue <= alpha)
-  if (length(sig) == 0) {
-    sig = which.max(tmax)
+  # compute test statistics for simulated data
+  if (nsim > 1) {
+    message("computing statistics for simulated data:")
+    tsim = flex.sim(nsim = nsim, zones = zones, ty = ty,
+                    ex = ex,
+                    type = type, ein = ein, eout = eout,
+                    popin = popin, popout = popout, tpop = tpop,
+                    cl = cl)
+    pvalue = mc.pvalue(tobs, tsim)
+  } else {
+    pvalue = rep(1, length(tobs))
+  }
+  
+  # determine which potential clusters are significant
+  sigc = which(pvalue <= alpha, useNames = FALSE)
+  
+  # if there are no significant clusters, return most likely cluster
+  if (length(sigc) == 0) {
+    sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  sig = sig[order(tmax[sig], decreasing = TRUE)]
-  u = smacpod::noc(zones[tmax_idx[sig]])
-  usig = sig[u]
-  usigidx = tmax_idx[usig]
-  sig_regions = zones[usigidx]
-  sig_tstat = tobs[usigidx]
-  sig_p = pvalue[usig]
-  sig_yin = yin[usigidx]
-  sig_ein = ein[usigidx]
-  sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
-  sig_smr = sig_yin/sig_ein
-  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - 
-                                                  sig_popin))
-  clusters = vector("list", length(u))
-  for (i in seq_along(clusters)) {
-    clusters[[i]]$locids = sig_regions[[i]]
-    clusters[[i]]$pop = sig_popin[i]
-    clusters[[i]]$cases = sig_yin[i]
-    clusters[[i]]$expected = sig_ein[i]
-    clusters[[i]]$smr = sig_smr[i]
-    clusters[[i]]$rr = sig_rr[i]
-    clusters[[i]]$loglikrat = sig_tstat[[i]]
-    clusters[[i]]$pvalue = sig_p[i]
-    clusters[[i]]$w = w[sig_regions[[i]], sig_regions[[i]]]
-  }
-  outlist = list(clusters = clusters, coords = coords)
-  class(outlist) = "scan"
-  return(outlist)
+  
+  # only keep significant clusters
+  zones = zones[sigc]
+  tobs = tobs[sigc]
+  
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+            coords = coords, cases = cases, pop = pop,
+            ex = ex, longlat = longlat, w = w,
+            d = NULL)
 }
 

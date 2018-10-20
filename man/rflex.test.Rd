@@ -53,7 +53,7 @@ or an integer to indicate number of child-processes
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 \item{coords}{The centroid of the significant clusters.}
 \item{r}{The radius of the window of the clusters.}
-\item{pop}{The total population in the cluser window.}
+\item{pop}{The total population in the cluster window.}
 \item{cases}{The observed number of cases in the cluster window.}
 \item{expected}{The expected number of cases in the cluster window.}
 \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
@@ -82,7 +82,10 @@ library(sp)
 plot(nypoly, col = color.clusters(out))
 }
 \references{
-Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Tango, T. and Takahashi, K. (2012), A
+  flexible spatial scan statistic with a restricted
+  likelihood ratio for detecting disease clusters.
+  Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 }
 \seealso{
 \code{\link{scan.stat}}, \code{\link{plot.scan}}, 

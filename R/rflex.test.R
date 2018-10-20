@@ -10,7 +10,7 @@
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{coords}{The centroid of the significant clusters.}
 #' \item{r}{The radius of the window of the clusters.}
-#' \item{pop}{The total population in the cluser window.}
+#' \item{pop}{The total population in the cluster window.}
 #' \item{cases}{The observed number of cases in the cluster window.}
 #' \item{expected}{The expected number of cases in the cluster window.}
 #' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
@@ -23,7 +23,10 @@
 #' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
 #' \code{\link{scan.test}}, \code{\link{uls.test}}, 
 #' \code{\link{dmst.test}}, \code{\link{bn.test}}
-#' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+#' @references Tango, T. and Takahashi, K. (2012), A
+#'   flexible spatial scan statistic with a restricted
+#'   likelihood ratio for detecting disease clusters.
+#'   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 #' @examples 
 #' data(nydf)
 #' data(nyw)
@@ -94,48 +97,9 @@ rflex.test = function(coords, cases, pop, w, k = 50,
   zones = zones[sigc]
   tobs = tobs[sigc]
   
-  # order zones from largest to smallest test statistic
-  ozones = order(tobs, decreasing = TRUE)
-  zones = zones[ozones]
-  tobs = tobs[ozones]
-  
-  # determine significant non-overlapping clusters
-  sig = smacpod::noc(zones)
-  
-  # for the unique, non-overlapping clusters in order of significance,
-  # find the associated test statistic, p-value, centroid,
-  # window radius, cases in window, expected cases in window, 
-  # population in window, standarized mortality ration, relative risk,
-  sig_regions = zones[sig]
-  sig_tstat = tobs[sig]
-  sig_p = pvalue[ozones[sig]]
-  centroid = sapply(sig_regions, utils::head, n = 1)
-  boundary = sapply(sig_regions, utils::tail, n = 1)
-  sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
-  sig_yin = sapply(sig_regions, function(x) sum(cases[x]))
-  sig_ein = sapply(sig_regions, function(x) sum(ex[x]))
-  sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
-  sig_smr = sig_yin/sig_ein
-  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-  sig_w = sapply(centroid, function(x) w[x,,drop = FALSE], simplify = FALSE)
-
-  # reformat output for return
-  clusters = vector("list", length(sig_regions))
-  for (i in seq_along(clusters)) {
-    clusters[[i]]$locids = sig_regions[[i]]
-    clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
-    clusters[[i]]$r = max(sp::spDists(coords[sig_regions[[i]], ,drop = FALSE]), longlat = longlat)
-    clusters[[i]]$pop = sig_popin[i]
-    clusters[[i]]$cases = sig_yin[i]
-    clusters[[i]]$expected = sig_ein[i]
-    clusters[[i]]$smr = sig_smr[i]
-    clusters[[i]]$rr = sig_rr[i]
-    clusters[[i]]$loglikrat = sig_tstat[[i]]
-    clusters[[i]]$pvalue = sig_p[i]
-    clusters[[i]]$w = sig_w[[i]]
-  }
-  outlist = list(clusters = clusters, coords = coords)
-  class(outlist) = "scan"
-  return(outlist)
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+            coords = coords, cases = cases, pop = pop,
+            ex = ex, longlat = longlat, w = w,
+            d = NULL)
 }
 

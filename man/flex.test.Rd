@@ -2,7 +2,7 @@
 % Please edit documentation in R/flex.test.R
 \name{flex.test}
 \alias{flex.test}
-\title{Flexibly Shaped Spatial Scan Test}
+\title{Flexibly-shaped Spatial Scan Test}
 \usage{
 flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) *
   pop, type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
@@ -61,7 +61,7 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{flex.test} performs the flexibly shaped spatial scan test of Tango and Takahashi (2005).
+\code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
 }
 \details{
 The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).

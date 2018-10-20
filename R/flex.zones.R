@@ -15,61 +15,84 @@
 #' zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
 flex.zones = function(coords, w, k = 10, longlat = FALSE, 
                       cl = NULL, progress = TRUE) {
+  nn = knn(coords = coords, longlat = longlat, k = k)
   N = nrow(coords)
   
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
-  mynn = t(apply(d, 1, order)[seq_len(k), ])
-
+  fcall_list = list(X = seq_len(N), function(i, ...) {
+    scsg(nn[i, ], w[,nn[i,], drop = FALSE])
+  }, cl = cl)  
+  
+  # determine which apply function to use
   if (progress) {
     message("constructing connected subgraphs:")
     fcall = pbapply::pblapply
   } else {
     fcall = lapply
   }
-
-  fcall_list = list(X = as.list(1:N), function(i, ...) {
-    connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
-                        nn = mynn[i, ], k = k)
-  }, cl = cl)  
+  
+  # determine distinct zones
   czones = unlist(do.call(fcall, fcall_list), 
-                  use.names = FALSE, 
-                  recursive = FALSE)
+                  use.names = FALSE, recursive = FALSE)
   czones[distinct(czones)]
 }
 
-# takes a spatial adjacency matrix and the 
-# index of the locations in the spatial adjacency
-# matrix
-connected_subgraphs = function(w, nn, k) {
-  # storage list, of length k
-  listi = vector("list", k)
-  listi[[1]] = as.list(1)
-  
-  # index of neighbors for each region
-  nbi = apply(w, 2, function(x) which(x!=0))
-  
-  for(j in 2:k)
-  {
-    if(!is.null(listi[[j - 1]]))
-    {
-     newset = unique(unlist(
-      lapply(listi[[j - 1]], function(r)
-      {
-        sd = setdiff(unique(unlist(nbi[r])), r)
-        if(length(sd) > 0)
-        sapply(sd,
-               function(u) sort(c(r, u)), 
-               simplify = FALSE)
-      }), recursive = FALSE))
-     if(length(newset) > 0)
-     {
-       listi[[j]] = newset
-     }else
-     {
-       j = k + 1
-     }
-    }
-  }  
-  
-  return(sapply(unlist(listi, recursive = FALSE), function(l) nn[l]))
-}
+# flex.zones = function(coords, w, k = 10, longlat = FALSE, 
+#                       cl = NULL, progress = TRUE) {
+#   N = nrow(coords)
+#   
+#   d = sp::spDists(as.matrix(coords), longlat = longlat)
+#   mynn = t(apply(d, 1, order)[seq_len(k), ])
+# 
+#   if (progress) {
+#     message("constructing connected subgraphs:")
+#     fcall = pbapply::pblapply
+#   } else {
+#     fcall = lapply
+#   }
+# 
+#   fcall_list = list(X = as.list(1:N), function(i, ...) {
+#     connected_subgraphs(w = w[mynn[i, ], mynn[i, ]],
+#                         nn = mynn[i, ], k = k)
+#   }, cl = cl)  
+#   czones = unlist(do.call(fcall, fcall_list), 
+#                   use.names = FALSE, 
+#                   recursive = FALSE)
+#   czones[distinct(czones)]
+# }
+# 
+# # takes a spatial adjacency matrix and the 
+# # index of the locations in the spatial adjacency
+# # matrix
+# connected_subgraphs = function(w, nn, k) {
+#   # storage list, of length k
+#   listi = vector("list", k)
+#   listi[[1]] = as.list(1)
+#   
+#   # index of neighbors for each region
+#   nbi = apply(w, 2, function(x) which(x!=0))
+#   
+#   for(j in 2:k)
+#   {
+#     if(!is.null(listi[[j - 1]]))
+#     {
+#      newset = unique(unlist(
+#       lapply(listi[[j - 1]], function(r)
+#       {
+#         sd = setdiff(unique(unlist(nbi[r])), r)
+#         if(length(sd) > 0)
+#         sapply(sd,
+#                function(u) sort(c(r, u)), 
+#                simplify = FALSE)
+#       }), recursive = FALSE))
+#      if(length(newset) > 0)
+#      {
+#        listi[[j]] = newset
+#      }else
+#      {
+#        j = k + 1
+#      }
+#     }
+#   }  
+#   
+#   return(sapply(unlist(listi, recursive = FALSE), function(l) nn[l]))
+# }
