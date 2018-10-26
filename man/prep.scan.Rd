@@ -5,7 +5,7 @@
 \title{Prepare scan results}
 \usage{
 prep.scan(tobs, zones, pvalue, coords, cases, pop, ex, longlat, w = NULL,
-  d = NULL)
+  d = NULL, a = NULL, shape_all = NULL, angle_all = NULL)
 }
 \arguments{
 \item{tobs}{The observed test statistics for each zone}

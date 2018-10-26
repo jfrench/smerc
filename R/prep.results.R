@@ -12,10 +12,10 @@
 #' @keywords internal
 #' @return A scan object
 #' @export
-#'
-#' @examples
 prep.scan = function(tobs, zones, pvalue, coords, cases, 
-                     pop, ex, longlat, w = NULL, d = NULL) {
+                     pop, ex, longlat, w = NULL, d = NULL,
+                     a = NULL, shape_all = NULL,
+                     angle_all = NULL) {
   # order zones from largest to smallest test statistic
   ozones = order(tobs, decreasing = TRUE)
   zones = zones[ozones]
@@ -58,7 +58,22 @@ prep.scan = function(tobs, zones, pvalue, coords, cases,
   } else {
     sig_w = sapply(sig_regions, function(x) w[x, x, drop = FALSE], simplify = FALSE)  
   }
-
+  if (!is.null(a)) {
+  sig_shape = shape_all[ozones[sig]]
+  sig_angle = angle_all[ozones[sig]]
+  sig_minor = unname(sapply(seq_along(sig_regions), function(i) {
+    first = sig_regions[[i]][1]
+    last = utils::tail(sig_regions[[i]], 1)
+    dist.ellipse(coords[c(first, last),,drop = FALSE],
+                 shape = sig_shape[i],
+                 angle = sig_angle[i])[1,2]
+  }))
+  sig_major = sig_minor * sig_shape
+  sig_loglikrat = stat.poisson(sig_yin, ty - sig_yin, sig_ein, ty - sig_ein)
+  } else{
+    sig_loglikrat = sig_tstat
+  }
+  
   # reformat output for return
   clusters = vector("list", length(sig_regions))
   for (i in seq_along(clusters)) {
@@ -66,14 +81,22 @@ prep.scan = function(tobs, zones, pvalue, coords, cases,
     clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
     clusters[[i]]$r = sig_r[i]
     clusters[[i]]$max_dist = sig_max_dist[i]
+    if (!is.null(a)) {
+      clusters[[i]]$semiminor_axis = sig_minor[i]
+      clusters[[i]]$semimajor_axis = sig_major[i]
+      clusters[[i]]$angle = sig_angle[i]
+      clusters[[i]]$shape = sig_shape[i]
+    }
     clusters[[i]]$pop = sig_popin[i]
     clusters[[i]]$cases = sig_yin[i]
     clusters[[i]]$expected = sig_ein[i]
     clusters[[i]]$smr = sig_smr[i]
     clusters[[i]]$rr = sig_rr[i]
-    clusters[[i]]$loglikrat = sig_tstat[[i]]
+    clusters[[i]]$loglikrat = sig_loglikrat[i]
+    clusters[[i]]$test_statistic = sig_tstat[i]
     clusters[[i]]$pvalue = sig_p[i]
     clusters[[i]]$w = sig_w[[i]]
+
   }
   outlist = list(clusters = clusters, 
                  coords = coords,

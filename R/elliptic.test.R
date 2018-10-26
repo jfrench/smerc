@@ -57,7 +57,8 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = elliptic.test(coords = coords,
 #'                    cases = floor(nydf$cases),
-#'                    pop = nydf$pop, nsim = 49,
+#'                    pop = nydf$pop, ubpop = 0.1, 
+#'                    nsim = 49,
 #'                    alpha = 0.12,
 #'                    shape = 1.5, nangle = 4)
 elliptic.test = function(coords, cases, pop, 
@@ -82,52 +83,30 @@ elliptic.test = function(coords, cases, pop,
   coords = as.matrix(coords)
   N = nrow(coords)
   # short names
-  y = cases; e = ex
-  # compute inter-centroid distances
-  d = lapply(seq_along(shape), function(i) {
-    all.shape.dists(shape[i], nangle[i], coords)
-  })
-  if (length(shape) > 1) {
-    d = do.call(rbind, d)
-  } else {
-    d = d[[1]]
-  }
-  
-  # for each region, determine sorted nearest neighbors
-  # subject to population constraint
-  mynn = nnpop(d, pop, ubpop)
 
+  enn = elliptic.nn(coords, pop = pop, ubpop = ubpop,
+                    shape = shape, nangle = nangle)
   # determine the expected cases in/out each successive 
   # window, total number of cases, total population
-  ein = unlist(lapply(mynn, function(x) cumsum(e[x])))
-  ty = sum(y) # sum of all cases
+  ein = unlist(lapply(enn$nn, function(x) cumsum(ex[x])))
+  ty = sum(cases) # sum of all cases
   eout = ty - ein # counts expected outside the window
 
   # determine yin and yout for all windows for observed data
-  yin = unlist(lapply(mynn, function(x) cumsum(y[x])))
+  yin = unlist(lapply(enn$nn, function(x) cumsum(cases[x])))
 
-  # number of nns for each max ellipse
-  nnn = unlist(lapply(mynn, length))
-  
-  shape_all = rep(rep(shape, times = N * nangle), 
-                  times = nnn)
-  
-  angle_all = unlist(sapply(seq_along(nangle), function(i) {
-       seq(90, 270, len = nangle[i] + 1)[-(nangle[i] + 1)]
-     }))
-  angle_all = rep(rep(angle_all, each = N), times = nnn)
-  
   ### calculate scan statistics for observed data
   # of distance from observation centroid
-  tobs = scan.stat(yin, ein, eout, ty, type = type, a = a, 
-                   shape = shape_all)
+  tobs = stat.poisson(yin, ty - yin, ein, eout, a = a, 
+                      shape = enn$shape_all)
 
   # determine distinct zones
   pri = randtoolbox::get.primes(N)
-  wdup = duplicated(unlist(lapply(mynn, function(x) cumsum(log(pri[x])))))
+  wdup = duplicated(unlist(lapply(enn$nn, function(x) cumsum(log(pri[x])))))
   
-  # determine positions in mynn of all zones
-  allpos = cbind(rep(seq_along(mynn), times = nnn),
+  # determine positions in nn of all zones
+  nnn = unlist(lapply(enn$nn, length), use.names = FALSE)
+  allpos = cbind(rep(seq_along(enn$nn), times = nnn),
                  unlist(sapply(nnn, seq_len)))
  
   # remove zones with a test statistic of 0
@@ -135,107 +114,119 @@ elliptic.test = function(coords, cases, pop,
   # indistinct
   w0 = which(tobs == 0 | yin < min.cases | wdup)
   tobs = tobs[-w0]
-  shape_all = shape_all[-w0]
-  angle_all = angle_all[-w0]
+  shape_all = enn$shape_all[-w0]
+  angle_all = enn$angle_all[-w0]
   allpos = allpos[-w0,]
 
   # setup list for call
   if (nsim > 0) {
-    fcall = pbapply::pblapply
-    fcall_list = list(X = seq_len(nsim), FUN = function(i){
-      # simulate new data set
-      ysim = stats::rmultinom(1, size = ty, prob = e)
-      # cumulate the number of cases inside the successive windows
-      yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
-      # calculate all test statistics
-      tall = scan.stat(yin, ein, eout, ty, type, a = a, shape = shape)
-      # return max of statistics for simulation
-      return(max(tall))
-    }, cl = cl)
+  #   fcall = pbapply::pblapply
+  #   fcall_list = list(X = seq_len(nsim), FUN = function(i){
+  #     # simulate new data set
+  #     ysim = stats::rmultinom(1, size = ty, prob = e)
+  #     # cumulate the number of cases inside the successive windows
+  #     yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
+  #     # calculate all test statistics
+  #     tall = scan.stat(yin, ein, eout, ty, type, a = a, shape = shape)
+  #     # return max of statistics for simulation
+  #     return(max(tall))
+  #   }, cl = cl)
     
-    # use mclapply or lapply to find max statistics for each simulation
-    tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
+    # # use mclapply or lapply to find max statistics for each simulation
+    # tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
+    tsim = elliptic.sim(nsim = nsim, nn = enn$nn, ty = ty, 
+                        ex = ex, a = a, 
+                        shape_all = enn$shape_all,
+                        ein = ein, eout = eout, cl = cl)
     
     # p-values associated with these max statistics for each centroid
-    pvalue = unname(sapply(tobs, function(x) (sum(tsim >= x) + 1)/(nsim + 1)))
+    pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
   
-  # determine which potential clusters are significant
-  sigc = which(pvalue <= alpha, useNames = FALSE)
-
-  # if there are no significant clusters, return most likely cluster
-  if (length(sigc) == 0) {
-    sigc = which.max(tobs)
-    warning("No significant clusters.  Returning most likely cluster.")
-  }
-
-  allpos = allpos[sigc, ]
-  tobs = tobs[sigc]
-  shape_all = shape_all[sigc]
-  angle_all = angle_all[sigc]
-
-  # construct all zones
-  zones = apply(allpos, 1, function(x) mynn[[x[1]]][seq_len(x[2])])
-
-  # order zones by most significant
-  ozones = order(tobs, decreasing = TRUE)
-  zones = zones[ozones]
-
-  # determine significant non-overlapping clusters
-  sig = smacpod::noc(zones)
+  zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
   
-  # for the unique, non-overlapping clusters in order of significance,
-  # find the associated test statistic, p-value, centroid,
-  # window radius, cases in window, expected cases in window, 
-  # population in window, standarized mortality ratio, relative risk,
-  sig_regions = zones[sig]
-  sig_tstat = tobs[ozones[sig]]
-  sig_p = pvalue[ozones[sig]]
-  sig_shape = shape_all[ozones[sig]]
-  sig_angle = angle_all[ozones[sig]]
-  centroid = sapply(sig_regions, utils::head, n = 1)
-  boundary = sapply(sig_regions, utils::tail, n = 1)
-  sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
-  sig_yin = sapply(sig_regions, function(x) sum(y[x]))
-  sig_ein = sapply(sig_regions, function(x) sum(e[x]))
-  sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
-  sig_smr = sig_yin/sig_ein
-  sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-  sig_w = lapply(sig_regions, function(x) {
-    matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
-  })
-  sig_minor = unname(sapply(seq_along(sig_regions), function(i) {
-    first = sig_regions[[i]][1]
-    last = utils::tail(sig_regions[[i]], 1)
-    dist.ellipse(coords[c(first, last),,drop = FALSE],
-                 shape = sig_shape[i],
-                 angle = sig_angle[i])[1,2]
-  }))
-  sig_major = sig_minor * sig_shape
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+            coords = coords, cases = cases, pop = pop,
+            ex = ex, longlat = FALSE, w = NULL,
+            d = NULL, a = a, shape_all = shape_all,
+            angle_all = angle_all)
   
-  # reformat output for return
-  clusters = vector("list", length(sig_regions))
-  for (i in seq_along(clusters)) {
-    clusters[[i]]$locids = sig_regions[[i]]
-    clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
-    clusters[[i]]$semiminor.axis = sig_minor[i]
-    clusters[[i]]$semimajor.axis = sig_major[i]
-    clusters[[i]]$angle = sig_angle[i]
-    clusters[[i]]$shape = sig_shape[i]
-    clusters[[i]]$pop = sig_popin[i]
-    clusters[[i]]$cases = sig_yin[i]
-    clusters[[i]]$expected = sig_ein[i]
-#    clusters[[i]]$cases.per.100000 = sig_yin[i]/sig_popin[i] * 1e5
-    clusters[[i]]$smr = sig_smr[i]
-    clusters[[i]]$rr = sig_rr[i]
-    clusters[[i]]$test.statistic = sig_tstat[[i]]
-    clusters[[i]]$loglikrat = scan.stat(sig_yin[i], sig_ein[i], ty - sig_ein[i], ty, shape = sig_shape[i])
-    clusters[[i]]$pvalue = sig_p[i]
-    clusters[[i]]$w = sig_w[[i]]
-  }
-  outlist = list(clusters = clusters, coords = coords)
-  class(outlist) = "scan"
-  return(outlist)
+#   # determine which potential clusters are significant
+#   sigc = which(pvalue <= alpha, useNames = FALSE)
+# 
+#   # if there are no significant clusters, return most likely cluster
+#   if (length(sigc) == 0) {
+#     sigc = which.max(tobs)
+#     warning("No significant clusters.  Returning most likely cluster.")
+#   }
+# 
+#   allpos = allpos[sigc, ]
+#   tobs = tobs[sigc]
+#   shape_all = shape_all[sigc]
+#   angle_all = angle_all[sigc]
+# 
+#   # construct all zones
+#   zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
+# 
+#   # order zones by most significant
+#   ozones = order(tobs, decreasing = TRUE)
+#   zones = zones[ozones]
+# 
+#   # determine significant non-overlapping clusters
+#   sig = smacpod::noc(zones)
+#   
+#   # for the unique, non-overlapping clusters in order of significance,
+#   # find the associated test statistic, p-value, centroid,
+#   # window radius, cases in window, expected cases in window, 
+#   # population in window, standarized mortality ratio, relative risk,
+#   sig_regions = zones[sig]
+#   sig_tstat = tobs[ozones[sig]]
+#   sig_p = pvalue[ozones[sig]]
+#   sig_shape = shape_all[ozones[sig]]
+#   sig_angle = angle_all[ozones[sig]]
+#   centroid = sapply(sig_regions, utils::head, n = 1)
+#   boundary = sapply(sig_regions, utils::tail, n = 1)
+#   sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
+#   sig_yin = sapply(sig_regions, function(x) sum(y[x]))
+#   sig_ein = sapply(sig_regions, function(x) sum(e[x]))
+#   sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
+#   sig_smr = sig_yin/sig_ein
+#   sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
+#   sig_w = lapply(sig_regions, function(x) {
+#     matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
+#   })
+#   sig_minor = unname(sapply(seq_along(sig_regions), function(i) {
+#     first = sig_regions[[i]][1]
+#     last = utils::tail(sig_regions[[i]], 1)
+#     dist.ellipse(coords[c(first, last),,drop = FALSE],
+#                  shape = sig_shape[i],
+#                  angle = sig_angle[i])[1,2]
+#   }))
+#   sig_major = sig_minor * sig_shape
+#   
+#   # reformat output for return
+#   clusters = vector("list", length(sig_regions))
+#   for (i in seq_along(clusters)) {
+#     clusters[[i]]$locids = sig_regions[[i]]
+#     clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
+#     clusters[[i]]$semiminor.axis = sig_minor[i]
+#     clusters[[i]]$semimajor.axis = sig_major[i]
+#     clusters[[i]]$angle = sig_angle[i]
+#     clusters[[i]]$shape = sig_shape[i]
+#     clusters[[i]]$pop = sig_popin[i]
+#     clusters[[i]]$cases = sig_yin[i]
+#     clusters[[i]]$expected = sig_ein[i]
+# #    clusters[[i]]$cases.per.100000 = sig_yin[i]/sig_popin[i] * 1e5
+#     clusters[[i]]$smr = sig_smr[i]
+#     clusters[[i]]$rr = sig_rr[i]
+#     clusters[[i]]$test.statistic = sig_tstat[[i]]
+#     clusters[[i]]$loglikrat = scan.stat(sig_yin[i], sig_ein[i], ty - sig_ein[i], ty, shape = sig_shape[i])
+#     clusters[[i]]$pvalue = sig_p[i]
+#     clusters[[i]]$w = sig_w[[i]]
+#   }
+#   outlist = list(clusters = clusters, coords = coords)
+#   class(outlist) = "scan"
+#   return(outlist)
 }

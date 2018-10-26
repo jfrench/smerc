@@ -85,7 +85,7 @@ test_that("check accuracy for flex.test poisson with FlexScan original for NY da
   expect_equal(outp$clusters[[1]]$cases, 39)
   expect_equal(round(outp$clusters[[1]]$exp, 4), 16.3981)
   expect_equal(round(outp$clusters[[1]]$smr, 5), 2.37832)
-  expect_equal(round(outp$clusters[[1]]$loglik, 4), 11.6713)
+  expect_equal(round(outp$clusters[[1]]$test_statistic, 4), 11.6713)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outp$clusters[[1]]$pvalue, 0.01)
@@ -96,7 +96,7 @@ test_that("check accuracy for flex.test poisson with FlexScan original for NY da
   expect_equal(outp$clusters[[2]]$cases, 31)
   expect_equal(round(outp$clusters[[2]]$exp, 4), 13.4462)
   expect_equal(round(outp$clusters[[2]]$smr, 5), 2.30548)
-  expect_equal(round(outp$clusters[[2]]$loglik, 5), 8.62939)
+  expect_equal(round(outp$clusters[[2]]$test_statistic, 5), 8.62939)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outp$clusters[[2]]$pvalue, 0.05)
@@ -107,7 +107,7 @@ test_that("check accuracy for flex.test poisson with FlexScan original for NY da
   expect_equal(outp$clusters[[9]]$cases, 11)
   expect_equal(round(outp$clusters[[9]]$exp, 5), 4.76234)
   expect_equal(round(outp$clusters[[9]]$smr, 5), 2.30979)
-  expect_equal(round(outp$clusters[[9]]$loglik, 5), 3.00674)
+  expect_equal(round(outp$clusters[[9]]$test_statistic, 5), 3.00674)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outp$clusters[[9]]$pvalue, 1)
@@ -121,7 +121,7 @@ test_that("check accuracy for flex.test binomial with FlexScan original for NY d
   expect_equal(outb$clusters[[1]]$cases, 39)
   expect_equal(outb$clusters[[1]]$pop, 31420)
   expect_equal(round(outb$clusters[[1]]$smr, 5), 2.37832)
-  expect_equal(round(outb$clusters[[1]]$loglik, 4), 11.6797)
+  expect_equal(round(outb$clusters[[1]]$test_statistic, 4), 11.6797)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outb$clusters[[1]]$pvalue, 0.02)
@@ -132,7 +132,7 @@ test_that("check accuracy for flex.test binomial with FlexScan original for NY d
   expect_equal(outb$clusters[[2]]$cases, 31)
   expect_equal(outb$clusters[[2]]$pop, 25764)
   expect_equal(round(outb$clusters[[2]]$smr, 5), 2.30548)
-  expect_equal(round(outb$clusters[[2]]$loglik, 5), 8.63552)
+  expect_equal(round(outb$clusters[[2]]$test_statistic, 5), 8.63552)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outb$clusters[[2]]$pvalue, 0.09)
@@ -143,7 +143,7 @@ test_that("check accuracy for flex.test binomial with FlexScan original for NY d
   expect_equal(outb$clusters[[9]]$cases, 11)
   expect_equal(outb$clusters[[9]]$pop, 9125)
   expect_equal(round(outb$clusters[[9]]$smr, 5), 2.30979)
-  expect_equal(round(outb$clusters[[9]]$loglik, 5), 3.00889)
+  expect_equal(round(outb$clusters[[9]]$test_statistic, 5), 3.00889)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
   expect_equal(outb$clusters[[9]]$pvalue, 1)
