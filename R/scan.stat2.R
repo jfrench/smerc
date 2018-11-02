@@ -67,10 +67,10 @@
 #' scan_stat(yin = 41, ty = ty,
 #'           popin = 38999, tpop = tpop, type = "binomial")
 #' stat.binom(41, ty - 41, ty, 38999, tpop - 38999, tpop)
-scan_stat = function(yin, ty, ein = NULL, 
+scan_stat = function(yin, ty, ein = NULL, eout = NULL,
                      popin = NULL, tpop = NULL,
                      type = "poisson", a = 0, shape = 1,
-                     yout = NULL, eout = NULL, 
+                     yout = NULL,
                      popout = NULL) {
   arg_check_scan_stat(yin = yin, ty = ty, ein = ein, 
                       popin = popin, tpop = tpop, 

@@ -2,9 +2,9 @@
 % Please edit documentation in R/scan.sim.R
 \name{scan.sim}
 \alias{scan.sim}
-\title{Perform \code{scan.test} on simualated data}
+\title{Perform \code{scan.test} on simulated data}
 \usage{
-scan.sim(nsim = 1, zones, ty, ex, type = "poisson", ein = NULL,
+scan.sim(nsim = 1, nn, ty, ex, type = "poisson", ein = NULL,
   eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
   cl = NULL)
 }
@@ -12,8 +12,7 @@ scan.sim(nsim = 1, zones, ty, ex, type = "poisson", ein = NULL,
 \item{nsim}{A positive integer indicating the number of
 simulations to perform.}
 
-\item{zones}{A list of zones to compute the test statistic
-over for each simulated data set.}
+\item{nn}{A list of nearest neighbors in the format produced by \code{\link{nnpop}}.}
 
 \item{ty}{The total number of cases in the study area.}
 
@@ -22,8 +21,8 @@ The default is calculated under the constant risk
 hypothesis.}
 
 \item{type}{The type of scan statistic to implement.
-Default is \code{"poisson"}.  Only \code{"poisson"} is
-currently implemented.}
+The default is \code{"poisson"}, with the
+other choice being \code{"binomial"}.}
 
 \item{ein}{The expected number of cases in the zone.
 Conventionally, this is the estimated overall disease
@@ -59,18 +58,15 @@ function is meant to be used internally by the
 \code{\link{scan.test}} function, but is informative for
 better understanding the implementation of the test.
 }
-\details{
-\code{scan.sim} and \code{flex.sim} are identicial, as
-the only thing that changes is the \code{zones} considered.
-}
 \examples{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
-zones = scan.zones(coords, pop = nydf$pop, longlat = TRUE, ubpop = 0.1)
+d = sp::spDists(as.matrix(coords), longlat = TRUE)
+nn = nnpop(d, pop = nydf$pop, ubpop = 0.1)
 cases = floor(nydf$cases)
 ty = sum(cases)
 ex = ty/sum(nydf$pop) * nydf$pop
-yin = sapply(zones, function(x) sum(cases[x]))
-ein = sapply(zones, function(x) sum(ex[x]))
-tsim = scan.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
+yin = nn.cumsum(nn, cases)
+ein = nn.cumsum(nn, ex)
+tsim = scan.sim(nsim = 2, nn, ty, ex, ein = ein, eout = ty - ein)
 }

@@ -43,8 +43,8 @@ or an integer to indicate number of child-processes
 }
 
 \item{type}{The type of scan statistic to implement.
-Default is \code{"poisson"}.  Only \code{"poisson"} is
-currently implemented.}
+The default is \code{"poisson"}, with the
+other choice being \code{"binomial"}.}
 
 \item{min.cases}{The minimum number of cases required for
 a cluster.  The default is 2.}

@@ -14,8 +14,8 @@ The default is calculated under the constant risk
 hypothesis.}
 
 \item{type}{The type of scan statistic to implement.
-Default is \code{"poisson"}.  Only \code{"poisson"} is
-currently implemented.}
+The default is \code{"poisson"}, with the
+other choice being \code{"binomial"}.}
 
 \item{pop}{The population size associated with each
 region.}

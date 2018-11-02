@@ -6,8 +6,8 @@
 \alias{stat.binom}
 \title{Spatial scan statistic}
 \usage{
-scan_stat(yin, ty, ein = NULL, popin = NULL, tpop = NULL,
-  type = "poisson", a = 0, shape = 1, yout = NULL, eout = NULL,
+scan_stat(yin, ty, ein = NULL, eout = NULL, popin = NULL,
+  tpop = NULL, type = "poisson", a = 0, shape = 1, yout = NULL,
   popout = NULL)
 
 stat.poisson(yin, yout, ein, eout, a = 0, shape = 1)
@@ -23,6 +23,10 @@ stat.binom(yin, yout, ty, popin, popout, tpop)
 Conventionally, this is the estimated overall disease
 risk across the study area, multiplied by the total
 population size of the zone.}
+
+\item{eout}{The expected number of cases outside the
+zone.  This should be \code{ty - ein} and is computed
+automatically if not provided.}
 
 \item{popin}{The total population in the zone.}
 
@@ -41,10 +45,6 @@ ellipse.  The default is 1, meaning it is a circle.}
 
 \item{yout}{The observed number of cases outside the
 zone.  This should be \code{ty - yin} and is computed
-automatically if not provided.}
-
-\item{eout}{The expected number of cases outside the
-zone.  This should be \code{ty - ein} and is computed
 automatically if not provided.}
 
 \item{popout}{The population outside the zone.  This

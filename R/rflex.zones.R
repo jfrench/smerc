@@ -8,14 +8,10 @@
 #' less with the constraint that the middle p-value of each
 #' region must be less than \code{alpha1}.
 #'
-#' @inheritParams flex.test
+#' @inheritParams rflex.test
 #' @param nn An n by k matrix providing the k nearest
 #'   neighbors of each region, presumably produced by the
 #'   \code{\link{knn}} function.
-#' @param alpha1 The middle p-value threshold.
-#' @param type The parametric model to use for the test
-#'   statistic.  The default is \code{"poisson"}, with the
-#'   other choice being \code{"binomial"}.
 #' @param pop The population size associated with each
 #'   region.  The default is \code{NULL} since this argument
 #'   is only needed for \code{type = "binomial"}.

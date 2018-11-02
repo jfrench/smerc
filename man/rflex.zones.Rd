@@ -22,8 +22,8 @@ hypothesis.}
 
 \item{alpha1}{The middle p-value threshold.}
 
-\item{type}{The parametric model to use for the test
-statistic.  The default is \code{"poisson"}, with the
+\item{type}{The type of scan statistic to implement.
+The default is \code{"poisson"}, with the
 other choice being \code{"binomial"}.}
 
 \item{pop}{The population size associated with each

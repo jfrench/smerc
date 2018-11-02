@@ -4,21 +4,9 @@
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @param k An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10
-#' @inheritParams scan.test
-#' @inheritParams uls.test
+#' @inheritParams rflex.test
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
-#' \item{coords}{The centroid of the significant clusters.}
-#' \item{r}{The radius of the window of the clusters.}
-#' \item{pop}{The total population in the cluser window.}
-#' \item{cases}{The observed number of cases in the cluster window.}
-#' \item{expected}{The expected number of cases in the cluster window.}
-#' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-#' \item{rr}{Relative risk in the cluster window.}
-#' \item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-#' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
-#' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
 #' @export
 #' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 

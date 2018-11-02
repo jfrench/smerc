@@ -4,8 +4,10 @@
 #' 
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
-#' @inheritParams flex.test
-#' @inheritParams rflex.zones
+#' @inheritParams scan.test
+#' @param w A binary spatial adjacency matrix for the regions.
+#' @param k An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10
+#' @param alpha1 The middle p-value threshold.
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
 #' \item{coords}{The centroid of the significant clusters.}

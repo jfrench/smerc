@@ -26,8 +26,8 @@ The default is calculated under the constant risk
 hypothesis.}
 
 \item{type}{The type of scan statistic to implement.
-Default is \code{"poisson"}.  Only \code{"poisson"} is
-currently implemented.}
+The default is \code{"poisson"}, with the
+other choice being \code{"binomial"}.}
 
 \item{nsim}{The number of simulations from which to
 compute the p-value.}
@@ -48,17 +48,7 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
-\item{coords}{The centroid of the significant clusters.}
-\item{r}{The radius of the window of the clusters.}
-\item{pop}{The total population in the cluser window.}
-\item{cases}{The observed number of cases in the cluster window.}
-\item{expected}{The expected number of cases in the cluster window.}
-\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-\item{rr}{Relative risk in the cluster window.}
-\item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-\item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
-The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 }
 \description{
 \code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
