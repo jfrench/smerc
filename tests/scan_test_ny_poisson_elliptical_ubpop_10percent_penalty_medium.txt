@@ -4,7 +4,7 @@
                                  _____________________________
 
 
-Program run on: Mon Nov 05 10:18:03 2018
+Program run on: Mon Nov 05 11:31:03 2018
 
 Purely Spatial analysis
 scanning for clusters with high rates
@@ -236,6 +236,6 @@ Run Options
   Logging Analysis  : No
 _______________________________________________________________________________________________
 
-Program completed  : Mon Nov 05 10:18:05 2018
+Program completed  : Mon Nov 05 11:31:05 2018
 Total Running Time : 2 seconds
 Processor Usage    : 4 processors

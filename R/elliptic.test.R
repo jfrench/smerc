@@ -86,8 +86,8 @@ elliptic.test = function(coords, cases, pop,
   
   # determine positions in nn of all zones
   nnn = unlist(lapply(enn$nn, length), use.names = FALSE)
-  allpos = cbind(rep(seq_along(enn$nn), times = nnn),
-                 unlist(sapply(nnn, seq_len)))
+  # allpos = cbind(rep(seq_along(enn$nn), times = nnn),
+  #               unlist(sapply(nnn, seq_len)))
  
   # remove zones with a test statistic of 0
   # or fewer than minimum number of cases or
@@ -96,7 +96,7 @@ elliptic.test = function(coords, cases, pop,
   tobs = tobs[-w0]
   shape_all = enn$shape_all[-w0]
   angle_all = enn$angle_all[-w0]
-  allpos = allpos[-w0,]
+  # allpos = allpos[-w0,]
 
   # setup list for call
   if (nsim > 0) {
@@ -111,7 +111,25 @@ elliptic.test = function(coords, cases, pop,
     pvalue = rep(1, length(tobs))
   }
   
-  zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
+  # construct all zones
+  # zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
+  zones = unlist(lapply(enn$nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
+  zones = zones[-w0]
+  
+  # determine which potential clusters are significant
+  sigc = which(pvalue <= alpha, useNames = FALSE)
+
+  # if there are no significant clusters, return most likely cluster
+  if (length(sigc) == 0) {
+    sigc = which.max(tobs)
+    warning("No significant clusters.  Returning most likely cluster.")
+  }
+
+  tobs = tobs[sigc]
+  shape_all = shape_all[sigc]
+  angle_all = angle_all[sigc]
+  pvalue = pvalue[sigc]
+  zones = zones[sigc]
   
   prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
             coords = coords, cases = cases, pop = pop,

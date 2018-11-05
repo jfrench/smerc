@@ -158,8 +158,7 @@ test_that("check accuracy for scan.test with SatScan for NY data", {
   expect_equal(round(out$clusters[[2]]$r, 2), 0.13)
   expect_equal(out$clusters[[2]]$pop, 34083)
   expect_equal(out$clusters[[2]]$cases, 38)
-  # something's off with satscan on this one
-  # expect_equal(round(out$clusters[[2]]$exp, 2), 34083)
+  expect_equal(round(out$clusters[[2]]$exp, 2), 17.79)
   expect_equal(round(out$clusters[[2]]$smr, 2), 2.14)
   expect_equal(round(out$clusters[[2]]$rr, 2), 2.22)
   expect_equal(round(out$clusters[[2]]$loglik, 6), 9.019716)
