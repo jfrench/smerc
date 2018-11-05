@@ -10,9 +10,10 @@
 #'   with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export
-#' @references Kulldorff, M. (1997) A spatial scan
-#'   statistic. Communications in Statistics -- Theory and
-#'   Methods 26, 1481-1496.
+#' @references Kulldorff, M. (1997) A spatial
+#' scan statistic. Communications in Statistics - Theory and
+#' Methods, 26(6): 1481-1496,
+#' <doi:10.1080/03610929708831995>
 #' @examples 
 #' data(nydf)
 #' coords = cbind(nydf$longitude, nydf$latitude)

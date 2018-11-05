@@ -39,9 +39,10 @@ zones = scan.zones(coords = coords, pop = nydf$pop,
                    ubpop = 0.1, longlat = TRUE)
 }
 \references{
-Kulldorff, M. (1997) A spatial scan
-  statistic. Communications in Statistics -- Theory and
-  Methods 26, 1481-1496.
+Kulldorff, M. (1997) A spatial
+scan statistic. Communications in Statistics - Theory and
+Methods, 26(6): 1481-1496,
+<doi:10.1080/03610929708831995>
 }
 \author{
 Joshua French

@@ -21,9 +21,9 @@ over for each simulated data set.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement.
-The default is \code{"poisson"}, with the
-other choice being \code{"binomial"}.}
+\item{type}{The type of scan statistic to implement. The
+default is \code{"poisson"}, with the other choice
+being \code{"binomial"}.}
 
 \item{ein}{The expected number of cases in the zone.
 Conventionally, this is the estimated overall disease

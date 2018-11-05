@@ -18,13 +18,22 @@ region.}
 total population to consider for a cluster.}
 }
 \value{
-Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
+Returns a list of zones to consider for
+  clustering.  Each element of the list contains a vector
+  with the location ids of the regions in that zone.
 }
 \description{
-\code{uls.zones} determines the unique zones obtained by implementing the ULS (Upper Level Set) method of Patil and Taillie (2004).
+\code{uls.zones} determines the unique zones obtained by
+implementing the ULS (Upper Level Set) test of Patil
+and Taillie (2004).  Note: the algorithm implicitly
+assumes the estimated rates are all unique.  If this
+is not true, the results may differ slightly from the
+canonical algorithm proposed by Patil and Taillie (2004).
 }
 \details{
-The zones returned must have a total population less than ubpop * the total population of all regions in the study area.
+The zones returned must have a total population less than
+\code{ubpop * sum(pop)} of all regions in the study
+area.
 }
 \examples{
 data(nydf)
@@ -32,7 +41,9 @@ data(nyw)
 uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
 }
 \references{
-Patil, G. P., and Taillie, C. (2004). Upper level set scan statistic for detecting arbitrarily shaped hotspots. Environmental and Ecological Statistics, 11(2), 183-197.
+Patil, G.P. & Taillie, C. Environmental and
+  Ecological Statistics (2004) 11: 183.
+  <doi:10.1023/B:EEST.0000027208.48919.7e>
 }
 \author{
 Joshua French

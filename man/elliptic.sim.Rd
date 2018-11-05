@@ -2,7 +2,7 @@
 % Please edit documentation in R/elliptic.sim.R
 \name{elliptic.sim}
 \alias{elliptic.sim}
-\title{Perform \code{elliptic.test} on simualated data}
+\title{Perform \code{elliptic.test} on simulated data}
 \usage{
 elliptic.sim(nsim = 1, nn, ty, ex, a, shape_all, ein, eout, cl = NULL)
 }

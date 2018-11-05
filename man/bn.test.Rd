@@ -20,7 +20,7 @@ region.}
 minimum number of cases to include in each window.}
 
 \item{alpha}{The significance level to determine whether
-a cluster is signficant.  Default is \code{0.10}.}
+a cluster is signficant.  Default is 0.10.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used.If

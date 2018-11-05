@@ -1,4 +1,4 @@
-#' Perform \code{elliptic.test} on simualated data
+#' Perform \code{elliptic.test} on simulated data
 #'
 #' \code{elliptic.sim} efficiently performs
 #' \code{\link{elliptic.test}} on a simulated data set.  The
@@ -6,7 +6,7 @@
 #' \code{\link{elliptic.test}} function, but is informative for
 #' better understanding the implementation of the test.
 #'
-#' @inheritParams flex.sim
+#' @inheritParams scan.sim
 #' @param nn A list of nearest neighbors produced by \code{\link{elliptic.nn}}.
 #' @inheritParams elliptic.test
 #' @param shape_all A vector of the shapes associated with all of 

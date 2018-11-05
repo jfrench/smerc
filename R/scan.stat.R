@@ -23,8 +23,10 @@
 #' @author Joshua French
 #' @export
 #' @references 
-#' Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
-#' @examples 
+#' Kulldorff, M. (1997) A spatial
+#' scan statistic. Communications in Statistics - Theory and
+#' Methods, 26(6): 1481-1496,
+#' <doi:10.1080/03610929708831995>#' @examples 
 #' # statistic for most likely cluster of 
 #' # New York leukemia data
 #' scan.stat(106, 62.13, 552 - 62.13, 552)

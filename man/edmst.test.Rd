@@ -27,7 +27,7 @@ hypothesis.}
 compute the p-value.}
 
 \item{alpha}{The significance level to determine whether
-a cluster is signficant.  Default is \code{0.10}.}
+a cluster is signficant.  Default is 0.10.}
 
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}

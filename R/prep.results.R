@@ -16,6 +16,12 @@ prep.scan = function(tobs, zones, pvalue, coords, cases,
                      pop, ex, longlat, w = NULL, d = NULL,
                      a = NULL, shape_all = NULL,
                      angle_all = NULL) {
+  if (length(tobs) != length(zones)) {
+    stop("length(tobs) != length(zones)")
+  }
+  if (length(tobs) != length(pvalue)) {
+    stop("length(tobs) != length(pvalue)")
+  }
   # order zones from largest to smallest test statistic
   ozones = order(tobs, decreasing = TRUE)
   zones = zones[ozones]
@@ -96,11 +102,10 @@ prep.scan = function(tobs, zones, pvalue, coords, cases,
     clusters[[i]]$test_statistic = sig_tstat[i]
     clusters[[i]]$pvalue = sig_p[i]
     clusters[[i]]$w = sig_w[[i]]
-
   }
   outlist = list(clusters = clusters, 
                  coords = coords,
-                 number_of_locations = length(cases),
+                 number_of_regions = length(cases),
                  total_population = tpop,
                  total_cases = ty,
                  cases_per_100k = ty/tpop * 1e5)

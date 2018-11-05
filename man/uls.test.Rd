@@ -6,7 +6,7 @@
 \usage{
 uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL)
+  cl = NULL, type = "poisson")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -27,7 +27,7 @@ hypothesis.}
 compute the p-value.}
 
 \item{alpha}{The significance level to determine whether
-a cluster is signficant.  Default is \code{0.10}.}
+a cluster is signficant.  Default is 0.10.}
 
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
@@ -43,6 +43,10 @@ A cluster object created by \code{\link[parallel]{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
+
+\item{type}{The type of scan statistic to implement. The
+default is \code{"poisson"}, with the other choice
+being \code{"binomial"}.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
@@ -67,23 +71,17 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 out = uls.test(coords = coords, cases = floor(nydf$cases), 
-                  pop = nydf$pop, w = nyw, 
-                  alpha = 0.12, longlat = TRUE,
-                  nsim = 10, ubpop = 0.1)
-## plot output for new york state
-# specify desired argument values
-mapargs = list(database = "state", region = "new york", 
-xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
-# needed for "state" database (unless you execute library(maps))
-data(stateMapEnv, package = "maps") 
-plot(out, usemap = TRUE, mapargs = mapargs)
-
+               pop = nydf$pop, w = nyw, 
+               alpha = 0.05, longlat = TRUE,
+               nsim = 9, ubpop = 0.5)
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))
 }
 \references{
-Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Patil, G.P. & Taillie, C. Environmental and
+  Ecological Statistics (2004) 11: 183.
+  <doi:10.1023/B:EEST.0000027208.48919.7e>
 }
 \seealso{
 \code{\link{scan.stat}}, \code{\link{plot.scan}}, 

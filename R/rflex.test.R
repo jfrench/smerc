@@ -98,6 +98,7 @@ rflex.test = function(coords, cases, pop, w, k = 50,
   # only keep significant clusters
   zones = zones[sigc]
   tobs = tobs[sigc]
+  pvalue = pvalue[sigc]
   
   prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
             coords = coords, cases = cases, pop = pop,

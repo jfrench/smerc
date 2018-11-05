@@ -21,8 +21,8 @@ Returns a vector with colors for each region/centroid for the data set used to c
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases), 
-                  pop = nydf$pop, alpha = 0.12, longlat = TRUE,
-                  nsim = 49)
+                pop = nydf$pop, alpha = 0.12, longlat = TRUE,
+                nsim = 9)
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))

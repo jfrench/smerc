@@ -28,12 +28,20 @@ A list with all distinct zones, the associated
 shape parameters, and the associated angle parameters.
 }
 \description{
-Determine zones for \code{elliptic.test}
+\code{elliptic.zones} constructs the elliptical zones
+for \code{\link{elliptic.test}}.
 }
 \examples{
+\dontrun{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = elliptic.zones(coords = coords, pop = nydf$pop,
-                     shape = 1.5, nangle = 4)
+                     shape = 1.5, nangle = 4)}
 
+}
+\references{
+Kulldorff, M., Huang, L., Pickle,
+L. and Duczmal, L. (2006) An elliptic spatial scan
+statistic. Statististics in Medicine, 25:3929-3943.
+<doi:10.1002/sim.2490>
 }

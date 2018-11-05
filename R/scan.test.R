@@ -1,15 +1,12 @@
 #' Spatial Scan Test
 #'
-#' \code{scan.test} performs the spatial scan test of
-#' Kulldorf (1997).
-#'
-#' The test is performed using the spatial scan test based
-#' on the Poisson test statistic and a fixed number of
-#' cases.  Candidate zones are circular and extend from the
-#' observed data locations.  The clusters returned are
+#' \code{scan.test} performs the original spatial scan test
+#' of Kulldorf (1997) based on a fixed number of cases.
+#' Candidate zones are circular and extend from the observed
+#' region centroids.  The clusters returned are
 #' non-overlapping, ordered from most significant to least
-#' significant.  The first cluster is the most  cflikely to
-#' be a cluster.  If no significant clusters are found, then
+#' significant.  The first cluster is the most  likely to be
+#' a cluster.  If no significant clusters are found, then
 #' the most likely cluster is returned (along with a
 #' warning).
 #'
@@ -26,59 +23,39 @@
 #' @param ubpop The upperbound of the proportion of the
 #'   total population to consider for a cluster.
 #' @param alpha The significance level to determine whether
-#'   a cluster is signficant.  Default is \code{0.10}.
+#'   a cluster is signficant.  Default is 0.10.
 #' @param longlat The default is \code{FALSE}, which
 #'   specifies that Euclidean distance should be used.If
 #'   \code{longlat} is \code{TRUE}, then the great circle
 #'   distance is used to calculate the intercentroid
 #'   distance.
-#' @param type The type of scan statistic to implement.
-#'   The default is \code{"poisson"}, with the
-#'   other choice being \code{"binomial"}.
+#' @param type The type of scan statistic to implement. The
+#'   default is \code{"poisson"}, with the other choice
+#'   being \code{"binomial"}.
 #' @param min.cases The minimum number of cases required for
 #'   a cluster.  The default is 2.
 #' @inheritParams pbapply::pblapply
 #'
-#' @return Returns a list of length two of class scan. The
-#'   first element (clusters) is a list containing the
-#'   significant, non-overlappering clusters, and has the
-#'   the following components: \item{locids}{The location
-#'   ids of regions in a significant cluster.}
-#'   \item{coords}{The centroid of the significant
-#'   clusters.} \item{r}{The radius of the cluster (the
-#'   largest intercentroid distance for regions in the
-#'   cluster).} \item{pop}{The total population of the
-#'   regions in the cluster.} \item{cases}{The observed
-#'   number of cases in the cluster.} \item{expected}{The
-#'   expected number of cases in the cluster.}
-#'   \item{smr}{Standarized mortaility ratio
-#'   (observed/expected) in the cluster.} \item{rr}{Relative
-#'   risk in the cluster.} \item{loglikrat}{The
-#'   loglikelihood ratio for the cluster (i.e., the log of
-#'   the test statistic).} \item{pvalue}{The pvalue of the
-#'   test statistic associated with the cluster.} The second
-#'   element of the list is the centroid coordinates.  This
-#'   is needed for plotting purposes.
+#' @return Returns a \code{scan} object.
 #' @seealso \code{\link{scan.stat}},
 #'   \code{\link{plot.scan}}, \code{\link{uls.test}},
 #'   \code{\link{flex.test}}, \code{\link{dmst.test}},
 #'   \code{\link{bn.test}}
 #' @author Joshua French
 #' @export
-#' @references 
-#' Kulldorff, M. (1997) A spatial
-#'   scan statistic. Communications in Statistics -- Theory
-#'   and Methods 26, 1481-1496.
-#' 
-#' Waller, L.A. and Gotway, C.A. (2005).
-#'   Applied Spatial Statistics for Public Health Data.
-#'   Hoboken, NJ: Wiley.  
+#' @references Kulldorff, M. (1997) A spatial scan
+#'   statistic. Communications in Statistics - Theory and
+#'   Methods, 26(6): 1481-1496,
+#'   <doi:10.1080/03610929708831995>
+#'
+#' Waller, L.A. and Gotway, C.A. (2005). Applied Spatial
+#' Statistics for Public Health Data. Hoboken, NJ: Wiley.
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 49,
-#'                 alpha = 0.12, longlat = TRUE)
+#'                 pop = nydf$pop, nsim = 0,
+#'                 alpha = 1, longlat = TRUE)
 #' ## plot output for new york state
 #' # specify desired argument values
 #' mapargs = list(database = "state", region = "new york",
@@ -119,19 +96,17 @@ scan.test = function(coords, cases, pop,
   # convert to proper format
   coords = as.matrix(coords)
   N = nrow(coords)
-  # short names
-  y = cases; e = ex
   # compute inter-centroid distances
   d = sp::spDists(coords, longlat = longlat)
   
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
-  nn = nnpop(d, pop, ubpop)
+  nn = scan.nn(d, pop, ubpop)
 
   # determine total number of cases in each successive 
   # window, total number of cases
   yin = nn.cumsum(nn, cases)
-  ty = sum(y) # sum of all cases
+  ty = sum(cases) # sum of all cases
   
   # compute test statistics for observed data
   if (type == "poisson") {
@@ -166,7 +141,7 @@ scan.test = function(coords, cases, pop,
   tobs = tobs[-w0]
   
   # compute test statistics for simulated data
-  if (nsim > 1) {
+  if (nsim > 0) {
     message("computing statistics for simulated data:")
     tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
                     ex = ex,
@@ -190,6 +165,7 @@ scan.test = function(coords, cases, pop,
   # only keep significant clusters
   zones = zones[sigc]
   tobs = tobs[sigc]
+  pvalue = pvalue[sigc]
   
   prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
             coords = coords, cases = cases, pop = pop,

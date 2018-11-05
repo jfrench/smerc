@@ -11,20 +11,17 @@
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = scan.test(coords = coords, cases = floor(nydf$cases), 
-#'                   pop = nydf$pop, alpha = 0.12, longlat = TRUE,
-#'                   nsim = 49)
+#'                 pop = nydf$pop, alpha = 0.12, longlat = TRUE,
+#'                 nsim = 9)
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-
-color.clusters = function(x, col = 2:(length(x$clusters) + 1))
-{
-  if(class(x) != "scan") stop("x should be an object of class scan.")
-  if(length(x$clusters) != length(col)) stop("The number of colors must match the number of clusters.")
+color.clusters = function(x, col = 2:(length(x$clusters) + 1)) {
+  if (class(x) != "scan") stop("x should be an object of class scan.")
+  if (length(x$clusters) != length(col)) stop("The number of colors must match the number of clusters.")
   
   mycol = numeric(nrow(x$coords))
-  for(i in seq_along(x$clusters))
-  {
+  for (i in seq_along(x$clusters)) {
     mycol[x$clusters[[i]]$loc] = col[i]
   }
   return(mycol)

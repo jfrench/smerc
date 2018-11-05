@@ -1,8 +1,10 @@
 #' Determine nearest neighbors
 #' 
-#' \code{nnpop} determines the nearest neighbors for a set
-#' of observations based on the distance matrix according to
-#' a population upperbound.
+#' \code{scan.nn} and \code{nnpop} determine the nearest 
+#' neighbors for a set of observations based on the 
+#' distance matrix according to a population upperbound.
+#' These neighbors are directly related to the zones 
+#' considered in \code{\link{scan.test}}.
 #' 
 #' This function determines the nearest neighbors of each
 #' centroid based on the intercentroid distance.  The number
@@ -15,23 +17,20 @@
 #' @param d An \eqn{n\times n} square distance matrix
 #'   containing the intercentroid distance between the
 #'   \eqn{n} region centroids.
-#' @param pop A vector of length \eqn{n} containing the
-#'   population values of the \eqn{n} region centroids.
-#' @param ubpop A proportion between 0 and 1 containing the
-#'   upperbound for the proportion of total population
-#'   contained collectively among a set of nearest
-#'   neighbors.
+#' @inheritParams scan.test
 #'   
-#' @return Returns the indexes of the nearest neighbors as a
-#'   list.  For each element of the list, the indexes are
+#' @return Returns the indices of the nearest neighbors as a
+#'   list.  For each element of the list, the indices are
 #'   ordered from nearest to farthest from each centroid.
 #' @author Joshua French
 #' @export
+#' @aliases nnpop
+#' @rdname scan.nn
 #' @examples 
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' d = as.matrix(dist(coords))
-#' nnout = nnpop(d, pop = nydf$pop, ubpop = 0.5)
+#' nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
 nnpop = function(d, pop, ubpop) {
   tpop = sum(pop) # total population
   # order distances for each region
@@ -51,3 +50,7 @@ nnpop = function(d, pop, ubpop) {
                  x[which(csum <= tpop*ubpop)] 
                }))
 }
+
+#' @export
+#' @rdname scan.nn
+scan.nn = nnpop

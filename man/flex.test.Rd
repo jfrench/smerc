@@ -25,15 +25,15 @@ region.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement.
-The default is \code{"poisson"}, with the
-other choice being \code{"binomial"}.}
+\item{type}{The type of scan statistic to implement. The
+default is \code{"poisson"}, with the other choice
+being \code{"binomial"}.}
 
 \item{nsim}{The number of simulations from which to
 compute the p-value.}
 
 \item{alpha}{The significance level to determine whether
-a cluster is signficant.  Default is \code{0.10}.}
+a cluster is signficant.  Default is 0.10.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used.If

@@ -19,46 +19,26 @@
 #'   consider for each shape.
 #' @param a The penalty for the spatial scan statistic.  The
 #'   default is 0.5.
-#' @inheritParams pbapply::pblapply
 #'
-#' @return Returns a list of length two of class scan. The
-#'   first element (clusters) is a list containing the
-#'   significant, non-overlappering clusters, and has the
-#'   the following components: \item{locids}{The location
-#'   ids of regions in a significant cluster.}
-#'   \item{coords}{The centroid of the significant
-#'   clusters.} \item{r}{The radius of the cluster (the
-#'   largest intercentroid distance for regions in the
-#'   cluster).} \item{pop}{The total population of the
-#'   regions in the cluster.} \item{cases}{The observed
-#'   number of cases in the cluster.} \item{expected}{The
-#'   expected number of cases in the cluster.}
-#'   \item{smr}{Standarized mortaility ratio
-#'   (observed/expected) in the cluster.} \item{rr}{Relative
-#'   risk in the cluster.} \item{loglikrat}{The
-#'   loglikelihood ratio for the cluster (i.e., the log of
-#'   the test statistic).} \item{pvalue}{The pvalue of the
-#'   test statistic associated with the cluster.} The second
-#'   element of the list is the centroid coordinates.  This
-#'   is needed for plotting purposes.
-#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}
+#' @inherit scan.test return params
 #' @author Joshua French
 #' @export
 #' @references Kulldorff, M. (1997) A spatial scan
-#' statistic. Communications in Statistics -- Theory and
-#' Methods, 26:1481-1496. 
+#'   statistic. Communications in Statistics - Theory and
+#'   Methods, 26(6): 1481-1496,
+#'   <doi:10.1080/03610929708831995> 
 #' 
 #' Kulldorff, M., Huang, L., Pickle,
 #' L. and Duczmal, L. (2006) An elliptic spatial scan
 #' statistic. Statististics in Medicine, 25:3929-3943.
-#' doi:10.1002/sim.2490
+#' <doi:10.1002/sim.2490>
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = elliptic.test(coords = coords,
 #'                    cases = floor(nydf$cases),
 #'                    pop = nydf$pop, ubpop = 0.1, 
-#'                    nsim = 49,
+#'                    nsim = 2,
 #'                    alpha = 0.12,
 #'                    shape = 1.5, nangle = 4)
 elliptic.test = function(coords, cases, pop, 
@@ -120,20 +100,6 @@ elliptic.test = function(coords, cases, pop,
 
   # setup list for call
   if (nsim > 0) {
-  #   fcall = pbapply::pblapply
-  #   fcall_list = list(X = seq_len(nsim), FUN = function(i){
-  #     # simulate new data set
-  #     ysim = stats::rmultinom(1, size = ty, prob = e)
-  #     # cumulate the number of cases inside the successive windows
-  #     yin = unlist(lapply(mynn, function(x) cumsum(ysim[x])))
-  #     # calculate all test statistics
-  #     tall = scan.stat(yin, ein, eout, ty, type, a = a, shape = shape)
-  #     # return max of statistics for simulation
-  #     return(max(tall))
-  #   }, cl = cl)
-    
-    # # use mclapply or lapply to find max statistics for each simulation
-    # tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
     tsim = elliptic.sim(nsim = nsim, nn = enn$nn, ty = ty, 
                         ex = ex, a = a, 
                         shape_all = enn$shape_all,

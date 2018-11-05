@@ -2,32 +2,35 @@
 % Please edit documentation in R/nnpop.R
 \name{nnpop}
 \alias{nnpop}
+\alias{scan.nn}
 \title{Determine nearest neighbors}
 \usage{
 nnpop(d, pop, ubpop)
+
+scan.nn(d, pop, ubpop)
 }
 \arguments{
 \item{d}{An \eqn{n\times n} square distance matrix
 containing the intercentroid distance between the
 \eqn{n} region centroids.}
 
-\item{pop}{A vector of length \eqn{n} containing the
-population values of the \eqn{n} region centroids.}
+\item{pop}{The population size associated with each
+region.}
 
-\item{ubpop}{A proportion between 0 and 1 containing the
-upperbound for the proportion of total population
-contained collectively among a set of nearest
-neighbors.}
+\item{ubpop}{The upperbound of the proportion of the
+total population to consider for a cluster.}
 }
 \value{
-Returns the indexes of the nearest neighbors as a
-  list.  For each element of the list, the indexes are
+Returns the indices of the nearest neighbors as a
+  list.  For each element of the list, the indices are
   ordered from nearest to farthest from each centroid.
 }
 \description{
-\code{nnpop} determines the nearest neighbors for a set
-of observations based on the distance matrix according to
-a population upperbound.
+\code{scan.nn} and \code{nnpop} determine the nearest 
+neighbors for a set of observations based on the 
+distance matrix according to a population upperbound.
+These neighbors are directly related to the zones 
+considered in \code{\link{scan.test}}.
 }
 \details{
 This function determines the nearest neighbors of each
@@ -42,7 +45,7 @@ neighbors are ordered from nearest to farthest.
 data(nydf)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
 d = as.matrix(dist(coords))
-nnout = nnpop(d, pop = nydf$pop, ubpop = 0.5)
+nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
 }
 \author{
 Joshua French

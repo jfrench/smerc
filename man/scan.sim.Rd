@@ -12,7 +12,7 @@ scan.sim(nsim = 1, nn, ty, ex, type = "poisson", ein = NULL,
 \item{nsim}{A positive integer indicating the number of
 simulations to perform.}
 
-\item{nn}{A list of nearest neighbors in the format produced by \code{\link{nnpop}}.}
+\item{nn}{A list of nearest neighbors produced by \code{\link{nnpop}}.}
 
 \item{ty}{The total number of cases in the study area.}
 
@@ -20,9 +20,9 @@ simulations to perform.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement.
-The default is \code{"poisson"}, with the
-other choice being \code{"binomial"}.}
+\item{type}{The type of scan statistic to implement. The
+default is \code{"poisson"}, with the other choice
+being \code{"binomial"}.}
 
 \item{ein}{The expected number of cases in the zone.
 Conventionally, this is the estimated overall disease
@@ -62,11 +62,11 @@ better understanding the implementation of the test.
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 d = sp::spDists(as.matrix(coords), longlat = TRUE)
-nn = nnpop(d, pop = nydf$pop, ubpop = 0.1)
+nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
 cases = floor(nydf$cases)
 ty = sum(cases)
 ex = ty/sum(nydf$pop) * nydf$pop
 yin = nn.cumsum(nn, cases)
 ein = nn.cumsum(nn, ex)
-tsim = scan.sim(nsim = 2, nn, ty, ex, ein = ein, eout = ty - ein)
+tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = ty - ein)
 }
