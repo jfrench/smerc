@@ -100,14 +100,13 @@ based on the specified values of \code{coords} and
 data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
-\dontrun{
 out = mlink.test(coords = coords, cases = floor(nydf$cases), 
                  pop = nydf$pop, w = nyw, 
                  alpha = 0.12, longlat = TRUE,
                  nsim = 5, ubpop = 0.1, ubd = 0.2)
 data(nypoly)
 library(sp)
-plot(nypoly, col = color.clusters(out))}
+plot(nypoly, col = color.clusters(out))
 }
 \references{
 Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)

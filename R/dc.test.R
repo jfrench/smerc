@@ -58,14 +58,13 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' \dontrun{
 #' out = dc.test(coords = coords, cases = floor(nydf$cases), 
 #'                  pop = nydf$pop, w = nyw, 
 #'                  alpha = 0.12, longlat = TRUE,
 #'                  nsim = 5, ubpop = 0.1, ubd = 0.2)
 #' data(nypoly)
 #' library(sp)
-#' plot(nypoly, col = color.clusters(out))}
+#' plot(nypoly, col = color.clusters(out))
 dc.test = function(coords, cases, pop, w,
                    ex = sum(cases)/sum(pop)*pop,
                    nsim = 499, alpha = 0.1, 
@@ -90,6 +89,7 @@ dc.test = function(coords, cases, pop, w,
   
   max_zones = lapply(seq_along(cases), function(i) {
     mst.seq(i, all_neighbors[[i]], cases = cases, 
+            pop = pop, w = w, ex = ex, ty = ty,
             max_pop = max_pop, type = "pruned", 
             early = TRUE, nlinks = "two")
   })

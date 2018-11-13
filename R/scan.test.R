@@ -171,53 +171,6 @@ scan.test = function(coords, cases, pop,
             coords = coords, cases = cases, pop = pop,
             ex = ex, longlat = longlat, w = NULL,
             d = d)
-  # 
-  # # order zones from largest to smallest test statistic
-  # ozones = order(tobs, decreasing = TRUE)
-  # zones = zones[ozones]
-  # tobs = tobs[ozones]
-  # 
-  # # determine significant non-overlapping clusters
-  # sig = smacpod::noc(zones)
-  # 
-  # # for the unique, non-overlapping clusters in order of significance,
-  # # find the associated test statistic, p-value, centroid,
-  # # window radius, cases in window, expected cases in window, 
-  # # population in window, standarized mortality ration, relative risk,
-  # sig_regions = zones[sig]
-  # sig_tstat = tobs[sig]
-  # sig_p = pvalue[ozones[sig]]
-  # centroid = sapply(sig_regions, utils::head, n = 1)
-  # boundary = sapply(sig_regions, utils::tail, n = 1)
-  # sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
-  # sig_r = d[cbind(centroid, boundary)]
-  # sig_yin = sapply(sig_regions, function(x) sum(y[x]))
-  # sig_ein = sapply(sig_regions, function(x) sum(e[x]))
-  # sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
-  # sig_smr = sig_yin/sig_ein
-  # sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-  # sig_w = lapply(sig_regions, function(x) {
-  #   matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
-  # })
-  # 
-  # # reformat output for return
-  # clusters = vector("list", length(sig_regions))
-  # for (i in seq_along(clusters)) {
-  #   clusters[[i]]$locids = sig_regions[[i]]
-  #   clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
-  #   clusters[[i]]$r = sig_r[i]
-  #   clusters[[i]]$pop = sig_popin[i]
-  #   clusters[[i]]$cases = sig_yin[i]
-  #   clusters[[i]]$expected = sig_ein[i]
-  #   clusters[[i]]$smr = sig_smr[i]
-  #   clusters[[i]]$rr = sig_rr[i]
-  #   clusters[[i]]$loglikrat = sig_tstat[[i]]
-  #   clusters[[i]]$pvalue = sig_p[i]
-  #   clusters[[i]]$w = sig_w[[i]]
-  # }
-  # outlist = list(clusters = clusters, coords = coords)
-  # class(outlist) = "scan"
-  # return(outlist)
 }
 
 # argument checking for all scan tests
