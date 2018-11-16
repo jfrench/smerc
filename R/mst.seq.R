@@ -116,7 +116,7 @@ mst.seq = function(start, neighbors, cases, pop, w,
   }
   
   i = 1
-  while (!stop) {
+  while (!stop & i < length(neighbors)) {
     # get current zone to extend
     c_zone = uz[[i]]
     
