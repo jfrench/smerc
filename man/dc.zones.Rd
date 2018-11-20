@@ -5,8 +5,8 @@
 \title{Determine zones for the Double Connection scan test}
 \usage{
 dc.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "maxonly",
-  cl = NULL, progress = TRUE)
+  ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL,
+  progress = TRUE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -38,9 +38,6 @@ specifies that Euclidean distance should be used.If
 distance is used to calculate the intercentroid
 distance.}
 
-\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
-\code{"all"}.  See Details.}
-
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
 or an integer to indicate number of child-processes
@@ -50,12 +47,20 @@ or an integer to indicate number of child-processes
 \item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
 }
 \value{
-Returns a list of relevant information.  See 
-  Details.
+Returns a list with elements: 
+\item{zones}{A list contained the location ids of
+  each potential cluster.} 
+\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}   
+\item{cases}{The observed number of cases in each zone.} 
+\item{expected}{The expected number of cases each zone.}
+\item{pop}{The total population in each zone.}
 }
 \description{
 \code{dc.zones} determines the zones for the Double 
-Connection scan test (\code{\link{dc.test}}).
+Connection scan test (\code{\link{dc.test}}).  The 
+function returns the zones, as well as the associated
+test statistic, cases in each zone, the expected number
+of cases in each zone, and the population in each zone.
 }
 \details{
 Every zone considered must have a total population less
@@ -82,7 +87,7 @@ data(nydf)
 data(nyw)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
 # find zone with max statistic starting from each individual region
-max_zones = dc.zones(coords, cases = floor(nydf$cases),
+all_zones = dc.zones(coords, cases = floor(nydf$cases),
                      nydf$pop, w = nyw, ubpop = 0.25,
                      ubd = .25, longlat = TRUE)
 }

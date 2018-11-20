@@ -2,10 +2,11 @@
 % Please edit documentation in R/mlf.zones.R
 \name{mlf.zones}
 \alias{mlf.zones}
-\title{Determine the candidate zone using the maxima likelihood first algorithm of Yao et al. (2011).}
+\title{Determine zones for the maxima likelihood
+first algorithm.}
 \usage{
 mlf.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, type = "pruned")
+  ubpop = 0.5, ubd = 1, longlat = FALSE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -36,30 +37,55 @@ specifies that Euclidean distance should be used.If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
-
-\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or \code{"all"}. Specifying \code{"maxonly"} returns only the maximum test statistic across all candidate zones, \code{"pruned"} returns information for the zone with the largest test statistic, while \code{"all"} returns information for all candidate zones.  Default is \code{"pruned"}.}
 }
 \value{
-Returns a list that includes the location id of the zone and the associated test statistic, counts, expected counts, and population in the zone.  If \code{type = "all"}, then each of these elements is a list or vector corresponding to each respective candidate zone.
+Returns a list with elements: 
+\item{zones}{A list contained the location ids of
+  each potential cluster.} 
+\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}   
+\item{cases}{The observed number of cases in each zone.} 
+\item{expected}{The expected number of cases each zone.}
+\item{pop}{The total population in each zone.}
 }
 \description{
-\code{mlf.zones} determines the most likely cluster zone obtained by implementing the maxima likelihood first scann method of Yao et al. (2011).  Note that this is really just a special case of the dynamic minimum spanning tree (SMST) algorithm of Assuncao et al. (2006)
+\code{mlf.zones} determines the most likely cluster zone
+obtained by implementing the maxima likelihood first
+scann method of Yao et al. (2011).  Note that this is
+really just a special case of the dynamic minimum
+spanning tree (DMST) algorithm of Assuncao et al. (2006)
 }
 \details{
-Each step of the mlf scan test seeks to maximize the likelihood ratio test statistic used in the original spatial scan test (Kulldorff 1997).  The first zone considered is the region that maximizes this likelihood ration test statistic, providing that no more than \code{ubpop} proportion of the total population is in the zone.  The second zone is the first zone and the connected region that maximizes the scan statistic, subject to the population and distance constraints.  This pattern continues until no additional zones can be added due to population or distance constraints.
+Each step of the mlf scan test seeks to maximize the
+likelihood ratio test statistic used in the original
+spatial scan test (Kulldorff 1997).  The first zone
+considered is the region that maximizes this likelihood
+ration test statistic, providing that no more than
+\code{ubpop} proportion of the total population is in the
+zone.  The second zone is the first zone and the
+connected region that maximizes the scan statistic,
+subject to the population and distance constraints.  This
+pattern continues until no additional zones can be added
+due to population or distance constraints.
 
-Every zone considered must have a total population less than \code{ubpop * sum(pop)} in the study area.  Additionally, the maximum intercentroid distance for the regions within a zone must be no more than \code{ubd * the maximum intercentroid distance across all regions}.
+Every zone considered must have a total population less
+than \code{ubpop * sum(pop)} in the study area.
+Additionally, the maximum intercentroid distance for the
+regions within a zone must be no more than \code{ubd *
+the maximum intercentroid distance across all regions}.
 }
 \examples{
 data(nydf)
 data(nyw)
 coords = as.matrix(nydf[,c("x", "y")])
-mlf.zones(coords, cases = floor(nydf$cases), pop = nydf$pop, w = nyw, longlat = TRUE)
+mlf.zones(coords, cases = floor(nydf$cases),
+          pop = nydf$pop, w = nyw, longlat = TRUE)
 }
 \references{
-Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.
-
-Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
+Yao, Z., Tang, J., & Zhan, F. B. (2011).
+  Detection of arbitrarily-shaped clusters using a
+  neighbor-expanding approach: A case study on murine
+  typhus in South Texas. International Journal of Health
+  Geographics, 10(1), 1.
 }
 \author{
 Joshua French
