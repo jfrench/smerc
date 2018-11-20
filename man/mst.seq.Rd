@@ -66,9 +66,9 @@ friendliness.
 \details{
 The function can be used to construct candidate zones for
 the dynamic minimum spanning tree (dmst), early stopping
-dynamic minimum spanning tree (esdmst), double connected
+dynamic minimum spanning tree (edmst), double connection
 spatial scan test (dc), and maximum linkage spatial scan
-test.
+test (mlink).
 
 \code{type} is a character vector indicating what should
 be returned by the function.  If \code{type = "maxonly"},
@@ -85,7 +85,7 @@ If \code{nlinks = "one"}, then a region only needs to be
 connected to one other region in the current zone to be
 considered for inclusion in the next zone.  If 
 \code{nlinks = "two"}, then the region must be connected
-to two other regions in the current zone.  If
+to at least two other regions in the current zone.  If
 \code{nlinks = "max"}, then only regions with the maximum
 number of connections to the current zone are considered
 for inclusion in the next zone.
@@ -115,7 +115,6 @@ all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
 # find the dmst max zone
 mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop)
 mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "pruned")
-mst.seq(start = 2, all_neighbors[[2]], cases, pop, w, ex, ty, max_pop, "pruned")
 bigout = mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "all")
 head(bigout)
 }

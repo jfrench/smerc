@@ -5,7 +5,7 @@
 \title{Minimum spanning tree for all regions}
 \usage{
 mst.all(neighbors, cases, pop, w, ex, ty, max_pop, type = "maxonly",
-  nlinks = "one", early = FALSE)
+  nlinks = "one", early = FALSE, cl = NULL, progress = FALSE)
 }
 \arguments{
 \item{neighbors}{A list containing the vector of
@@ -41,6 +41,14 @@ Details.}
 \code{TRUE}, each sequence is stopped when the next 
 potential zone doesn't produce a test statistic larger 
 than the current zone. The default is \code{FALSE}.}
+
+\item{cl}{
+A cluster object created by \code{\link[parallel]{makeCluster}},
+or an integer to indicate number of child-processes
+(integer values are ignored on Windows) for parallel evaluations.
+}
+
+\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
 }
 \value{
 Returns a list of relevant information.  See 
@@ -49,7 +57,8 @@ Returns a list of relevant information.  See
 \description{
 \code{mst.all} finds the set of connected regions that
 maximize the spatial scan statistic (the likelihood ratio
-test statistic) from each starting region.
+test statistic) from each starting region, subject to 
+relevant constraints.
 }
 \details{
 This function is not intended to be used by users
@@ -58,7 +67,7 @@ user friendliness.
 
 The function can be used to construct candidate zones for
 the dynamic minimum spanning tree (dmst), early stopping 
-dynamic minimum spanning tree (esdmst), double connected 
+dynamic minimum spanning tree (edmst), double connected 
 spatial scan test (dc), and maximum linkage spatial scan 
 test.
 
@@ -79,7 +88,7 @@ If \code{nlinks = "one"}, then a region only needs to be
 connected to one other region in the current zone to be 
 considered for inclusion in the next zone.  If 
 \code{nlinks = "two"}, then the region must be connected 
-to two other regions in the current zone.  If 
+to at least two other regions in the current zone.  If 
 \code{nlinks = "max"}, then only regions with the maximum
 number of connections to the current zone are considered 
 for inclusion in the next zone.

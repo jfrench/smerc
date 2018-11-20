@@ -1,10 +1,11 @@
-#' Determine nearest neighbors
+#' Determine nearest neighbors for minimum spanning trees
 #' 
-#' \code{scan.nn} and \code{nnpop} determine the nearest 
+#' \code{mst.nn} determines the nearest 
 #' neighbors for a set of observations based on the 
-#' distance matrix according to a population upperbound.
+#' distance matrix according to a distance-based upperbound.
 #' These neighbors are directly related to the zones 
-#' considered in \code{\link{scan.test}}.
+#' considered in \code{\link{dmst.test}}, 
+#' \code{\link{dc.test}}, and \code{\link{mlink.test}}
 #' 
 #' This function determines the nearest neighbors of each
 #' centroid based on the intercentroid distance.  The number

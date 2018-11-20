@@ -2,7 +2,8 @@
 #' 
 #' \code{mst.all} finds the set of connected regions that
 #' maximize the spatial scan statistic (the likelihood ratio
-#' test statistic) from each starting region.
+#' test statistic) from each starting region, subject to 
+#' relevant constraints.
 #' 
 #' This function is not intended to be used by users
 #' directly. Consequently, it prioritizes efficiency over
@@ -10,7 +11,7 @@
 #' 
 #' The function can be used to construct candidate zones for
 #' the dynamic minimum spanning tree (dmst), early stopping 
-#' dynamic minimum spanning tree (esdmst), double connected 
+#' dynamic minimum spanning tree (edmst), double connected 
 #' spatial scan test (dc), and maximum linkage spatial scan 
 #' test.
 #' 
@@ -31,7 +32,7 @@
 #' connected to one other region in the current zone to be 
 #' considered for inclusion in the next zone.  If 
 #' \code{nlinks = "two"}, then the region must be connected 
-#' to two other regions in the current zone.  If 
+#' to at least two other regions in the current zone.  If 
 #' \code{nlinks = "max"}, then only regions with the maximum
 #' number of connections to the current zone are considered 
 #' for inclusion in the next zone.
@@ -55,6 +56,7 @@
 #'   \code{TRUE}, each sequence is stopped when the next 
 #'   potential zone doesn't produce a test statistic larger 
 #'   than the current zone. The default is \code{FALSE}.
+#' @param progress A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.
 #' @return Returns a list of relevant information.  See 
 #'   Details.
 #' @author Joshua French
@@ -96,14 +98,23 @@ mst.all = function(neighbors, cases, pop, w,
                    ex, ty, max_pop, 
                    type = "maxonly",
                    nlinks = "one",
-                   early = FALSE) {
-  max_zones = lapply(seq_along(cases), function(i) {
-    mst.seq(i, neighbors[[i]], cases, 
-            pop, w, ex, ty, max_pop, type,
-            nlinks, early)
-  })
+                   early = FALSE, cl = NULL, 
+                   progress = FALSE) {
+  if (!progress) {
+    max_zones = lapply(seq_along(cases), function(i) {
+      mst.seq(i, neighbors[[i]], cases, 
+              pop, w, ex, ty, max_pop, type,
+              nlinks, early)
+    }) 
+  } else {
+    max_zones = pbapply::pblapply(seq_along(cases), function(i) {
+      mst.seq(i, neighbors[[i]], cases, 
+              pop, w, ex, ty, max_pop, type,
+              nlinks, early)
+    }, cl = cl) 
+  }
   if (type == "maxonly") {
-    return(unlist(max_zones))
+    return(unlist(max_zones, use.names = FALSE))
   } else {
     max_zones
   }

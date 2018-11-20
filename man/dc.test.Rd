@@ -2,7 +2,7 @@
 % Please edit documentation in R/dc.test.R
 \name{dc.test}
 \alias{dc.test}
-\title{Double Connected spatial scan test}
+\title{Double Connection spatial scan test}
 \usage{
 dc.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, ubd = 1, longlat = FALSE,
@@ -51,26 +51,10 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The
-  first element (clusters) is a list containing the
-  significant, non-ovlappering clusters, and has the the
-  following components: \item{locids}{The location ids of
-  regions in a significant cluster.} \item{pop}{The total
-  population in the cluser window.} \item{cases}{The
-  observed number of cases in the cluster window.} 
-  \item{expected}{The expected number of cases in the
-  cluster window.} \item{smr}{Standarized mortaility
-  ratio (observed/expected) in the cluster window.} 
-  \item{rr}{Relative risk in the cluster window.} 
-  \item{loglikrat}{The loglikelihood ratio for the
-  cluster window (i.e., the log of the test statistic).} 
-  \item{pvalue}{The pvalue of the test statistic
-  associated with the cluster window.} The second element
-  of the list is the centroid coordinates.  This is
-  needed for plotting purposes.
+Returns a \code{scan} object.
 }
 \description{
-\code{dc.test} implements the Double Connected spatial 
+\code{dc.test} implements the Double Connection spatial 
 scan test of Costa et al. (2012). 
 Starting with a single region as a current zone, new 
 candidate zones are constructed by combining the current 
@@ -80,15 +64,14 @@ added constraint that the region must have at least
 two connection (i.e., shares a border with) at least
 two of the regoins in the current zone.  This  
 procedure is repeated until adding a connected region
-does not increase the test statistic (or the population or distance 
-upper
+does not increase the test statistic 
+(or the population or distance upper
 bounds are reached).  The same procedure is repeated for 
-each region.  The 
-clusters returned are non-overlapping, ordered from most 
-significant to least significant.  The first cluster is 
-the most likely to be a cluster.  If no significant 
-clusters are found, then the most likely cluster is 
-returned (along with a warning).
+each region.  The clusters returned are non-overlapping, 
+ordered from most significant to least significant.  
+The first cluster is the most likely to be a cluster.  
+If no significant clusters are found, then the most 
+likely cluster is returned (along with a warning).
 }
 \details{
 The maximum intercentroid distance can be found by 
@@ -113,7 +96,8 @@ plot(nypoly, col = color.clusters(out))
 Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
   Constrained spanning tree algorithms for
   irregularly-shaped spatial clustering, Computational
-  Statistics & Data Analysis, 56(6), 1771-1783.
+  Statistics & Data Analysis, 56(6), 1771-1783. 
+  <https://doi.org/10.1016/j.csda.2011.11.001>
 }
 \seealso{
 \code{\link{scan.stat}},

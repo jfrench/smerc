@@ -1,20 +1,7 @@
-#' Determine zones for the dynamic minimum spanning tree
-#' scan test of Assuncao et al. (2006)
+#' Determine zones for the Maximum Linkage scan test
 #' 
-#' \code{dmst.zones} determines the zones that produce the
-#' largest test statistic using a greedy algorithm. 
-#' Specifically, starting individually with each region as a
-#' starting zone, new (connected) regions are added to the
-#' current zone in the order that results in the largest
-#' likelihood ratio test statistic.  This is used to
-#' implement the dynamic minimum spanning tree (dmst) scan
-#' test of Assuncao et al. (2006).
-#' 
-#' The test is performed using the spatial scan test based
-#' on the Poisson test statistic and a fixed number of
-#' cases.  The first cluster is the most likely to be a
-#' cluster.  If no significant clusters are found, then the
-#' most likely cluster is returned (along with a warning).
+#' \code{mlink.zones} determines the zones for the Double 
+#' Connection scan test (\code{\link{dc.test}}).
 #' 
 #' Every zone considered must have a total population less
 #' than \code{ubpop * sum(pop)}.  Additionally, the maximum
@@ -36,13 +23,15 @@
 #' zones associated with each starting region.
 #' @inheritParams dmst.test
 #' @inheritParams mst.all
+#' @inheritParams flex.zones
 #' @return Returns a list of relevant information.  See 
 #'   Details.
 #' @author Joshua French
-#' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
-#'   Neto, S.J.F. (2006). Fast detection of arbitrarily
-#'   shaped disease clusters, Statistics in Medicine, 25,
-#'   723-742.
+#' @references Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
+#'   Constrained spanning tree algorithms for
+#'   irregularly-shaped spatial clustering, Computational
+#'   Statistics & Data Analysis, 56(6), 1771-1783. 
+#'   <https://doi.org/10.1016/j.csda.2011.11.001>
 #'   
 #' @export
 #' @examples
@@ -50,21 +39,21 @@
 #' data(nyw)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' # find zone with max statistic starting from each individual region
-#' max_zones = dmst.zones(coords, cases = floor(nydf$cases),
-#'                        nydf$pop, w = nyw, ubpop = 0.25,
-#'                        ubd = .25, longlat = TRUE)
-#' head(max_zones)
-dmst.zones = function(coords, cases, pop, w, 
-                      ex = sum(cases)/sum(pop)*pop, 
-                      ubpop = 0.5, ubd = 1, longlat = FALSE, 
-                      type = "maxonly", 
-                      cl = NULL, progress = TRUE) {
+#' max_zones = dc.zones(coords, cases = floor(nydf$cases),
+#'                      nydf$pop, w = nyw, ubpop = 0.25,
+#'                      ubd = .25, longlat = TRUE)
+mlink.zones = function(coords, cases, pop, w, 
+                       ex = sum(cases)/sum(pop)*pop, 
+                       ubpop = 0.5, ubd = 1, longlat = FALSE, 
+                       type = "maxonly", cl = NULL,
+                       progress = TRUE) {
   # sanity checking
   arg_check_dmst_zones(coords = coords, cases = cases, 
                        pop = pop, w = w, ex = ex, 
                        ubpop = ubpop, ubd = ubd, 
                        longlat = longlat, type = type, 
-                       progress = progress)  
+                       progress = progress)
+  
   # setup various arguments and such
   ty = sum(cases)   # total number of cases
   # intercentroid distances
@@ -75,12 +64,11 @@ dmst.zones = function(coords, cases, pop, w,
   max_dist = ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
   all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
-  # should only max be returned, or a pruned version
 
   mst.all(neighbors = all_neighbors, cases = cases, 
           pop = pop, w = w,  
           ex = ex, ty = ty, max_pop = max_pop, 
-          type = type, nlinks = "one",
+          type = type, nlinks = "max",
           early = FALSE, cl = cl, 
           progress = progress)
 }
