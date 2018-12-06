@@ -91,7 +91,7 @@
 #' max_dist = ubd * max(d)
 #' # create list of neighbors for each region 
 #' # (inclusive of region itself)
-#' all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
+#' all_neighbors = nndist(d, ubd)
 #' # find the dmst max zone
 #' \dontrun{
 #' out = mst.all(all_neighbors, cases, pop, w, ex, ty, max_pop,

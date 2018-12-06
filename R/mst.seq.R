@@ -85,7 +85,7 @@
 #' # upperbound for distance between centroids in zone
 #' max_dist = ubd * max(d)
 #' # create list of neighbors for each region (inclusive of region itself)
-#' all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
+#' all_neighbors = nndist(d, ubd)
 #' # find the dmst max zone
 #' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop)
 #' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "pruned")
@@ -154,20 +154,20 @@ mst.seq = function(start, neighbors, cases, pop, w,
       # test statistics for candidate locations
       stat_cand = scan.stat(yin = yin_cand, ein = ein_cand,
                             eout = ty - ein_cand, ty = ty)
+
+      # index of max stat_cand
+      max_idx = which.max(stat_cand)
       
       # only update if new candidate statistics
       # are greater than old statistics
-      if (early & (max(stat_cand) <= loglikrat[i])) {
+      if (early & (stat_cand[max_idx] <= loglikrat[i])) {
         stop = TRUE
       } else {
-        # index of max stat_cand
-        max_idx = which.max(stat_cand)
-        
         # update for next best zone
         loglikrat[i + 1] = stat_cand[max_idx]
         yin[i + 1] = yin_cand[max_idx]
         ein[i + 1] = ein_cand[max_idx]
-        popin[i + 1] = p_popin[in_size[max_idx]]
+        popin[i + 1] = p_popin[in_size][max_idx]
         # regions_used = c(regions_used, cand_regions[max_idx])
         max_neighbors[[i + 1]] = setdiff(max_neighbors[[i]], cand_regions[max_idx])
         uz[[i + 1]] = c(c_zone, cand_regions[max_idx])
