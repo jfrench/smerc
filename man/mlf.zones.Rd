@@ -26,11 +26,10 @@ hypothesis.}
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the radius of a cluster. 
-This should be a proportion in (0, 1].  The value is
-the proportion of the maximum intercentroid distance
-between any two locations in \code{coords}. See
-Details.}
+\item{ubd}{A proportion in (0, 1].  The distance of
+potential clusters must be no more than \code{ubd * m}, 
+where \code{m} is the maximum intercentroid distance
+between all coordinates.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used.If

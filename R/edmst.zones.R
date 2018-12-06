@@ -1,7 +1,7 @@
-#' Determine zones for the Double Connected scan test
+#' Determine zones for the early stopping dynamic Minimum Spanning Tree scan test
 #' 
-#' \code{dc.zones} determines the zones for the Double 
-#' Connected scan test (\code{\link{dc.test}}).  The 
+#' \code{edmst.zones} determines the zones for the early stopping Dynamic
+#' Minimum Spanning Tree scan test (\code{\link{edmst.test}}).  The 
 #' function returns the zones, as well as the associated
 #' test statistic, cases in each zone, the expected number
 #' of cases in each zone, and the population in each zone.
@@ -14,13 +14,7 @@
 #' @inheritParams dmst.test
 #' @inheritParams mst.all
 #' @inheritParams flex.zones
-#' @return Returns a list with elements: 
-#' \item{zones}{A list contained the location ids of
-#'   each potential cluster.} 
-#' \item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}   
-#' \item{cases}{The observed number of cases in each zone.} 
-#' \item{expected}{The expected number of cases each zone.}
-#' \item{pop}{The total population in each zone.} 
+#' @inherit dc.zones return
 #' @author Joshua French
 #' @references Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
 #'   Constrained spanning tree algorithms for
@@ -33,13 +27,13 @@
 #' data(nyw)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' # find zone with max statistic starting from each individual region
-#' all_zones = dc.zones(coords, cases = floor(nydf$cases),
-#'                      nydf$pop, w = nyw, ubpop = 0.25,
-#'                      ubd = .25, longlat = TRUE)
-dc.zones = function(coords, cases, pop, w, 
-                    ex = sum(cases)/sum(pop)*pop, 
-                    ubpop = 0.5, ubd = 1, longlat = FALSE, 
-                    cl = NULL, progress = TRUE) {
+#' all_zones = edmst.zones(coords, cases = floor(nydf$cases),
+#'                         nydf$pop, w = nyw, ubpop = 0.25,
+#'                         ubd = .25, longlat = TRUE)
+edmst.zones = function(coords, cases, pop, w, 
+                       ex = sum(cases)/sum(pop)*pop, 
+                       ubpop = 0.5, ubd = 1, longlat = FALSE, 
+                       cl = NULL, progress = TRUE) {
   # sanity checking
   arg_check_dmst_zones(coords = coords, cases = cases, 
                        pop = pop, w = w, ex = ex, 
@@ -54,11 +48,11 @@ dc.zones = function(coords, cases, pop, w,
   max_pop = ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound
   nn = nndist(d, ubd)
-  
+  # get zones and relevant information
   out = mst.all(neighbors = nn, cases = cases, 
           pop = pop, w = w,  
           ex = ex, ty = ty, max_pop = max_pop, 
-          type = "all", nlinks = "two",
+          type = "all", nlinks = "one",
           early = TRUE, cl = cl, 
           progress = progress)
   nn = lapply(out, getElement, name = "locids")

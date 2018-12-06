@@ -2,7 +2,7 @@
 % Please edit documentation in R/dc.zones.R
 \name{dc.zones}
 \alias{dc.zones}
-\title{Determine zones for the Double Connection scan test}
+\title{Determine zones for the Double Connected scan test}
 \usage{
 dc.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
   ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL,
@@ -26,11 +26,10 @@ hypothesis.}
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the radius of a cluster. 
-This should be a proportion in (0, 1].  The value is
-the proportion of the maximum intercentroid distance
-between any two locations in \code{coords}. See
-Details.}
+\item{ubd}{A proportion in (0, 1].  The distance of
+potential clusters must be no more than \code{ubd * m}, 
+where \code{m} is the maximum intercentroid distance
+between all coordinates.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used.If
@@ -57,7 +56,7 @@ Returns a list with elements:
 }
 \description{
 \code{dc.zones} determines the zones for the Double 
-Connection scan test (\code{\link{dc.test}}).  The 
+Connected scan test (\code{\link{dc.test}}).  The 
 function returns the zones, as well as the associated
 test statistic, cases in each zone, the expected number
 of cases in each zone, and the population in each zone.
@@ -68,19 +67,6 @@ than \code{ubpop * sum(pop)}.  Additionally, the maximum
 intercentroid distance for the regions within a zone must
 be no more than \code{ubd * the maximum intercentroid
 distance across all regions}.
-
-\code{type} is a character vector indicating what should 
-be returned by the function.  If \code{type = "maxonly"},
-then the maximum test statistic from each starting region
-is returned .  If \code{type = "pruned"}, the function
-returns a list that includes the location ids, test
-statistic, total cases, expected cases, and total
-population for the zone with the maximum test statistic
-for each starting region.  If \code{type = "all"}, the
-function returns a list of lists that includes the
-location ids, test statistic, total cases, expected
-cases, and total population for the sequence of candidate
-zones associated with each starting region.
 }
 \examples{
 data(nydf)

@@ -1,7 +1,7 @@
-#' Determine zones for the Maximum Linking scan test
+#' Determine zones for the Maximum Linkage scan test
 #' 
-#' \code{mlink.zones} determines the zones for the Double 
-#' Connection scan test (\code{\link{mlink.test}}).  The 
+#' \code{mlink.zones} determines the zones for the Maximum
+#' Linkage scan test (\code{\link{mlink.test}}).  The 
 #' function returns the zones, as well as the associated
 #' test statistic, cases in each zone, the expected number
 #' of cases in each zone, and the population in each zone.
@@ -46,26 +46,18 @@ mlink.zones = function(coords, cases, pop, w,
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
-  # upperbound for distance between centroids in zone
-  max_dist = ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
-  all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
-
-  out = mst.all(neighbors = all_neighbors, cases = cases, 
+  nn = nndist(d, ubd)
+  out = mst.all(neighbors = nn, cases = cases, 
           pop = pop, w = w,  
           ex = ex, ty = ty, max_pop = max_pop, 
           type = "all", nlinks = "max",
           early = FALSE, cl = cl, 
           progress = progress)
   nn = lapply(out, getElement, name = "locids")
-  zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
-  loglikrat = unlist(lapply(out, getElement, name = "loglikrat"))
-  cases = unlist(lapply(out, getElement, name = "cases"))
-  expected = unlist(lapply(out, getElement, name = "expected"))
-  population = unlist(lapply(out, getElement, name = "population"))
-  return(list(zones = zones,
-              loglikrat = loglikrat,
-              cases = cases,
-              expected = expected,
-              population = population))
+  return(list(zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE),
+              loglikrat = unlist(lapply(out, getElement, name = "loglikrat")),
+              cases = unlist(lapply(out, getElement, name = "cases")),
+              expected = unlist(lapply(out, getElement, name = "expected")),
+              population = unlist(lapply(out, getElement, name = "population"))))
 }

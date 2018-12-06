@@ -2,7 +2,7 @@
 % Please edit documentation in R/dmst.test.R
 \name{dmst.test}
 \alias{dmst.test}
-\title{Dynamic minimum spanning tree scan test}
+\title{Dynamic Minimum Spanning Tree spatial scan test}
 \usage{
 dmst.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, ubd = 1, longlat = FALSE,
@@ -32,11 +32,10 @@ a cluster is signficant.  Default is 0.10.}
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
 
-\item{ubd}{The upperbound for the radius of a cluster. 
-This should be a proportion in (0, 1].  The value is
-the proportion of the maximum intercentroid distance
-between any two locations in \code{coords}. See
-Details.}
+\item{ubd}{A proportion in (0, 1].  The distance of
+potential clusters must be no more than \code{ubd * m}, 
+where \code{m} is the maximum intercentroid distance
+between all coordinates.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used.If
@@ -51,68 +50,47 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The
-  first element (clusters) is a list containing the
-  significant, non-ovlappering clusters, and has the the
-  following components: \item{locids}{The location ids of
-  regions in a significant cluster.} \item{pop}{The total
-  population in the cluser window.} \item{cases}{The
-  observed number of cases in the cluster window.} 
-  \item{expected}{The expected number of cases in the
-  cluster window.} \item{smr}{Standarized mortaility
-  ratio (observed/expected) in the cluster window.} 
-  \item{rr}{Relative risk in the cluster window.} 
-  \item{loglikrat}{The loglikelihood ratio for the
-  cluster window (i.e., the log of the test statistic).} 
-  \item{pvalue}{The pvalue of the test statistic
-  associated with the cluster window.} The second element
-  of the list is the centroid coordinates.  This is
-  needed for plotting purposes.
+Returns a \code{scan} object.
 }
 \description{
-\code{dmst.test} implements the Dynamic Minimum Spanning
-Tree scan test of Assuncao et al. (2006).  Starting with
-a single region as a current zone, new candidate zones
-are constructed by combining the current zone with the
-connected region that maximizes the resulting likelihood
-ratio test statistic.  This is procedure repeated until
-the population or distance upper bound are reached.  The
-same procedure is repeated for each region.  The maxima
-likelihood first scan test proposed by Yao et al. (2011)
-is an independent variant of this, but only searches from
-the starting region that maximizes the likelihood ratio
-scan statistic. The clusters returned are
-non-overlapping, ordered from most significant to least
-significant.  The first cluster is the most likely to be
-a cluster.  If no significant clusters are found, then
-the most likely cluster is returned (along with a
-warning).
+\code{dmst.test} implements the dynamic Minimum Spanning Tree
+scan test of Assuncao et al. (2006). 
+Starting with a single region as a current zone, new 
+candidate zones are constructed by combining the current 
+zone with the connected region that maximizes the 
+resulting likelihood ratio test statistic.  This  
+procedure is repeated until the population or distance upper
+bounds are reached.  The same procedure is repeated for 
+each region.  The clusters returned are non-overlapping, 
+ordered from most significant to least significant.  
+The first cluster is the most likely to be a cluster.  
+If no significant clusters are found, then the most 
+likely cluster is returned (along with a warning).
 }
 \details{
-The maximum intercentroid distance can be found by
-executing the command:
-\code{sp::spDists(as.matrix(coords), longlat = longlat)},
-based on the specified values of \code{coords} and
+The maximum intercentroid distance can be found by 
+executing the command: 
+\code{sp::spDists(as.matrix(coords), longlat = longlat)}, 
+based on the specified values of \code{coords} and 
 \code{longlat}.
 }
 \examples{
 data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
-\dontrun{
 out = dmst.test(coords = coords, cases = floor(nydf$cases), 
                 pop = nydf$pop, w = nyw, 
                 alpha = 0.12, longlat = TRUE,
                 nsim = 5, ubpop = 0.1, ubd = 0.2)
 data(nypoly)
 library(sp)
-plot(nypoly, col = color.clusters(out))}
+plot(nypoly, col = color.clusters(out))
 }
 \references{
 Assuncao, R.M., Costa, M.A., Tavares, A. and
   Neto, S.J.F. (2006). Fast detection of arbitrarily
   shaped disease clusters, Statistics in Medicine, 25,
-  723-742.
+  723-742.  <https://doi.org/10.1002/sim.2411>
 }
 \seealso{
 \code{\link{scan.stat}},

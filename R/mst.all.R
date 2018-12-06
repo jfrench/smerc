@@ -1,19 +1,17 @@
 #' Minimum spanning tree for all regions
-#' 
+#'
 #' \code{mst.all} finds the set of connected regions that
 #' maximize the spatial scan statistic (the likelihood ratio
-#' test statistic) from each starting region, subject to 
-#' relevant constraints.
+#' test statistic) from each starting region, subject to
+#' relevant constraints.  The function can be used to
+#' construct candidate zones for the dynamic minimum
+#' spanning tree (dmst), early stopping dynamic minimum
+#' spanning tree (edmst), double connected spatial scan test
+#' (dc), and maximum linkage (mlink) spatial scan test.
 #' 
 #' This function is not intended to be used by users
 #' directly. Consequently, it prioritizes efficiency over
 #' user friendliness.
-#' 
-#' The function can be used to construct candidate zones for
-#' the dynamic minimum spanning tree (dmst), early stopping 
-#' dynamic minimum spanning tree (edmst), double connected 
-#' spatial scan test (dc), and maximum linkage spatial scan 
-#' test.
 #' 
 #' \code{type} is a character vector indicating what should 
 #' be returned by the function.  If \code{type = "maxonly"},
@@ -61,6 +59,16 @@
 #'   Details.
 #' @author Joshua French
 #' @export
+#' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
+#'   Neto, S.J.F. (2006). Fast detection of arbitrarily
+#'   shaped disease clusters, Statistics in Medicine, 25,
+#'   723-742.  <https://doi.org/10.1002/sim.2411>
+#'   
+#'   Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
+#'   Constrained spanning tree algorithms for
+#'   irregularly-shaped spatial clustering, Computational
+#'   Statistics & Data Analysis, 56(6), 1771-1783. 
+#'   <https://doi.org/10.1016/j.csda.2011.11.001>
 #' @examples
 #' # load data
 #' data(nydf)

@@ -1,7 +1,7 @@
 #' Determine zones for the Dynamic Minimum Spanning Tree scan test
 #' 
-#' \code{dmst.zones} determines the zones for the Double 
-#' Connection scan test (\code{\link{dmst.test}}).  The 
+#' \code{dmst.zones} determines the zones for the Dynamic
+#' Minimum Spanning Tree scan test (\code{\link{dmst.test}}).  The 
 #' function returns the zones, as well as the associated
 #' test statistic, cases in each zone, the expected number
 #' of cases in each zone, and the population in each zone.
@@ -16,21 +16,20 @@
 #' @inheritParams flex.zones
 #' @inherit dc.zones return
 #' @author Joshua French
-#' @references Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
-#'   Constrained spanning tree algorithms for
-#'   irregularly-shaped spatial clustering, Computational
-#'   Statistics & Data Analysis, 56(6), 1771-1783. 
-#'   <https://doi.org/10.1016/j.csda.2011.11.001>
+#' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
+#'   Neto, S.J.F. (2006). Fast detection of arbitrarily
+#'   shaped disease clusters, Statistics in Medicine, 25,
+#'   723-742.  <https://doi.org/10.1002/sim.2411>
 #' @export
 #' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' # find zone with max statistic starting from each individual region
-#' all_zones = mlink.zones(coords, cases = floor(nydf$cases),
+#' all_zones = dmst.zones(coords, cases = floor(nydf$cases),
 #'                         nydf$pop, w = nyw, ubpop = 0.25,
 #'                         ubd = .25, longlat = TRUE)
-mlink.zones = function(coords, cases, pop, w, 
+dmst.zones = function(coords, cases, pop, w, 
                        ex = sum(cases)/sum(pop)*pop, 
                        ubpop = 0.5, ubd = 1, longlat = FALSE, 
                        cl = NULL, progress = TRUE) {
@@ -46,26 +45,19 @@ mlink.zones = function(coords, cases, pop, w,
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
-  # upperbound for distance between centroids in zone
-  max_dist = ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
-  all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
-
-  out = mst.all(neighbors = all_neighbors, cases = cases, 
+  nn = nndist(d, ubd)
+  # get zones and relevant information
+  out = mst.all(neighbors = nn, cases = cases, 
           pop = pop, w = w,  
           ex = ex, ty = ty, max_pop = max_pop, 
-          type = "all", nlinks = "max",
+          type = "all", nlinks = "one",
           early = FALSE, cl = cl, 
           progress = progress)
   nn = lapply(out, getElement, name = "locids")
-  zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
-  loglikrat = unlist(lapply(out, getElement, name = "loglikrat"))
-  cases = unlist(lapply(out, getElement, name = "cases"))
-  expected = unlist(lapply(out, getElement, name = "expected"))
-  population = unlist(lapply(out, getElement, name = "population"))
-  return(list(zones = zones,
-              loglikrat = loglikrat,
-              cases = cases,
-              expected = expected,
-              population = population))
+  return(list(zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE),
+              loglikrat = unlist(lapply(out, getElement, name = "loglikrat")),
+              cases = unlist(lapply(out, getElement, name = "cases")),
+              expected = unlist(lapply(out, getElement, name = "expected")),
+              population = unlist(lapply(out, getElement, name = "population"))))
 }

@@ -11,11 +11,10 @@ nndist(d, ubd)
 containing the intercentroid distance between the
 \eqn{n} region centroids.}
 
-\item{ubd}{The upperbound for the radius of a cluster. 
-This should be a proportion in (0, 1].  The value is
-the proportion of the maximum intercentroid distance
-between any two locations in \code{coords}. See
-Details.}
+\item{ubd}{A proportion in (0, 1].  The distance of
+potential clusters must be no more than \code{ubd * m}, 
+where \code{m} is the maximum intercentroid distance
+between all coordinates.}
 }
 \value{
 Returns the indices of the nearest neighbors as a
