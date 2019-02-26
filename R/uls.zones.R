@@ -1,15 +1,11 @@
 #' Determine sequence of ULS zones.
 #'
 #' \code{uls.zones} determines the unique zones obtained by
-#' implementing the ULS (Upper Level Set) test of Patil
-#' and Taillie (2004).  Note: the algorithm implicitly
-#' assumes the estimated rates are all unique.  If this
-#' is not true, the results may differ slightly from the
-#' canonical algorithm proposed by Patil and Taillie (2004).
+#' implementing the ULS (Upper Level Set) test of Patil and
+#' Taillie (2004).
 #'
 #' The zones returned must have a total population less than
-#' \code{ubpop * sum(pop)} of all regions in the study
-#' area.
+#' \code{ubpop * sum(pop)} of all regions in the study area.
 #'
 #' @inheritParams uls.test
 #' @return Returns a list of zones to consider for
@@ -17,14 +13,16 @@
 #'   with the location ids of the regions in that zone.
 #' @author Joshua French
 #' @export
-#' @references Patil, G.P. & Taillie, C. Environmental and
-#'   Ecological Statistics (2004) 11: 183.
+#' @references Patil, G.P. & Taillie, C. Upper level set
+#'   scan statistic for detecting arbitrarily shaped
+#'   hotspots. Environmental and Ecological Statistics
+#'   (2004) 11(2):183-197.
 #'   <doi:10.1023/B:EEST.0000027208.48919.7e>
 #' @examples
 #' data(nydf)
 #' data(nyw)
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
-uls.zones = function(cases, pop, w, ubpop = 0.5) {
+uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
   if (length(cases) != length(pop)) stop('length(cases) != length(pop)')
   if (length(cases) != nrow(w)) stop('length(cases) != nrow(w)')
   if (length(ubpop) != 1 | !is.numeric(ubpop)) stop("ubpop should be a single number")
@@ -51,7 +49,7 @@ uls.zones = function(cases, pop, w, ubpop = 0.5) {
       uz[[i]] = i
       # update current zones
       cz = c(cz, i)
-   } else {
+    } else {
       # which zones intersect
       wzi = which(unlist(lapply(uz[cz], function(x) length(intersect(x, which_adjacent)) > 0), use.names = FALSE))
       # add new zone to list
@@ -63,6 +61,35 @@ uls.zones = function(cases, pop, w, ubpop = 0.5) {
   # convert back to original location ids
   uz = lapply(uz, function(x) or[x])
   # return only the zones that meet constraint for population upper bound
-  popin = lapply(uz, function(x) sum(pop[x]))
-  return(uz[which(popin <= sum(pop) * ubpop)])
+  popin = zones.sum(uz, pop)
+  uz = uz[which(popin <= sum(pop) * ubpop)]
+  
+  if (check.unique) {
+    # special case when rates are the same in some regions
+    g = cases/pop
+    ug = unique(g)
+    if (length(g) > length(ug)) {
+      uz2 = vector("list", length(g))
+      og = g[or]
+      counter = 0
+      # lg = factor(g, levels = sort(ug, decreasing = TRUE))
+      for (j in sort(ug, decreasing = TRUE)) {
+        wl = which(og == j)
+        if (length(wl) == 1) {
+          counter = counter + 1
+          uz2[counter] = uz[wl]
+        } else {
+          on = order(sapply(uz[wl], length), decreasing = TRUE)
+          uzwlon = uz[wl[on]]
+          uzwlon = uzwlon[smacpod::noc(uzwlon)]
+          for (k in seq_along(uzwlon)) {
+            counter = counter + 1
+            uz2[counter] = uzwlon[k]
+          }
+        }
+      }
+      uz = uz2[seq_len(counter)]
+    }
+  }
+  return(uz)
 }

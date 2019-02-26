@@ -21,7 +21,8 @@ included among the neighbors.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -111,7 +112,7 @@ max_pop = ubpop * sum(pop)
 # upperbound for distance between centroids in zone
 max_dist = ubd * max(d)
 # create list of neighbors for each region (inclusive of region itself)
-all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
+all_neighbors = nndist(d, ubd)
 # find the dmst max zone
 mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop)
 mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "pruned")
