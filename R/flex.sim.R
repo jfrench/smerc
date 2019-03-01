@@ -26,8 +26,7 @@
 #' cases = floor(nydf$cases)
 #' ty = sum(cases)
 #' ex = ty/sum(nydf$pop) * nydf$pop
-#' yin = sapply(zones, function(x) sum(cases[x]))
-#' ein = sapply(zones, function(x) sum(ex[x]))
+#' ein = zones.sum(zones, ex)
 #' tsim = flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
 flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson", 
                     ein = NULL, eout = NULL, 

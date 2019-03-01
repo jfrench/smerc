@@ -57,7 +57,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
   w[,remove] = 0
   
   fcall_list = list(X = keep, function(i, ...) {
-    idxi = intersect(nn[i, ], keep)
+    idxi = intersect(nn[[i]], keep)
     scsg(idxi, w[,idxi, drop = FALSE])
   }, cl = cl)  
   
@@ -78,10 +78,10 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
 arg_check_rflex_zones = function(nn, w, cases, ex, 
                                  alpha1, type, pop, 
                                  progress) {
-  if (is.null(dim(nn))) stop("nn must be matrix-like with non-NULL dim")
-  N = nrow(nn)
-  if (nrow(w) != N) stop("nrow(w) must match nrow(nn)")
-  if (length(cases) != N) stop("length(cases) must match nrow(nn)")
+  if (is.list(dim(nn))) stop("nn must be a list of nn vectors")
+  N = length(nn)
+  if (nrow(w) != N) stop("nrow(w) must match length(nn)")
+  if (length(cases) != N) stop("length(cases) must match length(nn)")
   if (length(alpha1) != 1 | alpha1 <= 0) {
     stop("alpha1 must be in (0, 1]")
   } 
@@ -90,7 +90,7 @@ arg_check_rflex_zones = function(nn, w, cases, ex,
   }
   if (!is.null(pop)) {
     if (length(pop) != N) {
-      stop("length(pop) != nrow(nn)")
+      stop("length(pop) != length(nn)")
     }
   }
   if (length(progress) != 1 | !is.logical(progress)) {

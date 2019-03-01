@@ -19,7 +19,7 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
   N = nrow(coords)
   
   fcall_list = list(X = seq_len(N), function(i, ...) {
-    scsg(nn[i, ], w[,nn[i,], drop = FALSE])
+    scsg(nn[[i]], w[,nn[[i]], drop = FALSE])
   }, cl = cl)  
   
   # determine which apply function to use

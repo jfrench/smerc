@@ -22,7 +22,10 @@ knn = function(coords, longlat = FALSE, k = 1, d = NULL) {
   if (is.null(d)) {
     d = sp::spDists(as.matrix(coords), longlat = longlat)
   }
-  t(apply(d, 1, order)[seq_len(k), , drop = FALSE])
+  # return list of sorted nn indices for each row
+  # of d
+  lapply(seq_len(nrow(d)), function(i) order(d[i,])[seq_len(k)])
+  # t(apply(d, 1, order)[seq_len(k), , drop = FALSE])
 }
 
 arg_check_knn = function(coords, longlat, k, d) {

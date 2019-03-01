@@ -4,7 +4,7 @@
 \alias{fast.zones}
 \title{Determine sequence of fast subset scan zones}
 \usage{
-fast.zones(cases, pop, ubpop = 0.5)
+fast.zones(cases, pop, ubpop = 0.5, simple = TRUE)
 }
 \arguments{
 \item{cases}{The number of cases observed in each region.}
@@ -14,6 +14,10 @@ region.}
 
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
+
+\item{simple}{A logical value indicating whether a simple
+version of the fast zones should be returned.  See
+Details.}
 }
 \value{
 Returns a vector of regions to sequentially and
@@ -24,12 +28,24 @@ Returns a vector of regions to sequentially and
 implementing the fast subset scan method of Neill (2012).
 }
 \details{
+The \code{simple} argument determines the formatting of
+the returned zones.  If \code{simple = TRUE}, then a
+vector containing the sequential indices of the regions
+in each successive zones is returned.  If \code{simple =
+FALSE}, then the complete list of all zones is returned
+(which is the standard format of most of the other
+\code{*.zones} functions.
+
 The zones returned must have a total population less than
 \code{ubpop * sum(pop)} of all regions in the study area.
 }
 \examples{
 data(nydf)
-fast.zones(cases = nydf$cases, pop = nydf$population)
+cases = nydf$cases
+pop = nydf$pop
+# compare output format
+fast.zones(cases, pop, ubpop = 0.05)
+fast.zones(cases, pop, ubpop = 0.05, simple = FALSE)
 }
 \references{
 Neill, D. B. (2012), Fast subset scan for
