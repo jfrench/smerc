@@ -14,7 +14,7 @@ yin = sum(cases[zone])
 ein = sum(ex[zone])
 yout = ty - yin
 eout = ty - ein
-t1 = scan_stat(yin = yin, ty = ty, ein = ein)
+t1 = scan.stat(yin = yin, ty = ty, ein = ein)
 t2 = stat.poisson(yin = yin, yout = yout, ein = ein, eout = eout)
 
 zone = c(1, 2, 3, 12, 13, 14, 15, 35, 47, 49)
@@ -22,7 +22,7 @@ yin = sum(cases[zone])
 popin = sum(pop[zone])
 yout = ty - yin
 popout = tpop - popin
-t3 = scan_stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
+t3 = scan.stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
                type = "binomial")
 t4 = stat.binom(yin = yin, yout = yout, ty = ty, 
                 popin = popin, popout = popout, tpop = tpop)

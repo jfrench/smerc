@@ -12,7 +12,7 @@
 #' over for each simulated data set.
 #' 
 #' @inheritParams flex.test
-#' @inheritParams scan_stat
+#' @inheritParams scan.stat
 #'
 #' @return A vector with the maximum test statistic for each
 #'   simulated data set.

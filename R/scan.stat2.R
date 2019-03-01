@@ -1,10 +1,11 @@
 #' Spatial scan statistic
 #'
-#' \code{scan.stat2} calculates the spatial scan statistic
+#' \code{scan.stat} calculates the spatial scan statistic
 #' for a zone (a set of spatial regions).  The statistic is
 #' the log of the likelihood ratio test statistic of the
 #' chosen distribution.  If \code{type = "poisson"} and
 #' \code{a} is more than zero, this statistic is penalized.
+#' See references.
 #'
 #' @param yin The total number of cases in the zone.
 #' @param ty The total number of cases in the study area.
@@ -59,17 +60,18 @@
 #' tpop = 1057673
 #'
 #' # poisson example with yin = 106 and ein = 62.13
-#' scan_stat(yin = 106, ty = ty, ein = 62.13)
+#' scan.stat(yin = 106, ty = ty, ein = 62.13)
 #' stat.poisson(yin = 106, yout = 552 - 106,
 #'              ein = 62.13, eout = 552 - 62.13)
 #'
 #' # binomial example with yin = 41 and popin = 38999
-#' scan_stat(yin = 41, ty = ty,
+#' scan.stat(yin = 41, ty = ty,
 #'           popin = 38999, tpop = tpop, type = "binomial")
 #' stat.binom(41, ty - 41, ty, 38999, tpop - 38999, tpop)
-scan_stat = function(yin, ty, ein = NULL, eout = NULL,
+scan.stat = function(yin, ein = NULL, eout = NULL, ty, 
+                     type = "poisson", 
                      popin = NULL, tpop = NULL,
-                     type = "poisson", a = 0, shape = 1,
+                     a = 0, shape = 1,
                      yout = NULL,
                      popout = NULL) {
   arg_check_scan_stat(yin = yin, ty = ty, ein = ein, 
@@ -86,13 +88,6 @@ scan_stat = function(yin, ty, ein = NULL, eout = NULL,
     if (B != length(eout)) stop("length(yin) != length(eout)")
 
     tall = stat.poisson(yin, yout, ein, eout, a, shape)
-    # tall = yin * (log(yin) - log(ein)) + yout * (log(yout) - log(eout))
-    # # correct test statistics for NaNs
-    # tall[yin/ein <= yout/eout | is.nan(tall)] = 0
-    # if (a > 0) {
-    #   wp = which(shape > 1)
-    #   tall[wp] = tall[wp] * ((4 * shape[wp])/(shape[wp] + 1)^2)^a
-    # }
   } else if (type == "binomial") {
     # check eout argument
     if (is.null(popout)) popout = tpop - popin 
@@ -104,11 +99,19 @@ scan_stat = function(yin, ty, ein = NULL, eout = NULL,
 }
 
 #' @export
-#' @rdname scan_stat
+#' @rdname scan.stat
 stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
-  tall = yin * (log(yin) - log(ein)) + yout * (log(yout) - log(eout))
-  # correct test statistics for NaNs
-  tall[yin/ein <= yout/eout | is.nan(tall)] = 0
+  # determine if there will be any problematic statistics
+  good = which(yin > 0)
+  # create vector for storage
+  tall = numeric(length(yin))
+  # log ratio observed/expected (in and out) for good locations
+  lrin =  log(yin[good]) - log(ein[good])
+  lrout = log(yout[good]) - log(eout[good])
+  # compute statistics for good locations
+  tall[good] = yin[good] * lrin + yout[good] * lrout
+  # if indicator not satisfied, set to 0
+  tall[good][lrin < lrout] = 0
   if (a > 0) {
     wp = which(shape > 1)
     tall[wp] = tall[wp] * ((4 * shape[wp])/(shape[wp] + 1)^2)^a
@@ -117,7 +120,7 @@ stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
 }
 
 #' @export
-#' @rdname scan_stat
+#' @rdname scan.stat
 stat.binom = function(yin, yout, ty, popin, popout, tpop) {
   py_in = popin - yin
   py_out = popout - yout
