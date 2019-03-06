@@ -62,18 +62,17 @@ elliptic.test = function(coords, cases, pop,
   # convert to proper format
   coords = as.matrix(coords)
   N = nrow(coords)
-  # short names
 
   enn = elliptic.nn(coords, pop = pop, ubpop = ubpop,
                     shape = shape, nangle = nangle)
   # determine the expected cases in/out each successive 
   # window, total number of cases, total population
-  ein = unlist(lapply(enn$nn, function(x) cumsum(ex[x])))
+  ein = nn.cumsum(enn$nn, ex)#unlist(lapply(enn$nn, function(x) cumsum(ex[x])))
   ty = sum(cases) # sum of all cases
   eout = ty - ein # counts expected outside the window
 
   # determine yin and yout for all windows for observed data
-  yin = unlist(lapply(enn$nn, function(x) cumsum(cases[x])))
+  yin = nn.cumsum(enn$nn, cases) #unlist(lapply(enn$nn, function(x) cumsum(cases[x])))
 
   ### calculate scan statistics for observed data
   # of distance from observation centroid
@@ -86,9 +85,7 @@ elliptic.test = function(coords, cases, pop,
   
   # determine positions in nn of all zones
   nnn = unlist(lapply(enn$nn, length), use.names = FALSE)
-  # allpos = cbind(rep(seq_along(enn$nn), times = nnn),
-  #               unlist(sapply(nnn, seq_len)))
- 
+
   # remove zones with a test statistic of 0
   # or fewer than minimum number of cases or
   # indistinct
@@ -112,7 +109,6 @@ elliptic.test = function(coords, cases, pop,
   }
   
   # construct all zones
-  # zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
   zones = unlist(lapply(enn$nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
   zones = zones[-w0]
   
@@ -136,81 +132,4 @@ elliptic.test = function(coords, cases, pop,
             ex = ex, longlat = FALSE, w = NULL,
             d = NULL, a = a, shape_all = shape_all,
             angle_all = angle_all)
-  
-#   # determine which potential clusters are significant
-#   sigc = which(pvalue <= alpha, useNames = FALSE)
-# 
-#   # if there are no significant clusters, return most likely cluster
-#   if (length(sigc) == 0) {
-#     sigc = which.max(tobs)
-#     warning("No significant clusters.  Returning most likely cluster.")
-#   }
-# 
-#   allpos = allpos[sigc, ]
-#   tobs = tobs[sigc]
-#   shape_all = shape_all[sigc]
-#   angle_all = angle_all[sigc]
-# 
-#   # construct all zones
-#   zones = apply(allpos, 1, function(x) enn$nn[[x[1]]][seq_len(x[2])])
-# 
-#   # order zones by most significant
-#   ozones = order(tobs, decreasing = TRUE)
-#   zones = zones[ozones]
-# 
-#   # determine significant non-overlapping clusters
-#   sig = smacpod::noc(zones)
-#   
-#   # for the unique, non-overlapping clusters in order of significance,
-#   # find the associated test statistic, p-value, centroid,
-#   # window radius, cases in window, expected cases in window, 
-#   # population in window, standarized mortality ratio, relative risk,
-#   sig_regions = zones[sig]
-#   sig_tstat = tobs[ozones[sig]]
-#   sig_p = pvalue[ozones[sig]]
-#   sig_shape = shape_all[ozones[sig]]
-#   sig_angle = angle_all[ozones[sig]]
-#   centroid = sapply(sig_regions, utils::head, n = 1)
-#   boundary = sapply(sig_regions, utils::tail, n = 1)
-#   sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
-#   sig_yin = sapply(sig_regions, function(x) sum(y[x]))
-#   sig_ein = sapply(sig_regions, function(x) sum(e[x]))
-#   sig_popin = sapply(sig_regions, function(x) sum(pop[x]))
-#   sig_smr = sig_yin/sig_ein
-#   sig_rr = (sig_yin/sig_popin)/((ty - sig_yin)/(sum(pop) - sig_popin))
-#   sig_w = lapply(sig_regions, function(x) {
-#     matrix(c(0, rep(1, length(x) - 1)), nrow = 1)  
-#   })
-#   sig_minor = unname(sapply(seq_along(sig_regions), function(i) {
-#     first = sig_regions[[i]][1]
-#     last = utils::tail(sig_regions[[i]], 1)
-#     dist.ellipse(coords[c(first, last),,drop = FALSE],
-#                  shape = sig_shape[i],
-#                  angle = sig_angle[i])[1,2]
-#   }))
-#   sig_major = sig_minor * sig_shape
-#   
-#   # reformat output for return
-#   clusters = vector("list", length(sig_regions))
-#   for (i in seq_along(clusters)) {
-#     clusters[[i]]$locids = sig_regions[[i]]
-#     clusters[[i]]$coords = sig_coords[i,, drop = FALSE]
-#     clusters[[i]]$semiminor.axis = sig_minor[i]
-#     clusters[[i]]$semimajor.axis = sig_major[i]
-#     clusters[[i]]$angle = sig_angle[i]
-#     clusters[[i]]$shape = sig_shape[i]
-#     clusters[[i]]$pop = sig_popin[i]
-#     clusters[[i]]$cases = sig_yin[i]
-#     clusters[[i]]$expected = sig_ein[i]
-# #    clusters[[i]]$cases.per.100000 = sig_yin[i]/sig_popin[i] * 1e5
-#     clusters[[i]]$smr = sig_smr[i]
-#     clusters[[i]]$rr = sig_rr[i]
-#     clusters[[i]]$test.statistic = sig_tstat[[i]]
-#     clusters[[i]]$loglikrat = scan.stat(sig_yin[i], sig_ein[i], ty - sig_ein[i], ty, shape = sig_shape[i])
-#     clusters[[i]]$pvalue = sig_p[i]
-#     clusters[[i]]$w = sig_w[[i]]
-#   }
-#   outlist = list(clusters = clusters, coords = coords)
-#   class(outlist) = "scan"
-#   return(outlist)
 }

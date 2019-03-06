@@ -27,8 +27,8 @@
 #' cases = floor(nydf$cases)
 #' ty = sum(cases)
 #' ex = ty/sum(pop) * pop
-#' yin = unlist(sapply(enn$nn, function(x) cumsum(cases[x])))
-#' ein = unlist(sapply(enn$nn, function(x) cumsum(ex[x])))
+#' yin = nn.cumsum(enn$nn, cases)
+#' ein = nn.cumsum(enn$nn, ex)
 #' tsim = elliptic.sim(nsim = 2, nn = enn$nn, ty = ty, ex = ex, 
 #'                     a = 0.5, shape_all = enn$shape_all, 
 #'                     ein = ein, eout = ty - ein)
@@ -39,7 +39,7 @@ elliptic.sim = function(nsim = 1, nn, ty, ex, a, shape_all,
     # simulate new data
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     # compute test statistics for each zone
-    yin = unlist(lapply(nn, function(x) cumsum(ysim[x])), use.names = FALSE)
+    yin = nn.cumsum(nn, ysim) #unlist(lapply(nn, function(x) cumsum(ysim[x])), use.names = FALSE)
     max(stat.poisson(yin, ty - yin, ein, eout, a, shape_all))
   })
   unlist(tsim, use.names = FALSE)

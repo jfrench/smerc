@@ -61,8 +61,8 @@ enn = elliptic.nn(coords, pop, ubpop = 0.1,
 cases = floor(nydf$cases)
 ty = sum(cases)
 ex = ty/sum(pop) * pop
-yin = unlist(sapply(enn$nn, function(x) cumsum(cases[x])))
-ein = unlist(sapply(enn$nn, function(x) cumsum(ex[x])))
+yin = nn.cumsum(enn$nn, cases)
+ein = nn.cumsum(enn$nn, ex)
 tsim = elliptic.sim(nsim = 2, nn = enn$nn, ty = ty, ex = ex, 
                     a = 0.5, shape_all = enn$shape_all, 
                     ein = ein, eout = ty - ein)
