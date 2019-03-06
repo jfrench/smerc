@@ -32,7 +32,7 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' nn = knn(coords, longlat = FALSE, k = 50)
+#' nn = knn(coords, longlat = FALSE, k = 10)
 #' cases = floor(nydf$cases)
 #' pop = nydf$pop
 #' ex = pop * sum(cases)/sum(pop)
@@ -51,28 +51,35 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
   p = rflex.midp(cases, ex, type = type, pop = pop)
   # determine which regions are "hot" (keep) or "cold" (remove)
   keep = which(p < alpha1)
-  remove = setdiff(seq_along(ex), keep)
   
-  # remove connections when p >= alpha1  
-  w[,remove] = 0
+  if (length(keep) > 0) {
+    remove = setdiff(seq_along(ex), keep)
+    
+    # remove connections when p >= alpha1  
+    w[,remove] = 0
+    
+    fcall_list = list(X = keep, function(i, ...) {
+      idxi = intersect(nn[[i]], keep)
+      scsg(idxi, w[,idxi, drop = FALSE])
+    }, cl = cl)  
+    
+    # determine which apply function to use
+    if (progress) {
+      message("constructing connected subgraphs:")
+      fcall = pbapply::pblapply
+    } else {
+      fcall = lapply
+    }
   
-  fcall_list = list(X = keep, function(i, ...) {
-    idxi = intersect(nn[[i]], keep)
-    scsg(idxi, w[,idxi, drop = FALSE])
-  }, cl = cl)  
-  
-  # determine which apply function to use
-  if (progress) {
-    message("constructing connected subgraphs:")
-    fcall = pbapply::pblapply
+    # determine distinct zones
+    czones = unlist(do.call(fcall, fcall_list), 
+                    use.names = FALSE, recursive = FALSE)
+    return(czones[distinct(czones)])
   } else {
-    fcall = lapply
+    czones = vector("list", 1)
+    czones[[1]] = numeric(0)
+    return(czones)
   }
-
-  # determine distinct zones
-  czones = unlist(do.call(fcall, fcall_list), 
-                  use.names = FALSE, recursive = FALSE)
-  czones[distinct(czones)]
 }
 
 arg_check_rflex_zones = function(nn, w, cases, ex, 

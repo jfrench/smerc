@@ -63,15 +63,15 @@ rflex.test = function(coords, cases, pop, w, k = 50,
                       cl = cl, progress = FALSE)
   # compute needed information
   ty = sum(cases)
-  yin = unlist(lapply(zones, function(x) sum(cases[x])))
+  yin = zones.sum(zones, cases)
   if (type == "binomial") tpop = sum(pop)
   
   # compute test statistics for observed data
   if (type == "poisson") {
-    ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
+    ein = zones.sum(zones, ex)
     tobs = stat.poisson(yin, ty - yin, ein, ty - ein)
   } else if (type == "binomial") {
-    popin = unlist(lapply(zones, function(x) sum(pop[x])), use.names = FALSE)
+    popin = zones.sum(zones, pop)
     tobs = stat.binom(yin, ty - yin, ty, 
                       popin, tpop - popin, tpop)
   }

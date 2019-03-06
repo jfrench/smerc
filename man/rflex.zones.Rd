@@ -58,7 +58,7 @@ region must be less than \code{alpha1}.
 data(nydf)
 data(nyw)
 coords = cbind(nydf$longitude, nydf$latitude)
-nn = knn(coords, longlat = FALSE, k = 50)
+nn = knn(coords, longlat = FALSE, k = 10)
 cases = floor(nydf$cases)
 pop = nydf$pop
 ex = pop * sum(cases)/sum(pop)
