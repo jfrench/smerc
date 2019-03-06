@@ -41,7 +41,7 @@ flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson",
     # simulate new data
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     # compute test statistics for each zone
-    yin = unlist(lapply(zones, function(x) sum(ysim[x])), use.names = FALSE)
+    yin = zones.sum(zones, ysim)
     if (type == "poisson") {
       tall = stat.poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {

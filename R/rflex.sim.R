@@ -50,12 +50,12 @@ rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
                         alpha1 = alpha1, pop = pop, 
                         cl = NULL, progress = FALSE)
     # compute test statistics for each zone
-    yin = unlist(lapply(zones, function(x) sum(ysim[x])), use.names = FALSE)
+    yin = zones.sum(zones, ysim)
     if (type == "poisson") {
-      ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
+      ein = zones.sum(zones, ex)
       tall = stat.poisson(yin, ty - yin, ein, ty - ein)
     } else if (type == "binomial") {
-      popin = unlist(lapply(zones, function(x) sum(pop[x])), use.names = FALSE)
+      popin = zones.sum(zones, pop)
       tall = stat.binom(yin, ty - yin, ty, 
                         popin, tpop - popin, tpop)
     }

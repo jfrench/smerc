@@ -39,11 +39,11 @@ flex.test = function(coords, cases, pop, w, k = 10,
 
   # compute needed information
   ty = sum(cases)
-  yin = unlist(lapply(zones, function(x) sum(cases[x])))
+  yin = zones.sum(zones, cases)
 
   # compute test statistics for observed data
   if (type == "poisson") {
-    ein = unlist(lapply(zones, function(x) sum(ex[x])), use.names = FALSE)
+    ein = zones.sum(zones, ex)
     eout = ty - ein
     popin = NULL
     popout = NULL
@@ -53,7 +53,7 @@ flex.test = function(coords, cases, pop, w, k = 10,
     ein = NULL
     eout = NULL
     tpop = sum(pop)
-    popin = unlist(lapply(zones, function(x) sum(pop[x])), use.names = FALSE)
+    popin = zones.sum(zones, pop)
     popout = tpop - popin
     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
   }
