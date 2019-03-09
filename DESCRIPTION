@@ -16,6 +16,7 @@ Imports:
     randtoolbox, 
     sp
 Suggests:
+    lintr,
     testthat, 
     SpatialEpi
 Encoding: UTF-8
