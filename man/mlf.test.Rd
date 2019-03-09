@@ -50,7 +50,7 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 \item{locids}{The location ids of regions in a significant cluster.}
 \item{pop}{The total population in the cluser window.}
 \item{cases}{The observed number of cases in the cluster window.}
@@ -64,30 +64,30 @@ Returns a list of length two of class scan. The first element (clusters) is a li
 The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
-\code{mlf.test} implements the Maxima Likelihood First 
-scan test of Yao et al. (2011), which is actually a 
-special case of the Dynamic Minimum Spanning Tree of 
-Assuncao et al. (2006).  Find the single region that 
-maximizes the likelihood ratio test statistic.  Starting 
-with this single region as a current zone, new candidate 
-zones are constructed by combining the current zone with 
-the connected region that maximizes the likelihood ratio 
-test statisic.  This procedure is repeated until the 
+\code{mlf.test} implements the Maxima Likelihood First
+scan test of Yao et al. (2011), which is actually a
+special case of the Dynamic Minimum Spanning Tree of
+Assuncao et al. (2006).  Find the single region that
+maximizes the likelihood ratio test statistic.  Starting
+with this single region as a current zone, new candidate
+zones are constructed by combining the current zone with
+the connected region that maximizes the likelihood ratio
+test statisic.  This procedure is repeated until the
 population and/or distance upper bound is reached.
 }
 \details{
-Only a single candidate zone is ever returned because the 
-algorithm only constructs a single sequence of starting 
-zones, and overlapping zones are not returned.  Only the 
-zone that maximizes the likelihood ratio test statistic 
+Only a single candidate zone is ever returned because the
+algorithm only constructs a single sequence of starting
+zones, and overlapping zones are not returned.  Only the
+zone that maximizes the likelihood ratio test statistic
 is returned.
 }
 \examples{
 data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
-out = mlf.test(coords = coords, cases = floor(nydf$cases), 
-                  pop = nydf$pop, w = nyw, 
+out = mlf.test(coords = coords, cases = floor(nydf$cases),
+                  pop = nydf$pop, w = nyw,
                   alpha = 0.12, longlat = TRUE,
                   nsim = 10, ubpop = 0.1, ubd = 0.5)
 data(nypoly)

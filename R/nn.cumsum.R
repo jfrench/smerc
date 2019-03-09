@@ -1,6 +1,6 @@
 #' Cumulative sum over nearest neighbors
 #'
-#' \code{nn.cumsum} computes the cumulative sum of \code{y} for 
+#' \code{nn.cumsum} computes the cumulative sum of \code{y} for
 #' the sequences of indices in each element of the list
 #' contained in \code{nn}.
 #'
@@ -8,7 +8,7 @@
 #' @param y A numeric vector which contains to values to be
 #' summed over.
 #' @param simplify A logical value indicating whether the results
-#' should be simplified to a numeric vector.  The default is 
+#' should be simplified to a numeric vector.  The default is
 #' \code{TRUE}.
 #'
 #' @return A vector or list, depending on the value of \code{simplify}.

@@ -27,20 +27,20 @@ hypothesis.}
 
 \item{ty}{The total number of cases in the study area.}
 
-\item{max_pop}{The population upperbound (in total 
+\item{max_pop}{The population upperbound (in total
 population) for a candidate zone.}
 
-\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
+\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or
 \code{"all"}.  See Details.}
 
-\item{nlinks}{A character vector.  The options are 
-\code{"one"}, \code{"two"}, or \code{"max"}.  See 
+\item{nlinks}{A character vector.  The options are
+\code{"one"}, \code{"two"}, or \code{"max"}.  See
 Details.}
 
-\item{early}{A logical value indicating whether the 
-"early" stopping criterion should be used.  If 
-\code{TRUE}, each sequence is stopped when the next 
-potential zone doesn't produce a test statistic larger 
+\item{early}{A logical value indicating whether the
+"early" stopping criterion should be used.  If
+\code{TRUE}, each sequence is stopped when the next
+potential zone doesn't produce a test statistic larger
 than the current zone. The default is \code{FALSE}.}
 
 \item{cl}{
@@ -52,7 +52,7 @@ or an integer to indicate number of child-processes
 \item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
 }
 \value{
-Returns a list of relevant information.  See 
+Returns a list of relevant information.  See
   Details.
 }
 \description{
@@ -70,7 +70,7 @@ This function is not intended to be used by users
 directly. Consequently, it prioritizes efficiency over
 user friendliness.
 
-\code{type} is a character vector indicating what should 
+\code{type} is a character vector indicating what should
 be returned by the function.  If \code{type = "maxonly"},
 then the maximum test statistic from each starting region
 is returned .  If \code{type = "pruned"}, the function
@@ -83,13 +83,13 @@ location ids, test statistic, total cases, expected
 cases, and total population for the sequence of candidate
 zones associated with each starting region.
 
-If \code{nlinks = "one"}, then a region only needs to be 
-connected to one other region in the current zone to be 
-considered for inclusion in the next zone.  If 
-\code{nlinks = "two"}, then the region must be connected 
-to at least two other regions in the current zone.  If 
+If \code{nlinks = "one"}, then a region only needs to be
+connected to one other region in the current zone to be
+considered for inclusion in the next zone.  If
+\code{nlinks = "two"}, then the region must be connected
+to at least two other regions in the current zone.  If
 \code{nlinks = "max"}, then only regions with the maximum
-number of connections to the current zone are considered 
+number of connections to the current zone are considered
 for inclusion in the next zone.
 }
 \examples{
@@ -112,7 +112,7 @@ d = sp::spDists(as.matrix(coords), longlat = TRUE)
 max_pop = ubpop * sum(pop)
 # upperbound for distance between centroids in zone
 max_dist = ubd * max(d)
-# create list of neighbors for each region 
+# create list of neighbors for each region
 # (inclusive of region itself)
 all_neighbors = nndist(d, ubd)
 # find the dmst max zone
@@ -131,11 +131,11 @@ Assuncao, R.M., Costa, M.A., Tavares, A. and
   Neto, S.J.F. (2006). Fast detection of arbitrarily
   shaped disease clusters, Statistics in Medicine, 25,
   723-742.  <https://doi.org/10.1002/sim.2411>
-  
+
   Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
   Constrained spanning tree algorithms for
   irregularly-shaped spatial clustering, Computational
-  Statistics & Data Analysis, 56(6), 1771-1783. 
+  Statistics & Data Analysis, 56(6), 1771-1783.
   <https://doi.org/10.1016/j.csda.2011.11.001>
 }
 \author{

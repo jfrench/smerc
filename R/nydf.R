@@ -1,10 +1,10 @@
 #' @name nydf
 #' @title Leukemia data for 281 regions in New York.
 #' @description This data set contains 281 observations related to leukeumia cases in an 8 county area of the state of New York.  The data were made available in Waller and Gotway (2005) and details are provided there.  These data are related to a similar data set in Waller et al. (1994).  The longitude and latitude coordinates are taken from the NYleukemia data set in the SpatialEpi package for plotting purposes.
-#' 
+#'
 #' @docType data
 #' @usage data(nydf)
-#' 
+#'
 #' @format A data frame with 281 rows and 4 columns:
 #' \describe{
 #'  \item{longitude}{The longitude of the region centroid.  These are NOT the original values provided by Waller and Gotway (2005), but are the right ones for plotting correctly.}

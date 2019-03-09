@@ -1,9 +1,9 @@
 #' Determine zones for the spatial scan test
-#' 
-#' \code{scan.zones} determines the unique candidate 
-#' zones to consider for the circular spatial scan test of 
+#'
+#' \code{scan.zones} determines the unique candidate
+#' zones to consider for the circular spatial scan test of
 #' Kulldorff (1997).
-#' 
+#'
 #' @inheritParams scan.test
 #' @return Returns a list of zones to consider for
 #'   clustering.  Each element of the list contains a vector
@@ -14,10 +14,10 @@
 #' scan statistic. Communications in Statistics - Theory and
 #' Methods, 26(6): 1481-1496,
 #' <doi:10.1080/03610929708831995>
-#' @examples 
+#' @examples
 #' data(nydf)
 #' coords = cbind(nydf$longitude, nydf$latitude)
-#' zones = scan.zones(coords = coords, pop = nydf$pop, 
+#' zones = scan.zones(coords = coords, pop = nydf$pop,
 #'                    ubpop = 0.1, longlat = TRUE)
 scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   # argument checking

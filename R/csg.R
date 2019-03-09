@@ -10,22 +10,22 @@
 #' While the rows of \code{w} contain adjacency information for all N
 #' vertices, only the \code{idx} columns of the complete adjacency matrix
 #' are used in \code{w}.  See Details for discussion of \code{scsg}.
-#' 
+#'
 #' \code{scsg} performs
 #' a sequence of \code{lcsg} calls.  Starting with \code{lset == list(idx[1])},
 #' \code{scsg} keeps iteratively building more connected subsgraphs by perfoming
-#' something like:  set1 = list(idx[1]).  set2 = lcsg(set1, idx, w).  
+#' something like:  set1 = list(idx[1]).  set2 = lcsg(set1, idx, w).
 #' set3 = lcsg(set2, idx, w).  This is done until there are no more connected
-#' subgraphs among the elements of \code{idx}. 
+#' subgraphs among the elements of \code{idx}.
 #'
 #' @param set A vector of (presumably connected) vertices.
-#' @param lset A list of sets. 
+#' @param lset A list of sets.
 #' @param idx A vector of vertices considered for inclusion in the
 #' subgraph, e.g., based on nearest neighbors.
 #' @param w The adjacency matrix for all vertices by row, but with only the \code{idx} columns
 #' @param verbose A logical value indicating whether very descriptive messages
 #' should be provided.  Default is \code{FALSE}.  If \code{TRUE}, this can
-#' be useful for diagnosing where the sequences of connected subgraphs is 
+#' be useful for diagnosing where the sequences of connected subgraphs is
 #' slowing down/having problems.
 #'
 #' @return A list of with all possible combinations of \code{set} and
@@ -53,7 +53,7 @@
 #' # the sets in nb2 should be present in the
 #' # first 9 positions of nb2e
 #' all.equal(nb2, nb2e[seq_along(nb2)])
-#' 
+#'
 #' # apply scsg to first 10 nn of vertex 1
 #' nn10 = order(d[1,])[1:10]
 #' w = nyw[, nn10]

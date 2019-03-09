@@ -1,8 +1,8 @@
 #' Convert nearest neighbors list to zones
-#' 
+#'
 #' \code{nn2zones} converts a list of nearest neighbors to
 #' a list of zones.  The list of nearest neighbors will
-#' come from functions such as \code{\link{nnpop}} or 
+#' come from functions such as \code{\link{nnpop}} or
 #' \code{knn}.
 #'
 #' @param nn A list of nearest neighbors

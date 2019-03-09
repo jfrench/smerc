@@ -61,10 +61,10 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 out = flex.test(coords = coords, cases = floor(nydf$cases),
-                w = nyw, k = 3,  
-                pop = nydf$pop, nsim = 49, 
+                w = nyw, k = 3,
+                pop = nydf$pop, nsim = 49,
                 alpha = 0.12, longlat = TRUE)
-                
+
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))
@@ -73,8 +73,8 @@ plot(nypoly, col = color.clusters(out))
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 }
 \seealso{
-\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
-\code{\link{scan.test}}, \code{\link{uls.test}}, 
+\code{\link{scan.stat}}, \code{\link{plot.scan}},
+\code{\link{scan.test}}, \code{\link{uls.test}},
 \code{\link{dmst.test}}, \code{\link{bn.test}}
 }
 \author{

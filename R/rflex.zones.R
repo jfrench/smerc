@@ -115,7 +115,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
 }
 
 #' Check arguments of rflex.zones
-#' 
+#'
 #' Check the arguments of rflex.zones
 #'
 #' @keywords internal

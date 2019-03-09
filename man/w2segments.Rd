@@ -7,8 +7,8 @@
 w2segments(w, coords)
 }
 \description{
-w2segments takes a binary spatial proximity matrix and 
-associated coordinates.  It returns segments connecting 
+w2segments takes a binary spatial proximity matrix and
+associated coordinates.  It returns segments connecting
 the neighbors for plotting purposes
 }
 \keyword{internal}

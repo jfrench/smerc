@@ -13,14 +13,14 @@ nn.cumsum(nn, y, simplify = TRUE)
 summed over.}
 
 \item{simplify}{A logical value indicating whether the results
-should be simplified to a numeric vector.  The default is 
+should be simplified to a numeric vector.  The default is
 \code{TRUE}.}
 }
 \value{
 A vector or list, depending on the value of \code{simplify}.
 }
 \description{
-\code{nn.cumsum} computes the cumulative sum of \code{y} for 
+\code{nn.cumsum} computes the cumulative sum of \code{y} for
 the sequences of indices in each element of the list
 contained in \code{nn}.
 }

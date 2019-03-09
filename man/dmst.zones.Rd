@@ -46,17 +46,17 @@ or an integer to indicate number of child-processes
 \item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
 }
 \value{
-Returns a list with elements: 
+Returns a list with elements:
 \item{zones}{A list contained the location ids of
-  each potential cluster.} 
-\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}   
-\item{cases}{The observed number of cases in each zone.} 
+  each potential cluster.}
+\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}
+\item{cases}{The observed number of cases in each zone.}
 \item{expected}{The expected number of cases each zone.}
 \item{pop}{The total population in each zone.}
 }
 \description{
 \code{dmst.zones} determines the zones for the Dynamic
-Minimum Spanning Tree scan test (\code{\link{dmst.test}}).  The 
+Minimum Spanning Tree scan test (\code{\link{dmst.test}}).  The
 function returns the zones, as well as the associated
 test statistic, cases in each zone, the expected number
 of cases in each zone, and the population in each zone.

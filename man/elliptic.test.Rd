@@ -76,7 +76,7 @@ data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = elliptic.test(coords = coords,
                    cases = floor(nydf$cases),
-                   pop = nydf$pop, ubpop = 0.1, 
+                   pop = nydf$pop, ubpop = 0.1,
                    nsim = 2,
                    alpha = 0.12,
                    shape = 1.5, nangle = 4)
@@ -85,7 +85,7 @@ out = elliptic.test(coords = coords,
 Kulldorff, M. (1997) A spatial scan
   statistic. Communications in Statistics - Theory and
   Methods, 26(6): 1481-1496,
-  <doi:10.1080/03610929708831995> 
+  <doi:10.1080/03610929708831995>
 
 Kulldorff, M., Huang, L., Pickle,
 L. and Duczmal, L. (2006) An elliptic spatial scan

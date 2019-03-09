@@ -24,7 +24,7 @@ hypothesis.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{max_pop}{The population upperbound (in total 
+\item{max_pop}{The population upperbound (in total
 population) for a candidate zone.}
 
 \item{cl}{
@@ -55,6 +55,6 @@ ex = ty/sum(pop) * pop
 d = sp::spDists(coords, longlat = TRUE)
 nn = nndist(d, ubd = 0.05)
 max_pop = sum(pop) * 0.25
-tsim = mlink.sim(1, nn, ty, ex, nyw, pop = pop, 
+tsim = mlink.sim(1, nn, ty, ex, nyw, pop = pop,
                  max_pop = max_pop)
 }

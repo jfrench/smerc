@@ -26,11 +26,11 @@ Returns the indices of the nearest neighbors as a
   ordered from nearest to farthest from each centroid.
 }
 \description{
-\code{mst.nn} determines the nearest 
-neighbors for a set of observations based on the 
+\code{mst.nn} determines the nearest
+neighbors for a set of observations based on the
 distance matrix according to a distance-based upperbound.
-These neighbors are directly related to the zones 
-considered in \code{\link{dmst.test}}, 
+These neighbors are directly related to the zones
+considered in \code{\link{dmst.test}},
 \code{\link{dc.test}}, and \code{\link{mlink.test}}
 }
 \details{

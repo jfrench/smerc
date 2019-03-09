@@ -21,7 +21,7 @@ Returns the indices of the nearest neighbors as a
   list.
 }
 \description{
-\code{nndist} determines the nearest 
+\code{nndist} determines the nearest
 neighbors for a set of observations within a certain
 radius.
 }

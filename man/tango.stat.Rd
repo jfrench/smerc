@@ -21,7 +21,7 @@ autocorrelation component (\code{sa}).
 }
 \description{
 \code{tango.stat} computes Tango's index (Tango, 1995), including
-both the goodness-of-fit and spatial autocorrelation 
+both the goodness-of-fit and spatial autocorrelation
 components.  See Waller and Gotway (2005).
 }
 \examples{

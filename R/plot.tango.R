@@ -1,22 +1,22 @@
-#' Plots an object of class \code{tango}. 
-#' 
+#' Plots an object of class \code{tango}.
+#'
 #' Plots results of \code{\link{tango.test}}.  If Monte
 #' Carlo simulation was not used to produce \code{x}, then a  a density plot of
 #' the (approximate) null distribution of \code{tstat.chisq} is produced, along
-#' with a vertical line for the observed \code{tstat}.  
-#' If a Monte Carlo test was used to produce \code{x}, then a scatterplot of 
+#' with a vertical line for the observed \code{tstat}.
+#' If a Monte Carlo test was used to produce \code{x}, then a scatterplot of
 #' the \code{gof.sim} versus \code{sa.sim} is compared to the observed values
 #' \code{gof} and \code{sa}, respectively.
 #'
 #' @param x An object of class \code{tango} to be plotted.
 #' @param ... Additional graphical parameters passed to \code{plot} function.
-#' @param obs.list A list containing arguments for the 
+#' @param obs.list A list containing arguments for the
 #' \code{\link[graphics]{points}} function, which is used to
-#' plot the \code{gof} and \code{sa} components, 
+#' plot the \code{gof} and \code{sa} components,
 #' when appropriate.
-#' @param sim.list A list containing arguments for the 
+#' @param sim.list A list containing arguments for the
 #' \code{\link[graphics]{points}} function, which is used to
-#' plot the \code{gof.sim} and \code{sa.sim} components, 
+#' plot the \code{gof.sim} and \code{sa.sim} components,
 #' when appropriate.
 #' @method plot tango
 #' @export

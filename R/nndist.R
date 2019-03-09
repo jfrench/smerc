@@ -1,6 +1,6 @@
 #' Determine nearest neighbors based on maximum distance
-#' 
-#' \code{nndist} determines the nearest 
+#'
+#' \code{nndist} determines the nearest
 #' neighbors for a set of observations within a certain
 #' radius.
 #'
@@ -8,17 +8,17 @@
 #' centroid based on the intercentroid distance.  The number
 #' of nearest neighbors is limited by the furthest distance
 #' between the starting centroid and the farthest neighbor.
-#' 
+#'
 #' @param d An \eqn{n\times n} square distance matrix
 #'   containing the intercentroid distance between the
 #'   \eqn{n} region centroids.
 #' @inheritParams dmst.test
-#'   
+#'
 #' @return Returns the indices of the nearest neighbors as a
 #'   list.
 #' @author Joshua French
 #' @export
-#' @examples 
+#' @examples
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' d = as.matrix(dist(coords))

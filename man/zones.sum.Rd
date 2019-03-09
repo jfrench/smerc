@@ -16,7 +16,7 @@ summed over.}
 A numeric vector.
 }
 \description{
-\code{zones.sum} computes the sum of \code{y} for the 
+\code{zones.sum} computes the sum of \code{y} for the
 indices in each element of the list contained in \code{zones}.
 }
 \examples{

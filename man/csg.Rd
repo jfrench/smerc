@@ -24,7 +24,7 @@ subgraph, e.g., based on nearest neighbors.}
 
 \item{verbose}{A logical value indicating whether very descriptive messages
 should be provided.  Default is \code{FALSE}.  If \code{TRUE}, this can
-be useful for diagnosing where the sequences of connected subgraphs is 
+be useful for diagnosing where the sequences of connected subgraphs is
 slowing down/having problems.}
 }
 \value{
@@ -48,7 +48,7 @@ are used in \code{w}.  See Details for discussion of \code{scsg}.
 \code{scsg} performs
 a sequence of \code{lcsg} calls.  Starting with \code{lset == list(idx[1])},
 \code{scsg} keeps iteratively building more connected subsgraphs by perfoming
-something like:  set1 = list(idx[1]).  set2 = lcsg(set1, idx, w).  
+something like:  set1 = list(idx[1]).  set2 = lcsg(set1, idx, w).
 set3 = lcsg(set2, idx, w).  This is done until there are no more connected
 subgraphs among the elements of \code{idx}.
 }

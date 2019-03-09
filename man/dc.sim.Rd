@@ -24,7 +24,7 @@ hypothesis.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{max_pop}{The population upperbound (in total 
+\item{max_pop}{The population upperbound (in total
 population) for a candidate zone.}
 
 \item{cl}{

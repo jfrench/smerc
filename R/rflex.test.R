@@ -1,15 +1,15 @@
 #' Restricted Flexibly-shaped Spatial Scan Test
-#' 
+#'
 #' \code{rflex.test} performs the restricted flexibly shaped spatial scan test of Tango and Takahashi (2012).
-#' 
+#'
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
-#' 
+#'
 #' @inheritParams scan.test
 #' @param w A binary spatial adjacency matrix for the regions.
 #' @param k An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10
 #' @param alpha1 The middle p-value threshold.
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 #' \item{coords}{The centroid of the significant clusters.}
 #' \item{r}{The radius of the window of the clusters.}
 #' \item{pop}{The total population in the cluster window.}
@@ -22,22 +22,22 @@
 #' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
-#' \code{\link{scan.test}}, \code{\link{uls.test}}, 
+#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}},
+#' \code{\link{scan.test}}, \code{\link{uls.test}},
 #' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @references Tango, T. and Takahashi, K. (2012), A
 #'   flexible spatial scan statistic with a restricted
 #'   likelihood ratio for detecting disease clusters.
 #'   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
-#' @examples 
+#' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = rflex.test(coords = coords, cases = floor(nydf$cases),
-#'                  w = nyw, k = 10,  
-#'                  pop = nydf$pop, nsim = 49, 
+#'                  w = nyw, k = 10,
+#'                  pop = nydf$pop, nsim = 49,
 #'                  alpha = 0.05, longlat = TRUE)
-#'                 
+#'
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))

@@ -23,7 +23,7 @@
 #' d = sp::spDists(coords, longlat = TRUE)
 #' nn = nndist(d, ubd = 0.05)
 #' max_pop = sum(pop) * 0.25
-#' tsim = mlink.sim(1, nn, ty, ex, nyw, pop = pop, 
+#' tsim = mlink.sim(1, nn, ty, ex, nyw, pop = pop,
 #'                  max_pop = max_pop)
 mlink.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
                   cl = NULL) {

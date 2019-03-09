@@ -1,8 +1,8 @@
 #' Class\code{scan}.
-#' 
-#' An object of class \code{scan}.  A \code{scan} object 
+#'
+#' An object of class \code{scan}.  A \code{scan} object
 #' generally has the following components:
-#' \item{clusters}{A list containing information about the 
+#' \item{clusters}{A list containing information about the
 #' significant clusters.}
 #' \item{coords}{A matrix with the centroid coordinates of
 #' the observed regions.}
@@ -34,3 +34,4 @@
 #' @rdname scan_class
 #' @exportClass scan
 #' @export
+#'

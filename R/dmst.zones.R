@@ -1,11 +1,11 @@
 #' Determine zones for the Dynamic Minimum Spanning Tree scan test
-#' 
+#'
 #' \code{dmst.zones} determines the zones for the Dynamic
-#' Minimum Spanning Tree scan test (\code{\link{dmst.test}}).  The 
+#' Minimum Spanning Tree scan test (\code{\link{dmst.test}}).  The
 #' function returns the zones, as well as the associated
 #' test statistic, cases in each zone, the expected number
 #' of cases in each zone, and the population in each zone.
-#' 
+#'
 #' Every zone considered must have a total population less
 #' than \code{ubpop * sum(pop)}.  Additionally, the maximum
 #' intercentroid distance for the regions within a zone must

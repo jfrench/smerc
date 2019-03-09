@@ -1,5 +1,5 @@
 #' Combine distinct zones
-#' 
+#'
 #' \code{combine.zones} combines the elements of \code{z1}
 #' and \code{z2} into a single list, returning only the
 #' unique zones.

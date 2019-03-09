@@ -38,11 +38,11 @@ distance is used to calculate the intercentroid
 distance.}
 }
 \value{
-Returns a list with elements: 
+Returns a list with elements:
 \item{zones}{A list contained the location ids of
-  each potential cluster.} 
-\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}   
-\item{cases}{The observed number of cases in each zone.} 
+  each potential cluster.}
+\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}
+\item{cases}{The observed number of cases in each zone.}
 \item{expected}{The expected number of cases each zone.}
 \item{pop}{The total population in each zone.}
 }

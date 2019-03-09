@@ -50,7 +50,7 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 \item{coords}{The centroid of the significant clusters.}
 \item{r}{The radius of the window of the clusters.}
 \item{pop}{The total population in the cluster window.}
@@ -73,10 +73,10 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 out = rflex.test(coords = coords, cases = floor(nydf$cases),
-                 w = nyw, k = 10,  
-                 pop = nydf$pop, nsim = 49, 
+                 w = nyw, k = 10,
+                 pop = nydf$pop, nsim = 49,
                  alpha = 0.05, longlat = TRUE)
-                
+
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))
@@ -88,8 +88,8 @@ Tango, T. and Takahashi, K. (2012), A
   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 }
 \seealso{
-\code{\link{scan.stat}}, \code{\link{plot.scan}}, 
-\code{\link{scan.test}}, \code{\link{uls.test}}, 
+\code{\link{scan.stat}}, \code{\link{plot.scan}},
+\code{\link{scan.test}}, \code{\link{uls.test}},
 \code{\link{dmst.test}}, \code{\link{bn.test}}
 }
 \author{

@@ -1,6 +1,6 @@
-#' Plots object of class \code{scan}. 
-#' 
-#' Plots clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.  
+#' Plots object of class \code{scan}.
+#'
+#' Plots clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
 #'
 #' @param x An object of class scan to be plotted.
 #' @param ... Additional graphical parameters passed to \code{plot} function.
@@ -17,15 +17,15 @@
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases), 
-#'                 pop = nydf$pop, nsim = 49, 
-#'                 longlat = TRUE, alpha = 0.12) 
+#' out = scan.test(coords = coords, cases = floor(nydf$cases),
+#'                 pop = nydf$pop, nsim = 49,
+#'                 longlat = TRUE, alpha = 0.12)
 #' ## plot output for new york state
 #' # specify desired argument values
-#' mapargs = list(database = "state", region = "new york", 
+#' mapargs = list(database = "state", region = "new york",
 #' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 #' # needed for "state" database (unless you execute library(maps))
-#' data(stateMapEnv, package = "maps") 
+#' data(stateMapEnv, package = "maps")
 #' plot(out, usemap = TRUE, mapargs = mapargs)
 
 plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
@@ -82,8 +82,8 @@ plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
 
 #' Returns segments connecting neighbors
 #'
-#' w2segments takes a binary spatial proximity matrix and 
-#' associated coordinates.  It returns segments connecting 
+#' w2segments takes a binary spatial proximity matrix and
+#' associated coordinates.  It returns segments connecting
 #' the neighbors for plotting purposes
 #' @return NULL
 #' @export

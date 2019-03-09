@@ -1,5 +1,5 @@
 #' Minimum spanning tree sequence
-#' 
+#'
 #' \code{mst.seq} finds the sequence of connected regions
 #' that maximize the spatial scan statistic (the likelihood
 #' ratio test statistic) from a starting region. The set of
@@ -8,39 +8,39 @@
 #' the zone due to relevant constraints (size, connectivity,
 #' or other stopping criteria).  This function is not
 #' intended to be used by users directly, but it can be
-#' quite educational for seeing the spread of the cluster. 
+#' quite educational for seeing the spread of the cluster.
 #' Consequently, it prioritizes efficiency over user
 #' friendliness.
-#' 
+#'
 #' The function can be used to construct candidate zones for
 #' the dynamic minimum spanning tree (dmst), early stopping
 #' dynamic minimum spanning tree (edmst), double connection
 #' spatial scan test (dc), and maximum linkage spatial scan
 #' test (mlink).
-#' 
+#'
 #' \code{type} is a character vector indicating what should
 #' be returned by the function.  If \code{type = "maxonly"},
 #' then only the maximum of the log likelihood ratio test
 #' statistic across all candidate zones is returned.  If
 #' \code{type = "pruned"},, the function returns a list that
 #' includes the location ids, test statistic, total cases,
-#' expected cases, and total population for the zone with 
+#' expected cases, and total population for the zone with
 #' the maximum test statistic.  It \code{type = "all"}, the
 #' same information the same information is returned for the
 #' entire sequence of zones.
-#' 
-#' If \code{nlinks = "one"}, then a region only needs to be 
+#'
+#' If \code{nlinks = "one"}, then a region only needs to be
 #' connected to one other region in the current zone to be
-#' considered for inclusion in the next zone.  If 
+#' considered for inclusion in the next zone.  If
 #' \code{nlinks = "two"}, then the region must be connected
 #' to at least two other regions in the current zone.  If
 #' \code{nlinks = "max"}, then only regions with the maximum
 #' number of connections to the current zone are considered
 #' for inclusion in the next zone.
-#' 
+#'
 #' @param start The initial region to start the candidate
 #'   zone.
-#' @param neighbors A vector containing the neighbors for 
+#' @param neighbors A vector containing the neighbors for
 #'   the starting region (in ascending order of distance
 #'   from the region).  The staring region itself is
 #'   included among the neighbors.
@@ -49,7 +49,7 @@
 #' @inheritParams uls.test
 #' @param max_pop The population upperbound (in total
 #'   population) for a candidate zone.
-#' @param type One of \code{"maxonly"}, \code{"pruned"}, or 
+#' @param type One of \code{"maxonly"}, \code{"pruned"}, or
 #'   \code{"all"}.  The default is \code{"maxonly"}.  See
 #'   Details.
 #' @param nlinks A character vector.  The options are
@@ -68,7 +68,7 @@
 #' # load data
 #' data(nydf)
 #' data(nyw)
-#' 
+#'
 #' # create relevant data
 #' coords = nydf[,c("longitude", "latitude")]
 #' cases = floor(nydf$cases)

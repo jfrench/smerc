@@ -1,27 +1,27 @@
 #' Flexibly-shaped Spatial Scan Test
-#' 
+#'
 #' \code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
-#' 
+#'
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
-#' 
+#'
 #' @inheritParams rflex.test
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components: 
+#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}}, 
-#' \code{\link{scan.test}}, \code{\link{uls.test}}, 
+#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}},
+#' \code{\link{scan.test}}, \code{\link{uls.test}},
 #' \code{\link{dmst.test}}, \code{\link{bn.test}}
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
-#' @examples 
+#' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = flex.test(coords = coords, cases = floor(nydf$cases),
-#'                 w = nyw, k = 3,  
-#'                 pop = nydf$pop, nsim = 49, 
+#'                 w = nyw, k = 3,
+#'                 pop = nydf$pop, nsim = 49,
 #'                 alpha = 0.12, longlat = TRUE)
-#'                 
+#'
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))

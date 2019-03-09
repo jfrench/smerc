@@ -25,7 +25,7 @@ A vector of middle p-values
 }
 \description{
 Computes P(Y > cases) + P(Y = cases)/2 when Y ~
-Poisson(ex) or Y ~ Binomial(n = pop, p = ex/pop).  This 
+Poisson(ex) or Y ~ Binomial(n = pop, p = ex/pop).  This
 is middle p-value computed by Tango and Takahashi (2012).
 }
 \examples{

@@ -5,7 +5,7 @@
 #' function is meant to be used internally by the
 #' \code{\link{scan.test}} function, but is informative for
 #' better understanding the implementation of the test.
-#' 
+#'
 #' @inheritParams flex.sim
 #' @param nn A list of nearest neighbors produced by \code{\link{nnpop}}.
 #'

@@ -1,4 +1,4 @@
-# Recreate examples from PULSE paper 
+# Recreate examples from PULSE paper
 # PULSE, progressive upper level set scan statistic for
 # geospatial hotspot detection
 # GP Patil, SW Joshi, RE Koli

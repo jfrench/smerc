@@ -1,5 +1,5 @@
 #' Prepare scan results
-#' 
+#'
 #' \code{prep.scan} prepares the results of a scan-related
 #' test and turns them into a scan object.
 #'

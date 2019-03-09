@@ -1,12 +1,12 @@
 #' Determine nearest neighbors for minimum spanning trees
-#' 
-#' \code{mst.nn} determines the nearest 
-#' neighbors for a set of observations based on the 
+#'
+#' \code{mst.nn} determines the nearest
+#' neighbors for a set of observations based on the
 #' distance matrix according to a distance-based upperbound.
-#' These neighbors are directly related to the zones 
-#' considered in \code{\link{dmst.test}}, 
+#' These neighbors are directly related to the zones
+#' considered in \code{\link{dmst.test}},
 #' \code{\link{dc.test}}, and \code{\link{mlink.test}}
-#' 
+#'
 #' This function determines the nearest neighbors of each
 #' centroid based on the intercentroid distance.  The number
 #' of nearest neighbors is limited by the sum of the
@@ -14,12 +14,12 @@
 #' of nearest neighbors can contain no more than \code{ubpop
 #' * sum(pop)} members of the population.  The nearest
 #' neighbors are ordered from nearest to farthest.
-#' 
+#'
 #' @param d An \eqn{n\times n} square distance matrix
 #'   containing the intercentroid distance between the
 #'   \eqn{n} region centroids.
 #' @inheritParams scan.test
-#'   
+#'
 #' @return Returns the indices of the nearest neighbors as a
 #'   list.  For each element of the list, the indices are
 #'   ordered from nearest to farthest from each centroid.
@@ -27,7 +27,7 @@
 #' @export
 #' @aliases nnpop
 #' @rdname scan.nn
-#' @examples 
+#' @examples
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' d = as.matrix(dist(coords))

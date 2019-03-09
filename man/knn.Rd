@@ -19,16 +19,16 @@ distance.}
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
 \item{d}{An n by n distance matrix.  If provided,
-this is used instead of computing \code{d} based on 
+this is used instead of computing \code{d} based on
 \code{coords} and \code{longlat}.}
 }
 \value{
 An \eqn{n \times k} matrix of nearest neighbors.
 }
 \description{
-\code{knn} returns the k nearest neighbors of the 
+\code{knn} returns the k nearest neighbors of the
 n coordinates in \code{coords}.  The nearest neighbors
-are constructed to be self-inclusive, i.e., an 
+are constructed to be self-inclusive, i.e., an
 observations is its closest neighbor.
 }
 \examples{

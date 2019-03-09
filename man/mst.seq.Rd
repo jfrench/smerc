@@ -11,7 +11,7 @@ mst.seq(start, neighbors, cases, pop, w, ex, ty, max_pop,
 \item{start}{The initial region to start the candidate
 zone.}
 
-\item{neighbors}{A vector containing the neighbors for 
+\item{neighbors}{A vector containing the neighbors for
 the starting region (in ascending order of distance
 from the region).  The staring region itself is
 included among the neighbors.}
@@ -33,7 +33,7 @@ hypothesis.}
 \item{max_pop}{The population upperbound (in total
 population) for a candidate zone.}
 
-\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or 
+\item{type}{One of \code{"maxonly"}, \code{"pruned"}, or
 \code{"all"}.  The default is \code{"maxonly"}.  See
 Details.}
 
@@ -60,7 +60,7 @@ zone continues to grow until no region should be added to
 the zone due to relevant constraints (size, connectivity,
 or other stopping criteria).  This function is not
 intended to be used by users directly, but it can be
-quite educational for seeing the spread of the cluster. 
+quite educational for seeing the spread of the cluster.
 Consequently, it prioritizes efficiency over user
 friendliness.
 }
@@ -77,14 +77,14 @@ then only the maximum of the log likelihood ratio test
 statistic across all candidate zones is returned.  If
 \code{type = "pruned"},, the function returns a list that
 includes the location ids, test statistic, total cases,
-expected cases, and total population for the zone with 
+expected cases, and total population for the zone with
 the maximum test statistic.  It \code{type = "all"}, the
 same information the same information is returned for the
 entire sequence of zones.
 
-If \code{nlinks = "one"}, then a region only needs to be 
+If \code{nlinks = "one"}, then a region only needs to be
 connected to one other region in the current zone to be
-considered for inclusion in the next zone.  If 
+considered for inclusion in the next zone.  If
 \code{nlinks = "two"}, then the region must be connected
 to at least two other regions in the current zone.  If
 \code{nlinks = "max"}, then only regions with the maximum
