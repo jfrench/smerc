@@ -17,17 +17,25 @@
 #' coords = with(nydf, cbind(longitude, latitude))
 #' enn = elliptic.nn(coords, nydf$pop, 0.1, 
 #'                   shape = c(1, 1.5), nangle = c(1, 4))
-elliptic.nn = function(coords, pop, ubpop = 0.5, 
+elliptic.nn = function(coords, pop, ubpop = 0.5,
                        shape = c(1, 1.5, 2, 3, 4, 5),
                        nangle = c(1, 4, 6, 9, 12, 15)) {
-  
-  if (is.null(dim(coords))) stop("coords must be matrix-like")
-  if (length(pop) != nrow(coords)) stop("length(pop) != nrow(coords)")
-  if (length(ubpop) != 1 | ubpop <= 0 | ubpop > 1) stop("ubpop must be in (0, 1]")
-  if (length(shape) != length(nangle)) stop("length(shape) != length(nangle)")
-  
+
+  if (is.null(dim(coords))) {
+    stop("coords must be matrix-like")
+  }
+  if (length(pop) != nrow(coords)) {
+    stop("length(pop) != nrow(coords)")
+  }
+  if (length(ubpop) != 1 | ubpop <= 0 | ubpop > 1) {
+    stop("ubpop must be in (0, 1]")
+  }
+  if (length(shape) != length(nangle)) {
+    stop("length(shape) != length(nangle)")
+  }
+
   coords = as.matrix(coords)
-  
+
   # determine distances for each angle/shape
   d = lapply(seq_along(shape), function(i) {
     all.shape.dists(shape[i], nangle[i], coords)
@@ -38,22 +46,22 @@ elliptic.nn = function(coords, pop, ubpop = 0.5,
   } else {
     d = d[[1]]
   }
-  
+
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
   nn = nnpop(d, pop, ubpop)
-  
+
   # determine number of observations, length of zones
   N = nrow(coords)
   nnn = unlist(lapply(nn, length))
-  
+
   # shape associated with each set of nn, all zones
   shape_nn =  rep(shape, times = N * nangle)
   shape_all = rep(shape_nn, times = nnn)
-  
+
   # angle associated with each set of nn, all zones
   angle_nn = unlist(sapply(seq_along(nangle), function(i) {
-    seq(90, 270, len = nangle[i] + 1)[-(nangle[i] + 1)]
+    seq(90, 270, len = nangle[i] + 1)[seq_len(nangle[i])]
   }))
   angle_nn = rep(angle_nn, each = N)
 

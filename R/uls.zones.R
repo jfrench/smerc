@@ -23,21 +23,23 @@
 #' data(nyw)
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
 uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
-  if (length(cases) != length(pop)) stop('length(cases) != length(pop)')
-  if (length(cases) != nrow(w)) stop('length(cases) != nrow(w)')
-  if (length(ubpop) != 1 | !is.numeric(ubpop)) stop("ubpop should be a single number")
+  if (length(cases) != length(pop)) stop("length(cases) != length(pop)")
+  if (length(cases) != nrow(w)) stop("length(cases) != nrow(w)")
+  if (length(ubpop) != 1 | !is.numeric(ubpop)) {
+    stop("ubpop should be a single number")
+  }
   if (ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
-  
+
   # order rates from largest to smallest
-  or = order(cases/pop, decreasing = TRUE);
+  or = order(cases / pop, decreasing = TRUE);
   # reorder rows and columns by order of r
   w = w[or, ]
   w = w[, or]
-  
+
   #unique zones, first zone always the starting point
   uz = vector("list", nrow(w))
   uz[[1]] = 1
-  
+
   # current zones
   cz = 1
   for (i in 2:nrow(w)) {
@@ -51,7 +53,10 @@ uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
       cz = c(cz, i)
     } else {
       # which zones intersect
-      wzi = which(unlist(lapply(uz[cz], function(x) length(intersect(x, which_adjacent)) > 0), use.names = FALSE))
+      wzi = which(unlist(lapply(uz[cz], function(x) {
+        length(intersect(x, which_adjacent)) > 0
+      }
+      ), use.names = FALSE))
       # add new zone to list
       uz[[i]] = c(unlist(uz[cz[wzi]], use.names = FALSE), i)
       # update current zones
@@ -63,16 +68,15 @@ uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
   # return only the zones that meet constraint for population upper bound
   popin = zones.sum(uz, pop)
   uz = uz[which(popin <= sum(pop) * ubpop)]
-  
+
   if (check.unique) {
     # special case when rates are the same in some regions
-    g = cases/pop
+    g = cases / pop
     ug = unique(g)
     if (length(g) > length(ug)) {
       uz2 = vector("list", length(g))
       og = g[or]
       counter = 0
-      # lg = factor(g, levels = sort(ug, decreasing = TRUE))
       for (j in sort(ug, decreasing = TRUE)) {
         wl = which(og == j)
         if (length(wl) == 1) {

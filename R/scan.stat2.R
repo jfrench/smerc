@@ -68,31 +68,30 @@
 #' scan.stat(yin = 41, ty = ty,
 #'           popin = 38999, tpop = tpop, type = "binomial")
 #' stat.binom(41, ty - 41, ty, 38999, tpop - 38999, tpop)
-scan.stat = function(yin, ein = NULL, eout = NULL, ty, 
-                     type = "poisson", 
+scan.stat = function(yin, ein = NULL, eout = NULL, ty,
+                     type = "poisson",
                      popin = NULL, tpop = NULL,
                      a = 0, shape = 1,
                      yout = NULL,
                      popout = NULL) {
-  arg_check_scan_stat(yin = yin, ty = ty, ein = ein, 
-                      popin = popin, tpop = tpop, 
+  arg_check_scan_stat(yin = yin, ty = ty, ein = ein,
+                      popin = popin, tpop = tpop,
                       type = type, a = a, shape = shape)
   B = length(yin)
   # double check yout argument
   if (is.null(yout)) yout = ty - yin
   if (B != length(yout)) stop("length(yin) != length(yout)")
-  
+
   if (type == "poisson") {
     # check eout argument
-    if (is.null(eout)) eout = ty - ein 
+    if (is.null(eout)) eout = ty - ein
     if (B != length(eout)) stop("length(yin) != length(eout)")
 
     tall = stat.poisson(yin, yout, ein, eout, a, shape)
   } else if (type == "binomial") {
     # check eout argument
-    if (is.null(popout)) popout = tpop - popin 
+    if (is.null(popout)) popout = tpop - popin
     if (B != length(popout)) stop("length(yin) != length(popout)")
-    
     tall = stat.binom(yin, yout, ty, popin, popout, tpop)
   }
   return(tall)
@@ -113,8 +112,8 @@ stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
   # if indicator not satisfied, set to 0
   tall[good][lrin < lrout] = 0
   if (a > 0) {
-    wp = which(shape > 1)
-    tall[wp] = tall[wp] * ((4 * shape[wp])/(shape[wp] + 1)^2)^a
+    i = which(shape > 1)
+    tall[i] = tall[i] * (4 * shape[i] / (shape[i] + 1) ^ 2) ^ a
   }
   return(tall)
 }
@@ -124,15 +123,15 @@ stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
 stat.binom = function(yin, yout, ty, popin, popout, tpop) {
   py_in = popin - yin
   py_out = popout - yout
-  
-  tall = yin * (log(yin) - log(popin)) + 
-    py_in * (log(py_in) - log(popin)) + 
-    yout * (log(yout) - log(popout)) + 
+
+  tall = yin * (log(yin) - log(popin)) +
+    py_in * (log(py_in) - log(popin)) +
+    yout * (log(yout) - log(popout)) +
     py_out * (log(py_out) - log(popout)) -
-    ty * log(ty) - (tpop - ty) * log(tpop - ty) + 
+    ty * log(ty) - (tpop - ty) * log(tpop - ty) +
     tpop * log(tpop)
   # correct test statistics for NaNs
-  tall[yin/popin <= yout/popout | is.nan(tall)] = 0
+  tall[yin / popin <= yout / popout | is.nan(tall)] = 0
   return(tall)
 }
 

@@ -28,9 +28,9 @@
 #' ex = ty/sum(nydf$pop) * nydf$pop
 #' ein = zones.sum(zones, ex)
 #' tsim = flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
-flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson", 
-                    ein = NULL, eout = NULL, 
-                    tpop = NULL, popin = NULL, popout = NULL, 
+flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson",
+                    ein = NULL, eout = NULL,
+                    tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL) {
 
   arg_check_flex_sim(nsim, zones, ty, ex, ein, eout,
@@ -45,7 +45,7 @@ flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson",
     if (type == "poisson") {
       tall = stat.poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {
-      tall = stat.binom(yin, ty - yin, ty, 
+      tall = stat.binom(yin, ty - yin, ty,
                         popin, popout, tpop)
     }
     max(tall)

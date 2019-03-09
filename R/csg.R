@@ -1,6 +1,6 @@
 #' Construct connected subgraphs
 #'
-#' \code{csg}, \code{lcsg}, and \code{scsg} construct 
+#' \code{csg}, \code{lcsg}, and \code{scsg} construct
 #' connected subgraphs.
 #' \code{set} contains a vector of vertices of the pattern 1, 2, 3, ..., N.
 #' \code{idx} is a vector of possible vertices being considered as a subgraph.
@@ -23,6 +23,10 @@
 #' @param idx A vector of vertices considered for inclusion in the
 #' subgraph, e.g., based on nearest neighbors.
 #' @param w The adjacency matrix for all vertices by row, but with only the \code{idx} columns
+#' @param verbose A logical value indicating whether very descriptive messages
+#' should be provided.  Default is \code{FALSE}.  If \code{TRUE}, this can
+#' be useful for diagnosing where the sequences of connected subgraphs is 
+#' slowing down/having problems.
 #'
 #' @return A list of with all possible combinations of \code{set} and
 #' each possible connected vertex in \code{idx}, or \code{NULL} if none
@@ -53,13 +57,13 @@
 #' # apply scsg to first 10 nn of vertex 1
 #' nn10 = order(d[1,])[1:10]
 #' w = nyw[, nn10]
-#' nb3 = scsg(nn10, w)
+#' nb3 = scsg(nn10, w, verbose = TRUE)
 csg = function(set, idx, w) {
   if (ncol(w) != length(idx)) {
     stop("ncol(w) != length(idx)")
   }
   # determine neighbors of current set
-  nb = setdiff(idx[which(matrixStats::colMaxs(w[set, ,drop = FALSE]) == 1)], 
+  nb = setdiff(idx[which(matrixStats::colMaxs(w[set,, drop = FALSE]) == 1)],
                set)
   # if there are some neighbors
   if (length(nb) > 0) {
@@ -67,7 +71,7 @@ csg = function(set, idx, w) {
     newsets = lapply(nb, function(x) c(set, x))
     # return unique sets
     return(newsets[distinct(newsets)])
-  } else { 
+  } else {
     # return NULL if there are no neighbors
     return(NULL)
   }
@@ -87,17 +91,27 @@ lcsg = function(lset, idx, w) {
 
 #' @export
 #' @rdname csg
-scsg = function(idx, w) {
+scsg = function(idx, w, verbose = FALSE) {
   # initial set
   nidx = length(idx)
-  out = vector("list", nidx) 
+  out = vector("list", nidx)
   out[[1]] = list(idx[1])
-  
+
   # set stopping conditions
   # stop if nidx == 1, otherwise, consider expanding subgraph
   stop = (nidx == 1)
   j = 2
+  if (verbose) {
+    txt = paste("1/", nidx, ". Adding region ", idx[1],
+                " at ", Sys.time(), ".", sep = "")
+    message(txt)
+  }
   while (!stop) {
+    if (verbose) {
+      txt = paste(j, "/", nidx, ". Adding region ", idx[j],
+                  " at ", Sys.time(), ".", sep = "")
+      message(txt)
+    }
     # successively generate list of connected subgraphs
     temp = lcsg(out[[j - 1]], idx = idx, w = w)
     # stop the loop of there are no more connected subgraphs
@@ -110,5 +124,3 @@ scsg = function(idx, w) {
   }
   return(unlist(out, recursive = FALSE))
 }
-
-

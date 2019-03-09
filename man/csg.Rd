@@ -10,7 +10,7 @@ csg(set, idx, w)
 
 lcsg(lset, idx, w)
 
-scsg(idx, w)
+scsg(idx, w, verbose = FALSE)
 }
 \arguments{
 \item{set}{A vector of (presumably connected) vertices.}
@@ -21,6 +21,11 @@ subgraph, e.g., based on nearest neighbors.}
 \item{w}{The adjacency matrix for all vertices by row, but with only the \code{idx} columns}
 
 \item{lset}{A list of sets.}
+
+\item{verbose}{A logical value indicating whether very descriptive messages
+should be provided.  Default is \code{FALSE}.  If \code{TRUE}, this can
+be useful for diagnosing where the sequences of connected subgraphs is 
+slowing down/having problems.}
 }
 \value{
 A list of with all possible combinations of \code{set} and
@@ -28,7 +33,7 @@ each possible connected vertex in \code{idx}, or \code{NULL} if none
 are possible.
 }
 \description{
-\code{csg}, \code{lcsg}, and \code{scsg} construct 
+\code{csg}, \code{lcsg}, and \code{scsg} construct
 connected subgraphs.
 \code{set} contains a vector of vertices of the pattern 1, 2, 3, ..., N.
 \code{idx} is a vector of possible vertices being considered as a subgraph.
@@ -71,5 +76,5 @@ all.equal(nb2, nb2e[seq_along(nb2)])
 # apply scsg to first 10 nn of vertex 1
 nn10 = order(d[1,])[1:10]
 w = nyw[, nn10]
-nb3 = scsg(nn10, w)
+nb3 = scsg(nn10, w, verbose = TRUE)
 }

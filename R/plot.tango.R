@@ -29,15 +29,17 @@
 #' plot(x1)
 #' x2 = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 #' plot(x2)
-plot.tango = function(x, ..., 
-                      obs.list = list(pch = 20), 
+plot.tango = function(x, ...,
+                      obs.list = list(pch = 20),
                       sim.list = list(pch = 2)) {
-  if(class(x) != "tango") stop("x should be a tango object")
-  
-  if(!is.null(x$gof.sim)) {
+  if (class(x) != "tango") {
+    stop("x should be a tango object")
+  }
+
+  if (!is.null(x$gof.sim)) {
     gof = c(x$gof.sim, x$gof)
     sa = c(x$sa.sim, x$sa)
-    graphics::plot(gof ~ sa, type = "n", ...)
+    graphics::plot(sa, gof, type = "n", ...)
     sim.list$x = x$sa.sim
     sim.list$y = x$gof.sim
     do.call(graphics::points, sim.list)
@@ -47,7 +49,7 @@ plot.tango = function(x, ...,
   } else {
     tstat = seq(0, max(x$tstat.chisq, stats::qchisq(.99, df = x$dfc)))
     density = stats::dchisq(tstat, df = x$dfc)
-    graphics::plot(density ~ tstat, type = "l", ...)
+    graphics::plot(tstat, density, type = "l", ...)
     graphics::abline(v = x$tstat.chisq)
   }
 }

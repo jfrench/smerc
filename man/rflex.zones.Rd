@@ -5,7 +5,7 @@
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
 rflex.zones(nn, w, cases, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL, progress = FALSE)
+  pop = NULL, cl = NULL, progress = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{nn}{An n by k matrix providing the k nearest
@@ -39,6 +39,15 @@ or an integer to indicate number of child-processes
 \item{progress}{A logical value indicating whether the
 progress of constructing the zones should be reported.
 The default is FALSE.}
+
+\item{verbose}{A logical value indicating whether
+descriptive progress messages should be provided.
+Default is \code{FALSE}.  If \code{TRUE}, this can be
+useful for diagnosing where the sequences of connected
+subgraphs is slowing down/having problems.
+Additionally, a loop is used to run the algorithm,
+rather than \code{\link[base]{lapply}}.  Memory-saving
+steps are also taken.}
 }
 \value{
 Returns a list of zones to consider for
@@ -57,16 +66,20 @@ region must be less than \code{alpha1}.
 \examples{
 data(nydf)
 data(nyw)
-coords = cbind(nydf$longitude, nydf$latitude)
-nn = knn(coords, longlat = FALSE, k = 10)
+coords = cbind(nydf$x, nydf$y)
+nn = knn(coords, k = 5)
 cases = floor(nydf$cases)
 pop = nydf$pop
 ex = pop * sum(cases)/sum(pop)
 # zones for poisson model
 pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+\dontrun{
+pzones = rflex.zones(nn, w = nyw, cases = cases,
+                      ex = ex, verbose = TRUE)
 # zones for binomial model
 bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
                      type = "binomial", pop = pop)
+}
 }
 \references{
 Tango, T. and Takahashi, K. (2012), A

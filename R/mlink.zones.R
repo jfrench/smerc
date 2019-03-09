@@ -30,16 +30,16 @@
 #' all_zones = mlink.zones(coords, cases = floor(nydf$cases),
 #'                         nydf$pop, w = nyw, ubpop = 0.25,
 #'                         ubd = .25, longlat = TRUE)
-mlink.zones = function(coords, cases, pop, w, 
-                       ex = sum(cases)/sum(pop)*pop, 
-                       ubpop = 0.5, ubd = 1, longlat = FALSE, 
+mlink.zones = function(coords, cases, pop, w,
+                       ex = sum(cases) / sum(pop) * pop,
+                       ubpop = 0.5, ubd = 1, longlat = FALSE,
                        cl = NULL, progress = TRUE) {
   # sanity checking
-  arg_check_dmst_zones(coords = coords, cases = cases, 
-                       pop = pop, w = w, ex = ex, 
-                       ubpop = ubpop, ubd = ubd, 
-                       longlat = longlat, type = "all", 
-                       progress = progress)  
+  arg_check_dmst_zones(coords = coords, cases = cases,
+                       pop = pop, w = w, ex = ex,
+                       ubpop = ubpop, ubd = ubd,
+                       longlat = longlat, type = "all",
+                       progress = progress)
   # setup various arguments and such
   ty = sum(cases)   # total number of cases
   # intercentroid distances
@@ -48,16 +48,10 @@ mlink.zones = function(coords, cases, pop, w,
   max_pop = ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound
   nn = nndist(d, ubd)
-  out = mst.all(neighbors = nn, cases = cases, 
-          pop = pop, w = w,  
-          ex = ex, ty = ty, max_pop = max_pop, 
-          type = "all", nlinks = "max",
-          early = FALSE, cl = cl, 
-          progress = progress)
-  nn = lapply(out, getElement, name = "locids")
-  return(list(zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE),
-              loglikrat = unlist(lapply(out, getElement, name = "loglikrat")),
-              cases = unlist(lapply(out, getElement, name = "cases")),
-              expected = unlist(lapply(out, getElement, name = "expected")),
-              population = unlist(lapply(out, getElement, name = "population"))))
+  out = mst.all(neighbors = nn, cases = cases, pop = pop,
+                w = w, ex = ex, ty = ty, max_pop = max_pop,
+                type = "all", nlinks = "max", early = FALSE,
+                cl = cl, progress = progress)
+  # return results of mst.all in a nicely formatted list
+  prep.mst(out)
 }

@@ -50,86 +50,85 @@
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
 mlf.test = function(coords, cases, pop, w,
-                    ex = sum(cases)/sum(pop)*pop,
-                    nsim = 499, alpha = 0.1, 
+                    ex = sum(cases) / sum(pop) * pop,
+                    nsim = 499, alpha = 0.1,
                     ubpop = 0.5, ubd = 0.5,
                     longlat = FALSE, cl = NULL) {
   # sanity checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, longlat, FALSE, 
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, ubpop, longlat, FALSE,
                       k = 1, w = w)
-  
+
   coords = as.matrix(coords)
-  N = nrow(coords)
   ty = sum(cases) # sum of all cases
-  
+
   # calculate test statistics for each individual region
   # yin, ein, eout, ty
   eout = ty - ex
   tobs = scan.stat(cases, ex, eout, ty)
-  
-  # determine starting region for maxima likelihood first 
+
+  # determine starting region for maxima likelihood first
   # algorithm
   start = which.max(tobs)
-  
-  # intercentroid distances 
+
+  # intercentroid distances
   d = sp::spDists(coords, longlat = longlat)
-  
+
   # upperbound for population in zone
   max_pop = ubpop * sum(pop)
   # upperbound for distance between centroids in zone
   max_dist = ubd * max(d)
-  
+
   # find neighbors for starting region
-  all_neighbors = lapply(seq_along(cases), function(i) which(d[i,] <= max_dist))
-  
+  all_neighbors = lapply(seq_along(cases),
+                         function(i) which(d[i, ] <= max_dist))
+
   # return sequence of candidate zones (or a subset depending on type)
-  # max_zone = dmst_max_zone(start, start_neighbors, cases, pop, w, ex, ty, max_pop, "pruned")
-  max_zone = mst.seq(start, all_neighbors[[start]], cases, 
+  max_zone = mst.seq(start, all_neighbors[[start]], cases,
                      pop, w, ex, ty, max_pop, "pruned")
-    
+
   # determine which call for simulations
   fcall = pbapply::pblapply
   # setup list for call
   fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i){
     # simulate new data set
     ysim = stats::rmultinom(1, size = ty, prob = ex)
-     
+
     sim_tstat = scan.stat(ysim, ex, eout, ty)
     # determine starting region for maxima likelihood first algorithm
     sim_start = which.max(sim_tstat)
 
     # find max statistic for best candidate zone
-    # dmst_max_zone(sim_start, all_neighbors[[sim_start]], cases, pop, w, ex, ty, max_pop, type = "maxonly")
-    mst.seq(sim_start, all_neighbors[[sim_start]], cases, 
+    mst.seq(sim_start, all_neighbors[[sim_start]], cases,
             pop, w, ex, ty, max_pop, type = "maxonly")
   }, cl = cl)
-  
+
   # get max statistics for simulated data sets
   tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
-  
+
   # p-values associated with these max statistics for each centroid
-  pvalue = (sum(tsim >= max_zone$loglikrat) + 1)/(nsim + 1)
-  
+  pvalue = (sum(tsim >= max_zone$loglikrat) + 1) / (nsim + 1)
+
    # if there are no significant clusters, return most likely cluster
   if (pvalue >= alpha | nsim == 0) {
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
+
   # for the most likely cluster:
-  # find the zone radius, p-value, standarized mortality ratio, relative risk, adjacency matrix
-  # and max radius
-  startpt = coords[start,] # starting region
-  max_zone$r = max(sp::spDistsN1(coords[max_zone$locids,], startpt, longlat = longlat))
+  # find the zone radius, p-value, standarized mortality ratio,
+  # relative risk, adjacency matrix and max radius
+  startpt = coords[start, ] # starting region
+  max_zone$r = max(sp::spDistsN1(coords[max_zone$locids, ],
+                                 startpt, longlat = longlat))
   max_zone$pvalue = pvalue
-  max_zone$smr = max_zone$cases/max_zone$expected
-  max_zone$rr = (max_zone$cases/max_zone$pop)/((ty - max_zone$cases)/(sum(pop) - max_zone$pop))
+  max_zone$smr = max_zone$cases / max_zone$expected
+  rr_num = (max_zone$cases / max_zone$pop)
+  rr_den = (ty - max_zone$cases) / (sum(pop) - max_zone$pop)
+  max_zone$rr = rr_num / rr_den
   max_zone$w = w[max_zone$locids, max_zone$locids]
-  
+
   # reformat output for return
   outlist = list(clusters = list(max_zone), coords = coords)
   class(outlist) = "scan"
   return(outlist)
 }
-
-

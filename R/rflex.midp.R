@@ -26,11 +26,12 @@ rflex.midp = function(cases, ex, type = "poisson", pop = NULL) {
   arg_check_rflex_midp(cases, ex, type, pop)
 
   if (type == "poisson") {
-    p = stats::ppois(cases, ex, lower.tail = FALSE) + 
-      stats::dpois(cases, ex)/2
+    p = stats::ppois(cases, ex, lower.tail = FALSE) +
+      stats::dpois(cases, ex) / 2
   } else if (type == "binomial") {
-    p = stats::pbinom(cases, size = pop, prob = ex/pop, lower.tail = FALSE) + 
-      stats::dbinom(cases, size = pop, prob = ex/pop)/2
+    p = stats::pbinom(cases, size = pop, prob = ex / pop,
+                      lower.tail = FALSE) +
+      stats::dbinom(cases, size = pop, prob = ex / pop) / 2
   }
   return(p)
 }
@@ -42,7 +43,7 @@ arg_check_rflex_midp = function(cases, ex, type, pop) {
   if (!is.numeric(cases) | !is.numeric(ex)) {
     stop("cases and ex must be numeric vectors")
   }
-  if (length(type) != 1 | 
+  if (length(type) != 1 |
       !is.element(type, c("poisson", "binomial"))) {
     stop("type must be poisson or binomial")
   }

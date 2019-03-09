@@ -11,26 +11,27 @@ casewin(d, cases, cstar)
 containing the intercentroid distance between the
 \eqn{n} region centroids.}
 
-\item{cases}{A vector of length \eqn{n} containing the 
-observed number of cases for the \eqn{n} region centroids.}
+\item{cases}{A vector of length \eqn{n} containing the
+observed number of cases for the \eqn{n} region
+centroids.}
 
-\item{cstar}{A non-negative integer indicating the 
+\item{cstar}{A non-negative integer indicating the
 minimum number of cases to include in each window.}
 }
 \value{
 Returns the indices of the regions in each case
-window as a list.  For each element of the list, the 
-indices are ordered from nearest to farthest from each 
-centroid (and include the starting region).
+  window as a list.  For each element of the list, the
+  indices are ordered from nearest to farthest from each
+  centroid (and include the starting region).
 }
 \description{
-\code{casewin} determines the case windows (circles) for 
+\code{casewin} determines the case windows (circles) for
 the Besag-Newell method.
 }
 \details{
 Using the distances provided in \code{d}, for each
-observation, the nearest neighbors are included in an
-increasingly large window until at least \code{cstar}
+observation, the nearest neighbors are included in
+increasingly larger windows until at least \code{cstar}
 cases are included in the window.  Each row of \code{d}
 is matched with the same position in \code{cases}.
 }
@@ -39,10 +40,11 @@ data(nydf)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
 d = sp::spDists(coords, longlat = FALSE)
 cwins = casewin(d, cases = nydf$cases, cstar = 6)
-
 }
 \references{
-Besag, J. and Newell, J.  (1991). The detection of clusters in rare diseases, Journal of the Royal Statistical Society, Series A, 154, 327-333.
+Besag, J. and Newell, J.  (1991). The
+  detection of clusters in rare diseases, Journal of the
+  Royal Statistical Society, Series A, 154, 327-333.
 }
 \author{
 Joshua French

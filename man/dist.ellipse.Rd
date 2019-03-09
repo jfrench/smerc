@@ -9,20 +9,25 @@ dist.ellipse(coords, shape, angle)
 \arguments{
 \item{coords}{An \eqn{N \times 2} matrix of coordinates}
 
-\item{shape}{The ratio of the major axis to the minor axis of the ellipse}
+\item{shape}{The ratio of the major axis to the minor
+axis of the ellipse}
 
-\item{angle}{The angle of the ellipse in the range [0, 180).}
+\item{angle}{The angle of the ellipse in the range [0,
+180).}
 }
 \value{
-A matrix of distances between each coordinate and all other coordinates (and itself).  Each row contains the distances for a coordinate.
+A matrix of distances between each coordinate and
+  all other coordinates (and itself).  Each row contains
+  the distances for a coordinate.
 }
 \description{
-\code{dist.ellipse} computes the length of the minor axis needed for an
-ellipse of a certain \code{shape} and \code{angle} to intersect
-each of the other coordinates from a starting coordinate.
+\code{dist.ellipse} computes the length of the minor axis
+needed for an ellipse of a certain \code{shape} and
+\code{angle} to intersect each of the other coordinates
+from a starting coordinate.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
+coords = as.matrix(nydf[,c("x", "y")])
 d = dist.ellipse(coords, 4, 15)
 }

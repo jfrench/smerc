@@ -24,14 +24,14 @@
 #' yin = nn.cumsum(nn, cases)
 #' ein = nn.cumsum(nn, ex)
 #' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = ty - ein)
-scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson", 
-                    ein = NULL, eout = NULL, 
-                    tpop = NULL, popin = NULL, popout = NULL, 
+scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
+                    ein = NULL, eout = NULL,
+                    tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL) {
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type, 
+  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
                 popin = popin, popout = popout, static = TRUE)
-  
+
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data

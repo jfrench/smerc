@@ -25,14 +25,14 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-flex.test = function(coords, cases, pop, w, k = 10, 
-                     ex = sum(cases)/sum(pop)*pop, 
-                     type = "poisson",
-                     nsim = 499, alpha = 0.1, 
-                     longlat = FALSE, cl = NULL) {
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, 0.5, longlat, FALSE, k = k, w = w,
-                      type = type)
+flex.test = function(coords, cases, pop, w, k = 10,
+                     ex = sum(cases) / sum(pop) * pop,
+                     type = "poisson", nsim = 499,
+                     alpha = 0.1, longlat = FALSE,
+                     cl = NULL) {
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, 0.5, longlat, FALSE, k = k,
+                      w = w, type = type)
   coords = as.matrix(coords)
 
   zones = flex.zones(coords, w, k, longlat)
@@ -57,7 +57,7 @@ flex.test = function(coords, cases, pop, w, k = 10,
     popout = tpop - popin
     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
   }
-  
+
   # compute test statistics for simulated data
   if (nsim > 1) {
     message("computing statistics for simulated data:")
@@ -70,24 +70,22 @@ flex.test = function(coords, cases, pop, w, k = 10,
   } else {
     pvalue = rep(1, length(tobs))
   }
-  
+
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
-  
+
   # if there are no significant clusters, return most likely cluster
   if (length(sigc) == 0) {
     sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
+
   # only keep significant clusters
   zones = zones[sigc]
   tobs = tobs[sigc]
   pvalue = pvalue[sigc]
-  
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
-            coords = coords, cases = cases, pop = pop,
-            ex = ex, longlat = longlat, w = w,
-            d = NULL)
-}
 
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
+            coords = coords, cases = cases, pop = pop,
+            ex = ex, longlat = longlat, w = w, d = NULL)
+}

@@ -39,7 +39,7 @@ elliptic.sim = function(nsim = 1, nn, ty, ex, a, shape_all,
     # simulate new data
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     # compute test statistics for each zone
-    yin = nn.cumsum(nn, ysim) #unlist(lapply(nn, function(x) cumsum(ysim[x])), use.names = FALSE)
+    yin = nn.cumsum(nn, ysim)
     max(stat.poisson(yin, ty - yin, ein, eout, a, shape_all))
   })
   unlist(tsim, use.names = FALSE)
@@ -54,7 +54,7 @@ arg_check_elliptic_sim = function(nsim, nn, ty, ex, ein, eout, shape_all) {
   if (!is.numeric(ex)) stop("ex must be a numeric vector")
   nstat = sum(sapply(nn, length))
   if (length(shape_all) != nstat) {
-    stop("the length of shapenn is not compatible with the dimensionality of nn")
+    stop("length(shapenn) is not compatible with the dimensionality of nn")
   }
   if (length(ein) != nstat) {
     stop("the length of ein is not compatible with the dimensionality of nn")

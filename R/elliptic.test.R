@@ -41,15 +41,15 @@
 #'                    nsim = 2,
 #'                    alpha = 0.12,
 #'                    shape = 1.5, nangle = 4)
-elliptic.test = function(coords, cases, pop, 
-                     ex = sum(cases)/sum(pop)*pop, 
-                     nsim = 499, alpha = 0.1,  
-                     ubpop = 0.5,  
+elliptic.test = function(coords, cases, pop,
+                     ex = sum(cases) / sum(pop) * pop,
+                     nsim = 499, alpha = 0.1,
+                     ubpop = 0.5,
                      shape = c(1, 1.5, 2, 3, 4, 5),
                      nangle = c(1, 4, 6, 9, 12, 15),
                      a = 0.5,
                      cl = NULL,
-                     type = "poisson", 
+                     type = "poisson",
                      min.cases = 2) {
   # argument checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
@@ -58,33 +58,29 @@ elliptic.test = function(coords, cases, pop,
   if (length(shape) != length(nangle)) {
     stop("The length of shape and nangle must match.")
   }
-  
+
   # convert to proper format
   coords = as.matrix(coords)
   N = nrow(coords)
 
   enn = elliptic.nn(coords, pop = pop, ubpop = ubpop,
                     shape = shape, nangle = nangle)
-  # determine the expected cases in/out each successive 
+  # determine the expected cases in/out each successive
   # window, total number of cases, total population
-  ein = nn.cumsum(enn$nn, ex)#unlist(lapply(enn$nn, function(x) cumsum(ex[x])))
+  ein = nn.cumsum(enn$nn, ex)
   ty = sum(cases) # sum of all cases
   eout = ty - ein # counts expected outside the window
 
   # determine yin and yout for all windows for observed data
-  yin = nn.cumsum(enn$nn, cases) #unlist(lapply(enn$nn, function(x) cumsum(cases[x])))
+  yin = nn.cumsum(enn$nn, cases)
 
   ### calculate scan statistics for observed data
   # of distance from observation centroid
-  tobs = stat.poisson(yin, ty - yin, ein, eout, a = a, 
+  tobs = stat.poisson(yin, ty - yin, ein, eout, a = a,
                       shape = enn$shape_all)
 
   # determine distinct zones
-  pri = randtoolbox::get.primes(N)
-  wdup = duplicated(unlist(lapply(enn$nn, function(x) cumsum(log(pri[x])))))
-  
-  # determine positions in nn of all zones
-  nnn = unlist(lapply(enn$nn, length), use.names = FALSE)
+  wdup = nndup(enn$nn, N)
 
   # remove zones with a test statistic of 0
   # or fewer than minimum number of cases or
@@ -93,25 +89,24 @@ elliptic.test = function(coords, cases, pop,
   tobs = tobs[-w0]
   shape_all = enn$shape_all[-w0]
   angle_all = enn$angle_all[-w0]
-  # allpos = allpos[-w0,]
 
   # setup list for call
   if (nsim > 0) {
-    tsim = elliptic.sim(nsim = nsim, nn = enn$nn, ty = ty, 
-                        ex = ex, a = a, 
+    tsim = elliptic.sim(nsim = nsim, nn = enn$nn, ty = ty,
+                        ex = ex, a = a,
                         shape_all = enn$shape_all,
                         ein = ein, eout = eout, cl = cl)
-    
+
     # p-values associated with these max statistics for each centroid
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
-  
+
   # construct all zones
-  zones = unlist(lapply(enn$nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
+  zones = nn2zones(enn$nn)
   zones = zones[-w0]
-  
+
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
 
@@ -126,8 +121,8 @@ elliptic.test = function(coords, cases, pop,
   angle_all = angle_all[sigc]
   pvalue = pvalue[sigc]
   zones = zones[sigc]
-  
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
             coords = coords, cases = cases, pop = pop,
             ex = ex, longlat = FALSE, w = NULL,
             d = NULL, a = a, shape_all = shape_all,

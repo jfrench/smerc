@@ -20,12 +20,12 @@
 #' ty = sum(cases)
 #' ex = ty/sum(pop) * pop
 #' tsim = uls.sim(1, ty, ex, nyw, pop = pop, ubpop = 0.5)
-uls.sim = function(nsim = 1, ty, ex, w, pop, ubpop, 
-                   type = "poisson", check.unique = FALSE, 
+uls.sim = function(nsim = 1, ty, ex, w, pop, ubpop,
+                   type = "poisson", check.unique = FALSE,
                    cl = NULL) {
   tpop = sum(pop)
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type, 
-                tpop = tpop, w = w, ubpop = ubpop, 
+  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
+                tpop = tpop, w = w, ubpop = ubpop,
                 static = FALSE)
 
   # compute max test stat for nsim simulated data sets
@@ -41,7 +41,7 @@ uls.sim = function(nsim = 1, ty, ex, w, pop, ubpop,
       tall = stat.poisson(yin, ty - yin, ein, ty - ein)
     } else if (type == "binomial") {
       popin = zones.sum(zones, pop)
-      tall = stat.binom(yin, ty - yin, ty, 
+      tall = stat.binom(yin, ty - yin, ty,
                         popin, tpop - popin, tpop)
     }
     max(tall)

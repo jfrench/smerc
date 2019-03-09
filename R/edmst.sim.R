@@ -25,10 +25,10 @@
 #' max_pop = sum(pop) * 0.25
 #' tsim = edmst.sim(1, nn, ty, ex, nyw, pop = pop, 
 #'                  max_pop = max_pop)
-edmst.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop, 
+edmst.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
                      cl = NULL) {
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = "poisson", 
-                tpop = NULL, w = w, ubpop = 0.1, 
+  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = "poisson",
+                tpop = NULL, w = w, ubpop = 0.1,
                 static = FALSE)
 
   # compute max test stat for nsim simulated data sets
@@ -37,7 +37,7 @@ edmst.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     tall = mst.all(nn, cases = ysim, pop = pop, w = w,
             ex = ex, ty = ty,
-            max_pop = max_pop, type = "maxonly", 
+            max_pop = max_pop, type = "maxonly",
             early = TRUE, nlinks = "one", progress = FALSE)
     max(tall)
   })

@@ -19,7 +19,7 @@ w[7, c(4, 2, 3, 5)] = 1
 w[8, c(1, 3, 5, 11)] = 1
 w[9, c(11, 10, 12)] = 1
 w[10, c(11, 9)] = 1
-w[11, c(8, 6, 9, 10)] = 1 
+w[11, c(8, 6, 9, 10)] = 1
 w[12, c(6, 9)] = 1
 
 z = vector("list", 8)
@@ -61,4 +61,3 @@ test_that("check accuracy of uls.zones", {
   expect_equal(z[1:4], uz[1:4])
   expect_equal(z2, uz2)
 })
-

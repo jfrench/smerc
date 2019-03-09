@@ -19,12 +19,11 @@
 #' ty = sum(cases)
 #' ex = ty/sum(pop) * pop
 #' tsim = fast.sim(1, ty, ex, pop = pop, ubpop = 0.5)
-fast.sim = function(nsim = 1, ty, ex, pop, ubpop, 
+fast.sim = function(nsim = 1, ty, ex, pop, ubpop,
                     type = "poisson", cl = NULL) {
   tpop = sum(pop)
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type, 
-                tpop = tpop, ubpop = ubpop, 
-                static = FALSE)
+  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
+                tpop = tpop, ubpop = ubpop, static = FALSE)
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
@@ -38,7 +37,7 @@ fast.sim = function(nsim = 1, ty, ex, pop, ubpop,
       tall = stat.poisson(yin, ty - yin, ein, ty - ein)
     } else if (type == "binomial") {
       popin = cumsum(pop[zones])
-      tall = stat.binom(yin, ty - yin, ty, 
+      tall = stat.binom(yin, ty - yin, ty,
                         popin, tpop - popin, tpop)
     }
     max(tall)

@@ -35,16 +35,23 @@
 #' fast.zones(cases, pop, ubpop = 0.05)
 #' fast.zones(cases, pop, ubpop = 0.05, simple = FALSE)
 fast.zones = function(cases, pop, ubpop = 0.5, simple = TRUE) {
-  if (length(cases) != length(pop)) stop('length(cases) != length(pop)')
-  if (length(ubpop) != 1 | !is.numeric(ubpop)) stop("ubpop should be a single number")
-  if (ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
-  if (length(simple) != 1 | !is.logical(simple)) stop("simple must be a logical value")
-  
+  if (length(cases) != length(pop)) {
+    stop("length(cases) != length(pop)")
+  }
+  if (length(ubpop) != 1 | !is.numeric(ubpop)) {
+    stop("ubpop should be a single number")
+  }
+  if (ubpop <= 0 | ubpop > 1) {
+    stop("ubpop not in (0, 1]")
+  }
+  if (length(simple) != 1 | !is.logical(simple)) {
+    stop("simple must be a logical value")
+  }
+
   # order rates from largest to smallest
-  or = order(cases/pop, decreasing = TRUE)
-  #
+  or = order(cases / pop, decreasing = TRUE)
   max_pop = sum(pop) * ubpop
-  
+
   if (simple) {
     return(or[cumsum(pop[or]) <= max_pop])
   } else {

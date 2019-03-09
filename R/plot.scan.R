@@ -28,67 +28,77 @@
 #' data(stateMapEnv, package = "maps") 
 #' plot(out, usemap = TRUE, mapargs = mapargs)
 
-plot.scan = function(x, ..., ccol = NULL, cpch = NULL, add = FALSE, usemap = FALSE, mapargs = list())
-{
-  if(class(x) != "scan") stop("x should be an scan object from an appropriate function, e.g., scan.test")
-  
+plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
+                     add = FALSE, usemap = FALSE,
+                     mapargs = list()) {
+  if (class(x) != "scan") {
+    stop("x must be a scan object.  See prep.scan.")
+  }
+
   # number of centroids
   nc = length(x$clusters)
-  
+
   # set default values
-  if(is.null(ccol)) ccol = c(2:(nc + 1))
-  if(is.null(cpch)) cpch = rep(20, nc)
-  if(nc > 1) cpch[2:nc] = 3:(nc + 1)
-  
+  if (is.null(ccol)) ccol = seq_len(nc) + 1
+  if (is.null(cpch)) cpch = rep(20, nc)
+  if (nc > 1) cpch[2:nc] = 3:(nc + 1)
+
   # more sanity checking
-  if(length(ccol) != nc) stop("if specified, ccol must have length equal to length(x$clusters)")
-  if(length(cpch) != nc) stop("if specified, cpch must have length equal to length(x$clusters)")
-  
+  if (length(ccol) != nc) {
+    stop("ccol must have length equal to length(x$clusters)")
+  }
+  if (length(cpch) != nc) {
+    stop("cpch must have length equal to length(x$clusters)")
+  }
+
   # extract coordinates and cluster coordinates
   coords = x$coords
-  # ccoords = matrix(0, nrow = nc, ncol = 2)
-  # for(i in 1:nc) ccoords[i, ] = coords[x$clusters[[i]]$loc, ]
-  
-  if(!add)
-  {
-    if(usemap)
-    { do.call(maps::map, mapargs) }else
-    {
+
+  if (!add) {
+    if (usemap) {
+      do.call(maps::map, mapargs)
+    } else {
       plot(coords, ...)
     }
   }
-  
+
   graphics::points(coords, ...)
   # plot clusters
-  for (i in 1:nc)   {
-    graphics::points(coords[x$clusters[[i]]$locids,1], 
-                     coords[x$clusters[[i]]$locids,2], 
-                     col = ccol[i], 
-                     pch = cpch[i])
-    
+  for (i in 1:nc) {
+    graphics::points(coords[x$clusters[[i]]$locids, 1],
+                     coords[x$clusters[[i]]$locids, 2],
+                     col = ccol[i], pch = cpch[i])
+
     if (!is.null(x$clusters[[i]]$w)) {
       if (length(x$clusters[[i]]$w) > 1) {
-      seg = w2segments(x$clusters[[i]]$w, coords[x$clusters[[i]]$locids, ])
-      graphics::segments(seg[,1], seg[,2], seg[,3], seg[,4], 
+      seg = w2segments(x$clusters[[i]]$w,
+                       coords[x$clusters[[i]]$locids, ])
+      graphics::segments(seg[, 1], seg[, 2], seg[, 3], seg[, 4],
                          col = ccol[i], pch = cpch[i])
       }
     }
   }
 }
 
-# takes binary spatial proximity matrix and associated
-# coordinates, returns segments connecting neighbors
+#' Returns segments connecting neighbors
+#'
+#' w2segments takes a binary spatial proximity matrix and 
+#' associated coordinates.  It returns segments connecting 
+#' the neighbors for plotting purposes
+#' @return NULL
+#' @export
+#' @keywords internal
 w2segments = function(w, coords) {
   nnb = sum(w != 0)
   count = 0
   seg = matrix(0, nrow = nnb, ncol = 4)
   for (i in 1:nrow(w)) {
-    nbi = which(w[i,] != 0)
+    nbi = which(w[i, ] != 0)
     nnbi = length(nbi)
     seg[count + 1:nnbi, 1] = coords[i, 1]
     seg[count + 1:nnbi, 2] = coords[i, 2]
-    seg[count + 1:length(nbi),3] = coords[nbi, 1]
-    seg[count + 1:length(nbi),4] = coords[nbi, 2]
+    seg[count + 1:length(nbi), 3] = coords[nbi, 1]
+    seg[count + 1:length(nbi), 4] = coords[nbi, 2]
     count = count + nnbi
   }
   return(seg)

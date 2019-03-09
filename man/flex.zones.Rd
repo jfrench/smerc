@@ -5,7 +5,7 @@
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
 flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL,
-  progress = TRUE)
+  progress = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -28,6 +28,15 @@ or an integer to indicate number of child-processes
 }
 
 \item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+
+\item{verbose}{A logical value indicating whether
+descriptive progress messages should be provided.
+Default is \code{FALSE}.  If \code{TRUE}, this can be
+useful for diagnosing where the sequences of connected
+subgraphs is slowing down/having problems.
+Additionally, a loop is used to run the algorithm,
+rather than \code{\link[base]{lapply}}.  Memory-saving
+steps are also taken.}
 }
 \value{
 Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
@@ -38,8 +47,12 @@ Returns a list of zones to consider for clustering.  Each element of the list co
 \examples{
 data(nydf)
 data(nyw)
-coords = cbind(nydf$longitude, nydf$latitude)
-zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
+coords = cbind(nydf$x, nydf$y)
+zones = flex.zones(coords, w = nyw, k = 3)
+\dontrun{
+# see what happens when verbose = TRUE
+zones = flex.zones(coords, w = nyw, k = 3, verbose = TRUE)
+}
 }
 \references{
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.

@@ -102,24 +102,21 @@
 #'               type = "pruned")
 #' head(out)
 #' }
-mst.all = function(neighbors, cases, pop, w,  
-                   ex, ty, max_pop, 
-                   type = "maxonly",
-                   nlinks = "one",
-                   early = FALSE, cl = NULL, 
-                   progress = FALSE) {
+mst.all = function(neighbors, cases, pop, w, ex, ty, max_pop,
+                   type = "maxonly", nlinks = "one",
+                   early = FALSE, cl = NULL, progress = FALSE) {
   if (!progress) {
     max_zones = lapply(seq_along(cases), function(i) {
-      mst.seq(i, neighbors[[i]], cases, 
+      mst.seq(i, neighbors[[i]], cases,
               pop, w, ex, ty, max_pop, type,
               nlinks, early)
-    }) 
+    })
   } else {
     max_zones = pbapply::pblapply(seq_along(cases), function(i) {
-      mst.seq(i, neighbors[[i]], cases, 
+      mst.seq(i, neighbors[[i]], cases,
               pop, w, ex, ty, max_pop, type,
               nlinks, early)
-    }, cl = cl) 
+    }, cl = cl)
   }
   if (type == "maxonly") {
     return(unlist(max_zones, use.names = FALSE))
@@ -127,4 +124,3 @@ mst.all = function(neighbors, cases, pop, w,
     max_zones
   }
 }
-

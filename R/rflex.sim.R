@@ -27,27 +27,28 @@
 #' pop = nydf$pop
 #' ex = pop * sum(cases)/sum(pop)
 #' tsim = rflex.sim(nsim = 5, nn = nn, w = nyw, ex = ex)
-rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2, 
+rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
                      type = "poisson", pop = NULL, cl = NULL) {
   if (length(nsim) != 1 | !is.numeric(nsim) | nsim < 1) {
     stop("nsim must be a positive integer")
   }
-  arg_check_rflex_zones(nn = nn, w = w, cases = ex, ex = ex, 
-                        alpha1 = alpha1, type = type, 
-                        pop = pop, progress = FALSE)
+  arg_check_rflex_zones(nn = nn, w = w, cases = ex, ex = ex,
+                        alpha1 = alpha1, type = type,
+                        pop = pop, progress = FALSE,
+                        verbose = FALSE)
 
-  # determine total cases and population (if binomial)                        
+  # determine total cases and population (if binomial)
   ty = sum(ex)
   if (type == "binomial") tpop = sum(pop)
-  
+
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     # determine rflex zones
-    zones = rflex.zones(nn = nn, w = w, 
-                        cases = ysim, ex = ex, 
-                        alpha1 = alpha1, pop = pop, 
+    zones = rflex.zones(nn = nn, w = w,
+                        cases = ysim, ex = ex,
+                        alpha1 = alpha1, pop = pop,
                         cl = NULL, progress = FALSE)
     # compute test statistics for each zone
     yin = zones.sum(zones, ysim)
@@ -56,7 +57,7 @@ rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
       tall = stat.poisson(yin, ty - yin, ein, ty - ein)
     } else if (type == "binomial") {
       popin = zones.sum(zones, pop)
-      tall = stat.binom(yin, ty - yin, ty, 
+      tall = stat.binom(yin, ty - yin, ty,
                         popin, tpop - popin, tpop)
     }
     max(tall)

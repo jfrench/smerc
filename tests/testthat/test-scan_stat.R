@@ -3,7 +3,7 @@ cases = floor(nydf$cases)
 pop = nydf$pop
 ty = sum(cases)
 tpop = sum(pop)
-ex = ty/tpop * pop
+ex = ty / tpop * pop
 
 # number of cases and population
 # poisson test statistic
@@ -24,7 +24,7 @@ yout = ty - yin
 popout = tpop - popin
 t3 = scan.stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
                type = "binomial")
-t4 = stat.binom(yin = yin, yout = yout, ty = ty, 
+t4 = stat.binom(yin = yin, yout = yout, ty = ty,
                 popin = popin, popout = popout, tpop = tpop)
 
 context("test scan_test related functions")

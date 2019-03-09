@@ -53,38 +53,37 @@ or an integer to indicate number of child-processes
 Returns a \code{scan} object.
 }
 \description{
-\code{dc.test} implements the Double Connection spatial 
-scan test of Costa et al. (2012). 
-Starting with a single region as a current zone, new 
-candidate zones are constructed by combining the current 
-zone with the connected region that maximizes the 
-resulting likelihood ratio test statistic, with the 
-added constraint that the region must have at least
-two connection (i.e., shares a border with) at least
-two of the regoins in the current zone.  This  
-procedure is repeated until adding a connected region
-does not increase the test statistic 
-(or the population or distance upper
-bounds are reached).  The same procedure is repeated for 
-each region.  The clusters returned are non-overlapping, 
-ordered from most significant to least significant.  
-The first cluster is the most likely to be a cluster.  
-If no significant clusters are found, then the most 
-likely cluster is returned (along with a warning).
+\code{dc.test} implements the Double Connection spatial
+scan test of Costa et al. (2012). Starting with a single
+region as a current zone, new candidate zones are
+constructed by combining the current zone with the
+connected region that maximizes the resulting likelihood
+ratio test statistic, with the added constraint that the
+region must have at least two connection (i.e., shares a
+border with) at least two of the regoins in the current
+zone.  This procedure is repeated until adding a
+connected region does not increase the test statistic (or
+the population or distance upper bounds are reached).
+The same procedure is repeated for each region.  The
+clusters returned are non-overlapping, ordered from most
+significant to least significant. The first cluster is
+the most likely to be a cluster. If no significant
+clusters are found, then the most likely cluster is
+returned (along with a warning).
 }
 \details{
-The maximum intercentroid distance can be found by 
-executing the command: 
-\code{sp::spDists(as.matrix(coords), longlat = longlat)}, 
-based on the specified values of \code{coords} and 
+The maximum intercentroid distance can be found by
+executing the command:
+\code{sp::spDists(as.matrix(coords), longlat = longlat)},
+based on the specified values of \code{coords} and
 \code{longlat}.
 }
 \examples{
 data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
-out = dc.test(coords = coords, cases = floor(nydf$cases), 
-                 pop = nydf$pop, w = nyw, 
+out = dc.test(coords = coords, cases = floor(nydf$cases),
+                 pop = nydf$pop, w = nyw,
                  alpha = 0.12, longlat = TRUE,
                  nsim = 5, ubpop = 0.1, ubd = 0.2)
 data(nypoly)
@@ -92,10 +91,10 @@ library(sp)
 plot(nypoly, col = color.clusters(out))
 }
 \references{
-Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
-  Constrained spanning tree algorithms for
+Costa, M.A. and Assuncao, R.M. and Kulldorff,
+  M. (2012) Constrained spanning tree algorithms for
   irregularly-shaped spatial clustering, Computational
-  Statistics & Data Analysis, 56(6), 1771-1783. 
+  Statistics & Data Analysis, 56(6), 1771-1783.
   <https://doi.org/10.1016/j.csda.2011.11.001>
 }
 \seealso{

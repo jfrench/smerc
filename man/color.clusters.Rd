@@ -7,20 +7,28 @@
 color.clusters(x, col = 2:(length(x$clusters) + 1))
 }
 \arguments{
-\item{x}{An object of class scan produced by a function such as \code{scan.test}.}
+\item{x}{An object of class scan produced by a function
+such as \code{scan.test}.}
 
-\item{col}{A vector of colors to color the clusters in \code{x}.  Should have same length as the number of clusters in \code{x}.}
+\item{col}{A vector of colors to color the clusters in
+\code{x}.  Should have same length as the number of
+clusters in \code{x}.}
 }
 \value{
-Returns a vector with colors for each region/centroid for the data set used to construct \code{x}.
+Returns a vector with colors for each
+  region/centroid for the data set used to construct
+  \code{x}.
 }
 \description{
-\code{color.clusters} is a simple helper function that makes it easier to color clusters of regions produced by an appropriate method, e.g., \code{scan.test} or \code{uls.test}.  Regions/clusters that are not part of any cluster have no color.
+\code{color.clusters} is a helper function to color
+clusters of regions produced by an appropriate method,
+e.g., \code{scan.test} or \code{uls.test}.  Regions that
+are not part of any cluster have no color.
 }
 \examples{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
-out = scan.test(coords = coords, cases = floor(nydf$cases), 
+out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, alpha = 0.12, longlat = TRUE,
                 nsim = 9)
 data(nypoly)

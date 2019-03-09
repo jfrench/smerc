@@ -24,6 +24,6 @@
 zones.sum = function(zones, y) {
   if (!is.list(zones)) stop("zones must be a list")
   if (!is.numeric(y)) stop("y must be a numeric vector")
-  vapply(zones, function(x) sum(y[x]), FUN.VALUE = numeric(1), 
+  vapply(zones, function(x) sum(y[x]), FUN.VALUE = numeric(1),
          USE.NAMES = FALSE)
 }

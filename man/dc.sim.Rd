@@ -38,11 +38,11 @@ A vector with the maximum test statistic for each
   simulated data set.
 }
 \description{
-\code{dc.sim} efficiently performs
-\code{\link{dc.test}} on a simulated data set.  The
-function is meant to be used internally by the
-\code{\link{dc.test}} function, but is informative for
-better understanding the implementation of the test.
+\code{dc.sim} efficiently performs \code{\link{dc.test}}
+on a simulated data set.  The function is meant to be
+used internally by the \code{\link{dc.test}} function,
+but is informative for better understanding the
+implementation of the test.
 }
 \examples{
 data(nydf)
@@ -55,6 +55,6 @@ ex = ty/sum(pop) * pop
 d = sp::spDists(coords, longlat = TRUE)
 nn = nndist(d, ubd = 0.05)
 max_pop = sum(pop) * 0.25
-tsim = dc.sim(1, nn, ty, ex, nyw, pop = pop, 
+tsim = dc.sim(1, nn, ty, ex, nyw, pop = pop,
               max_pop = max_pop)
 }

@@ -18,6 +18,14 @@
 #' @param progress A logical value indicating whether the
 #'   progress of constructing the zones should be reported.
 #'   The default is FALSE.
+#' @param verbose A logical value indicating whether
+#'   descriptive progress messages should be provided.
+#'   Default is \code{FALSE}.  If \code{TRUE}, this can be
+#'   useful for diagnosing where the sequences of connected
+#'   subgraphs is slowing down/having problems.
+#'   Additionally, a loop is used to run the algorithm,
+#'   rather than \code{\link[base]{lapply}}.  Memory-saving
+#'   steps are also taken.
 #' @return Returns a list of zones to consider for
 #'   clustering.  Each element of the list contains a vector
 #'   with the location ids of the regions in that zone.
@@ -31,38 +39,44 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = cbind(nydf$longitude, nydf$latitude)
-#' nn = knn(coords, longlat = FALSE, k = 10)
+#' coords = cbind(nydf$x, nydf$y)
+#' nn = knn(coords, k = 5)
 #' cases = floor(nydf$cases)
 #' pop = nydf$pop
 #' ex = pop * sum(cases)/sum(pop)
 #' # zones for poisson model
 #' pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+#' \dontrun{
+#' pzones = rflex.zones(nn, w = nyw, cases = cases,
+#'                       ex = ex, verbose = TRUE)
 #' # zones for binomial model
 #' bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
 #'                      type = "binomial", pop = pop)
-rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2, 
-                       type = "poisson", pop = NULL, 
-                       cl = NULL, progress = FALSE) {
-  arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop, 
-                        progress)
- 
-  # compute mid p-value 
+#' }
+rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
+                       type = "poisson", pop = NULL,
+                       cl = NULL, progress = FALSE, verbose = FALSE) {
+  arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop,
+                        progress, verbose)
+
+  # compute mid p-value
   p = rflex.midp(cases, ex, type = type, pop = pop)
   # determine which regions are "hot" (keep) or "cold" (remove)
   keep = which(p < alpha1)
-  
+  nkeep = length(keep)
+
   if (length(keep) > 0) {
     remove = setdiff(seq_along(ex), keep)
-    
-    # remove connections when p >= alpha1  
-    w[,remove] = 0
-    
+
+    # remove connections when p >= alpha1
+    w[, remove] = 0
+
+    if (!verbose) {
     fcall_list = list(X = keep, function(i, ...) {
       idxi = intersect(nn[[i]], keep)
-      scsg(idxi, w[,idxi, drop = FALSE])
-    }, cl = cl)  
-    
+      scsg(idxi, w[, idxi, drop = FALSE])
+    }, cl = cl)
+
     # determine which apply function to use
     if (progress) {
       message("constructing connected subgraphs:")
@@ -70,10 +84,28 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
     } else {
       fcall = lapply
     }
-  
-    # determine distinct zones
-    czones = unlist(do.call(fcall, fcall_list), 
+
+    # determine zones
+    czones = unlist(do.call(fcall, fcall_list),
                     use.names = FALSE, recursive = FALSE)
+    } else {
+      # use loop if verbose
+      czones = list()
+      count = 1
+      for (i in keep) {
+        if (verbose) {
+          message(paste(count, "/", nkeep, ". Starting region ",
+                        i, " at ", Sys.time(), ".", sep = ""))
+        }
+        idxi = intersect(nn[[i]], keep)
+        czones = combine.zones(czones,
+                               scsg(idxi, w[, idxi, drop = FALSE])
+                               )
+        count = count + 1
+      }
+      return(czones)
+    }
+    # determine distinct zones
     return(czones[distinct(czones)])
   } else {
     czones = vector("list", 1)
@@ -82,16 +114,23 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
   }
 }
 
-arg_check_rflex_zones = function(nn, w, cases, ex, 
-                                 alpha1, type, pop, 
-                                 progress) {
+#' Check arguments of rflex.zones
+#' 
+#' Check the arguments of rflex.zones
+#'
+#' @keywords internal
+#' @return NULL
+#' @export
+arg_check_rflex_zones = function(nn, w, cases, ex,
+                                 alpha1, type, pop,
+                                 progress, verbose) {
   if (is.list(dim(nn))) stop("nn must be a list of nn vectors")
   N = length(nn)
   if (nrow(w) != N) stop("nrow(w) must match length(nn)")
   if (length(cases) != N) stop("length(cases) must match length(nn)")
   if (length(alpha1) != 1 | alpha1 <= 0) {
     stop("alpha1 must be in (0, 1]")
-  } 
+  }
   if (!is.element(type, c("poisson", "binomial"))) {
     stop("type must be 'poisson' or 'binomial'")
   }
@@ -102,5 +141,8 @@ arg_check_rflex_zones = function(nn, w, cases, ex,
   }
   if (length(progress) != 1 | !is.logical(progress)) {
     stop("progress must be a logical value")
+  }
+  if (length(verbose) != 1 | !is.logical(verbose)) {
+    stop("verbose must be a logical value")
   }
 }

@@ -50,24 +50,24 @@
 #'                pop = nydf$pop,
 #'                alpha = 0.05, longlat = TRUE,
 #'                nsim = 49, ubpop = 0.5)
-fast.test = function(coords, cases, pop, 
-                    ex = sum(cases)/sum(pop)*pop,  
-                    nsim = 499, alpha = 0.1, 
+fast.test = function(coords, cases, pop,
+                    ex = sum(cases) / sum(pop) * pop,
+                    nsim = 499, alpha = 0.1,
                     ubpop = 0.5, longlat = FALSE,
                     cl = NULL, type = "poisson") {
   # sanity checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, longlat, TRUE, 
-                      k = 1, w = diag(nrow(coords)), 
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, ubpop, longlat, TRUE,
+                      k = 1, w = diag(nrow(coords)),
                       type = type)
-  
+
   coords = as.matrix(coords)
   zones = fast.zones(cases, pop, ubpop)
-  
+
   # compute needed information
   ty = sum(cases)
   yin = cumsum(cases[zones])
-  
+
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = cumsum(ex[zones])
@@ -77,36 +77,33 @@ fast.test = function(coords, cases, pop,
     popin = cumsum(pop[zones])
     tobs = stat.binom(yin, ty - yin, ty, popin, tpop - popin, tpop)
   }
-  
+
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
-    tsim = fast.sim(nsim = nsim, ty = ty, ex = ex, 
+    tsim = fast.sim(nsim = nsim, ty = ty, ex = ex,
                    pop = pop, ubpop = ubpop, cl = cl)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
-  
+
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
-  
+
   # if there are no significant clusters, return most likely cluster
   if (length(sigc) == 0) {
     sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
+
   # only keep significant clusters
   zones = lapply(seq_along(zones), function(i) zones[seq_len(i)])
   zones = zones[sigc]
   tobs = tobs[sigc]
   pvalue = pvalue[sigc]
-  
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
             coords = coords, cases = cases, pop = pop,
-            ex = ex, longlat = longlat, 
-            d = NULL)
+            ex = ex, longlat = longlat, d = NULL)
 }
-
-

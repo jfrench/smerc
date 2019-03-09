@@ -2,12 +2,14 @@
 % Please edit documentation in R/arg_check_dmst_zones.R
 \name{arg_check_dmst_zones}
 \alias{arg_check_dmst_zones}
-\title{Argument checking for dmst.zones, dc.zones, and mlink.zones functions}
+\title{Argument checking for dmst.zones, dc.zones, and
+mlink.zones functions}
 \usage{
 arg_check_dmst_zones(coords, cases, pop, w, ex, ubpop, ubd, longlat, type,
   progress = FALSE)
 }
 \description{
-Check the arguments of the dmst.zones, dc.zones, and mlink.zones functions.
+Check the arguments of the dmst.zones, dc.zones, and
+mlink.zones functions.
 }
 \keyword{internal}

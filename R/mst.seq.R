@@ -91,11 +91,9 @@
 #' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "pruned")
 #' bigout = mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "all")
 #' head(bigout)
-mst.seq = function(start, neighbors, cases, pop, w,  
-                          ex, ty, max_pop, 
-                          type = "maxonly",
-                          nlinks = "one",
-                          early = FALSE) {
+mst.seq = function(start, neighbors, cases, pop, w, ex, ty,
+                   max_pop, type = "maxonly", nlinks = "one",
+                   early = FALSE) {
   loglikrat = yin = ein = popin = numeric(length(neighbors))
   region = start
   yin[1] = cases[region]
@@ -108,20 +106,21 @@ mst.seq = function(start, neighbors, cases, pop, w,
 
   stop = FALSE
   # double check that pop constraint is satisfied
-  # if not, stop and set loglikrat to 0 (so that it's not the maximum in the earch)
+  # if not, stop and set loglikrat to 0 (so that it's not
+  # the maximum in the search)
   if (popin[1] > max_pop) {
     stop = TRUE
     loglikrat[1] = 0
   }
-  
+
   i = 1
   while (!stop & i < length(neighbors)) {
     # get current zone to extend
     c_zone = uz[[i]]
-    
+
     # current max set of neighbors for current zone
     cmn = max_neighbors[[i]]
-    
+
     # which regions are connected to c_zone
     # and satisfy the population constraints
     sw = w[c_zone, cmn, drop = FALSE]
@@ -133,31 +132,33 @@ mst.seq = function(start, neighbors, cases, pop, w,
       # neighbors
       nconnect = matrixStats::colSums2(sw)
 
-      if (nlinks == "two") {# double connection
+      if (nlinks == "two") {
+        # double connection
         connected = cmn[which(nconnect >= 2)]
-      } else if (nlinks == "max") {# mlink connection
+      } else if (nlinks == "max") {
+        # mlink connection
         connected = cmn[which(nconnect == max(nconnect))]
       }
     }
     # new popin when adding each potential neighbor to c_zone
     p_popin = popin[i] + pop[connected]
-    
+
     # candidate regions that satisfy constraints
     in_size = which(p_popin <= max_pop)
     cand_regions = connected[in_size]
-    
+
     if (length(cand_regions) > 0) {
       # yin and ein for candidate zones (cur zone plus cand_regions)
       yin_cand = yin[i] + cases[cand_regions]
       ein_cand = ein[i] + ex[cand_regions]
-      
+
       # test statistics for candidate locations
       stat_cand = scan.stat(yin = yin_cand, ein = ein_cand,
                             eout = ty - ein_cand, ty = ty)
 
       # index of max stat_cand
       max_idx = which.max(stat_cand)
-      
+
       # only update if new candidate statistics
       # are greater than old statistics
       if (early & (stat_cand[max_idx] <= loglikrat[i])) {
@@ -168,12 +169,13 @@ mst.seq = function(start, neighbors, cases, pop, w,
         yin[i + 1] = yin_cand[max_idx]
         ein[i + 1] = ein_cand[max_idx]
         popin[i + 1] = p_popin[in_size][max_idx]
-        # regions_used = c(regions_used, cand_regions[max_idx])
-        max_neighbors[[i + 1]] = setdiff(max_neighbors[[i]], cand_regions[max_idx])
+        max_neighbors[[i + 1]] = setdiff(max_neighbors[[i]],
+                                         cand_regions[max_idx])
         uz[[i + 1]] = c(c_zone, cand_regions[max_idx])
         i = i + 1 # update counter
       }
-    } else {# end algorithm
+    } else {
+      # end algorithm
       stop = TRUE
     }
   }
@@ -182,7 +184,7 @@ mst.seq = function(start, neighbors, cases, pop, w,
     return(max(loglikrat))
   } else if (type == "pruned") {
     which_max = which.max(loglikrat)
-    
+
     return(list(locids = uz[[which_max]],
                 loglikrat = loglikrat[which_max],
                 cases = yin[which_max],
@@ -197,4 +199,3 @@ mst.seq = function(start, neighbors, cases, pop, w,
                 population = popin[1:i]))
   }
 }
-

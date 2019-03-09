@@ -4,7 +4,7 @@
                                  _____________________________
 
 
-Program run on: Mon Nov 05 11:31:03 2018
+Program run on: Sat Mar  9 07:52:41 2019
 
 Purely Spatial analysis
 scanning for clusters with high rates
@@ -24,13 +24,11 @@ CLUSTERS DETECTED
 
 1.Location IDs included.: 52, 50, 53, 38, 49, 15, 48, 39, 1, 37, 16, 44, 14, 47, 40, 2, 13, 43,
                           51, 45, 17, 11, 12, 3, 46
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.0838,-75.9898)
   Semiminor axis........: 0.058
   Semimajor axis........: 0.087
   Angle (degrees).......: 90.00
   Shape.................: 1.50
-  Gini Cluster..........: Yes
   Population............: 99685
   Number of cases.......: 93
   Expected cases........: 52.03
@@ -42,13 +40,11 @@ CLUSTERS DETECTED
   P-value...............: 0.00019
 
 2.Location IDs included.: 87, 88, 86, 89, 92, 85, 90
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.6178,-76.1796)
   Semiminor axis........: 0.086
   Semimajor axis........: 0.17
   Angle (degrees).......: -60.00
   Shape.................: 2.00
-  Gini Cluster..........: Yes
   Population............: 31491
   Number of cases.......: 37
   Expected cases........: 16.44
@@ -61,13 +57,11 @@ CLUSTERS DETECTED
 
 3.Location IDs included.: 115, 116, 114, 111, 117, 113, 123, 120, 110, 122, 112, 118, 121, 124,
                           220, 133, 131, 119, 130, 125, 132, 219, 126, 127, 135
-  Overlap with clusters.: No Overlap
   Coordinates...........: (43.0703,-76.1524)
   Semiminor axis........: 0.019
   Semimajor axis........: 0.057
   Angle (degrees).......: 80.00
   Shape.................: 3.00
-  Gini Cluster..........: No
   Population............: 59460
   Number of cases.......: 57
   Expected cases........: 31.03
@@ -79,13 +73,11 @@ CLUSTERS DETECTED
   P-value...............: 0.080
 
 4.Location IDs included.: 170, 171, 166, 167
-  Overlap with clusters.: No Overlap
   Coordinates...........: (43.0068,-76.1412)
   Semiminor axis........: 0.0072
   Semimajor axis........: 0.029
   Angle (degrees).......: -60.00
   Shape.................: 4.00
-  Gini Cluster..........: No
   Population............: 12214
   Number of cases.......: 17
   Expected cases........: 6.37
@@ -97,13 +89,11 @@ CLUSTERS DETECTED
   P-value...............: 0.768
 
 5.Location IDs included.: 62, 64, 67, 65
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.9637,-76.528)
   Semiminor axis........: 0.061
   Semimajor axis........: 0.061
   Angle (degrees).......: 0
   Shape.................: 1.00
-  Gini Cluster..........: No
   Population............: 24571
   Number of cases.......: 25
   Expected cases........: 12.82
@@ -115,13 +105,11 @@ CLUSTERS DETECTED
   P-value...............: 0.845
 
 6.Location IDs included.: 106, 103, 102, 77, 230
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.7801,-75.7262)
   Semiminor axis........: 0.087
   Semimajor axis........: 0.35
   Angle (degrees).......: -45.00
   Shape.................: 4.00
-  Gini Cluster..........: No
   Population............: 15576
   Number of cases.......: 19
   Expected cases........: 8.13
@@ -133,13 +121,11 @@ CLUSTERS DETECTED
   P-value...............: 0.922
 
 7.Location IDs included.: 266, 281, 265
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.4722,-76.4635)
   Semiminor axis........: 0.017
   Semimajor axis........: 0.026
   Angle (degrees).......: 90.00
   Shape.................: 1.50
-  Gini Cluster..........: No
   Population............: 8063
   Number of cases.......: 11
   Expected cases........: 4.21
@@ -155,12 +141,12 @@ PARAMETER SETTINGS
 
 Input
 -----
-  Case File        : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_cases.txt
-  Population File  : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_pop.txt
+  Case File        : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/satscan_ny_cases.txt
+  Population File  : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/satscan_ny_pop.txt
   Time Precision   : Year
   Start Time       : 2000/1/1
   End Time         : 2000/12/31
-  Coordinates File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_coords.txt
+  Coordinates File : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/flexscan_ny_coords.txt
   Coordinates      : Cartesian
 
 Analysis
@@ -171,7 +157,7 @@ Analysis
 
 Output
 ------
-  Main Results File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\scan_test_ny_poisson_elliptical_ubpop_10percent_penalty_medium.txt
+  Main Results File : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/scan_test_ny_poisson_elliptical_ubpop_10percent_penalty_medium.txt
 
 Data Checking
 -------------
@@ -214,9 +200,7 @@ Spatial Output
 --------------
   Report Hierarchical Clusters              : Yes
   Criteria for Reporting Secondary Clusters : No Geographical Overlap
-  Report Gini Optimized Cluster Collection  : Yes
-  Gini Index Based Collection Reporting     : Optimal Only
-  Report Gini Index Cluster Coefficents     : No
+  Report Gini Optimized Cluster Collection  : No
   Restrict Reporting to Smaller Clusters    : No
 
 Other Output
@@ -236,6 +220,6 @@ Run Options
   Logging Analysis  : No
 _______________________________________________________________________________________________
 
-Program completed  : Mon Nov 05 11:31:05 2018
-Total Running Time : 2 seconds
-Processor Usage    : 4 processors
+Program completed  : Sat Mar  9 07:52:42 2019
+Total Running Time : 1 second
+Processor Usage    : 8 processors

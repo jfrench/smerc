@@ -46,29 +46,29 @@
 #' coords = as.matrix(nydf[,c("x", "y")])
 #' w = dweights(coords, kappa = 1)
 #' results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
-tango.test <- function(cases, pop, w, nsim = 0) {
+tango.test = function(cases, pop, w, nsim = 0) {
   arg_check_tango_test(cases, pop, w, nsim)
   N = length(cases)
   yplus = sum(cases)
-  r = cases/yplus
-  p = pop/sum(pop)
+  r = cases / yplus
+  p = pop / sum(pop)
   ee = r - p
-  gof = sum(ee^2)
-  sa = (crossprod(ee, w - diag(N)) %*% ee)[1,1]
+  gof = sum(ee ^ 2)
+  sa = (crossprod(ee, w - diag(N)) %*% ee)[1, 1]
   tstat = gof + sa
-  
-  # compute standardized tstat
-  Vp = diag(p) - tcrossprod(p)
-  
-  wVp = w %*% Vp
-  wVp2 = wVp %*% wVp
-  wVp3 = wVp2 %*% wVp
-  ec = sum(diag(wVp))/yplus
-  vc = sum(diag(wVp2))*2/yplus^2
-  skc = 2 * sqrt(2) * sum(diag(wVp3))/(sum(diag(wVp2))^(1.5))
-  dfc = 8 / skc^2
 
-  tstat.std = (tstat - ec)/sqrt(vc)
+  # compute standardized tstat
+  vp = diag(p) - tcrossprod(p)
+
+  wvp = w %*% vp
+  wvp2 = wvp %*% wvp
+  wvp3 = wvp2 %*% wvp
+  ec = sum(diag(wvp)) / yplus
+  vc = sum(diag(wvp2)) * 2 / yplus ^ 2
+  skc = 2 * sqrt(2) * sum(diag(wvp3)) / (sum(diag(wvp2)) ^ (1.5))
+  dfc = 8 / skc ^ 2
+
+  tstat.std = (tstat - ec) / sqrt(vc)
   tstat.chisq = dfc + tstat.std * sqrt(2 * dfc)
   pvalue.chisq = 1 - stats::pchisq(tstat.chisq, dfc)
   out = list(tstat = tstat, gof = gof, sa = sa,
@@ -76,37 +76,53 @@ tango.test <- function(cases, pop, w, nsim = 0) {
              dfc = dfc)
   if (nsim > 0) {
     # simulate new data
-    ysim = stats::rmultinom(n = nsim, size = sum(cases), 
-                             prob = pop/sum(pop))
+    ysim = stats::rmultinom(n = nsim, size = sum(cases),
+                             prob = pop / sum(pop))
     # compute r and ee for simulated data
-    rsim = ysim/yplus
+    rsim = ysim / yplus
     eesim = rsim - p
-    
+
     # compute gof and sa components of statistic for
     # each simulated data
-    gof.sim = colSums(eesim^2)
+    gof.sim = colSums(eesim ^ 2)
     sa.sim = rowSums(crossprod(eesim, w - diag(N)) * t(eesim))
     tstat.sim = gof.sim + sa.sim
     out$gof.sim = gof.sim
     out$sa.sim = sa.sim
     out$tstat.sim = tstat.sim
-    pvalue.sim = (1 + sum(tstat.sim >= tstat))/(1 + nsim)
+    pvalue.sim = (1 + sum(tstat.sim >= tstat)) / (1 + nsim)
     out$pvalue.sim = pvalue.sim
   }
   class(out) = "tango"
   return(out)
 }
 
-arg_check_tango_test = function(cases, pop, w, nsim) {  
+#' Argument checking for tango.test
+#'
+#' Check the arguments of the tango.test function
+#' @return NULL
+#' @export
+#' @keywords internal
+arg_check_tango_test = function(cases, pop, w, nsim) {
   N = length(cases)
-  if(!is.numeric(cases)) stop("cases should be a numeric vector")
-  if(length(pop) != N) stop("length(pop) != length(cases)")
-  if(!is.numeric(pop)) stop("pop should be a numeric vector")
-  if(!is.matrix(w)) stop("w should be a matrix")
-  if(ncol(w) != N || nrow(w) != N) {
+  if (!is.numeric(cases)) {
+    stop("cases should be a numeric vector")
+  }
+  if (length(pop) != N) {
+    stop("length(pop) != length(cases)")
+  }
+  if (!is.numeric(pop)) {
+    stop("pop should be a numeric vector")
+  }
+  if (!is.matrix(w)) stop("w should be a matrix")
+  if (ncol(w) != N || nrow(w) != N) {
     stop("nrow(w) and ncol(w) != length(cases)")
   }
-  if(length(nsim) != 1) stop("length(nsim) != 1")
-  if(!is.numeric(nsim)) stop("nsim should be a positive number")
-  if(nsim < 0) stop("nsim should be a non-negative integer")
+  if (length(nsim) != 1) stop("length(nsim) != 1")
+  if (!is.numeric(nsim)) {
+    stop("nsim should be a positive number")
+  }
+  if (nsim < 0) {
+    stop("nsim should be a non-negative integer")
+  }
 }

@@ -31,5 +31,5 @@ nndist = function(d, ubd) {
   }
   max_dist = ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
-  lapply(seq_len(nrow(d)), function(i) unname(which(d[i,] <= max_dist)))
+  lapply(seq_len(nrow(d)), function(i) unname(which(d[i, ] <= max_dist)))
 }

@@ -35,20 +35,21 @@
 nnpop = function(d, pop, ubpop) {
   tpop = sum(pop) # total population
   # order distances for each region
-  # results has each column showing order of indexes from shorter to largest distance
+  # results has each column showing order of indices
+  # from shortest to largest distance
   od = apply(d, 1, order)
 
   # for each row of ordered distance matrix
-  # sum the cumulative population size for 
+  # sum the cumulative population size for
   # the expanding collection of regions
-  
-  # return the largest collection of regions for which the 
-  # cumulative population is less than the desired 
+
+  # return the largest collection of regions for which the
+  # cumulative population is less than the desired
   # proportion of the total popuation
-  return(apply(od, 2, 
+  return(apply(od, 2,
                FUN = function(x){
                  csum = cumsum(pop[x])
-                 x[which(csum <= tpop*ubpop)] 
+                 x[which(csum <= tpop * ubpop)]
                }))
 }
 

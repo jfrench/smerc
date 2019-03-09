@@ -41,68 +41,67 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-rflex.test = function(coords, cases, pop, w, k = 50, 
-                     ex = sum(cases)/sum(pop)*pop, 
+rflex.test = function(coords, cases, pop, w, k = 50,
+                     ex = sum(cases) / sum(pop) * pop,
                      type = "poisson",
-                     nsim = 499, 
-                     alpha = 0.1, 
-                     longlat = FALSE, 
+                     nsim = 499,
+                     alpha = 0.1,
+                     longlat = FALSE,
                      alpha1 = 0.2,
                      cl = NULL) {
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, 0.5, longlat, FALSE, k = k, 
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, 0.5, longlat, FALSE, k = k,
                       w = w, type = type)
   coords = as.matrix(coords)
 
   # compute k nearest neighbors
-  nn = knn(coords = coords, longlat = longlat, k = k)  
-  
+  nn = knn(coords = coords, longlat = longlat, k = k)
+
   # determine zones for observed data
-  zones = rflex.zones(nn = nn, w = w, 
+  zones = rflex.zones(nn = nn, w = w,
                       cases = cases, ex = ex, alpha1 = alpha1,
                       cl = cl, progress = FALSE)
   # compute needed information
   ty = sum(cases)
   yin = zones.sum(zones, cases)
   if (type == "binomial") tpop = sum(pop)
-  
+
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = zones.sum(zones, ex)
     tobs = stat.poisson(yin, ty - yin, ein, ty - ein)
   } else if (type == "binomial") {
     popin = zones.sum(zones, pop)
-    tobs = stat.binom(yin, ty - yin, ty, 
+    tobs = stat.binom(yin, ty - yin, ty,
                       popin, tpop - popin, tpop)
   }
 
   # compute test statistics for simulated data
   if (nsim > 1) {
-    tsim = rflex.sim(nsim = nsim, nn = nn, w = w, ex = ex, 
-                     alpha1 = alpha1, type = type, 
+    tsim = rflex.sim(nsim = nsim, nn = nn, w = w, ex = ex,
+                     alpha1 = alpha1, type = type,
                      pop = pop, cl = cl)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
-  
+
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
-  
+
   # if there are no significant clusters, return most likely cluster
   if (length(sigc) == 0) {
     sigc = which.max(tobs)
     warning("No significant clusters.  Returning most likely cluster.")
   }
-  
+
   # only keep significant clusters
   zones = zones[sigc]
   tobs = tobs[sigc]
   pvalue = pvalue[sigc]
-  
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
             coords = coords, cases = cases, pop = pop,
             ex = ex, longlat = longlat, w = w,
             d = NULL)
 }
-

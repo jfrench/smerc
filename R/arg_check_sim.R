@@ -24,8 +24,8 @@ arg_check_sim = function(nsim,
   }
   if (length(ty) != 1) stop("ty must be a single number")
   if (!is.numeric(ex)) stop("ex must be a numeric vector")
-  
-  if (length(type) != 1 | !is.element(type, c("poisson", "binomial"))) {
+  if (length(type) != 1 |
+      !is.element(type, c("poisson", "binomial"))) {
     stop("type must be 'poisson' or 'binomial'")
   }
   if (static) {

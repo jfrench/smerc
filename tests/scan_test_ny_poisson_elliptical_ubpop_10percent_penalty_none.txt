@@ -4,7 +4,7 @@
                                  _____________________________
 
 
-Program run on: Mon Nov 05 10:17:40 2018
+Program run on: Sat Mar  9 07:48:37 2019
 
 Purely Spatial analysis
 scanning for clusters with high rates
@@ -24,13 +24,11 @@ CLUSTERS DETECTED
 
 1.Location IDs included.: 46, 53, 45, 41, 44, 38, 52, 43, 54, 39, 50, 15, 40, 49, 16, 14, 1,
                           48, 37, 13, 17, 11, 2, 12, 47
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.0883,-76.0764)
   Semiminor axis........: 0.046
   Semimajor axis........: 0.18
   Angle (degrees).......: 90.00
   Shape.................: 4.00
-  Gini Cluster..........: Yes
   Population............: 102678
   Number of cases.......: 96
   Expected cases........: 53.59
@@ -43,13 +41,11 @@ CLUSTERS DETECTED
 
 2.Location IDs included.: 84, 86, 87, 251, 92, 85, 259, 88, 89, 103, 261, 281, 266, 280, 265,
                           102
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.7087,-76.1026)
   Semiminor axis........: 0.093
   Semimajor axis........: 0.46
   Angle (degrees).......: 60.00
   Shape.................: 5.00
-  Gini Cluster..........: Yes
   Population............: 53236
   Number of cases.......: 55
   Expected cases........: 27.78
@@ -62,13 +58,11 @@ CLUSTERS DETECTED
 
 3.Location IDs included.: 117, 123, 116, 118, 122, 114, 115, 124, 121, 113, 120, 119, 133, 125,
                           131, 132, 111, 220, 127, 126, 130, 135
-  Overlap with clusters.: No Overlap
   Coordinates...........: (43.0684,-76.1385)
   Semiminor axis........: 0.014
   Semimajor axis........: 0.057
   Angle (degrees).......: 75.00
   Shape.................: 4.00
-  Gini Cluster..........: No
   Population............: 56173
   Number of cases.......: 55
   Expected cases........: 29.32
@@ -80,13 +74,11 @@ CLUSTERS DETECTED
   P-value...............: 0.062
 
 4.Location IDs included.: 170, 171, 166, 167
-  Overlap with clusters.: No Overlap
   Coordinates...........: (43.0068,-76.1412)
   Semiminor axis........: 0.0072
   Semimajor axis........: 0.029
   Angle (degrees).......: -60.00
   Shape.................: 4.00
-  Gini Cluster..........: No
   Population............: 12214
   Number of cases.......: 17
   Expected cases........: 6.37
@@ -98,13 +90,11 @@ CLUSTERS DETECTED
   P-value...............: 0.640
 
 5.Location IDs included.: 64, 65, 67, 62, 68
-  Overlap with clusters.: No Overlap
   Coordinates...........: (42.9411,-76.5559)
   Semiminor axis........: 0.046
   Semimajor axis........: 0.18
   Angle (degrees).......: 30.00
   Shape.................: 4.00
-  Gini Cluster..........: No
   Population............: 27490
   Number of cases.......: 28
   Expected cases........: 14.35
@@ -120,12 +110,12 @@ PARAMETER SETTINGS
 
 Input
 -----
-  Case File        : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_cases.txt
-  Population File  : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_pop.txt
+  Case File        : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/satscan_ny_cases.txt
+  Population File  : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/satscan_ny_pop.txt
   Time Precision   : Year
   Start Time       : 2000/1/1
   End Time         : 2000/12/31
-  Coordinates File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\satscan_ny_coords.txt
+  Coordinates File : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/flexscan_ny_coords.txt
   Coordinates      : Cartesian
 
 Analysis
@@ -136,7 +126,7 @@ Analysis
 
 Output
 ------
-  Main Results File : C:\Users\joshu\Documents\Dropbox\Code\GitHub\smerc\tests\scan_test_ny_poisson_elliptical_ubpop_10percent_a0.txt
+  Main Results File : /Users/jfrench/Dropbox/Code/GitHub/smerc/tests/scan_test_ny_poisson_elliptical_ubpop_10percent_penalty_none.txt
 
 Data Checking
 -------------
@@ -179,9 +169,7 @@ Spatial Output
 --------------
   Report Hierarchical Clusters              : Yes
   Criteria for Reporting Secondary Clusters : No Geographical Overlap
-  Report Gini Optimized Cluster Collection  : Yes
-  Gini Index Based Collection Reporting     : Optimal Only
-  Report Gini Index Cluster Coefficents     : No
+  Report Gini Optimized Cluster Collection  : No
   Restrict Reporting to Smaller Clusters    : No
 
 Other Output
@@ -201,6 +189,6 @@ Run Options
   Logging Analysis  : No
 _______________________________________________________________________________________________
 
-Program completed  : Mon Nov 05 10:17:42 2018
-Total Running Time : 2 seconds
-Processor Usage    : 4 processors
+Program completed  : Sat Mar  9 07:48:38 2019
+Total Running Time : 1 second
+Processor Usage    : 8 processors

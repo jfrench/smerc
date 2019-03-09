@@ -79,35 +79,35 @@
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
-scan.test = function(coords, cases, pop, 
-                     ex = sum(cases)/sum(pop)*pop, 
-                     nsim = 499, alpha = 0.1,  
+scan.test = function(coords, cases, pop,
+                     ex = sum(cases) / sum(pop) * pop,
+                     nsim = 499, alpha = 0.1,
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
                      type = "poisson",
                      min.cases = 2) {
   # argument checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha, 
-                      nsim + 1, ubpop, longlat, TRUE, 
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, ubpop, longlat, TRUE,
                       k = 1, w = diag(nrow(coords)))
   if (length(min.cases) != 1 | min.cases < 1) {
     stop("min.cases must be a single number and >= 1")
   }
-  
+
   # convert to proper format
   coords = as.matrix(coords)
   N = nrow(coords)
   # compute inter-centroid distances
   d = sp::spDists(coords, longlat = longlat)
-  
+
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
   nn = scan.nn(d, pop, ubpop)
 
-  # determine total number of cases in each successive 
+  # determine total number of cases in each successive
   # window, total number of cases
   yin = nn.cumsum(nn, cases)
   ty = sum(cases) # sum of all cases
-  
+
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = nn.cumsum(nn, ex)
@@ -124,35 +124,33 @@ scan.test = function(coords, cases, pop,
     popout = tpop - popin
     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
   }
-  
+
   # determine distinct zones
-  pri = randtoolbox::get.primes(N)
-  wdup = duplicated(unlist(lapply(nn, function(x) cumsum(log(pri[x])))))
+  wdup = nndup(nn, N)
 
   # remove zones with a test statistic of 0 or don't have
   # min number of cases or are duplicted
   w0 = which(tobs == 0 | yin < min.cases | wdup)
-  
+
   # determine zones
-  zones = unlist(lapply(nn, function(x) sapply(seq_along(x), function(i) x[seq_len(i)])), recursive = FALSE)
-  
+  zones = nn2zones(nn)
+
   # remove zones with a test statistic of 0
   zones = zones[-w0]
   tobs = tobs[-w0]
-  
+
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
     tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
-                    ex = ex,
-                    type = type, ein = ein, eout = eout,
-                    popin = popin, popout = popout, tpop = tpop,
-                    cl = cl)
+                    ex = ex, type = type, ein = ein,
+                    eout = eout, popin = popin,
+                    popout = popout, tpop = tpop, cl = cl)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
-  
+
   # determine which potential clusters are significant
   sigc = which(pvalue <= alpha, useNames = FALSE)
 
@@ -166,48 +164,9 @@ scan.test = function(coords, cases, pop,
   zones = zones[sigc]
   tobs = tobs[sigc]
   pvalue = pvalue[sigc]
-  
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue, 
+
+  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
             coords = coords, cases = cases, pop = pop,
             ex = ex, longlat = longlat, w = NULL,
             d = d)
 }
-
-# argument checking for all scan tests
-arg_check_scan_test = 
-  function(coords, cases, pop, ex, nsim, alpha, nreport,
-           ubpop, longlat, parallel, k, w, type = NULL) {
-  if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
-  if(ncol(coords) != 2) stop("coords must have two columns")
-  N = nrow(coords)
-  if(length(cases) != N) stop("length(cases) != nrow(coords)")
-  if(!is.numeric(cases)) stop("cases should be a numeric vector")
-  if(length(pop) != N) stop("length(pop) != nrow(coords)")
-  if(!is.numeric(pop)) stop("pop should be a numeric vector")
-  if(length(ex) != N) stop("length(ex) != nrow(coords)")
-  if(!is.numeric(ex)) stop("ex should be a numeric vector")
-  if(length(alpha) != 1 || !is.numeric(alpha)) stop("alpha should be a numeric vector of length 1")
-  if(alpha < 0 || alpha > 1) stop("alpha should be a value between 0 and 1")
-  if(length(nsim) != 1 || !is.numeric(nsim)) stop("nsim should be a vector of length 1")
-  if(nsim < 0) stop("nsim should be an non-negative integer")
-  if(length(ubpop) != 1 || !is.numeric(ubpop)) stop("ubpop should be a numeric vector of length 1")
-  if(ubpop<= 0 || ubpop > 1) stop("ubpop should be a value between 0 and 1")
-  if(length(longlat) != 1) stop("length(longlat) != 1")
-  if(!is.logical(longlat)) stop("longlat should be a logical value")
-  if(length(parallel) != 1) stop("length(parallel) != 1")
-  if(!is.logical(parallel)) stop("parallel should be a logical value")
-  if(length(k) != 1) stop("k must have length 1")
-  if(k < 1) stop("k must be an integer >= 1")
-  if(!is.matrix(w)) stop("w must be a matrix")
-  if(nrow(w) != ncol(w)) stop("w much be a square matrix")
-  if(!is.numeric(w)) stop("w must be a numeric matrix")
-  if(nrow(w) != nrow(coords)) stop("nrow(w) != nrow(coords)")
-  if(floor(k) > nrow(coords)) stop("k cannot be more than the number of regions.")
-  if (!is.null(type)) {
-    if (!is.element(type, c("poisson", "binomial"))) {
-      stop("type must be 'poisson' or 'binomial'")
-    }
-  }
-}
-
-

@@ -38,42 +38,62 @@
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' w = dweights(coords, kappa = 1)
-dweights <- function(coords, kappa = 1, longlat = FALSE, type = "basic",
+dweights = function(coords, kappa = 1, longlat = FALSE, type = "basic",
                      cases = NULL, pop = NULL) {
   arg_check_dweights(coords, kappa, longlat, type, cases, pop)
-  d <- sp::spDists(as.matrix(coords), longlat = longlat)
+  d = sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
-    w <- exp(-d/kappa)
+    w = exp(-d / kappa)
   } else if (type == "rogerson") {
-    rates <- cases/pop
-    w <- exp(-d/kappa)/sqrt(outer(rates, rates))
+    rates = cases / pop
+    w = exp(-d / kappa) / sqrt(outer(rates, rates))
   } else if (type == "tango") {
-    w <- exp(-4 * (d/kappa)^2)
+    w = exp(-4 * (d / kappa) ^ 2)
   }
   return(w)
 }
 
-arg_check_dweights = function(coords, kappa, longlat, type, 
+arg_check_dweights = function(coords, kappa, longlat, type,
                               cases, pop) {
-  if(!(is.matrix(coords) | is.data.frame(coords))) stop("coords should be a matrix or a data frame")
-  if(ncol(coords) != 2) stop("coords must have two columns")
+  if (!(is.matrix(coords) | is.data.frame(coords))) {
+    stop("coords should be a matrix or a data frame")
+  }
+  if (ncol(coords) != 2) {
+    stop("coords must have two columns")
+  }
   N = nrow(coords)
-  if(length(kappa) != 1 || !is.numeric(kappa)) stop("kappa should be a numeric vector of length 1")
-  if(kappa <= 0) stop("kappa must be positive")
-  if(length(longlat) != 1) stop("length(longlat) != 1")
-  if(!is.logical(longlat)) stop("longlat should be a logical value")
-  if(length(type) != 1) stop("type must be a single character")
-  if(!is.element(type, c("basic", "rogerson", "tango"))) stop("invalid type")
-  if(!is.null(cases)) {
-    if(length(cases) != N) stop("length(cases) != nrow(coords)")
-    if(!is.numeric(cases)) stop("cases should be a numeric vector")
+  if (length(kappa) != 1 || !is.numeric(kappa)) {
+    stop("kappa should be a numeric vector of length 1")
   }
-  if(!is.null(pop)) {
-    if(length(pop) != N) stop("length(pop) != nrow(coords)")
-    if(!is.numeric(pop)) stop("pop should be a numeric vector")
+  if (kappa <= 0) stop("kappa must be positive")
+  if (length(longlat) != 1) stop("length(longlat) != 1")
+  if (!is.logical(longlat)) {
+    stop("longlat should be a logical value")
   }
-  if(type == "rogerson") {
-    if(is.null(cases) || is.null(pop)) {
+  if (length(type) != 1) {
+    stop("type must be a single character")
+  }
+  if (!is.element(type, c("basic", "rogerson", "tango"))) {
+    stop("invalid type")
+  }
+  if (!is.null(cases)) {
+    if (length(cases) != N) {
+      stop("length(cases) != nrow(coords)")
+    }
+    if (!is.numeric(cases)) {
+      stop("cases should be a numeric vector")
+    }
+  }
+  if (!is.null(pop)) {
+    if (length(pop) != N) {
+      stop("length(pop) != nrow(coords)")
+    }
+    if (!is.numeric(pop)) {
+      stop("pop should be a numeric vector")
+    }
+  }
+  if (type == "rogerson") {
+    if (is.null(cases) || is.null(pop)) {
       stop("cases and pop must be provided when type = 'rogerson'")
     }
   }

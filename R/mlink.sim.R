@@ -25,11 +25,11 @@
 #' max_pop = sum(pop) * 0.25
 #' tsim = mlink.sim(1, nn, ty, ex, nyw, pop = pop, 
 #'                  max_pop = max_pop)
-mlink.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop, 
+mlink.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
                   cl = NULL) {
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = "poisson", 
-                tpop = NULL, w = w, ubpop = 0.1, 
-                static = FALSE)
+  arg_check_sim(nsim = nsim, ty = ty, ex = ex,
+                type = "poisson", tpop = NULL, w = w,
+                ubpop = 0.1, static = FALSE)
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
@@ -37,7 +37,7 @@ mlink.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     tall = mst.all(nn, cases = ysim, pop = pop, w = w,
             ex = ex, ty = ty,
-            max_pop = max_pop, type = "maxonly", 
+            max_pop = max_pop, type = "maxonly",
             early = FALSE, nlinks = "max", progress = FALSE)
     max(tall)
   })
