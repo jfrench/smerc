@@ -5,7 +5,7 @@
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
 flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL,
-  progress = TRUE, verbose = FALSE)
+  loop = FALSE, verbose = FALSE, pfreq = 1)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -27,22 +27,36 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
 
-\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+\item{loop}{A logical value indicating whether a loop
+should be used to implement the function instead of
+\code{\link[pbapply]{pbapply}}.  The default is
+\code{FALSE}. If \code{TRUE}, then memory-saving steps
+are also taken.}
 
 \item{verbose}{A logical value indicating whether
-descriptive progress messages should be provided.
-Default is \code{FALSE}.  If \code{TRUE}, this can be
-useful for diagnosing where the sequences of connected
-subgraphs is slowing down/having problems.
-Additionally, a loop is used to run the algorithm,
-rather than \code{\link[base]{lapply}}.  Memory-saving
-steps are also taken.}
+progress messages should be provided.
+The default is \code{FALSE}.  If both \code{loop} and
+\code{verbose} are \code{TRUE}, informative messages
+are displayed that can be useful for diagnosing where
+the sequences of connected subgraphs are slowing down
+or having problems.}
+
+\item{pfreq}{The frequency that messages are reported
+from the loop (if \code{verbose = TRUE}). The default
+is \code{pfreq = 1}, meaning a message is returned for
+each index of the loop.}
 }
 \value{
-Returns a list of zones to consider for clustering.  Each element of the list contains a vector with the location ids of the regions in that zone.
+Returns a list of zones to consider for
+  clustering.  Each element of the list contains a vector
+  with the location ids of the regions in that zone.
 }
 \description{
-\code{flex.zones} determines the unique zones to consider for the flexibly shaped spatial scan test of Tango and Takahashi (2005).  The algorithm uses a breadth-first search to find all subgraphs connected to each vertex (region) in the data set of size \eqn{k} or less.
+\code{flex.zones} determines the unique zones to consider
+for the flexibly shaped spatial scan test of Tango and
+Takahashi (2005).  The algorithm uses a breadth-first
+search to find all subgraphs connected to each vertex
+(region) in the data set of size \eqn{k} or less.
 }
 \examples{
 data(nydf)
@@ -55,7 +69,9 @@ zones = flex.zones(coords, w = nyw, k = 3, verbose = TRUE)
 }
 }
 \references{
-Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.
+Tango, T., & Takahashi, K. (2005). A flexibly
+  shaped spatial scan statistic for detecting clusters.
+  International journal of health geographics, 4(1), 11.
 }
 \author{
 Joshua French

@@ -60,7 +60,7 @@ rflex.test = function(coords, cases, pop, w, k = 50,
   # determine zones for observed data
   zones = rflex.zones(nn = nn, w = w,
                       cases = cases, ex = ex, alpha1 = alpha1,
-                      cl = cl, progress = FALSE)
+                      cl = cl, verbose = FALSE)
   # compute needed information
   ty = sum(cases)
   yin = zones.sum(zones, cases)

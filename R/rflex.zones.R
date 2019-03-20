@@ -15,17 +15,22 @@
 #' @param pop The population size associated with each
 #'   region.  The default is \code{NULL} since this argument
 #'   is only needed for \code{type = "binomial"}.
-#' @param progress A logical value indicating whether the
-#'   progress of constructing the zones should be reported.
-#'   The default is FALSE.
+#' @param loop A logical value indicating whether a loop
+#'   should be used to implement the function instead of
+#'   \code{\link[pbapply]{pbapply}}.  The default is
+#'   \code{FALSE}. If \code{TRUE}, then memory-saving steps
+#'   are also taken.
 #' @param verbose A logical value indicating whether
-#'   descriptive progress messages should be provided.
-#'   Default is \code{FALSE}.  If \code{TRUE}, this can be
-#'   useful for diagnosing where the sequences of connected
-#'   subgraphs is slowing down/having problems.
-#'   Additionally, a loop is used to run the algorithm,
-#'   rather than \code{\link[base]{lapply}}.  Memory-saving
-#'   steps are also taken.
+#'   progress messages should be provided.
+#'   The default is \code{FALSE}.  If both \code{loop} and
+#'   \code{verbose} are \code{TRUE}, informative messages
+#'   are displayed that can be useful for diagnosing where
+#'   the sequences of connected subgraphs are slowing down
+#'   or having problems.
+#' @param pfreq The frequency that messages are reported
+#'   from the loop (if \code{verbose = TRUE}). The default
+#'   is \code{pfreq = 1}, meaning a message is returned for
+#'   each index of the loop.
 #' @return Returns a list of zones to consider for
 #'   clustering.  Each element of the list contains a vector
 #'   with the location ids of the regions in that zone.
@@ -55,9 +60,10 @@
 #' }
 rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
                        type = "poisson", pop = NULL,
-                       cl = NULL, progress = FALSE, verbose = FALSE) {
+                       cl = NULL, loop = FALSE,
+                       verbose = FALSE, pfreq = 1) {
   arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop,
-                        progress, verbose)
+                        loop, pfreq, verbose)
 
   # compute mid p-value
   p = rflex.midp(cases, ex, type = type, pop = pop)
@@ -71,36 +77,49 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
     # remove connections when p >= alpha1
     w[, remove] = 0
 
-    if (!verbose) {
-    fcall_list = list(X = keep, function(i, ...) {
-      idxi = intersect(nn[[i]], keep)
-      scsg(idxi, w[, idxi, drop = FALSE])
-    }, cl = cl)
-
-    # determine which apply function to use
-    if (progress) {
-      message("constructing connected subgraphs:")
-      fcall = pbapply::pblapply
+    if (!loop) {
+      # determine which apply function to use
+      if (verbose) {
+        message("constructing connected subgraphs:")
+        fcall = pbapply::pblapply
+      } else {
+        fcall = lapply
+      }
+      fcall_list = list(X = keep, function(i, ...) {
+        idxi = intersect(nn[[i]], keep)
+        scsg(idxi, w[, idxi, drop = FALSE])
+      }, cl = cl)
+      # determine zones
+      czones = unlist(do.call(fcall, fcall_list),
+                      use.names = FALSE, recursive = FALSE)
     } else {
-      fcall = lapply
-    }
-
-    # determine zones
-    czones = unlist(do.call(fcall, fcall_list),
-                    use.names = FALSE, recursive = FALSE)
-    } else {
-      # use loop if verbose
       czones = list()
+
       count = 1
+      pri = randtoolbox::get.primes(length(cases))
+      czones_id = numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {
-          message(paste(count, "/", nkeep, ". Starting region ",
-                        i, " at ", Sys.time(), ".", sep = ""))
+          if ((count %% pfreq) == 0) {
+            message(count, "/", nkeep, ". Starting region ",
+                    i, " at ", Sys.time(), ".")
+          }
         }
         idxi = intersect(nn[[i]], keep)
-        czones = combine.zones(czones,
-                               scsg(idxi, w[, idxi, drop = FALSE])
-                               )
+        # zones for idxi
+        izones = scsg(idxi, w[, idxi, drop = FALSE])
+        # determine unique ids for izones
+        izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
+        # determine if some izones are duplicated with czones
+        # remove duplicates and then combine with czones
+        dup_id = which(izones_id %in% czones_id)
+        if (length(dup_id) > 0 ) {
+          czones = combine.zones(czones, izones[-dup_id])
+          czones_id = c(czones_id, izones_id[-dup_id])
+        } else {
+          czones = combine.zones(czones, izones)
+          czones_id = c(czones_id, izones_id)
+        }
         count = count + 1
       }
       return(czones)
@@ -123,7 +142,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
 #' @export
 arg_check_rflex_zones = function(nn, w, cases, ex,
                                  alpha1, type, pop,
-                                 progress, verbose) {
+                                 loop, pfreq, verbose) {
   if (is.list(dim(nn))) stop("nn must be a list of nn vectors")
   N = length(nn)
   if (nrow(w) != N) stop("nrow(w) must match length(nn)")
@@ -139,8 +158,11 @@ arg_check_rflex_zones = function(nn, w, cases, ex,
       stop("length(pop) != length(nn)")
     }
   }
-  if (length(progress) != 1 | !is.logical(progress)) {
-    stop("progress must be a logical value")
+  if (length(loop) != 1 | !is.logical(loop)) {
+    stop("loop must be a logical value")
+  }
+  if (length(pfreq) != 1 | pfreq < 1) {
+    stop("pfreq must be a positive integer")
   }
   if (length(verbose) != 1 | !is.logical(verbose)) {
     stop("verbose must be a logical value")

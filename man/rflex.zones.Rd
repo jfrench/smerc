@@ -5,7 +5,8 @@
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
 rflex.zones(nn, w, cases, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL, progress = FALSE, verbose = FALSE)
+  pop = NULL, cl = NULL, loop = FALSE, verbose = FALSE,
+  pfreq = 1)
 }
 \arguments{
 \item{nn}{An n by k matrix providing the k nearest
@@ -36,18 +37,24 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations.
 }
 
-\item{progress}{A logical value indicating whether the
-progress of constructing the zones should be reported.
-The default is FALSE.}
+\item{loop}{A logical value indicating whether a loop
+should be used to implement the function instead of
+\code{\link[pbapply]{pbapply}}.  The default is
+\code{FALSE}. If \code{TRUE}, then memory-saving steps
+are also taken.}
 
 \item{verbose}{A logical value indicating whether
-descriptive progress messages should be provided.
-Default is \code{FALSE}.  If \code{TRUE}, this can be
-useful for diagnosing where the sequences of connected
-subgraphs is slowing down/having problems.
-Additionally, a loop is used to run the algorithm,
-rather than \code{\link[base]{lapply}}.  Memory-saving
-steps are also taken.}
+progress messages should be provided.
+The default is \code{FALSE}.  If both \code{loop} and
+\code{verbose} are \code{TRUE}, informative messages
+are displayed that can be useful for diagnosing where
+the sequences of connected subgraphs are slowing down
+or having problems.}
+
+\item{pfreq}{The frequency that messages are reported
+from the loop (if \code{verbose = TRUE}). The default
+is \code{pfreq = 1}, meaning a message is returned for
+each index of the loop.}
 }
 \value{
 Returns a list of zones to consider for

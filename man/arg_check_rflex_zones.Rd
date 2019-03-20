@@ -4,7 +4,7 @@
 \alias{arg_check_rflex_zones}
 \title{Check arguments of rflex.zones}
 \usage{
-arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop, progress,
+arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop, loop, pfreq,
   verbose)
 }
 \description{

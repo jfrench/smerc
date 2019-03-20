@@ -34,8 +34,8 @@ rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
   }
   arg_check_rflex_zones(nn = nn, w = w, cases = ex, ex = ex,
                         alpha1 = alpha1, type = type,
-                        pop = pop, progress = FALSE,
-                        verbose = FALSE)
+                        pop = pop, loop = FALSE,
+                        verbose = FALSE, 1)
 
   # determine total cases and population (if binomial)
   ty = sum(ex)
@@ -49,7 +49,7 @@ rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
     zones = rflex.zones(nn = nn, w = w,
                         cases = ysim, ex = ex,
                         alpha1 = alpha1, pop = pop,
-                        cl = NULL, progress = FALSE)
+                        cl = NULL, verbose = FALSE)
     # compute test statistics for each zone
     yin = zones.sum(zones, ysim)
     if (type == "poisson") {
