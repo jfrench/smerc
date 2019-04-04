@@ -83,6 +83,9 @@ arg_check_dweights = function(coords, kappa, longlat, type,
     if (!is.numeric(cases)) {
       stop("cases should be a numeric vector")
     }
+    if (any(cases == 0)) {
+      stop("no regions should contain no cases")
+    }
   }
   if (!is.null(pop)) {
     if (length(pop) != N) {
