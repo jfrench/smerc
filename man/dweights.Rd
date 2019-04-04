@@ -46,7 +46,7 @@ If \code{type = "basic"}, then
 \eqn{w_{ij} = exp(-d_{ij}/\kappa)}.
 
 If \code{type = "rogerson"}, then
-\eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(cases_i/pop_i * cases_j/pop_j)}.
+\eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(cases_i/pop_i * cases_j/pop_j)}. Note that all regions must have non-zero cases.
 
 If \code{type = "tango"}, then
 \eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
