@@ -12,12 +12,12 @@
 #' \eqn{w_{ij} = exp(-d_{ij}/\kappa)}.  
 #' 
 #' If \code{type = "rogerson"}, then
-#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(cases_i/pop_i * cases_j/pop_j)}. 
+#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}. 
 #' 
 #' If \code{type = "tango"}, then
 #' \eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
 #' 
-#'  
+#'
 #' @inheritParams scan.test
 #' @param kappa A positive constant related to strength of 
 #' spatial autocorrelation.
@@ -38,23 +38,21 @@
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' w = dweights(coords, kappa = 1)
-dweights = function(coords, kappa = 1, longlat = FALSE, type = "basic",
-                     cases = NULL, pop = NULL) {
-  arg_check_dweights(coords, kappa, longlat, type, cases, pop)
+dweights = function(coords, kappa = 1, longlat = FALSE, type = "basic", pop = NULL) {
+  arg_check_dweights(coords, kappa, longlat, type, pop)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
     w = exp(-d / kappa)
   } else if (type == "rogerson") {
-    rates = cases / pop
-    w = exp(-d / kappa) / sqrt(outer(rates, rates))
+    popp = pop / sum(pop)
+    w = exp(-d / kappa) / sqrt(outer(popp, popp))
   } else if (type == "tango") {
     w = exp(-4 * (d / kappa) ^ 2)
   }
   return(w)
 }
 
-arg_check_dweights = function(coords, kappa, longlat, type,
-                              cases, pop) {
+arg_check_dweights = function(coords, kappa, longlat, type, pop) {
   if (!(is.matrix(coords) | is.data.frame(coords))) {
     stop("coords should be a matrix or a data frame")
   }
@@ -76,14 +74,6 @@ arg_check_dweights = function(coords, kappa, longlat, type,
   if (!is.element(type, c("basic", "rogerson", "tango"))) {
     stop("invalid type")
   }
-  if (!is.null(cases)) {
-    if (length(cases) != N) {
-      stop("length(cases) != nrow(coords)")
-    }
-    if (!is.numeric(cases)) {
-      stop("cases should be a numeric vector")
-    }
-  }
   if (!is.null(pop)) {
     if (length(pop) != N) {
       stop("length(pop) != nrow(coords)")
@@ -93,8 +83,11 @@ arg_check_dweights = function(coords, kappa, longlat, type,
     }
   }
   if (type == "rogerson") {
-    if (is.null(cases) || is.null(pop)) {
+    if (is.null(pop)) {
       stop("cases and pop must be provided when type = 'rogerson'")
+    }
+    if (any(pop==0)) {
+      stop("regions cannot contain zero population when type = 'rogerson'")
     }
   }
 }
