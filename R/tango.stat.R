@@ -18,7 +18,7 @@
 #' @examples
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' w = dweights(coords, kappa = 1, type = "tango")
+#' w = dweights(coords, kappa = 1, type = "tango", longlat = TRUE)
 #' tango.stat(nydf$cases, nydf$pop, w)
 tango.stat = function(cases, pop, w) {
   arg_check_tango_stat(cases, pop, w)

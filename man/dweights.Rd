@@ -5,13 +5,13 @@
 \title{Distance-based weights}
 \usage{
 dweights(coords, kappa = 1, longlat = FALSE, type = "basic",
-  cases = NULL, pop = NULL)
+  pop = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
 coordinates for the regions.}
 
-\item{kappa}{A positive constant related to strength of 
+\item{kappa}{A positive constant related to strength of
 spatial autocorrelation.}
 
 \item{longlat}{The default is \code{FALSE}, which
@@ -21,10 +21,8 @@ distance is used to calculate the intercentroid
 distance.}
 
 \item{type}{The type of weights matrix to construct.
-Current options are \code{"basic"}, \code{"tango"}, 
+Current options are \code{"basic"}, \code{"tango"},
 and \code{"rogerson"}.  Default is \code{"basic"}.  See Details.}
-
-\item{cases}{The number of cases observed in each region.}
 
 \item{pop}{The population size associated with each
 region.}
@@ -33,7 +31,7 @@ region.}
 Returns an \eqn{n \times n} matrix of weights.
 }
 \description{
-\code{dweights} constructs a distance-based weights matrix.  
+\code{dweights} constructs a distance-based weights matrix.
 The \code{dweights} function can be used to
 construct a weights matrix \code{w} using the method
 of Tango (1995), Rogerson (1999), or a basic style.
@@ -42,11 +40,11 @@ of Tango (1995), Rogerson (1999), or a basic style.
 \code{coords} is used to construct an \eqn{n \times n}
 distance matrix \code{d}.
 
-If \code{type = "basic"}, then 
+If \code{type = "basic"}, then
 \eqn{w_{ij} = exp(-d_{ij}/\kappa)}.
 
 If \code{type = "rogerson"}, then
-\eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(cases_i/pop_i * cases_j/pop_j)}.
+\eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}.
 
 If \code{type = "tango"}, then
 \eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
@@ -54,12 +52,12 @@ If \code{type = "tango"}, then
 \examples{
 data(nydf)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
-w = dweights(coords, kappa = 1, lonlat = TRUE)
+w = dweights(coords, kappa = 1, longlat = TRUE)
 }
 \references{
 Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
 
-Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square 
+Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square
 Goodness-of-fit Test.  Geographical Analysis. 31:130-147
 }
 \seealso{

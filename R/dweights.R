@@ -1,43 +1,43 @@
 #' Distance-based weights
 #'
-#' \code{dweights} constructs a distance-based weights matrix.  
+#' \code{dweights} constructs a distance-based weights matrix.
 #' The \code{dweights} function can be used to
 #' construct a weights matrix \code{w} using the method
 #' of Tango (1995), Rogerson (1999), or a basic style.
 #'
 #' \code{coords} is used to construct an \eqn{n \times n}
-#' distance matrix \code{d}.  
-#' 
-#' If \code{type = "basic"}, then 
-#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)}.  
-#' 
+#' distance matrix \code{d}.
+#'
+#' If \code{type = "basic"}, then
+#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)}.
+#'
 #' If \code{type = "rogerson"}, then
-#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}. 
-#' 
+#' \eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}.
+#'
 #' If \code{type = "tango"}, then
 #' \eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
-#' 
+#'
 #'
 #' @inheritParams scan.test
-#' @param kappa A positive constant related to strength of 
+#' @param kappa A positive constant related to strength of
 #' spatial autocorrelation.
-#' @param type The type of weights matrix to construct.  
-#' Current options are \code{"basic"}, \code{"tango"}, 
+#' @param type The type of weights matrix to construct.
+#' Current options are \code{"basic"}, \code{"tango"},
 #' and \code{"rogerson"}.  Default is \code{"basic"}.  See Details.
 #'
 #' @return Returns an \eqn{n \times n} matrix of weights.
-#' @references 
+#' @references
 #' Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
-#' 
-#' Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square 
+#'
+#' Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square
 #' Goodness-of-fit Test.  Geographical Analysis. 31:130-147
 #' @author Joshua French
 #' @seealso \code{\link{tango.test}}
 #' @export
-#' @examples 
+#' @examples
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' w = dweights(coords, kappa = 1)
+#' w = dweights(coords, kappa = 1, longlat = TRUE)
 dweights = function(coords, kappa = 1, longlat = FALSE, type = "basic", pop = NULL) {
   arg_check_dweights(coords, kappa, longlat, type, pop)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
@@ -84,9 +84,9 @@ arg_check_dweights = function(coords, kappa, longlat, type, pop) {
   }
   if (type == "rogerson") {
     if (is.null(pop)) {
-      stop("cases and pop must be provided when type = 'rogerson'")
+      stop("pop must be provided when type = 'rogerson'")
     }
-    if (any(pop==0)) {
+    if (any(pop == 0)) {
       stop("regions cannot contain zero population when type = 'rogerson'")
     }
   }
