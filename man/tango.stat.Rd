@@ -27,7 +27,7 @@ components.  See Waller and Gotway (2005).
 \examples{
 data(nydf)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
-w = dweights(coords, kappa = 1, type = "tango")
+w = dweights(coords, kappa = 1, lonlat = TRUE, type = "tango")
 tango.stat(nydf$cases, nydf$pop, w)
 }
 \references{
