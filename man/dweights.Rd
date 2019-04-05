@@ -54,7 +54,7 @@ If \code{type = "tango"}, then
 \examples{
 data(nydf)
 coords = as.matrix(nydf[,c("longitude", "latitude")])
-w = dweights(coords, kappa = 1)
+w = dweights(coords, kappa = 1, lonlat = TRUE)
 }
 \references{
 Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
