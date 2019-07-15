@@ -40,7 +40,8 @@ distance.}
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
 or an integer to indicate number of child-processes
-(integer values are ignored on Windows) for parallel evaluations.
+(integer values are ignored on Windows) for parallel evaluations
+(see Details on performance).
 }
 
 \item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}

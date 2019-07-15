@@ -1,2 +1,5 @@
 0.4.5 Fix small bug in computing p-value for bn.test
-      (unmodified).  Add test for bn.test (modified).  
+      (unmodified).  Add test for bn.test (modified).
+1.0 Huge release.  Add lots of methods (dc.test, fast.test,
+      (mlink.test, rflex.test, etc.)  Dramatic restructure
+      of many functions.

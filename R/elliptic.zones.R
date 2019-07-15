@@ -1,5 +1,5 @@
 #' Determine zones for \code{elliptic.test}
-#' 
+#'
 #' \code{elliptic.zones} constructs the elliptical zones
 #' for \code{\link{elliptic.test}}.
 #'
@@ -28,7 +28,7 @@ elliptic.zones = function(coords, pop, ubpop = 0.5,
 
   # compute inter-centroid distances
   d = lapply(seq_along(shape), function(i) {
-    all.shape.dists(shape[i], nangle[i], coords)
+    all_shape_dists(shape[i], nangle[i], coords)
   })
   if (length(shape) > 1) {
     d = do.call(rbind, d)

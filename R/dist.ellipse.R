@@ -67,7 +67,7 @@ arg_check_dist_ellipse = function(coords, shape, angle) {
 #' @return NULL
 #' @export
 #' @keywords internal
-all.shape.dists = function(s, na, coords) {
+all_shape_dists = function(s, na, coords) {
   angle = seq(90, 270, len = na + 1)[seq_len(na)]
   d = lapply(seq_along(angle), function(j) {
     dist.ellipse(coords, shape = s, angle = angle[j])

@@ -38,7 +38,7 @@ elliptic.nn = function(coords, pop, ubpop = 0.5,
 
   # determine distances for each angle/shape
   d = lapply(seq_along(shape), function(i) {
-    all.shape.dists(shape[i], nangle[i], coords)
+    all_shape_dists(shape[i], nangle[i], coords)
   })
   # bind distances vertically
   if (length(shape) > 1) {

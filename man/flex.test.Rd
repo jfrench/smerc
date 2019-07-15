@@ -6,7 +6,7 @@
 \usage{
 flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) *
   pop, type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
-  cl = NULL)
+  cl = NULL, lonlat = longlat, ...)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -44,8 +44,13 @@ distance.}
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},
 or an integer to indicate number of child-processes
-(integer values are ignored on Windows) for parallel evaluations.
+(integer values are ignored on Windows) for parallel evaluations
+(see Details on performance).
 }
+
+\item{lonlat}{Deprecated in favor of \code{longlat}.}
+
+\item{...}{Not used.}
 }
 \value{
 Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:

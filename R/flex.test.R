@@ -5,6 +5,8 @@
 #' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #'
 #' @inheritParams rflex.test
+#' @param lonlat Deprecated in favor of \code{longlat}.
+#' @param ... Not used.
 #'
 #' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
 #' @author Joshua French
@@ -29,10 +31,16 @@ flex.test = function(coords, cases, pop, w, k = 10,
                      ex = sum(cases) / sum(pop) * pop,
                      type = "poisson", nsim = 499,
                      alpha = 0.1, longlat = FALSE,
-                     cl = NULL) {
+                     cl = NULL,
+                     lonlat = longlat, ...) {
+  if (!identical(lonlat, longlat)) {
+    longlat = lonlat
+    warning("lonlat is deprecated. Please use longlat.")
+  }
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
                       nsim + 1, 0.5, longlat, FALSE, k = k,
                       w = w, type = type)
+
   coords = as.matrix(coords)
 
   zones = flex.zones(coords, w, k, longlat)
