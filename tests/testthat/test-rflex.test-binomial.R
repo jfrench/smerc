@@ -31,7 +31,7 @@ test_that("check accuracy for rflex.test binomial ", {
   expect_equal(round(outb$clusters[[2]]$loglik, 5), 7.75475)
   # p-values are tough to test, make sure results don't change
   # in future versions since these were manually checked
-  expect_equal(outb$clusters[[2]]$pvalue, 0.3)
+  expect_equal(round(outb$clusters[[2]]$pvalue, 1), 0.3)
 
   expect_equal(sort(outb$clusters[[12]]$locids),
                c(135, 146, 208, 210))
