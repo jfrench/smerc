@@ -9,7 +9,7 @@
 #' @inheritParams flex.sim
 #' @inheritParams cepp.test
 #' @param nn A list of nearest neighbors produced by \code{\link{casewin}}.
-#' @param w A list that has the weights associated with each
+#' @param wts A list that has the weights associated with each
 #' region of each element of \code{nn}.
 #'
 #' @return A vector with the maximum test statistic for each
@@ -25,35 +25,22 @@
 #' ty = sum(cases)
 #' ex = ty/sum(nydf$pop) * nydf$pop
 #' # find smallest windows with at least n* pop
-#' nstar = 15000
-#' cwins = casewin(d, cases = nydf$pop, cstar = nstar)
-#' # number of regions in each window
-#' l = sapply(cwins, length)
-#'
-#' # determine population in each window
-#' pop_cwins = nn.cumsum(cwins, nydf$pop, simplify = FALSE)
-#' # determine weights for each region in each window
-#' w = lapply(seq_along(l), function(i) {
-#'   out = rep(1, l[i])
-#'   out[l[i]] = 1 - pop_cwins[[i]][l[i] - 1]/nstar
-#'   return(out)
-#' })
-#' tsim = cepp.sim(1, nn = cwins, ty = ty, ex = ex, w = w)
-cepp.sim = function(nsim = 1, nn, ty, ex, w, simtype = "multinomial") {
-
-  # number of regions in each window
-  l = sapply(nn, length)
-
+#' nstar = 1000
+#' nn = casewin(d, cases = nydf$pop, cstar = nstar)
+#' # determine ts
+#' wts = cepp.weights(nn, nydf$pop, nstar)
+#' tsim = cepp.sim(1, nn = nn, ty = ty, ex = ex, wts = wts)
+cepp.sim = function(nsim = 1, nn, ty, ex, wts, simtype = "multinomial") {
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim = pbapply::pblapply(seq_len(nsim), function(idx) {
     # simulate new data
     if (simtype == "multinomial") {
       ysim = stats::rmultinom(1, size = ty, prob = ex)
     } else {
       ysim = stats::rpois(length(ex), lambda = ex)
     }
-    cstar = sapply(seq_along(l), function(i) {
-      sum(ysim[nn[[i]]] * w[[i]])
+    cstar = sapply(seq_along(nn), function(i) {
+      sum(ysim[nn[[i]]] * wts[[i]])
     })
     max(cstar)
   })

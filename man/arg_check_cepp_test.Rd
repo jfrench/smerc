@@ -2,12 +2,12 @@
 % Please edit documentation in R/cepp.test.R
 \name{arg_check_cepp_test}
 \alias{arg_check_cepp_test}
-\title{Argument checking for bn.test}
+\title{Argument checking for cepp.test}
 \usage{
 arg_check_cepp_test(coords, cases, pop, nstar, ex, nsim, longlat, alpha,
   noc, simtype)
 }
 \description{
-Check the arguments of the bn.test function
+Check the arguments of the cepp.test function
 }
 \keyword{internal}

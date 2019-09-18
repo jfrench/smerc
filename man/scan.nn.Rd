@@ -3,7 +3,7 @@
 \name{nnpop}
 \alias{nnpop}
 \alias{scan.nn}
-\title{Determine nearest neighbors for minimum spanning trees}
+\title{Determine nearest neighbors with population constraint}
 \usage{
 nnpop(d, pop, ubpop)
 
@@ -26,12 +26,10 @@ Returns the indices of the nearest neighbors as a
   ordered from nearest to farthest from each centroid.
 }
 \description{
-\code{mst.nn} determines the nearest
+\code{scan.nn} determines the nearest
 neighbors for a set of observations based on the
-distance matrix according to a distance-based upperbound.
-These neighbors are directly related to the zones
-considered in \code{\link{dmst.test}},
-\code{\link{dc.test}}, and \code{\link{mlink.test}}
+distance matrix according to a population-based
+upperbound.
 }
 \details{
 This function determines the nearest neighbors of each

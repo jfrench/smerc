@@ -3,3 +3,4 @@
 1.0 Huge release.  Add lots of methods (dc.test, fast.test,
       (mlink.test, rflex.test, etc.)  Dramatic restructure
       of many functions.
+1.1 Add cepp.test (and related).  Fix some documentation.

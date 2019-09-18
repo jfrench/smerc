@@ -4,7 +4,7 @@
 \alias{cepp.sim}
 \title{Perform \code{cepp.test} on simulated data}
 \usage{
-cepp.sim(nsim = 1, nn, ty, ex, w, simtype = "multinomial")
+cepp.sim(nsim = 1, nn, ty, ex, wts, simtype = "multinomial")
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -18,7 +18,7 @@ simulations to perform.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{w}{A list that has the weights associated with each
+\item{wts}{A list that has the weights associated with each
 region of each element of \code{nn}.}
 
 \item{simtype}{A character string indicating whether the
@@ -47,18 +47,9 @@ cases = floor(nydf$cases)
 ty = sum(cases)
 ex = ty/sum(nydf$pop) * nydf$pop
 # find smallest windows with at least n* pop
-nstar = 15000
-cwins = casewin(d, cases = nydf$pop, cstar = nstar)
-# number of regions in each window
-l = sapply(cwins, length)
-
-# determine population in each window
-pop_cwins = nn.cumsum(cwins, nydf$pop, simplify = FALSE)
-# determine weights for each region in each window
-w = lapply(seq_along(l), function(i) {
-  out = rep(1, l[i])
-  out[l[i]] = 1 - pop_cwins[[i]][l[i] - 1]/nstar
-  return(out)
-})
-tsim = cepp.sim(1, nn = cwins, ty = ty, ex = ex, w = w)
+nstar = 1000
+nn = casewin(d, cases = nydf$pop, cstar = nstar)
+# determine ts
+wts = cepp.weights(nn, nydf$pop, nstar)
+tsim = cepp.sim(1, nn = nn, ty = ty, ex = ex, wts = wts)
 }

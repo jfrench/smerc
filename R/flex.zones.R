@@ -48,23 +48,12 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     czones = unlist(do.call(fcall, fcall_list),
                     use.names = FALSE, recursive = FALSE)
   } else {
-  #   czones = list()
-  #   for (i in seq_len(N)) {
-  #     if (verbose) {
-  #       message(paste(i, "/", N, ". Starting region ", i,
-  #                     " at ", Sys.time(), ".", sep = ""))
-  #     }
-  #     czones = combine.zones(czones,
-  #                            scsg(nn[[i]], w[, nn[[i]], drop = FALSE]))
-  #   }
-  #   return(czones)
-  # }
     czones = list()
     pri = randtoolbox::get.primes(N)
     czones_id = numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
-        if ((i %% pfreq) == 0) {
+        if ( (i %% pfreq) == 0) {
           message(i, "/", N, ". Starting region ", i,
                   " at ", Sys.time(), ".")
         }

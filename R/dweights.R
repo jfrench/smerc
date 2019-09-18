@@ -38,7 +38,8 @@
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' w = dweights(coords, kappa = 1, longlat = TRUE)
-dweights = function(coords, kappa = 1, longlat = FALSE, type = "basic", pop = NULL) {
+dweights = function(coords, kappa = 1, longlat = FALSE,
+                    type = "basic", pop = NULL) {
   arg_check_dweights(coords, kappa, longlat, type, pop)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {

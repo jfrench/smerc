@@ -29,16 +29,17 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(x, y))
-#' out = cepp.test(coords = coords, cases = nydf$cases,
-#'               pop = nydf$pop, nstar = 15000,
-#'               alpha = 0.1)
+#' cases = nydf$cases
+#' pop = nydf$pop
+#' out = cepp.test(coords = coords, cases = cases, pop = pop,
+#'                 nstar = 1000, alpha = 0.1)
 #' plot(out)
 #'
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
 cepp.test = function(coords, cases, pop, nstar,
-                     ex = sum(cases)/sum(pop) * pop,
+                     ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.10,
                      longlat = FALSE, noc = TRUE,
                      simtype = "multinomial") {
@@ -55,32 +56,18 @@ cepp.test = function(coords, cases, pop, nstar,
   d = sp::spDists(coords, longlat = longlat)
 
   # find smallest windows with at least n* pop
-  cwins = casewin(d, pop, nstar)
-  # determine size of each window
-  l = sapply(cwins, length)
+  nn = casewin(d, pop, nstar)
 
-  # determine cases and population in each window
-  case_cwins = lapply(cwins, function(x) cumsum(cases[x]))
-  pop_cwins = lapply(cwins, function(x) cumsum(pop[x]))
-  pop_cwins = nn.cumsum(cwins, pop, simplify = FALSE)
-  # determine weights for each region in each window
-  w = lapply(seq_along(l), function(i) {
-    if (l[i] == 1) {
-      return(pop_cwins[[i]][1]/nstar)
-    } else {
-      out = rep(1, l[i])
-      out[l[i]] = 1 - pop_cwins[[i]][l[i] - 1]/nstar
-      return(out)
-    }
-  })
+  # determine nn weights
+  wts = cepp.weights(nn, pop, nstar)
 
-  # observed number of cases
-  cstar = sapply(seq_along(l), function(i) {
-    sum(cases[cwins[[i]]] * w[[i]])
-  })
+  # observed number of cases in each window
+  cstar = sapply(seq_along(nn), function(i) {
+    sum(cases[nn[[i]]] * wts[[i]])
+  }, USE.NAMES = FALSE)
 
-  csim = cepp.sim(nsim = nsim, nn = cwins, ty = sum(cases),
-                  ex = ex, w = w, simtype = simtype)
+  csim = cepp.sim(nsim = nsim, nn = nn, ty = sum(cases),
+                  ex = ex, wts = wts, simtype = simtype)
 
   pvalue = mc.pvalue(cstar, csim)
 
@@ -89,7 +76,7 @@ cepp.test = function(coords, cases, pop, nstar,
   if (noc) {
     # determine idx of unique non-overlapping clusters in
     # order of significance
-    u = smacpod::noc(cwins[op])
+    u = smacpod::noc(nn[op])
     op = op[u]
     # return only significant clusters
     if (pvalue[op][1] > alpha) {
@@ -105,7 +92,7 @@ cepp.test = function(coords, cases, pop, nstar,
   # p-value, centroid, window radius, cases in window,
   # expected cases in window, population in window,
   # standarized mortality ratio, relative risk
-  sig_regions = cwins[op]
+  sig_regions = nn[op]
   sig_tstat = cstar[op]
   sig_p = pvalue[op]
   prep.scan2(tobs = sig_tstat, zones = sig_regions,
@@ -114,9 +101,9 @@ cepp.test = function(coords, cases, pop, nstar,
             w = NULL, d = d)
 }
 
-#' Argument checking for bn.test
+#' Argument checking for cepp.test
 #'
-#' Check the arguments of the bn.test function
+#' Check the arguments of the cepp.test function
 #' @return NULL
 #' @export
 #' @keywords internal
