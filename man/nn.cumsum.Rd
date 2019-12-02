@@ -9,8 +9,7 @@ nn.cumsum(nn, y, simplify = TRUE)
 \arguments{
 \item{nn}{A list of nearest neighbors in the format produced by \code{\link{nnpop}}.}
 
-\item{y}{A numeric vector which contains to values to be
-summed over.}
+\item{y}{A numeric vector of values to be summed over.}
 
 \item{simplify}{A logical value indicating whether the results
 should be simplified to a numeric vector.  The default is

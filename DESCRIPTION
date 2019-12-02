@@ -1,11 +1,11 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.0.2
+Version: 1.1
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 Description: Implements statistical methods for analyzing the counts of areal data,
-    with a focus on the detection of spatial clusters and clustering.  The package has a heavy emphasis on spatial scan methods, first introduced by Kulldorff and Nagarwalla (1995) <doi:10.1002/sim.4780140809> and Kulldorff (1997) <doi:10.1080/03610929708831995>.
+    with a focus on the detection of spatial clusters and clustering.  The package has a heavy emphasis on spatial scan methods, which were first introduced by Kulldorff and Nagarwalla (1995) <doi:10.1002/sim.4780140809> and Kulldorff (1997) <doi:10.1080/03610929708831995>.
 License: GPL (>=2)
 LazyLoad: yes
 Imports:

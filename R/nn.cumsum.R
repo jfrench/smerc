@@ -5,8 +5,7 @@
 #' contained in \code{nn}.
 #'
 #' @param nn A list of nearest neighbors in the format produced by \code{\link{nnpop}}.
-#' @param y A numeric vector which contains to values to be
-#' summed over.
+#' @param y A numeric vector of values to be summed over.
 #' @param simplify A logical value indicating whether the results
 #' should be simplified to a numeric vector.  The default is
 #' \code{TRUE}.

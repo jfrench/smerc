@@ -61,8 +61,10 @@ bn.test = function(coords, cases, pop, cstar,
   # determine size of each window
   l = sapply(cwins, length)
   # determine population in each window
-  case_cwins = sapply(cwins, function(x) sum(cases[x]))
-  ncwins = sapply(cwins, function(x) sum(pop[x]))
+  # determine cases and population in each window
+  case_cwins = zones.sum(cwins, cases)
+  ncwins = zones.sum(cwins, pop)
+  # expected counts in each window
   ex = r * ncwins
 
   if (!modified) {
@@ -101,57 +103,4 @@ bn.test = function(coords, cases, pop, cstar,
             pvalue = sig_p, coords = coords, cases = cases,
             pop = pop, ex = r * pop, longlat = longlat,
             w = NULL, d = d)
-}
-
-#' Argument checking for bn.test
-#'
-#' Check the arguments of the bn.test function
-#' @return NULL
-#' @export
-#' @keywords internal
-arg_check_bn_test = function(coords, cases, pop, cstar,
-                             longlat, alpha, noc) {
-  if (!(is.matrix(coords) | is.data.frame(coords))) {
-    stop("coords should be a matrix or a data frame")
-  }
-  if (ncol(coords) != 2) {
-    stop("coords must have two columns")
-  }
-  N = nrow(coords)
-  if (length(cases) != N) {
-    stop("length(cases) != nrow(coords)")
-  }
-  if (!is.numeric(cases)) {
-    stop("cases should be a numeric vector")
-  }
-  if (length(pop) != N) {
-    stop("length(pop) != nrow(coords)")
-  }
-  if (!is.numeric(pop)) {
-    stop("pop should be a numeric vector")
-  }
-  if (length(cstar) != 1 || !is.numeric(cstar)) {
-    stop("cstar should be a numeric vector of length 1")
-  }
-  if (cstar < 1 || cstar > sum(cases)) {
-    stop("cstar should be at least 1 and less than or equal to the sum(cases)")
-  }
-  if (length(longlat) != 1) {
-    stop("length(longlat) != 1")
-  }
-  if (!is.logical(longlat)) {
-    stop("longlat should be a logical value")
-  }
-  if (length(alpha) != 1 || !is.numeric(alpha)) {
-    stop("alpha should be a numeric vector of length 1")
-  }
-  if (alpha < 0 || alpha > 1) {
-    stop("alpha should be a value between 0 and 1")
-  }
-  if (length(noc) != 1) {
-    stop("length(noc) != 1")
-  }
-  if (!is.logical(noc)) {
-    stop("noc should be a logical value")
-  }
 }

@@ -14,7 +14,6 @@
 #'   centroids.
 #' @param cstar A non-negative integer indicating the
 #'   minimum number of cases to include in each window.
-#'
 #' @return Returns the indices of the regions in each case
 #'   window as a list.  For each element of the list, the
 #'   indices are ordered from nearest to farthest from each
