@@ -4,3 +4,4 @@
       (mlink.test, rflex.test, etc.)  Dramatic restructure
       of many functions.
 1.1 Add cepp.test (and related).  Fix some documentation.
+1.2 Add ex argument to bn.test.

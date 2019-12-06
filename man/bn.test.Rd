@@ -4,8 +4,8 @@
 \alias{bn.test}
 \title{Besag-Newell Test}
 \usage{
-bn.test(coords, cases, pop, cstar, alpha = 0.1, longlat = FALSE,
-  noc = TRUE, modified = FALSE)
+bn.test(coords, cases, pop, cstar, ex = sum(cases)/sum(pop) * pop,
+  alpha = 0.1, longlat = FALSE, noc = TRUE, modified = FALSE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -18,6 +18,10 @@ region.}
 
 \item{cstar}{A non-negative integer indicating the
 minimum number of cases to include in each window.}
+
+\item{ex}{The expected number of cases for each region.
+The default is calculated under the constant risk
+hypothesis.}
 
 \item{alpha}{The significance level to determine whether
 a cluster is signficant.  Default is 0.10.}

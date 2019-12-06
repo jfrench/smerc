@@ -4,7 +4,7 @@
 \alias{arg_check_bn_test}
 \title{Argument checking for bn.test}
 \usage{
-arg_check_bn_test(coords, cases, pop, cstar, longlat, alpha, noc)
+arg_check_bn_test(coords, cases, pop, cstar, longlat, alpha, noc, ex)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

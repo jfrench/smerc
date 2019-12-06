@@ -35,7 +35,7 @@
 #' @export
 #' @keywords internal
 arg_check_bn_test = function(coords, cases, pop, cstar,
-                             longlat, alpha, noc) {
+                             longlat, alpha, noc, ex) {
   if (!(is.matrix(coords) | is.data.frame(coords))) {
     stop("coords should be a matrix or a data frame")
   }
@@ -78,5 +78,11 @@ arg_check_bn_test = function(coords, cases, pop, cstar,
   }
   if (!is.logical(noc)) {
     stop("noc should be a logical value")
+  }
+  if (length(ex) != N) {
+    stop("length(ex) != nrow(coords)")
+  }
+  if (!is.numeric(ex)) {
+    stop("ex should be a numeric vector")
   }
 }

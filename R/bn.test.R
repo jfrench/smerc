@@ -43,16 +43,17 @@
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
 bn.test = function(coords, cases, pop, cstar,
-                    alpha = 0.10,
-                    longlat = FALSE, noc = TRUE,
-                    modified = FALSE) {
+                   ex = sum(cases) / sum(pop) * pop,
+                   alpha = 0.10,
+                   longlat = FALSE, noc = TRUE,
+                   modified = FALSE) {
   # sanity checking
   arg_check_bn_test(coords, cases, pop, cstar, longlat,
-                    alpha, noc)
+                    alpha, noc, ex)
 
   coords = as.matrix(coords)
   # estimate of constant risk
-  r = sum(cases) / sum(pop)
+  # r = sum(cases) / sum(pop)
   # intercentroid distances
   d = sp::spDists(coords, longlat = longlat)
 
@@ -60,18 +61,15 @@ bn.test = function(coords, cases, pop, cstar,
   cwins = casewin(d, cases, cstar)
   # determine size of each window
   l = sapply(cwins, length)
-  # determine population in each window
-  # determine cases and population in each window
+  # determine cases and expected in each window
   case_cwins = zones.sum(cwins, cases)
-  ncwins = zones.sum(cwins, pop)
-  # expected counts in each window
-  ex = r * ncwins
+  ex_cwins = zones.sum(cwins, ex)
 
   if (!modified) {
-    pvalue = stats::ppois(cstar - 1, lambda = ex,
+    pvalue = stats::ppois(cstar - 1, lambda = ex_cwins,
                           lower.tail = FALSE)
     } else {
-    pvalue = stats::ppois(case_cwins - 1, lambda = ex,
+    pvalue = stats::ppois(case_cwins - 1, lambda = ex_cwins,
                           lower.tail = FALSE)
   }
 
@@ -101,6 +99,6 @@ bn.test = function(coords, cases, pop, cstar,
   sig_p = pvalue[op]
   prep.scan2(tobs = sig_tstat, zones = sig_regions,
             pvalue = sig_p, coords = coords, cases = cases,
-            pop = pop, ex = r * pop, longlat = longlat,
+            pop = pop, ex = ex, longlat = longlat,
             w = NULL, d = d)
 }
