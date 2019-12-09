@@ -49,7 +49,7 @@ prep.scan = function(tobs, zones, pvalue, coords, cases,
     sig_r = rep(NA, length(centroid))
   }
   sig_max_dist = unname(sapply(sig_regions, function(x) {
-    max(sp::spDists(coords[x,, drop = FALSE]), longlat = longlat)
+    max(sp::spDists(coords[x,, drop = FALSE], longlat = longlat))
   }))
   sig_coords = coords[sapply(sig_regions, function(x) x[1]),, drop = FALSE]
   sig_yin = sapply(sig_regions, function(x) sum(cases[x]))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.scan.R
 \name{plot.scan}
 \alias{plot.scan}
-\title{Plots object of class \code{scan}.}
+\title{Plot object of class \code{scan}.}
 \usage{
 \method{plot}{scan}(x, ..., ccol = NULL, cpch = NULL, add = FALSE,
   usemap = FALSE, mapargs = list())
@@ -23,7 +23,7 @@
 \item{mapargs}{A list of arguments for the map function.}
 }
 \description{
-Plots clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
+Plot clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
 }
 \examples{
 data(nydf)
@@ -33,10 +33,10 @@ out = scan.test(coords = coords, cases = floor(nydf$cases),
                 longlat = TRUE, alpha = 0.12)
 ## plot output for new york state
 # specify desired argument values
-mapargs = list(database = "state", region = "new york",
+mapargs = list(database = "county", region = "new york",
 xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
-# needed for "state" database (unless you execute library(maps))
-data(stateMapEnv, package = "maps")
+# needed for "county" database (unless you execute library(maps))
+data(countyMapEnv, package = "maps")
 plot(out, usemap = TRUE, mapargs = mapargs)
 }
 \seealso{

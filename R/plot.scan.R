@@ -1,6 +1,6 @@
-#' Plots object of class \code{scan}.
+#' Plot object of class \code{scan}.
 #'
-#' Plots clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
+#' Plot clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
 #'
 #' @param x An object of class scan to be plotted.
 #' @param ... Additional graphical parameters passed to \code{plot} function.
@@ -22,12 +22,11 @@
 #'                 longlat = TRUE, alpha = 0.12)
 #' ## plot output for new york state
 #' # specify desired argument values
-#' mapargs = list(database = "state", region = "new york",
+#' mapargs = list(database = "county", region = "new york",
 #' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
-#' # needed for "state" database (unless you execute library(maps))
-#' data(stateMapEnv, package = "maps")
+#' # needed for "county" database (unless you execute library(maps))
+#' data(countyMapEnv, package = "maps")
 #' plot(out, usemap = TRUE, mapargs = mapargs)
-
 plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
                      add = FALSE, usemap = FALSE,
                      mapargs = list()) {
