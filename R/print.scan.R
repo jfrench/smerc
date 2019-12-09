@@ -2,12 +2,8 @@
 #'
 #' Print \code{scan} object
 #'
-#' @param x An object of class scan to be plotted.
+#' @param x An object of class \code{scan}.
 #' @inheritDotParams base::print
-#' @param clusters A index vector indicating the elements of
-#' \code{x$clusters} to print information for. The default
-#' is all clusters.
-#' @param digits Integer indicating the number of decimal places.
 #' @method print scan
 #' @export
 #' @examples

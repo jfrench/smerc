@@ -4,10 +4,11 @@
 \alias{summary.scan}
 \title{Summary of \code{scan} object}
 \usage{
-\method{summary}{scan}(x, ..., idx = seq_along(x$clusters), digits = 1)
+\method{summary}{scan}(object, ..., idx = seq_along(object$clusters),
+  digits = 1)
 }
 \arguments{
-\item{x}{An object of class \code{scan}.}
+\item{object}{An object of class \code{scan}.}
 
 \item{...}{Arguments passed on to \code{base::summary}
 \describe{
@@ -15,7 +16,7 @@
 }}
 
 \item{idx}{A index vector indicating the elements of
-\code{x$clusters} to print information for. The default
+\code{object$clusters} to print information for. The default
 is all clusters.}
 
 \item{digits}{Integer indicating the number of decimal places.}

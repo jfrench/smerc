@@ -2,10 +2,10 @@
 #'
 #' Summary of object of class \code{scan}.
 #'
-#' @param x An object of class \code{scan}.
+#' @param object An object of class \code{scan}.
 #' @inheritDotParams base::summary
 #' @param idx A index vector indicating the elements of
-#' \code{x$clusters} to print information for. The default
+#' \code{object$clusters} to print information for. The default
 #' is all clusters.
 #' @param digits Integer indicating the number of decimal places.
 #' @method summary scan
@@ -17,26 +17,23 @@
 #'                 pop = nydf$pop, nsim = 49,
 #'                 longlat = TRUE, alpha = 0.12)
 #' summary(out)
-summary.scan = function(x, ...,
-                        idx = seq_along(x$clusters),
+summary.scan = function(object, ...,
+                        idx = seq_along(object$clusters),
                         digits = 1) {
-  if (class(x) != "scan") {
-    stop("x must be a scan object.")
-  }
-  if (min(idx) < 1 | max(idx) > length(x$clusters)) {
+  if (min(idx) < 1 | max(idx) > length(object$clusters)) {
     stop("invalid idx values")
   }
-  regions = sapply(x$clusters[idx], function(i) length(i$locids))
-  max_dist = base::round(sget(x$clusters, "max_dist"),
+  regions = sapply(object$clusters[idx], function(i) length(i$locids))
+  max_dist = base::round(sget(object$clusters, "max_dist"),
                          digits = digits)
-  cases = sget(x$clusters[idx], "cases")
-  ex = base::round(sget(x$clusters[idx], "expected"),
+  cases = sget(object$clusters[idx], "cases")
+  ex = base::round(sget(object$clusters[idx], "expected"),
                    digits = digits)
-  rr = base::round(sget(x$clusters[idx], "rr"),
+  rr = base::round(sget(object$clusters[idx], "rr"),
                    digits = digits)
-  stat = base::round(sget(x$clusters[idx], "test_statistic"),
+  stat = base::round(sget(object$clusters[idx], "test_statistic"),
                      digits = 1)
-  p = sget(x$clusters[idx], "pvalue")
+  p = sget(object$clusters[idx], "pvalue")
   data.frame(regions,
              max_dist,
              cases,

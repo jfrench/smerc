@@ -7,18 +7,12 @@
 \method{print}{scan}(x, ...)
 }
 \arguments{
-\item{x}{An object of class scan to be plotted.}
+\item{x}{An object of class \code{scan}.}
 
 \item{...}{Arguments passed on to \code{base::print}
 \describe{
   \item{x}{an object used to select a method.}
 }}
-
-\item{clusters}{A index vector indicating the elements of
-\code{x$clusters} to print information for. The default
-is all clusters.}
-
-\item{digits}{Integer indicating the number of decimal places.}
 }
 \description{
 Print \code{scan} object
@@ -29,5 +23,5 @@ coords = with(nydf, cbind(x, y))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 49,
                 longlat = TRUE, alpha = 0.12)
-print(out)
+out
 }
