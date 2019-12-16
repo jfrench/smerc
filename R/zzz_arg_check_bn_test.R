@@ -31,58 +31,20 @@
 #'   is \code{modified = FALSE}.
 #' @param cstar A non-negative integer indicating the
 #'   minimum number of cases to include in each window.
-#' @return NULL
-#' @export
-#' @keywords internal
+#' @param ex A vector of expected counts
+#' @param modified A logical value for whether the test should be "modified"
+#' @noRd
 arg_check_bn_test = function(coords, cases, pop, cstar,
-                             longlat, alpha, noc, ex) {
-  if (!(is.matrix(coords) | is.data.frame(coords))) {
-    stop("coords should be a matrix or a data frame")
-  }
-  if (ncol(coords) != 2) {
-    stop("coords must have two columns")
-  }
+                             longlat, alpha, noc, ex,
+                             modified) {
+  arg_check_coords(coords)
   N = nrow(coords)
-  if (length(cases) != N) {
-    stop("length(cases) != nrow(coords)")
-  }
-  if (!is.numeric(cases)) {
-    stop("cases should be a numeric vector")
-  }
-  if (length(pop) != N) {
-    stop("length(pop) != nrow(coords)")
-  }
-  if (!is.numeric(pop)) {
-    stop("pop should be a numeric vector")
-  }
-  if (length(cstar) != 1 || !is.numeric(cstar)) {
-    stop("cstar should be a numeric vector of length 1")
-  }
-  if (cstar < 1 || cstar > sum(cases)) {
-    stop("cstar should be at least 1 and less than or equal to the sum(cases)")
-  }
-  if (length(longlat) != 1) {
-    stop("length(longlat) != 1")
-  }
-  if (!is.logical(longlat)) {
-    stop("longlat should be a logical value")
-  }
-  if (length(alpha) != 1 || !is.numeric(alpha)) {
-    stop("alpha should be a numeric vector of length 1")
-  }
-  if (alpha < 0 || alpha > 1) {
-    stop("alpha should be a value between 0 and 1")
-  }
-  if (length(noc) != 1) {
-    stop("length(noc) != 1")
-  }
-  if (!is.logical(noc)) {
-    stop("noc should be a logical value")
-  }
-  if (length(ex) != N) {
-    stop("length(ex) != nrow(coords)")
-  }
-  if (!is.numeric(ex)) {
-    stop("ex should be a numeric vector")
-  }
+  arg_check_cases(cases, N)
+  arg_check_pop(pop, N)
+  arg_check_cstar(cstar, cases)
+  arg_check_longlat(longlat)
+  arg_check_alpha(alpha)
+  arg_check_noc(noc)
+  arg_check_ex(ex, N)
+  arg_check_modified(modified)
 }

@@ -25,9 +25,9 @@ region.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{nsim}{The number of simulations from which to
 compute the p-value.}
@@ -36,7 +36,7 @@ compute the p-value.}
 a cluster is signficant.  Default is 0.10.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}

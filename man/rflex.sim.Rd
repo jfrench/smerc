@@ -22,9 +22,9 @@ hypothesis.}
 
 \item{alpha1}{The middle p-value threshold.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{pop}{The population size associated with each
 region.}

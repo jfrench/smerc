@@ -43,4 +43,3 @@ summary.scan = function(object, ...,
              p
   )
 }
-

@@ -6,7 +6,7 @@
 \usage{
 scan.sim(nsim = 1, nn, ty, ex, type = "poisson", ein = NULL,
   eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
-  cl = NULL)
+  cl = NULL, simtype = "multinomial", pop = NULL)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -20,9 +20,9 @@ simulations to perform.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{ein}{The expected number of cases in the zone.
 Conventionally, this is the estimated overall disease
@@ -47,6 +47,14 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).
 }
+
+\item{simtype}{Character string indicating the simulation
+distribution. The default is \code{"multinomial"}, which
+conditions on the total number of cases observed. The
+other options are \code{"poisson"} and \code{"binomial"}}
+
+\item{pop}{The population size associated with each
+region.}
 }
 \value{
 A vector with the maximum test statistic for each
@@ -69,5 +77,5 @@ ty = sum(cases)
 ex = ty/sum(nydf$pop) * nydf$pop
 yin = nn.cumsum(nn, cases)
 ein = nn.cumsum(nn, ex)
-tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = ty - ein)
+tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
 }

@@ -49,11 +49,9 @@ bn.test = function(coords, cases, pop, cstar,
                    modified = FALSE) {
   # sanity checking
   arg_check_bn_test(coords, cases, pop, cstar, longlat,
-                    alpha, noc, ex)
+                    alpha, noc, ex, modified)
 
   coords = as.matrix(coords)
-  # estimate of constant risk
-  # r = sum(cases) / sum(pop)
   # intercentroid distances
   d = sp::spDists(coords, longlat = longlat)
 

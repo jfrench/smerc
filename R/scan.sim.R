@@ -7,6 +7,7 @@
 #' better understanding the implementation of the test.
 #'
 #' @inheritParams flex.sim
+#' @inheritParams scan.test
 #' @param nn A list of nearest neighbors produced by \code{\link{nnpop}}.
 #'
 #' @return A vector with the maximum test statistic for each
@@ -23,19 +24,35 @@
 #' ex = ty/sum(nydf$pop) * nydf$pop
 #' yin = nn.cumsum(nn, cases)
 #' ein = nn.cumsum(nn, ex)
-#' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = ty - ein)
+#' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
 scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
                     tpop = NULL, popin = NULL, popout = NULL,
-                    cl = NULL) {
+                    cl = NULL,
+                    simtype = "multinomial",
+                    pop = NULL) {
+  # match simtype with options
+  simtype = match.arg(simtype, c("multinomial", "poisson", "binomial"))
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
-                popin = popin, popout = popout, static = TRUE)
+                popin = popin, popout = popout, static = TRUE,
+                simtype = simtype, pop = pop)
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
-    ysim = stats::rmultinom(1, size = ty, prob = ex)
+    if (simtype == "multinomial") {
+      ysim = stats::rmultinom(1, size = ty, prob = ex)
+    } else if (simtype == "poisson") {
+      ysim = stats::rpois(length(ex), lambda = ex)
+      ty = sum(ysim)
+      mult = ty/sum(ex)
+      ein = ein * mult
+      eout = eout * mult
+    } else if (simtype == "binomial") {
+      ysim = stats::rbinom(n = length(ex), size = pop, prob = ex/pop)
+      ty = sum(ysim)
+    }
     # compute test statistics for each zone
     yin = nn.cumsum(nn, ysim)
     if (type == "poisson") {

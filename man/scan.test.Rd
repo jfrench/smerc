@@ -6,7 +6,8 @@
 \usage{
 scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson", min.cases = 2)
+  cl = NULL, type = "poisson", min.cases = 2,
+  simtype = "multinomial")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -31,7 +32,7 @@ a cluster is signficant.  Default is 0.10.}
 total population to consider for a cluster.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
@@ -43,12 +44,17 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{min.cases}{The minimum number of cases required for
 a cluster.  The default is 2.}
+
+\item{simtype}{Character string indicating the simulation
+distribution. The default is \code{"multinomial"}, which
+conditions on the total number of cases observed. The
+other options are \code{"poisson"} and \code{"binomial"}}
 }
 \value{
 Returns a \code{scan} object.

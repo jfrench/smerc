@@ -19,4 +19,3 @@ print.scan = function(x, ...) {
   message(paste("Total population:", x$total_population))
   message(paste("Cases per 100,000 persons:", x$cases_per_100k))
 }
-
