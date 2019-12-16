@@ -25,15 +25,19 @@
 #' @param alpha The significance level to determine whether
 #'   a cluster is signficant.  Default is 0.10.
 #' @param longlat The default is \code{FALSE}, which
-#'   specifies that Euclidean distance should be used.If
+#'   specifies that Euclidean distance should be used. If
 #'   \code{longlat} is \code{TRUE}, then the great circle
 #'   distance is used to calculate the intercentroid
 #'   distance.
-#' @param type The type of scan statistic to implement. The
-#'   default is \code{"poisson"}, with the other choice
-#'   being \code{"binomial"}.
+#' @param type The type of scan statistic to compute. The
+#'   default is \code{"poisson"}. The other choice
+#'   is \code{"binomial"}.
 #' @param min.cases The minimum number of cases required for
 #'   a cluster.  The default is 2.
+#' @param simtype Character string indicating the simulation
+#' distribution. The default is \code{"multinomial"}, which
+#' conditions on the total number of cases observed. The
+#' other options are \code{"poisson"} and \code{"binomial"}
 #' @inheritParams pbapply::pblapply
 #'
 #' @return Returns a \code{scan} object.
@@ -84,14 +88,16 @@ scan.test = function(coords, cases, pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
                      type = "poisson",
-                     min.cases = 2) {
+                     min.cases = 2,
+                     simtype = "multinomial") {
   # argument checking
+  type = match.arg(type, c("poisson", "binomial"))
+  simtype = match.arg(simtype, c("multinomial", "poisson", "binomial"))
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
                       nsim + 1, ubpop, longlat, TRUE,
-                      k = 1, w = diag(nrow(coords)))
-  if (length(min.cases) != 1 | min.cases < 1) {
-    stop("min.cases must be a single number and >= 1")
-  }
+                      k = 1, w = diag(nrow(coords)),
+                      type = type, simtype = simtype,
+                      min.cases = min.cases)
 
   # convert to proper format
   coords = as.matrix(coords)
@@ -111,7 +117,7 @@ scan.test = function(coords, cases, pop,
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = nn.cumsum(nn, ex)
-    eout = ty - ein
+    eout = sum(ex) - ein
     popin = NULL
     popout = NULL
     tpop = NULL
@@ -145,7 +151,8 @@ scan.test = function(coords, cases, pop,
     tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
                     ex = ex, type = type, ein = ein,
                     eout = eout, popin = popin,
-                    popout = popout, tpop = tpop, cl = cl)
+                    popout = popout, tpop = tpop, cl = cl,
+                    simtype = simtype, pop = pop)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))

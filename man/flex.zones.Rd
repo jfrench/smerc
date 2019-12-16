@@ -16,7 +16,7 @@ coordinates for the regions.}
 \item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}

@@ -1,7 +1,7 @@
-#' Distance-based weights
+#' Distance-based weights for \code{tango.test}
 #'
-#' \code{dweights} constructs a distance-based weights matrix.
-#' The \code{dweights} function can be used to
+#' \code{tango.weights} constructs a distance-based weights matrix.
+#' The \code{tango.weights} function can be used to
 #' construct a weights matrix \code{w} using the method
 #' of Tango (1995), Rogerson (1999), or a basic style.
 #'
@@ -16,7 +16,6 @@
 #'
 #' If \code{type = "tango"}, then
 #' \eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
-#'
 #'
 #' @inheritParams scan.test
 #' @param kappa A positive constant related to strength of
@@ -37,9 +36,10 @@
 #' @examples
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' w = dweights(coords, kappa = 1, longlat = TRUE)
-dweights = function(coords, kappa = 1, longlat = FALSE,
-                    type = "basic", pop = NULL) {
+#' w = tango.weights(coords, kappa = 1, longlat = TRUE)
+tango.weights = function(coords, kappa = 1, longlat = FALSE,
+                         type = "basic", pop = NULL) {
+  type = match.arg(type, c("basic", "rogerson", "tango"))
   arg_check_dweights(coords, kappa, longlat, type, pop)
   d = sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
@@ -53,42 +53,6 @@ dweights = function(coords, kappa = 1, longlat = FALSE,
   return(w)
 }
 
-arg_check_dweights = function(coords, kappa, longlat, type, pop) {
-  if (!(is.matrix(coords) | is.data.frame(coords))) {
-    stop("coords should be a matrix or a data frame")
-  }
-  if (ncol(coords) != 2) {
-    stop("coords must have two columns")
-  }
-  N = nrow(coords)
-  if (length(kappa) != 1 || !is.numeric(kappa)) {
-    stop("kappa should be a numeric vector of length 1")
-  }
-  if (kappa <= 0) stop("kappa must be positive")
-  if (length(longlat) != 1) stop("length(longlat) != 1")
-  if (!is.logical(longlat)) {
-    stop("longlat should be a logical value")
-  }
-  if (length(type) != 1) {
-    stop("type must be a single character")
-  }
-  if (!is.element(type, c("basic", "rogerson", "tango"))) {
-    stop("invalid type")
-  }
-  if (!is.null(pop)) {
-    if (length(pop) != N) {
-      stop("length(pop) != nrow(coords)")
-    }
-    if (!is.numeric(pop)) {
-      stop("pop should be a numeric vector")
-    }
-  }
-  if (type == "rogerson") {
-    if (is.null(pop)) {
-      stop("pop must be provided when type = 'rogerson'")
-    }
-    if (any(pop == 0)) {
-      stop("regions cannot contain zero population when type = 'rogerson'")
-    }
-  }
-}
+#' @rdname tango.weights
+#' @export
+dweights = tango.weights

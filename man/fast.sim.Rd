@@ -22,9 +22,9 @@ region.}
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{cl}{
 A cluster object created by \code{\link[parallel]{makeCluster}},

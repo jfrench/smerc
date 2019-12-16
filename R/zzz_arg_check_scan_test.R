@@ -7,7 +7,8 @@
 # argument checking for most scan tests
 arg_check_scan_test =
   function(coords, cases, pop, ex, nsim, alpha, nreport,
-           ubpop, longlat, parallel, k, w, type = NULL) {
+           ubpop, longlat, parallel, k, w, type = NULL,
+           simtype = NULL, min.cases = 1) {
     if (!(is.matrix(coords) | is.data.frame(coords))) {
       stop("coords should be a matrix or a data frame")
     }
@@ -83,8 +84,22 @@ arg_check_scan_test =
       stop("k cannot be more than the number of regions")
     }
     if (!is.null(type)) {
+      if (length(type) != 1) {
+        stop("type must be of length 1")
+      }
       if (!is.element(type, c("poisson", "binomial"))) {
         stop("type must be 'poisson' or 'binomial'")
       }
+    }
+    if (!is.null(simtype)) {
+      if (length(simtype) != 1) {
+        stop("simtype must be of length 1")
+      }
+      if (!is.element(simtype, c("multinomial", "poisson", "binomial"))) {
+        stop("simtype must be 'multinomial', 'poisson', or 'binomial'")
+      }
+    }
+    if (length(min.cases) != 1 | min.cases < 1) {
+      stop("min.cases must be a single number and >= 1")
     }
   }

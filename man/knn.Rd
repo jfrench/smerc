@@ -11,7 +11,7 @@ knn(coords, longlat = FALSE, k = 1, d = NULL)
 coordinates for the regions.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}

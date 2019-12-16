@@ -31,7 +31,7 @@ a cluster is signficant.  Default is 0.10.}
 total population to consider for a cluster.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
@@ -43,9 +43,9 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 }
 \value{
 Returns a list of length two of class scan. The
