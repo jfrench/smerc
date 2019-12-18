@@ -52,12 +52,14 @@ elliptic.test = function(coords, cases, pop,
                      type = "poisson",
                      min.cases = 2) {
   # argument checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, TRUE, TRUE,
-                      k = 1, w = diag(nrow(coords)))
-  if (length(shape) != length(nangle)) {
-    stop("The length of shape and nangle must match.")
-  }
+  arg_check_scan_test(coords = coords, cases = cases,
+                      pop = pop, ex = ex, nsim = nsim,
+                      alpha = alpha,
+                      ubpop = ubpop, longlat = FALSE,
+                      parallel = FALSE, k = 1,
+                      w = diag(nrow(coords)),
+                      type = type, min.cases = min.cases)
+  arg_check_elliptic_test(shape = shape, nangle = nangle, a = a)
 
   # convert to proper format
   coords = as.matrix(coords)

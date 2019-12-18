@@ -1,105 +1,48 @@
-#' Argument checking for many scan-like functions
+#' Argument checking for scan tests
 #'
-#' Check the arguments of many \code{*.test} functions.
+#' @param coords A matrix of coordinates
+#' @param cases A vector of numeric cases
+#' @param pop A vector of population values
+#' @param ex A vector of expected counts
+#' @param nsim A non-negative integer
+#' @param alpha A value greater than 0
+#' @param nreport Not used
+#' @param ubpop A value between 0 and 1
+#' @param longlat A logical. TRUE is great circle distance.
+#' @param parallel Not used.
+#' @param k Number of nearest neighbors. Not always needed.
+#' @param w A spatial proximity matrix
+#' @param type Statistic type
+#' @param simdist Distribution of simulation
+#' @param min.cases Minimum number of cases. Only for scan.test.
 #' @return NULL
-#' @export
-#' @keywords internal
-# argument checking for most scan tests
+#' @noRd
 arg_check_scan_test =
-  function(coords, cases, pop, ex, nsim, alpha, nreport,
-           ubpop, longlat, parallel, k, w, type = NULL,
-           simtype = NULL, min.cases = 1) {
-    if (!(is.matrix(coords) | is.data.frame(coords))) {
-      stop("coords should be a matrix or a data frame")
-    }
-    if (ncol(coords) != 2) {
-      stop("coords must have two columns")
-    }
+  function(coords, cases, pop, ex, nsim, alpha,
+           nreport = NULL,
+           ubpop, longlat, parallel = NULL, k, w, type = NULL,
+           simdist = NULL, min.cases = NULL) {
+    arg_check_coords(coords)
     N = nrow(coords)
-    if (length(cases) != N) {
-      stop("length(cases) != nrow(coords)")
-    }
-    if (!is.numeric(cases)) {
-      stop("cases should be a numeric vector")
-    }
-    if (length(pop) != N) {
-      stop("length(pop) != nrow(coords)")
-    }
-    if (!is.numeric(pop)) {
-      stop("pop should be a numeric vector")
-    }
-    if (length(ex) != N) {
-      stop("length(ex) != nrow(coords)")
-    }
-    if (!is.numeric(ex)) {
-      stop("ex should be a numeric vector")
-    }
-    if (length(alpha) != 1 || !is.numeric(alpha)) {
-      stop("alpha should be a numeric vector of length 1")
-    }
-    if (alpha < 0 || alpha > 1) {
-      stop("alpha should be a value between 0 and 1")
-    }
-    if (length(nsim) != 1 || !is.numeric(nsim)) {
-      stop("nsim should be a vector of length 1")
-    }
-    if (nsim < 0) {
-      stop("nsim should be an non-negative integer")
-    }
-    if (length(ubpop) != 1 || !is.numeric(ubpop)) {
-      stop("ubpop should be a numeric vector of length 1")
-    }
-    if (ubpop <= 0 || ubpop > 1) {
-      stop("ubpop should be a value between 0 and 1")
-    }
-    if (length(longlat) != 1) {
-      stop("length(longlat) != 1")
-    }
-    if (!is.logical(longlat)) {
-      stop("longlat should be a logical value")
-    }
-    if (length(parallel) != 1) {
-      stop("length(parallel) != 1")
-    }
-    if (!is.logical(parallel)) {
-      stop("parallel should be a logical value")
-    }
-    if (length(k) != 1) {
-      stop("k must have length 1")
-    }
-    if (k < 1) stop("k must be an integer >= 1")
-    if (!is.matrix(w)) {
-      stop("w must be a matrix")
-    }
-    if (nrow(w) != ncol(w)) {
-      stop("w much be a square matrix")
-    }
-    if (!is.numeric(w)) {
-      stop("w must be a numeric matrix")
-    }
-    if (nrow(w) != nrow(coords)) {
-      stop("nrow(w) != nrow(coords)")
-    }
-    if (floor(k) > nrow(coords)) {
-      stop("k cannot be more than the number of regions")
-    }
+    arg_check_cases(cases, N)
+    arg_check_pop(pop, N)
+    arg_check_ex(ex, N)
+    arg_check_nsim(nsim)
+    arg_check_alpha(alpha)
+    # nreport no check, deprecated
+    arg_check_ubpop(ubpop)
+    arg_check_longlat(longlat)
+    # parallel no check, deprecated
+    arg_check_k(k, N)
+    arg_check_w(w, N)
     if (!is.null(type)) {
-      if (length(type) != 1) {
-        stop("type must be of length 1")
-      }
-      if (!is.element(type, c("poisson", "binomial"))) {
-        stop("type must be 'poisson' or 'binomial'")
-      }
+      arg_check_type(type)
     }
-    if (!is.null(simtype)) {
-      if (length(simtype) != 1) {
-        stop("simtype must be of length 1")
-      }
-      if (!is.element(simtype, c("multinomial", "poisson", "binomial"))) {
-        stop("simtype must be 'multinomial', 'poisson', or 'binomial'")
-      }
+    if (!is.null(simdist)) {
+      arg_check_simdist(simdist)
     }
-    if (length(min.cases) != 1 | min.cases < 1) {
-      stop("min.cases must be a single number and >= 1")
+    arg_check_simdist(simdist)
+    if (!is.null(min.cases)) {
+      arg_check_min_cases(min.cases)
     }
   }

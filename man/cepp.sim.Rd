@@ -4,7 +4,7 @@
 \alias{cepp.sim}
 \title{Perform \code{cepp.test} on simulated data}
 \usage{
-cepp.sim(nsim = 1, nn, ty, ex, wts, simtype = "multinomial")
+cepp.sim(nsim = 1, nn, ty, ex, wts, simdist = "multinomial")
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -21,7 +21,7 @@ hypothesis.}
 \item{wts}{A list that has the weights associated with each
 region of each element of \code{nn}.}
 
-\item{simtype}{A character string indicating whether the
+\item{simdist}{A character string indicating whether the
 simulated data should come from a \code{"multinomial"}
 or \code{"poisson"} distribution.  The default is
 \code{"multinomial"}, which fixes the total number of

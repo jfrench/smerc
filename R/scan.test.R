@@ -34,7 +34,7 @@
 #'   is \code{"binomial"}.
 #' @param min.cases The minimum number of cases required for
 #'   a cluster.  The default is 2.
-#' @param simtype Character string indicating the simulation
+#' @param simdist Character string indicating the simulation
 #' distribution. The default is \code{"multinomial"}, which
 #' conditions on the total number of cases observed. The
 #' other options are \code{"poisson"} and \code{"binomial"}
@@ -89,14 +89,16 @@ scan.test = function(coords, cases, pop,
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
                      type = "poisson",
                      min.cases = 2,
-                     simtype = "multinomial") {
+                     simdist = "multinomial") {
   # argument checking
   type = match.arg(type, c("poisson", "binomial"))
-  simtype = match.arg(simtype, c("multinomial", "poisson", "binomial"))
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, longlat, TRUE,
+  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
+  arg_check_scan_test(coords = coords, cases = cases,
+                      pop = pop, ex = ex, nsim = nsim,
+                      alpha = alpha, ubpop = ubpop,
+                      longlat = longlat,
                       k = 1, w = diag(nrow(coords)),
-                      type = type, simtype = simtype,
+                      type = type, simdist = simdist,
                       min.cases = min.cases)
 
   # convert to proper format
@@ -152,7 +154,7 @@ scan.test = function(coords, cases, pop,
                     ex = ex, type = type, ein = ein,
                     eout = eout, popin = popin,
                     popout = popout, tpop = tpop, cl = cl,
-                    simtype = simtype, pop = pop)
+                    simdist = simdist, pop = pop)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
@@ -172,8 +174,16 @@ scan.test = function(coords, cases, pop,
   tobs = tobs[sigc]
   pvalue = pvalue[sigc]
 
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
-            coords = coords, cases = cases, pop = pop,
-            ex = ex, longlat = longlat, w = NULL,
-            d = d)
+  smerc_cluster(tobs = tobs, zones = zones,
+                pvalue = pvalue, coords = coords,
+                cases = cases, pop = pop, ex = ex,
+                longlat = longlat, method = "scan",
+                rel_param = list(type = type,
+                                 simdist = simdist,
+                                 nsim = nsim,
+                                 ubpop = ubpop,
+                                 longlat = longlat,
+                                 alpha = alpha,
+                                 min.cases = min.cases),
+                w = NULL, d = d)
 }

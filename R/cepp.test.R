@@ -9,7 +9,7 @@
 #' @inheritParams bn.test
 #' @param nstar The size of the at-risk population
 #' in each window.
-#' @param simtype A character string indicating whether the
+#' @param simdist A character string indicating whether the
 #' simulated data should come from a \code{"multinomial"}
 #' or \code{"poisson"} distribution.  The default is
 #' \code{"multinomial"}, which fixes the total number of
@@ -42,13 +42,13 @@ cepp.test = function(coords, cases, pop, nstar,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.10,
                      longlat = FALSE, noc = TRUE,
-                     simtype = "multinomial") {
+                     simdist = "multinomial") {
   # sanity checking
   arg_check_cepp_test(coords = coords, cases = cases,
                       pop = pop, nstar = nstar, ex = ex,
                       nsim = nsim, alpha = alpha,
                       longlat = longlat, noc = noc,
-                      simtype = simtype)
+                      simdist = simdist)
 
   coords = as.matrix(coords)
 
@@ -67,7 +67,7 @@ cepp.test = function(coords, cases, pop, nstar,
   }, USE.NAMES = FALSE)
 
   csim = cepp.sim(nsim = nsim, nn = nn, ty = sum(cases),
-                  ex = ex, wts = wts, simtype = simtype)
+                  ex = ex, wts = wts, simdist = simdist)
 
   pvalue = mc.pvalue(cstar, csim)
 
@@ -109,7 +109,7 @@ cepp.test = function(coords, cases, pop, nstar,
 #' @keywords internal
 arg_check_cepp_test = function(coords, cases, pop, nstar,
                              ex, nsim, longlat, alpha, noc,
-                             simtype) {
+                             simdist) {
   if (!(is.matrix(coords) | is.data.frame(coords))) {
     stop("coords should be a matrix or a data frame")
   }
@@ -165,10 +165,10 @@ arg_check_cepp_test = function(coords, cases, pop, nstar,
   if (!is.logical(noc)) {
     stop("noc should be a logical value")
   }
-  if (length(simtype) != 1) {
-    stop("simtype should be a since character string")
+  if (length(simdist) != 1) {
+    stop("simdist should be a since character string")
   }
-  if (!is.element(simtype, c("multinomial", "poisson"))) {
-    stop("simtype must be 'multinomial' or 'poisson'")
+  if (!is.element(simdist, c("multinomial", "poisson"))) {
+    stop("simdist must be 'multinomial' or 'poisson'")
   }
 }

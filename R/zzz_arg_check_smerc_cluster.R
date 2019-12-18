@@ -36,7 +36,7 @@ arg_check_smerc_cluster = function(tobs, zones, pvalue,
   arg_check_ex(ex, N)
   arg_check_longlat(longlat)
   arg_check_method(method)
-  arg_check_rel_param(method)
+  arg_check_rel_param(rel_param)
   if (!is.null(w)) {
     arg_check_w(w, N)
   }

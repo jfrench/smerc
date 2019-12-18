@@ -29,27 +29,27 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,
-                    simtype = "multinomial",
+                    simdist = "multinomial",
                     pop = NULL) {
-  # match simtype with options
-  simtype = match.arg(simtype, c("multinomial", "poisson", "binomial"))
+  # match simdist with options
+  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
                 popin = popin, popout = popout, static = TRUE,
-                simtype = simtype, pop = pop)
+                simdist = simdist, pop = pop)
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
-    if (simtype == "multinomial") {
+    if (simdist == "multinomial") {
       ysim = stats::rmultinom(1, size = ty, prob = ex)
-    } else if (simtype == "poisson") {
+    } else if (simdist == "poisson") {
       ysim = stats::rpois(length(ex), lambda = ex)
       ty = sum(ysim)
       mult = ty/sum(ex)
       ein = ein * mult
       eout = eout * mult
-    } else if (simtype == "binomial") {
+    } else if (simdist == "binomial") {
       ysim = stats::rbinom(n = length(ex), size = pop, prob = ex/pop)
       ty = sum(ysim)
     }

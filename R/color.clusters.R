@@ -25,8 +25,8 @@
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
 color.clusters = function(x, col = 2:(length(x$clusters) + 1)) {
-  if (class(x) != "scan") {
-    stop("x should be an object of class scan.")
+  if (class(x) != "scan" & class(x) != "smerc_cluster") {
+    stop("x should be an object of class scan or smerc_cluster.")
   }
   if (length(x$clusters) != length(col)) {
     stop("The number of colors must match the number of clusters.")

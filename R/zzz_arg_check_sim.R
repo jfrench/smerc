@@ -19,7 +19,7 @@ arg_check_sim = function(nsim,
                          pop = NULL,
                          ubpop = NULL,
                          static,
-                         simtype = "multinomial") {
+                         simdist = "multinomial") {
   if (length(nsim) != 1 | !is.numeric(nsim) | nsim < 1) {
     stop("nsim must be a positive integer")
   }
@@ -89,12 +89,12 @@ arg_check_sim = function(nsim,
       stop("ubpop must be in (0, 1]")
     }
   }
-  if (length(simtype) != 1) {
-    stop("simtype must be a single character string")
+  if (length(simdist) != 1) {
+    stop("simdist must be a single character string")
   }
-  if (simtype == "binomial") {
+  if (simdist == "binomial") {
     if (is.null(pop)) {
-      stop("pop must be specified when simtype == 'binomial'")
+      stop("pop must be specified when simdist == 'binomial'")
     }
   }
 }

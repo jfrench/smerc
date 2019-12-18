@@ -6,7 +6,7 @@
 \usage{
 cepp.test(coords, cases, pop, nstar, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, longlat = FALSE, noc = TRUE,
-  simtype = "multinomial")
+  simdist = "multinomial")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -42,7 +42,7 @@ or only the non-overlapping clusters (\code{TRUE})
 arranged in order of significance.  The default is
 \code{TRUE}.}
 
-\item{simtype}{A character string indicating whether the
+\item{simdist}{A character string indicating whether the
 simulated data should come from a \code{"multinomial"}
 or \code{"poisson"} distribution.  The default is
 \code{"multinomial"}, which fixes the total number of

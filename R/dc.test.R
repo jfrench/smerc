@@ -54,8 +54,10 @@ dc.test = function(coords, cases, pop, w,
                    ubpop = 0.5, ubd = 1,
                    longlat = FALSE, cl = NULL) {
   # sanity checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, longlat, FALSE,
+  arg_check_scan_test(coords = coords, cases = cases,
+                      pop = pop, ex = ex, nsim = nsim,
+                      alpha = alpha,
+                      ubpop = ubpop, longlat = longlat,
                       k = 1, w = w)
 
   coords = as.matrix(coords) # ensure proper format

@@ -6,7 +6,7 @@
 \usage{
 scan.sim(nsim = 1, nn, ty, ex, type = "poisson", ein = NULL,
   eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
-  cl = NULL, simtype = "multinomial", pop = NULL)
+  cl = NULL, simdist = "multinomial", pop = NULL)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -48,7 +48,7 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{simtype}{Character string indicating the simulation
+\item{simdist}{Character string indicating the simulation
 distribution. The default is \code{"multinomial"}, which
 conditions on the total number of cases observed. The
 other options are \code{"poisson"} and \code{"binomial"}}

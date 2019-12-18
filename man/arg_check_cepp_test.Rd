@@ -5,7 +5,7 @@
 \title{Argument checking for cepp.test}
 \usage{
 arg_check_cepp_test(coords, cases, pop, nstar, ex, nsim, longlat, alpha,
-  noc, simtype)
+  noc, simdist)
 }
 \description{
 Check the arguments of the cepp.test function

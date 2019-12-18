@@ -166,7 +166,7 @@ arg_check_zones = function(zones, N) {
   if (length(zones) != N) {
     stop("length(zones) != length(tobs)")
   }
-  if (!list(zones)) {
+  if (!is.list(zones)) {
     stop("zones should be a list")
   }
 }
@@ -229,7 +229,7 @@ arg_check_method = function(method) {
 #' @noRd
 arg_check_rel_param = function(rel_param) {
   if (!is.list(rel_param)) {
-    stop("rel_param must be a vector")
+    stop("rel_param must be a list")
   }
 }
 
@@ -306,10 +306,150 @@ arg_check_a = function(a) {
 #' @return NULL
 #' @noRd
 arg_check_w = function(w, N) {
-  if (!is.matrix(w) | !is.data.frame(w)) {
+  if (!is.matrix(w) & !is.data.frame(w)) {
     stop("w must be a matrix or data.frame")
   }
-  if (nrow(w) != N | ncol(N)) {
+  if (nrow(w) != N | ncol(w) != N) {
     stop("w must be a square matrix with nrow(w) = nrow(coords)")
   }
+  if (any(w != 0 & w != 1)) {
+    stop("w must be 0s and 1s")
+  }
 }
+
+#' Check nsim argument
+#'
+#' @param nsim A non-negative integer
+#'
+#' @return NULL
+#' @noRd
+arg_check_nsim = function(nsim) {
+  if (length(nsim) != 1) {
+    stop("nsim must be a single value")
+  }
+  if (!is.numeric(nsim)) {
+    stop("nsim must be a numeric value")
+  }
+  if (!is.vector(nsim)) {
+    stop("nsim must be a vector (of length 1)")
+  }
+  if (min(nsim) < 0) {
+    stop("nsim must be a non-negative integer")
+  }
+}
+
+#' Check ubpop argument
+#'
+#' @param ubpop A positive value
+#' @return NULL
+#' @noRd
+arg_check_ubpop = function(ubpop) {
+  if (length(ubpop) != 1) {
+    stop("ubpop must be a single value")
+  }
+  if (!is.numeric(ubpop)) {
+    stop("ubpop must be a numeric value")
+  }
+  if (!is.vector(ubpop)) {
+    stop("ubpop must be a vector (of length 1)")
+  }
+  if (ubpop <= 0 || ubpop > 1) {
+    stop("ubpop should be a value between 0 and 1")
+  }
+}
+
+arg_check_k = function(k, N) {
+  if (length(k) != 1) {
+    stop("k must have length 1")
+  }
+  if (!is.numeric(k)) {
+    stop("k must be a numeric value")
+  }
+  if (!is.vector(k)) {
+    stop("k must be a vector (of length 1)")
+  }
+  if (k < 1) {
+    stop("k must be an integer >= 1")
+  }
+  if (floor(k) > N) {
+    stop("k cannot be more than the number of regions")
+  }
+}
+
+#' Check simdist argument
+#'
+#' @param simdist Distribution of simulation, single character value
+#' @return NULL
+#' @noRd
+arg_check_simdist = function(simdist) {
+  if (!is.null(simdist)) {
+    if (length(simdist) != 1) {
+      stop("simdist must be of length 1")
+    }
+    if (!is.element(simdist, c("multinomial", "poisson", "binomial"))) {
+      stop("simdist must be 'multinomial', 'poisson', or 'binomial'")
+    }
+  }
+}
+
+arg_check_min_cases = function(min.cases) {
+  if (length(min.cases) != 1) {
+    stop("min.cases must be a single value")
+  }
+  if (!is.numeric(min.cases)) {
+    stop("min.cases must be a numeric value")
+  }
+  if (!is.vector(min.cases)) {
+    stop("min.cases must be a vector (of length 1)")
+  }
+  if (min.cases < 1) {
+    stop("min.cases must be be >= 1")
+  }
+}
+
+arg_check_type = function(type) {
+  if (length(type) != 1) {
+    stop("type must be a single value")
+  }
+  if (!is.character(type)) {
+    stop("type must be a character")
+  }
+  if (!is.element(type, c("poisson", "binomial"))) {
+    stop("type must be 'poisson' or 'binomial'")
+  }
+}
+
+#' Check shape argument
+#'
+#' @param shape A vector of shape values >= 1
+#' @return NULL
+#' @noRd
+arg_check_shape = function(shape) {
+  if (!is.numeric(shape)) {
+    stop("shape must be a numeric vector")
+  }
+  if (!is.vector(shape)) {
+    stop("shape must be a numeric vector")
+  }
+  if (min(shape) < 1) {
+    stop("shape must be >= 1")
+  }
+}
+
+#' Check nangle argument
+#'
+#' @param nangle A vector of nangle values >= 1
+#' @return NULL
+#' @noRd
+arg_check_nangle = function(nangle) {
+  if (!is.numeric(nangle)) {
+    stop("nangle must be a numeric vector")
+  }
+  if (!is.vector(nangle)) {
+    stop("nangle must be a numeric vector")
+  }
+  if (min(nangle) < 1) {
+    stop("nangle must be >= 1")
+  }
+}
+

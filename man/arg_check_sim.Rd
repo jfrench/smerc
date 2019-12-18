@@ -7,7 +7,7 @@
 arg_check_sim(nsim, ty, ex, type, nn = NULL, zones = NULL,
   ein = NULL, eout = NULL, tpop = NULL, popin = NULL,
   popout = NULL, w = NULL, pop = NULL, ubpop = NULL, static,
-  simtype = "multinomial")
+  simdist = "multinomial")
 }
 \description{
 Check the arguments of the \code{*.sim} functions.

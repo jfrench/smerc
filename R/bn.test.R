@@ -48,8 +48,10 @@ bn.test = function(coords, cases, pop, cstar,
                    longlat = FALSE, noc = TRUE,
                    modified = FALSE) {
   # sanity checking
-  arg_check_bn_test(coords, cases, pop, cstar, longlat,
-                    alpha, noc, ex, modified)
+  arg_check_bn_test(coords = coords, cases = cases,
+                    pop = pop, cstar = cstar,
+                    longlat = longlat, alpha = alpha,
+                    noc = noc, ex = ex, modified = modified)
 
   coords = as.matrix(coords)
   # intercentroid distances

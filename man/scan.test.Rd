@@ -7,7 +7,7 @@
 scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
   nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
   cl = NULL, type = "poisson", min.cases = 2,
-  simtype = "multinomial")
+  simdist = "multinomial")
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -51,7 +51,7 @@ is \code{"binomial"}.}
 \item{min.cases}{The minimum number of cases required for
 a cluster.  The default is 2.}
 
-\item{simtype}{Character string indicating the simulation
+\item{simdist}{Character string indicating the simulation
 distribution. The default is \code{"multinomial"}, which
 conditions on the total number of cases observed. The
 other options are \code{"poisson"} and \code{"binomial"}}

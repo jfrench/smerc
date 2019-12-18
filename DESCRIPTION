@@ -14,7 +14,8 @@ Imports:
     smacpod,
     matrixStats,
     randtoolbox, 
-    sp
+    sp,
+    crayon
 Suggests:
     lintr,
     testthat, 
