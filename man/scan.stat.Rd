@@ -6,9 +6,19 @@
 \alias{stat.binom}
 \title{Spatial scan statistic}
 \usage{
-scan.stat(yin, ein = NULL, eout = NULL, ty, type = "poisson",
-  popin = NULL, tpop = NULL, a = 0, shape = 1, yout = NULL,
-  popout = NULL)
+scan.stat(
+  yin,
+  ein = NULL,
+  eout = NULL,
+  ty,
+  type = "poisson",
+  popin = NULL,
+  tpop = NULL,
+  a = 0,
+  shape = 1,
+  yout = NULL,
+  popout = NULL
+)
 
 stat.poisson(yin, yout, ein, eout, a = 0, shape = 1)
 

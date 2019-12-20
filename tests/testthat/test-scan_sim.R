@@ -1,11 +1,11 @@
 set.seed(2)
 nsim = 499
 data(nydf)
-coords = nydf[,c("x", "y")]
+coords = nydf[, c("x", "y")]
 nn = nnpop(as.matrix(dist(coords)), pop = nydf$pop, ubpop = 0.1)
 cases = floor(nydf$cases)
 ty = sum(cases)
-e = ty/sum(nydf$population) * nydf$population
+e = ty / sum(nydf$population) * nydf$population
 ein = nn.cumsum(nn, e)
 tpop = sum(nydf$population)
 popin = nn.cumsum(nn, nydf$population)

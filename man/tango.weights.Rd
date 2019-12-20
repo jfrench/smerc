@@ -5,11 +5,9 @@
 \alias{dweights}
 \title{Distance-based weights for \code{tango.test}}
 \usage{
-tango.weights(coords, kappa = 1, longlat = FALSE, type = "basic",
-  pop = NULL)
+tango.weights(coords, kappa = 1, longlat = FALSE, type = "basic", pop = NULL)
 
-dweights(coords, kappa = 1, longlat = FALSE, type = "basic",
-  pop = NULL)
+dweights(coords, kappa = 1, longlat = FALSE, type = "basic", pop = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

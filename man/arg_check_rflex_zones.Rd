@@ -4,8 +4,18 @@
 \alias{arg_check_rflex_zones}
 \title{Check arguments of rflex.zones}
 \usage{
-arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop, loop, pfreq,
-  verbose)
+arg_check_rflex_zones(
+  nn,
+  w,
+  cases,
+  ex,
+  alpha1,
+  type,
+  pop,
+  loop,
+  pfreq,
+  verbose
+)
 }
 \description{
 Check the arguments of rflex.zones

@@ -4,8 +4,16 @@
 \alias{rflex.sim}
 \title{Perform \code{rflex.test} on simualated data}
 \usage{
-rflex.sim(nsim = 1, nn, w, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL)
+rflex.sim(
+  nsim = 1,
+  nn,
+  w,
+  ex,
+  alpha1 = 0.2,
+  type = "poisson",
+  pop = NULL,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of

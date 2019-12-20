@@ -4,8 +4,17 @@
 \alias{uls.sim}
 \title{Perform \code{uls.test} on simulated data}
 \usage{
-uls.sim(nsim = 1, ty, ex, w, pop, ubpop, type = "poisson",
-  check.unique = FALSE, cl = NULL)
+uls.sim(
+  nsim = 1,
+  ty,
+  ex,
+  w,
+  pop,
+  ubpop,
+  type = "poisson",
+  check.unique = FALSE,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of

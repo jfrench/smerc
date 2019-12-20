@@ -4,9 +4,21 @@
 \alias{flex.test}
 \title{Flexibly-shaped Spatial Scan Test}
 \usage{
-flex.test(coords, cases, pop, w, k = 10, ex = sum(cases)/sum(pop) *
-  pop, type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
-  cl = NULL, lonlat = longlat, ...)
+flex.test(
+  coords,
+  cases,
+  pop,
+  w,
+  k = 10,
+  ex = sum(cases)/sum(pop) * pop,
+  type = "poisson",
+  nsim = 499,
+  alpha = 0.1,
+  longlat = FALSE,
+  cl = NULL,
+  lonlat = longlat,
+  ...
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

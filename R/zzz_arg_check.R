@@ -67,7 +67,8 @@ arg_check_cstar = function(cstar, cases) {
 
 #' Check longlat argument
 #'
-#' @param longlat A logical value indicating whether longlat distance should be used (TRUE)
+#' @param longlat A logical value indicating whether longlat
+#' distance should be used (TRUE)
 #' @noRd
 arg_check_longlat = function(longlat) {
   if (length(longlat) != 1) {
@@ -453,3 +454,29 @@ arg_check_nangle = function(nangle) {
   }
 }
 
+#' Title
+#'
+#' @param nstar A numeric value indicating the window radius
+#' for cepp.test.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+arg_check_nstar = function(nstar) {
+  if (length(nstar) != 1) {
+    stop("nstar should be a single value")
+  }
+  if (!is.numeric(nstar)) {
+    stop("nstar must be a numeric value")
+  }
+  if (!is.vector(nstar)) {
+    stop("nstar must be a vector (of length 1)")
+  }
+  if (nstar < 1) {
+    stop("nstar should be at least 1")
+  }
+  if (nstar > sum(pop)) {
+    stop("nstar should be no more than sum(pop)")
+  }
+}

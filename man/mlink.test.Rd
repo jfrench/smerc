@@ -4,9 +4,19 @@
 \alias{mlink.test}
 \title{Maximum Linkage spatial scan test}
 \usage{
-mlink.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, ubd = 1, longlat = FALSE,
-  cl = NULL)
+mlink.test(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  ubd = 1,
+  longlat = FALSE,
+  cl = NULL
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

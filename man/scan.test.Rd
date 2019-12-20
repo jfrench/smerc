@@ -4,10 +4,20 @@
 \alias{scan.test}
 \title{Spatial Scan Test}
 \usage{
-scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson", min.cases = 2,
-  simdist = "multinomial")
+scan.test(
+  coords,
+  cases,
+  pop,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  longlat = FALSE,
+  cl = NULL,
+  type = "poisson",
+  min.cases = 2,
+  simdist = "multinomial"
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

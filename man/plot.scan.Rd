@@ -4,8 +4,15 @@
 \alias{plot.scan}
 \title{Plot object of class \code{scan}.}
 \usage{
-\method{plot}{scan}(x, ..., ccol = NULL, cpch = NULL, add = FALSE,
-  usemap = FALSE, mapargs = list())
+\method{plot}{scan}(
+  x,
+  ...,
+  ccol = NULL,
+  cpch = NULL,
+  add = FALSE,
+  usemap = FALSE,
+  mapargs = list()
+)
 }
 \arguments{
 \item{x}{An object of class scan to be plotted.}

@@ -4,10 +4,24 @@
 \alias{arg_check_sim}
 \title{Argument checking for *.sim functions}
 \usage{
-arg_check_sim(nsim, ty, ex, type, nn = NULL, zones = NULL,
-  ein = NULL, eout = NULL, tpop = NULL, popin = NULL,
-  popout = NULL, w = NULL, pop = NULL, ubpop = NULL, static,
-  simdist = "multinomial")
+arg_check_sim(
+  nsim,
+  ty,
+  ex,
+  type,
+  nn = NULL,
+  zones = NULL,
+  ein = NULL,
+  eout = NULL,
+  tpop = NULL,
+  popin = NULL,
+  popout = NULL,
+  w = NULL,
+  pop = NULL,
+  ubpop = NULL,
+  static,
+  simdist = "multinomial"
+)
 }
 \description{
 Check the arguments of the \code{*.sim} functions.

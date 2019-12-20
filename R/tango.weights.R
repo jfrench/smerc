@@ -26,7 +26,9 @@
 #'
 #' @return Returns an \eqn{n \times n} matrix of weights.
 #' @references
-#' Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
+#' Tango, T.  (1995) A class of tests for detecting "general"
+#' and "focused" clustering of rare diseases.  Statistics in
+#' Medicine.  14:2323-2334.
 #'
 #' Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square
 #' Goodness-of-fit Test.  Geographical Analysis. 31:130-147

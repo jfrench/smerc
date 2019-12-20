@@ -4,9 +4,19 @@
 \alias{flex.sim}
 \title{Perform \code{flex.test} on simualated data}
 \usage{
-flex.sim(nsim = 1, zones, ty, ex, type = "poisson", ein = NULL,
-  eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
-  cl = NULL)
+flex.sim(
+  nsim = 1,
+  zones,
+  ty,
+  ex,
+  type = "poisson",
+  ein = NULL,
+  eout = NULL,
+  tpop = NULL,
+  popin = NULL,
+  popout = NULL,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of

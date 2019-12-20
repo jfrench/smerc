@@ -12,13 +12,13 @@ Imports:
     pbapply, 
     maps,
     smacpod,
-    matrixStats,
     randtoolbox, 
     sp,
     crayon
 Suggests:
     lintr,
+    maps,
     testthat, 
     SpatialEpi
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

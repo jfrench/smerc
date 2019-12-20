@@ -4,9 +4,20 @@
 \alias{rflex.test}
 \title{Restricted Flexibly-shaped Spatial Scan Test}
 \usage{
-rflex.test(coords, cases, pop, w, k = 50, ex = sum(cases)/sum(pop) *
-  pop, type = "poisson", nsim = 499, alpha = 0.1, longlat = FALSE,
-  alpha1 = 0.2, cl = NULL)
+rflex.test(
+  coords,
+  cases,
+  pop,
+  w,
+  k = 50,
+  ex = sum(cases)/sum(pop) * pop,
+  type = "poisson",
+  nsim = 499,
+  alpha = 0.1,
+  longlat = FALSE,
+  alpha1 = 0.2,
+  cl = NULL
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

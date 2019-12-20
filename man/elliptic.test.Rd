@@ -4,10 +4,21 @@
 \alias{elliptic.test}
 \title{Elliptical Spatial Scan Test}
 \usage{
-elliptic.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, shape = c(1, 1.5, 2, 3, 4,
-  5), nangle = c(1, 4, 6, 9, 12, 15), a = 0.5, cl = NULL,
-  type = "poisson", min.cases = 2)
+elliptic.test(
+  coords,
+  cases,
+  pop,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  shape = c(1, 1.5, 2, 3, 4, 5),
+  nangle = c(1, 4, 6, 9, 12, 15),
+  a = 0.5,
+  cl = NULL,
+  type = "poisson",
+  min.cases = 2
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

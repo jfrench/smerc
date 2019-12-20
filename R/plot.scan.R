@@ -55,7 +55,12 @@ plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
 
   if (!add) {
     if (usemap) {
-      do.call(maps::map, mapargs)
+      if (require(maps)) {
+        do.call(maps::map, mapargs)
+      } else {
+        message("Please install the maps package to enable this functionality")
+        plot(coords, ...)
+      }
     } else {
       plot(coords, ...)
     }

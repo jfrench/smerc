@@ -4,8 +4,20 @@
 \alias{mst.all}
 \title{Minimum spanning tree for all regions}
 \usage{
-mst.all(neighbors, cases, pop, w, ex, ty, max_pop, type = "maxonly",
-  nlinks = "one", early = FALSE, cl = NULL, progress = FALSE)
+mst.all(
+  neighbors,
+  cases,
+  pop,
+  w,
+  ex,
+  ty,
+  max_pop,
+  type = "maxonly",
+  nlinks = "one",
+  early = FALSE,
+  cl = NULL,
+  progress = FALSE
+)
 }
 \arguments{
 \item{neighbors}{A list containing the vector of

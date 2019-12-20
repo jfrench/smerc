@@ -9,10 +9,11 @@
 \arguments{
 \item{x}{An object of class \code{scan}.}
 
-\item{...}{Arguments passed on to \code{base::print}
-\describe{
-  \item{x}{an object used to select a method.}
-}}
+\item{...}{
+  Arguments passed on to \code{\link[base:print]{base::print}}
+  \describe{
+    \item{\code{}}{}
+  }}
 }
 \description{
 Print \code{scan} object

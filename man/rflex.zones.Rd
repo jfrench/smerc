@@ -4,9 +4,19 @@
 \alias{rflex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-rflex.zones(nn, w, cases, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL, loop = FALSE, verbose = FALSE,
-  pfreq = 1)
+rflex.zones(
+  nn,
+  w,
+  cases,
+  ex,
+  alpha1 = 0.2,
+  type = "poisson",
+  pop = NULL,
+  cl = NULL,
+  loop = FALSE,
+  verbose = FALSE,
+  pfreq = 1
+)
 }
 \arguments{
 \item{nn}{An n by k matrix providing the k nearest

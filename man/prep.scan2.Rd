@@ -5,8 +5,18 @@
 \title{a simplified prep.scan for non-scan methods
 orders on p-value instead of test statistic}
 \usage{
-prep.scan2(tobs, zones, pvalue, coords, cases, pop, ex, longlat,
-  w = NULL, d = NULL)
+prep.scan2(
+  tobs,
+  zones,
+  pvalue,
+  coords,
+  cases,
+  pop,
+  ex,
+  longlat,
+  w = NULL,
+  d = NULL
+)
 }
 \description{
 a simplified prep.scan for non-scan methods

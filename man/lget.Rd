@@ -19,9 +19,9 @@ sgetElement(X, name, simplify = TRUE, USE.NAMES = TRUE)
 \item{X}{A list.}
 
 \item{name}{
-    A literal character string or a \link{name} (possibly \link{backtick}
+    A literal character string or a \link[base]{name} (possibly \link[base]{backtick}
     quoted).  For extraction, this is normally (see under
-    \sQuote{Environments}) partially matched to the \code{\link{names}}
+    \sQuote{Environments}) partially matched to the \code{\link[base]{names}}
     of the object.
   }
 
@@ -30,12 +30,12 @@ sgetElement(X, name, simplify = TRUE, USE.NAMES = TRUE)
     possible?  For \code{sapply} it must be named and not abbreviated.
     The default value, \code{TRUE}, returns a vector or matrix if appropriate,
     whereas if \code{simplify = "array"} the result may be an
-    \code{\link{array}} of \dQuote{rank}
+    \code{\link[base]{array}} of \dQuote{rank}
     (\eqn{=}\code{length(dim(.))}) one higher than the result
     of \code{FUN(X[[i]])}.}
 
 \item{USE.NAMES}{logical; if \code{TRUE} and if \code{X} is character,
-    use \code{X} as \code{\link{names}} for the result unless it had names
+    use \code{X} as \code{\link[base]{names}} for the result unless it had names
     already.  Since this argument follows \code{\dots} its name cannot
     be abbreviated.}
 }

@@ -22,7 +22,8 @@
 #' data(nydf)
 #' data(nyw)
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
-uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
+uls.zones = function(cases, pop, w, ubpop = 0.5,
+                     check.unique = FALSE) {
   if (length(cases) != length(pop)) stop("length(cases) != length(pop)")
   if (length(cases) != nrow(w)) stop("length(cases) != nrow(w)")
   if (length(ubpop) != 1 | !is.numeric(ubpop)) {

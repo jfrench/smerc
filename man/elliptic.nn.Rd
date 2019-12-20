@@ -4,8 +4,13 @@
 \alias{elliptic.nn}
 \title{Nearest neighbors for elliptic scan}
 \usage{
-elliptic.nn(coords, pop, ubpop = 0.5, shape = c(1, 1.5, 2, 3, 4, 5),
-  nangle = c(1, 4, 6, 9, 12, 15))
+elliptic.nn(
+  coords,
+  pop,
+  ubpop = 0.5,
+  shape = c(1, 1.5, 2, 3, 4, 5),
+  nangle = c(1, 4, 6, 9, 12, 15)
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

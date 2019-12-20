@@ -3,7 +3,8 @@
 #' \code{zones.sum} computes the sum of \code{y} for the
 #' indices in each element of the list contained in \code{zones}.
 #'
-#' @param zones A list of nearest neighbors in the format produced by \code{\link{scan.zones}}.
+#' @param zones A list of nearest neighbors in the format
+#' produced by \code{\link{scan.zones}}.
 #' @inheritParams nn.cumsum
 #'
 #' @return A numeric vector.

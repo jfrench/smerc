@@ -4,8 +4,17 @@
 \alias{bn.test}
 \title{Besag-Newell Test}
 \usage{
-bn.test(coords, cases, pop, cstar, ex = sum(cases)/sum(pop) * pop,
-  alpha = 0.1, longlat = FALSE, noc = TRUE, modified = FALSE)
+bn.test(
+  coords,
+  cases,
+  pop,
+  cstar,
+  ex = sum(cases)/sum(pop) * pop,
+  alpha = 0.1,
+  longlat = FALSE,
+  noc = TRUE,
+  modified = FALSE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

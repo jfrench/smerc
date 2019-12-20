@@ -4,9 +4,20 @@
 \alias{uls.test}
 \title{Upper Level Set Spatial Scan Test}
 \usage{
-uls.test(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson", check.unique = FALSE)
+uls.test(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  longlat = FALSE,
+  cl = NULL,
+  type = "poisson",
+  check.unique = FALSE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

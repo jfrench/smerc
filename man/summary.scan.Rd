@@ -4,16 +4,16 @@
 \alias{summary.scan}
 \title{Summary of \code{scan} object}
 \usage{
-\method{summary}{scan}(object, ..., idx = seq_along(object$clusters),
-  digits = 1)
+\method{summary}{scan}(object, ..., idx = seq_along(object$clusters), digits = 1)
 }
 \arguments{
 \item{object}{An object of class \code{scan}.}
 
-\item{...}{Arguments passed on to \code{base::summary}
-\describe{
-  \item{object}{an object for which a summary is desired.}
-}}
+\item{...}{
+  Arguments passed on to \code{\link[base:summary]{base::summary}}
+  \describe{
+    \item{\code{}}{}
+  }}
 
 \item{idx}{A index vector indicating the elements of
 \code{object$clusters} to print information for. The default

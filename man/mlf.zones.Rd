@@ -5,8 +5,16 @@
 \title{Determine zones for the maxima likelihood
 first algorithm.}
 \usage{
-mlf.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE)
+mlf.zones(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  ubpop = 0.5,
+  ubd = 1,
+  longlat = FALSE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

@@ -4,8 +4,16 @@
 \alias{flex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-flex.zones(coords, w, k = 10, longlat = FALSE, cl = NULL,
-  loop = FALSE, verbose = FALSE, pfreq = 1)
+flex.zones(
+  coords,
+  w,
+  k = 10,
+  longlat = FALSE,
+  cl = NULL,
+  loop = FALSE,
+  verbose = FALSE,
+  pfreq = 1
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

@@ -4,9 +4,18 @@
 \alias{cepp.test}
 \title{Cluster Evalation Permutation Procedure Test}
 \usage{
-cepp.test(coords, cases, pop, nstar, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, longlat = FALSE, noc = TRUE,
-  simdist = "multinomial")
+cepp.test(
+  coords,
+  cases,
+  pop,
+  nstar,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  longlat = FALSE,
+  noc = TRUE,
+  simdist = "multinomial"
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

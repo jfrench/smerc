@@ -4,9 +4,23 @@
 \alias{smerc_cluster}
 \title{Prepare \code{smerc_cluster}}
 \usage{
-smerc_cluster(tobs, zones, pvalue, coords, cases, pop, ex, longlat, method,
-  rel_param, w = NULL, d = NULL, a = NULL, shape_all = NULL,
-  angle_all = NULL)
+smerc_cluster(
+  tobs,
+  zones,
+  pvalue,
+  coords,
+  cases,
+  pop,
+  ex,
+  longlat,
+  method,
+  rel_param,
+  w = NULL,
+  d = NULL,
+  a = NULL,
+  shape_all = NULL,
+  angle_all = NULL
+)
 }
 \arguments{
 \item{tobs}{The vector of observed test statistics for each zone}

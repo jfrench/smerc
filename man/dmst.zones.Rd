@@ -4,9 +4,18 @@
 \alias{dmst.zones}
 \title{Determine zones for the Dynamic Minimum Spanning Tree scan test}
 \usage{
-dmst.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL,
-  progress = TRUE)
+dmst.zones(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  ubpop = 0.5,
+  ubd = 1,
+  longlat = FALSE,
+  cl = NULL,
+  progress = TRUE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

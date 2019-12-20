@@ -4,9 +4,18 @@
 \alias{dc.zones}
 \title{Determine zones for the Double Connected scan test}
 \usage{
-dc.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL,
-  progress = TRUE)
+dc.zones(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  ubpop = 0.5,
+  ubd = 1,
+  longlat = FALSE,
+  cl = NULL,
+  progress = TRUE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

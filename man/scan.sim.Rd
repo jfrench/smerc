@@ -4,9 +4,21 @@
 \alias{scan.sim}
 \title{Perform \code{scan.test} on simulated data}
 \usage{
-scan.sim(nsim = 1, nn, ty, ex, type = "poisson", ein = NULL,
-  eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
-  cl = NULL, simdist = "multinomial", pop = NULL)
+scan.sim(
+  nsim = 1,
+  nn,
+  ty,
+  ex,
+  type = "poisson",
+  ein = NULL,
+  eout = NULL,
+  tpop = NULL,
+  popin = NULL,
+  popout = NULL,
+  cl = NULL,
+  simdist = "multinomial",
+  pop = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of

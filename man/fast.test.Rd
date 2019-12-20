@@ -4,9 +4,18 @@
 \alias{fast.test}
 \title{Fast Subset Scan Test}
 \usage{
-fast.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson")
+fast.test(
+  coords,
+  cases,
+  pop,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  longlat = FALSE,
+  cl = NULL,
+  type = "poisson"
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

@@ -4,8 +4,7 @@
 \alias{plot.smerc_cluster}
 \title{Plot object of class \code{smerc_cluster}.}
 \usage{
-\method{plot}{smerc_cluster}(x, ..., ccol = NULL, cpch = NULL,
-  add = FALSE)
+\method{plot}{smerc_cluster}(x, ..., ccol = NULL, cpch = NULL, add = FALSE)
 }
 \arguments{
 \item{x}{An object of class scan to be plotted.}
