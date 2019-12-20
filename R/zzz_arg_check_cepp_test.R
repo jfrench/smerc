@@ -10,12 +10,7 @@ arg_check_cepp_test = function(coords, cases, pop, nstar,
   N = nrow(coords)
   arg_check_cases(cases, N)
   arg_check_pop(pop, N)
-  if (length(nstar) != 1 || !is.numeric(nstar)) {
-    stop("nstar should be a numeric vector of length 1")
-  }
-  if (nstar < 1 || nstar > sum(pop)) {
-    stop("nstar should be at least 1 and less than or equal to the sum(pop)")
-  }
+  arg_check_nstar(nstar)
   arg_check_ex(ex, N)
   arg_check_alpha(alpha)
   arg_check_nsim(nsim)
