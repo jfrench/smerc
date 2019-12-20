@@ -46,11 +46,12 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
     } else if (simdist == "poisson") {
       ysim = stats::rpois(length(ex), lambda = ex)
       ty = sum(ysim)
-      mult = ty/sum(ex)
+      mult = ty / sum(ex)
       ein = ein * mult
       eout = eout * mult
     } else if (simdist == "binomial") {
-      ysim = stats::rbinom(n = length(ex), size = pop, prob = ex/pop)
+      ysim = stats::rbinom(n = length(ex), size = pop,
+                           prob = ex / pop)
       ty = sum(ysim)
     }
     # compute test statistics for each zone

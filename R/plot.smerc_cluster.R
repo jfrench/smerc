@@ -1,14 +1,31 @@
 #' Plot object of class \code{smerc_cluster}.
 #'
-#' Plot clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
+#' Plot clusters (the centroids of the regions in each
+#' cluster) in different colors.  The most likely cluster is
+#' plotted with solid red circles by default.  Points not in
+#' a cluster are black open circles.  The other cluster
+#' points are plotted with different symbols and colors.
 #'
 #' @param x An object of class scan to be plotted.
-#' @param ... Additional graphical parameters passed to \code{plot} function.
-#' @param ccol Fill color of the plotted points.  Default is NULL, indicating red for the most likely cluster, and col = 3, 4, ..., up to the remaining number of clusters.
-#' @param cpch Plotting character to use for points in each cluster.  Default is NULL, indicating pch = 20 for the most likely cluster and then pch = 2, 3, .., up to the remaining number of clusters.
-#' @param add A logical indicating whether results should be drawn on existing map.
-#' @importFrom graphics plot points segments
+#' @param ... Additional graphical parameters passed to
+#'   \code{plot} function.
+#' @param ccol Fill color of the plotted points.  Default is
+#'   NULL, indicating red for the most likely cluster, and
+#'   col = 3, 4, ..., up to the remaining number of
+#'   clusters.
+#' @param cpch Plotting character to use for points in each
+#'   cluster.  Default is NULL, indicating pch = 20 for the
+#'   most likely cluster and then pch = 2, 3, .., up to the
+#'   remaining number of clusters.
+#' @param add A logical indicating whether results should be
+#'   drawn on existing map.
+#' @param usemap Logical indicating whether the maps::map
+#'   function should be used to create a plot background for
+#'   the coordinates.  Default is FALSE.  Use TRUE if you
+#'   have longitude/latitude coordinates.
+#' @param mapargs A list of arguments for the map function.
 #' @export
+#' @method plot smerc_cluster
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
@@ -18,13 +35,15 @@
 #' plot(out)
 #' ## plot output for new york state
 #' # specify desired argument values
-#' # mapargs = list(database = "county", region = "new york",
-#' # xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
+#' mapargs = list(database = "county", region = "new york",
+#'                xlim = range(out$coords[,1]),
+#'                ylim = range(out$coords[,2]))
 #' # needed for "county" database (unless you execute library(maps))
-#' # data(countyMapEnv, package = "maps")
-#' # plot(out, usemap = TRUE, mapargs = mapargs)
+#' data(countyMapEnv, package = "maps")
+#' plot(out, usemap = TRUE, mapargs = mapargs)
 plot.smerc_cluster = function(x, ..., ccol = NULL, cpch = NULL,
-                     add = FALSE) {
+                     add = FALSE, usemap = FALSE,
+                     mapargs = list()) {
   # number of centroids
   nc = length(x$clusters)
 
@@ -45,12 +64,21 @@ plot.smerc_cluster = function(x, ..., ccol = NULL, cpch = NULL,
   coords = x$coords
 
   if (!add) {
-    plot(coords, ...)
+    if (usemap) {
+      if (requireNamespace("maps", quietly = TRUE)) {
+        do.call(maps::map, mapargs)
+      } else {
+        message("Please install the maps package to enable this functionality")
+        graphics::plot(coords, ...)
+      }
+    } else {
+      graphics::plot(coords, ...)
+    }
   }
 
   graphics::points(coords, ...)
   # plot clusters
-  for (i in 1:nc) {
+  for (i in seq_len(nc)) {
     graphics::points(coords[x$clusters[[i]]$locids, 1],
                      coords[x$clusters[[i]]$locids, 2],
                      col = ccol[i], pch = cpch[i])
@@ -78,13 +106,13 @@ w2segments = function(w, coords) {
   nnb = sum(w != 0)
   count = 0
   seg = matrix(0, nrow = nnb, ncol = 4)
-  for (i in 1:nrow(w)) {
+  for (i in seq_len(w)) {
     nbi = which(w[i, ] != 0)
     nnbi = length(nbi)
-    seg[count + 1:nnbi, 1] = coords[i, 1]
-    seg[count + 1:nnbi, 2] = coords[i, 2]
-    seg[count + 1:length(nbi), 3] = coords[nbi, 1]
-    seg[count + 1:length(nbi), 4] = coords[nbi, 2]
+    seg[count + seq_len(nnbi), 1] = coords[i, 1]
+    seg[count + seq_len(nnbi), 2] = coords[i, 2]
+    seg[count + seq_along(nbi), 3] = coords[nbi, 1]
+    seg[count + seq_along(nbi), 4] = coords[nbi, 2]
     count = count + nnbi
   }
   return(seg)

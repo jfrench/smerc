@@ -2,8 +2,7 @@
 #'
 #' Check the arguments of the \code{*.sim} functions.
 #' @return NULL
-#' @export
-#' @keywords internal
+#' @noRd
 arg_check_sim = function(nsim,
                          ty,
                          ex,

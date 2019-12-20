@@ -27,7 +27,8 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -43,7 +44,7 @@ a cluster is signficant.  Default is 0.10.}
 total population to consider for a cluster.}
 
 \item{ubd}{A proportion in (0, 1].  The distance of
-potential clusters must be no more than \code{ubd * m}, 
+potential clusters must be no more than \code{ubd * m},
 where \code{m} is the maximum intercentroid distance
 between all coordinates.}
 
@@ -64,33 +65,33 @@ or an integer to indicate number of child-processes
 Returns a \code{scan} object.
 }
 \description{
-\code{dmst.test} implements the dynamic Minimum Spanning Tree
-scan test of Assuncao et al. (2006). 
-Starting with a single region as a current zone, new 
-candidate zones are constructed by combining the current 
-zone with the connected region that maximizes the 
-resulting likelihood ratio test statistic.  This  
-procedure is repeated until the population or distance upper
-bounds are reached.  The same procedure is repeated for 
-each region.  The clusters returned are non-overlapping, 
-ordered from most significant to least significant.  
-The first cluster is the most likely to be a cluster.  
-If no significant clusters are found, then the most 
-likely cluster is returned (along with a warning).
+\code{dmst.test} implements the dynamic Minimum Spanning
+Tree scan test of Assuncao et al. (2006). Starting with a
+single region as a current zone, new candidate zones are
+constructed by combining the current zone with the
+connected region that maximizes the resulting likelihood
+ratio test statistic.  This procedure is repeated until
+the population or distance upper bounds are reached.  The
+same procedure is repeated for each region.  The clusters
+returned are non-overlapping, ordered from most
+significant to least significant. The first cluster is
+the most likely to be a cluster. If no significant
+clusters are found, then the most likely cluster is
+returned (along with a warning).
 }
 \details{
-The maximum intercentroid distance can be found by 
-executing the command: 
-\code{sp::spDists(as.matrix(coords), longlat = longlat)}, 
-based on the specified values of \code{coords} and 
+The maximum intercentroid distance can be found by
+executing the command:
+\code{sp::spDists(as.matrix(coords), longlat = longlat)},
+based on the specified values of \code{coords} and
 \code{longlat}.
 }
 \examples{
 data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
-out = dmst.test(coords = coords, cases = floor(nydf$cases), 
-                pop = nydf$pop, w = nyw, 
+out = dmst.test(coords = coords, cases = floor(nydf$cases),
+                pop = nydf$pop, w = nyw,
                 alpha = 0.12, longlat = TRUE,
                 nsim = 2, ubpop = 0.05, ubd = 0.1)
 data(nypoly)

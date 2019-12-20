@@ -108,7 +108,7 @@ out2 = scan.test(coords = coords, cases = floor(nydf$cases),
                   alpha = 1, longlat = TRUE)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
-c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
+sget(out2$clusters, name = "cases")[1:3]
 }
 \references{
 Kulldorff, M. (1997) A spatial scan

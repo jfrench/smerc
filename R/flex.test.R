@@ -1,20 +1,34 @@
 #' Flexibly-shaped Spatial Scan Test
 #'
-#' \code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
+#' \code{flex.test} performs the flexibly-shaped scan test
+#' of Tango and Takahashi (2005).
 #'
-#' The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+#' The test is performed using the spatial scan test based
+#' on the Poisson test statistic and a fixed number of
+#' cases.  The first cluster is the most likely to be a
+#' cluster.  If no significant clusters are found, then the
+#' most likely cluster is returned (along with a warning).
 #'
 #' @inheritParams rflex.test
 #' @param lonlat Deprecated in favor of \code{longlat}.
 #' @param ... Not used.
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+#' @return Returns a list of length two of class scan. The
+#'   first element (clusters) is a list containing the
+#'   significant, non-ovlappering clusters, and has the the
+#'   following components:
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}}, \code{\link{plot.scan}},
-#' \code{\link{scan.test}}, \code{\link{uls.test}},
-#' \code{\link{dmst.test}}, \code{\link{bn.test}}
-#' @references Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+#' @seealso \code{\link{scan.stat}},
+#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
+#'   \code{\link{uls.test}}, \code{\link{dmst.test}},
+#'   \code{\link{bn.test}}
+#' @references Tango, T., & Takahashi, K. (2005). A flexibly
+#'   shaped spatial scan statistic for detecting clusters.
+#'   International journal of health geographics, 4(1), 11.
+#'   Kulldorff, M. (1997) A spatial scan statistic.
+#'   Communications in Statistics -- Theory and Methods 26,
+#'   1481-1496.
 #' @examples
 #' data(nydf)
 #' data(nyw)

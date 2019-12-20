@@ -15,36 +15,38 @@ region.}
 \item{w}{An \eqn{n \times n} weights matrix.}
 
 \item{nsim}{The number of simulations for which to
-perform a
-Monto Carlo test of significance.  Counts are simulated
-according to a multinomial distribution with \code{sum(cases)}
-total cases and class probabilities \code{pop/sum(pop)}.
-\code{sum(cases)} .}
+perform a Monto Carlo test of significance.  Counts are
+simulated according to a multinomial distribution with
+\code{sum(cases)} total cases and class probabilities
+\code{pop/sum(pop)}. \code{sum(cases)} .}
 }
 \value{
-Returns a list of class \code{tango} with elements:
-\item{tstat}{Tango's index}
-\item{tstat.chisq}{The approximately chi-squared statistic proposed by Tango that is derived from \code{tstat}}
-\item{dfc}{The degrees of freedom of \code{tstat.chisq}}
-\item{pvalue.chisq}{The p-value associated with \code{tstat.chisq}}
-\item{tstat.sim}{The vector of test statistics from the simulated data if \code{nsim > 0}}
-\item{pvalue.sim}{The p-value associated with the Monte Carlo test of significance when \code{nsim > 0}}
-Additionally, the goodness-of-fit \code{gof} and
-spatial autocorrelation \code{sa} components of the
-Tango's index are provided (and for the simulated data sets
-also, if appropriate).
+Returns a list of class \code{tango} with
+  elements: \item{tstat}{Tango's index}
+  \item{tstat.chisq}{The approximately chi-squared
+  statistic proposed by Tango that is derived from
+  \code{tstat}} \item{dfc}{The degrees of freedom of
+  \code{tstat.chisq}} \item{pvalue.chisq}{The p-value
+  associated with \code{tstat.chisq}}
+  \item{tstat.sim}{The vector of test statistics from the
+  simulated data if \code{nsim > 0}}
+  \item{pvalue.sim}{The p-value associated with the Monte
+  Carlo test of significance when \code{nsim > 0}}
+  Additionally, the goodness-of-fit \code{gof} and
+  spatial autocorrelation \code{sa} components of the
+  Tango's index are provided (and for the simulated data
+  sets also, if appropriate).
 }
 \description{
 \code{tango.test} performs a test for clustering proposed
 by Tango (1995).  The test uses Tango's chi-square
-approximation for significance testing by default,
-but also uses Monto Carlo simulation when
-\code{nsim > 0}.
+approximation for significance testing by default, but
+also uses Monto Carlo simulation when \code{nsim > 0}.
 }
 \details{
 The \code{\link{dweights}} function can be used to
-construct a weights matrix \code{w} using the method
-of Tango (1995), Rogerson (1999), or a basic style.
+construct a weights matrix \code{w} using the method of
+Tango (1995), Rogerson (1999), or a basic style.
 }
 \examples{
 data(nydf)
@@ -53,14 +55,19 @@ w = dweights(coords, kappa = 1)
 results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 }
 \references{
-Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14, 2323-2334.
+Tango, T.  (1995) A class of tests for
+detecting "general" and "focused" clustering of rare
+diseases.  Statistics in Medicine.  14, 2323-2334.
 
-Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square
-Goodness-of-fit Test.  Geographical Analysis. 31, 130-147
+Rogerson, P. (1999) The Detection of Clusters Using A
+Spatial Version of the Chi-Square Goodness-of-fit Test.
+Geographical Analysis. 31, 130-147
 
-Tango, T.  (2010) Statistical Methods for Disease Clustering.  Springer.
+Tango, T.  (2010) Statistical Methods for Disease
+Clustering. Springer.
 
-Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.
+Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial
+Statistics for Public Health Data.  Hoboken, NJ: Wiley.
 }
 \seealso{
 \code{\link{dweights}}

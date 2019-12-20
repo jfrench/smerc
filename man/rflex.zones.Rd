@@ -23,7 +23,8 @@ rflex.zones(
 neighbors of each region, presumably produced by the
 \code{\link{knn}} function.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{cases}{The number of cases observed in each region.}
 

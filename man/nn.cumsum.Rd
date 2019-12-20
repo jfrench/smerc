@@ -7,20 +7,22 @@
 nn.cumsum(nn, y, simplify = TRUE)
 }
 \arguments{
-\item{nn}{A list of nearest neighbors in the format produced by \code{\link{nnpop}}.}
+\item{nn}{A list of nearest neighbors in the format
+produced by \code{\link{nnpop}}.}
 
 \item{y}{A numeric vector of values to be summed over.}
 
-\item{simplify}{A logical value indicating whether the results
-should be simplified to a numeric vector.  The default is
-\code{TRUE}.}
+\item{simplify}{A logical value indicating whether the
+results should be simplified to a numeric vector.  The
+default is \code{TRUE}.}
 }
 \value{
-A vector or list, depending on the value of \code{simplify}.
+A vector or list, depending on the value of
+  \code{simplify}.
 }
 \description{
-\code{nn.cumsum} computes the cumulative sum of \code{y} for
-the sequences of indices in each element of the list
+\code{nn.cumsum} computes the cumulative sum of \code{y}
+for the sequences of indices in each element of the list
 contained in \code{nn}.
 }
 \examples{

@@ -23,8 +23,9 @@ distance is used to calculate the intercentroid
 distance.}
 
 \item{type}{The type of weights matrix to construct.
-Current options are \code{"basic"}, \code{"tango"},
-and \code{"rogerson"}.  Default is \code{"basic"}.  See Details.}
+Current options are \code{"basic"}, \code{"tango"}, and
+\code{"rogerson"}.  Default is \code{"basic"}.  See
+Details.}
 
 \item{pop}{The population size associated with each
 region.}
@@ -33,23 +34,23 @@ region.}
 Returns an \eqn{n \times n} matrix of weights.
 }
 \description{
-\code{tango.weights} constructs a distance-based weights matrix.
-The \code{tango.weights} function can be used to
-construct a weights matrix \code{w} using the method
-of Tango (1995), Rogerson (1999), or a basic style.
+\code{tango.weights} constructs a distance-based weights
+matrix. The \code{tango.weights} function can be used to
+construct a weights matrix \code{w} using the method of
+Tango (1995), Rogerson (1999), or a basic style.
 }
 \details{
 \code{coords} is used to construct an \eqn{n \times n}
 distance matrix \code{d}.
 
-If \code{type = "basic"}, then
-\eqn{w_{ij} = exp(-d_{ij}/\kappa)}.
+If \code{type = "basic"}, then \eqn{w_{ij} =
+exp(-d_{ij}/\kappa)}.
 
-If \code{type = "rogerson"}, then
-\eqn{w_{ij} = exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}.
+If \code{type = "rogerson"}, then \eqn{w_{ij} =
+exp(-d_{ij}/\kappa)/\sqrt(pop_i/pop * pop_j/pop)}.
 
-If \code{type = "tango"}, then
-\eqn{w_{ij} = exp(-4 * d_{ij}^2/\kappa^2)}.
+If \code{type = "tango"}, then \eqn{w_{ij} = exp(-4 *
+d_{ij}^2/\kappa^2)}.
 }
 \examples{
 data(nydf)
@@ -57,10 +58,13 @@ coords = as.matrix(nydf[,c("longitude", "latitude")])
 w = tango.weights(coords, kappa = 1, longlat = TRUE)
 }
 \references{
-Tango, T.  (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases.  Statistics in Medicine.  14:2323-2334.
+Tango, T.  (1995) A class of tests for
+detecting "general" and "focused" clustering of rare
+diseases.  Statistics in Medicine.  14:2323-2334.
 
-Rogerson, P. (1999) The Detection of Clusters Using A Spatial Version of the Chi-Square
-Goodness-of-fit Test.  Geographical Analysis. 31:130-147
+Rogerson, P. (1999) The Detection of Clusters Using A
+Spatial Version of the Chi-Square Goodness-of-fit Test.
+Geographical Analysis. 31:130-147
 }
 \seealso{
 \code{\link{tango.test}}

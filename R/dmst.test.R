@@ -1,31 +1,31 @@
 #' Dynamic Minimum Spanning Tree spatial scan test
-#' 
-#' \code{dmst.test} implements the dynamic Minimum Spanning Tree
-#' scan test of Assuncao et al. (2006). 
-#' Starting with a single region as a current zone, new 
-#' candidate zones are constructed by combining the current 
-#' zone with the connected region that maximizes the 
-#' resulting likelihood ratio test statistic.  This  
-#' procedure is repeated until the population or distance upper
-#' bounds are reached.  The same procedure is repeated for 
-#' each region.  The clusters returned are non-overlapping, 
-#' ordered from most significant to least significant.  
-#' The first cluster is the most likely to be a cluster.  
-#' If no significant clusters are found, then the most 
-#' likely cluster is returned (along with a warning).
-#' 
-#' The maximum intercentroid distance can be found by 
-#' executing the command: 
-#' \code{sp::spDists(as.matrix(coords), longlat = longlat)}, 
-#' based on the specified values of \code{coords} and 
+#'
+#' \code{dmst.test} implements the dynamic Minimum Spanning
+#' Tree scan test of Assuncao et al. (2006). Starting with a
+#' single region as a current zone, new candidate zones are
+#' constructed by combining the current zone with the
+#' connected region that maximizes the resulting likelihood
+#' ratio test statistic.  This procedure is repeated until
+#' the population or distance upper bounds are reached.  The
+#' same procedure is repeated for each region.  The clusters
+#' returned are non-overlapping, ordered from most
+#' significant to least significant. The first cluster is
+#' the most likely to be a cluster. If no significant
+#' clusters are found, then the most likely cluster is
+#' returned (along with a warning).
+#'
+#' The maximum intercentroid distance can be found by
+#' executing the command:
+#' \code{sp::spDists(as.matrix(coords), longlat = longlat)},
+#' based on the specified values of \code{coords} and
 #' \code{longlat}.
-#' 
+#'
 #' @inheritParams flex.test
 #' @inheritParams scan.test
 #' @param ubd A proportion in (0, 1].  The distance of
-#' potential clusters must be no more than \code{ubd * m}, 
-#' where \code{m} is the maximum intercentroid distance
-#' between all coordinates.
+#'   potential clusters must be no more than \code{ubd * m},
+#'   where \code{m} is the maximum intercentroid distance
+#'   between all coordinates.
 #' @return Returns a \code{scan} object.
 #' @author Joshua French
 #' @export
@@ -37,12 +37,12 @@
 #'   Neto, S.J.F. (2006). Fast detection of arbitrarily
 #'   shaped disease clusters, Statistics in Medicine, 25,
 #'   723-742.  <https://doi.org/10.1002/sim.2411>
-#' @examples 
+#' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' out = dmst.test(coords = coords, cases = floor(nydf$cases), 
-#'                 pop = nydf$pop, w = nyw, 
+#' out = dmst.test(coords = coords, cases = floor(nydf$cases),
+#'                 pop = nydf$pop, w = nyw,
 #'                 alpha = 0.12, longlat = TRUE,
 #'                 nsim = 2, ubpop = 0.05, ubd = 0.1)
 #' data(nypoly)

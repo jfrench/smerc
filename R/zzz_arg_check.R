@@ -458,12 +458,9 @@ arg_check_nangle = function(nangle) {
 #'
 #' @param nstar A numeric value indicating the window radius
 #' for cepp.test.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-arg_check_nstar = function(nstar) {
+#' @return NULL
+#' @noRd
+arg_check_nstar = function(nstar, pop) {
   if (length(nstar) != 1) {
     stop("nstar should be a single value")
   }
@@ -480,3 +477,62 @@ arg_check_nstar = function(nstar) {
     stop("nstar should be no more than sum(pop)")
   }
 }
+
+#' Check tango.weights/dweights type argument
+#'
+#' @param type A character vector: basic, rogerson, tango
+#' @return NULL
+#' @noRd
+arg_check_dweights_type = function(type) {
+  if (length(type) != 1) {
+    stop("type must be a single name")
+  }
+  if (!is.character(type)) {
+    stop("type must be a character")
+  }
+  if (!is.vector(type)) {
+    stop("type must be a vector")
+  }
+  if (!is.element(type, c("basic", "rogerson", "tango"))) {
+    stop("invalid type")
+  }
+}
+
+#' Check dweights kappa argument
+#'
+#' @param kappa A positive value
+#' @return NULL
+#' @noRd
+arg_check_dweights_kappa = function(kappa) {
+  if (length(kappa) != 1) {
+    stop("kappa should be a single value")
+  }
+  if (!is.numeric(kappa)) {
+    stop("kappa must be a numeric value")
+  }
+  if (!is.vector(kappa)) {
+    stop("kappa must be a vector (of length 1)")
+  }
+  if (kappa <= 0) {
+    stop("kappa must be positive")
+  }
+}
+
+#' Check w argument of tango.test
+#'
+#' @param w Spatial weights matrix
+#' @param N nrow(coords)
+#' @return NULL
+#' @noRd
+arg_check_tango_w = function(w, N) {
+  if (!is.matrix(w) & !is.data.frame(w)) {
+    stop("w must be a matrix or data.frame")
+  }
+  if (nrow(w) != N | ncol(w) != N) {
+    stop("w must be a square matrix with nrow(w) = nrow(coords)")
+  }
+  if (!is.numeric(w)) {
+    stop("w must be numeric")
+  }
+}
+

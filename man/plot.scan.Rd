@@ -17,20 +17,35 @@
 \arguments{
 \item{x}{An object of class scan to be plotted.}
 
-\item{...}{Additional graphical parameters passed to \code{plot} function.}
+\item{...}{Additional graphical parameters passed to
+\code{plot} function.}
 
-\item{ccol}{Fill color of the plotted points.  Default is NULL, indicating red for the most likely cluster, and col = 3, 4, ..., up to the remaining number of clusters.}
+\item{ccol}{Fill color of the plotted points.  Default is
+NULL, indicating red for the most likely cluster, and
+col = 3, 4, ..., up to the remaining number of
+clusters.}
 
-\item{cpch}{Plotting character to use for points in each cluster.  Default is NULL, indicating pch = 20 for the most likely cluster and then pch = 2, 3, .., up to the remaining number of clusters.}
+\item{cpch}{Plotting character to use for points in each
+cluster.  Default is NULL, indicating pch = 20 for the
+most likely cluster and then pch = 2, 3, .., up to the
+remaining number of clusters.}
 
-\item{add}{A logical indicating whether results should be drawn on existing map.}
+\item{add}{A logical indicating whether results should be
+drawn on existing map.}
 
-\item{usemap}{Logical indicating whether the maps::map function should be used to create a plot background for the coordinates.  Default is FALSE.  Use TRUE if you have longitude/latitude coordinates.}
+\item{usemap}{Logical indicating whether the maps::map
+function should be used to create a plot background for
+the coordinates.  Default is FALSE.  Use TRUE if you
+have longitude/latitude coordinates.}
 
 \item{mapargs}{A list of arguments for the map function.}
 }
 \description{
-Plot clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
+Plot clusters (the centroids of the regions in each
+cluster) in different colors.  The most likely cluster is
+plotted with solid red circles by default.  Points not in
+a cluster are black open circles.  The other cluster
+points are plotted with different symbols and colors.
 }
 \examples{
 data(nydf)

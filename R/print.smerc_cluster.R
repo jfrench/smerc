@@ -30,12 +30,15 @@ print.smerc_cluster = function(x, ...) {
   }
   if (!is.null(rel_param$longlat)) {
     message(paste(crayon::blue("distance:"),
-            ifelse(rel_param$longlat, crayon::magenta("great circle"), crayon::magenta("euclidean"))
+            ifelse(rel_param$longlat,
+                   crayon::magenta("great circle"),
+                   crayon::magenta("euclidean"))
             ))
   }
   if (!is.null(rel_param$ubpop)) {
     message(paste(crayon::blue("population upperbound: "),
-                  crayon::magenta(rel_param$ubpop*100, "%", sep = "")))
+                  crayon::magenta(rel_param$ubpop * 100, "%",
+                                  sep = "")))
   }
   if (!is.null(rel_param$min.cases)) {
     message(paste(crayon::blue("minimum cases:"),

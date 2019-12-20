@@ -87,9 +87,12 @@
 #' # create list of neighbors for each region (inclusive of region itself)
 #' all_neighbors = nndist(d, ubd)
 #' # find the dmst max zone
-#' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop)
-#' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "pruned")
-#' bigout = mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex, ty, max_pop, "all")
+#' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex,
+#'         ty, max_pop)
+#' mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex,
+#'         ty, max_pop, "pruned")
+#' bigout = mst.seq(start = 1, all_neighbors[[1]], cases, pop,
+#'                  w, ex, ty, max_pop, "all")
 #' head(bigout)
 mst.seq = function(start, neighbors, cases, pop, w, ex, ty,
                    max_pop, type = "maxonly", nlinks = "one",

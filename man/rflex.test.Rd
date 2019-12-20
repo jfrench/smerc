@@ -28,9 +28,12 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
-\item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
+\item{k}{An integer indicating the maximum number of
+regions to inclue in a potential cluster.  Default is
+10}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -62,23 +65,35 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
-\item{coords}{The centroid of the significant clusters.}
-\item{r}{The radius of the window of the clusters.}
-\item{pop}{The total population in the cluster window.}
-\item{cases}{The observed number of cases in the cluster window.}
-\item{expected}{The expected number of cases in the cluster window.}
-\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-\item{rr}{Relative risk in the cluster window.}
-\item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-\item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
-The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+Returns a list of length two of class scan. The
+  first element (clusters) is a list containing the
+  significant, non-ovlappering clusters, and has the the
+  following components: \item{coords}{The centroid of the
+  significant clusters.} \item{r}{The radius of the
+  window of the clusters.} \item{pop}{The total
+  population in the cluster window.} \item{cases}{The
+  observed number of cases in the cluster window.}
+  \item{expected}{The expected number of cases in the
+  cluster window.} \item{smr}{Standarized mortaility
+  ratio (observed/expected) in the cluster window.}
+  \item{rr}{Relative risk in the cluster window.}
+  \item{loglikrat}{The loglikelihood ratio for the
+  cluster window (i.e., the log of the test statistic).}
+  \item{pvalue}{The pvalue of the test statistic
+  associated with the cluster window.} The second element
+  of the list is the centroid coordinates.  This is
+  needed for plotting purposes.
 }
 \description{
-\code{rflex.test} performs the restricted flexibly shaped spatial scan test of Tango and Takahashi (2012).
+\code{rflex.test} performs the restricted flexibly shaped
+spatial scan test of Tango and Takahashi (2012).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based
+on the Poisson test statistic and a fixed number of
+cases.  The first cluster is the most likely to be a
+cluster.  If no significant clusters are found, then the
+most likely cluster is returned (along with a warning).
 }
 \examples{
 data(nydf)
@@ -100,9 +115,10 @@ Tango, T. and Takahashi, K. (2012), A
   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 }
 \seealso{
-\code{\link{scan.stat}}, \code{\link{plot.scan}},
-\code{\link{scan.test}}, \code{\link{uls.test}},
-\code{\link{dmst.test}}, \code{\link{bn.test}}
+\code{\link{scan.stat}},
+  \code{\link{plot.scan}}, \code{\link{scan.test}},
+  \code{\link{uls.test}}, \code{\link{dmst.test}},
+  \code{\link{bn.test}}
 }
 \author{
 Joshua French

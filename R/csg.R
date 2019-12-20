@@ -1,36 +1,42 @@
 #' Construct connected subgraphs
 #'
 #' \code{csg}, \code{lcsg}, and \code{scsg} construct
-#' connected subgraphs.
-#' \code{set} contains a vector of vertices of the pattern 1, 2, 3, ..., N.
-#' \code{idx} is a vector of possible vertices being considered as a subgraph.
-#' \code{w} is a connectivity matrix relating the N vertices.
-#' \code{w[i,j] = 1} if vertices i and j are connected, i.e., if they share an edge.
-#' The dimensions of \code{w} are \eqn{N times k}, where \code{k = length(idx)}.
-#' While the rows of \code{w} contain adjacency information for all N
-#' vertices, only the \code{idx} columns of the complete adjacency matrix
-#' are used in \code{w}.  See Details for discussion of \code{scsg}.
+#' connected subgraphs. \code{set} contains a vector of
+#' vertices of the pattern 1, 2, 3, ..., N. \code{idx} is a
+#' vector of possible vertices being considered as a
+#' subgraph. \code{w} is a connectivity matrix relating the
+#' N vertices. \code{w[i,j] = 1} if vertices i and j are
+#' connected, i.e., if they share an edge. The dimensions of
+#' \code{w} are \eqn{N times k}, where \code{k =
+#' length(idx)}. While the rows of \code{w} contain
+#' adjacency information for all N vertices, only the
+#' \code{idx} columns of the complete adjacency matrix are
+#' used in \code{w}.  See Details for discussion of
+#' \code{scsg}.
 #'
-#' \code{scsg} performs
-#' a sequence of \code{lcsg} calls.  Starting with \code{lset == list(idx[1])},
-#' \code{scsg} keeps iteratively building more connected subsgraphs by perfoming
-#' something like:  set1 = list(idx[1]).  set2 = lcsg(set1, idx, w).
-#' set3 = lcsg(set2, idx, w).  This is done until there are no more connected
-#' subgraphs among the elements of \code{idx}.
+#' \code{scsg} performs a sequence of \code{lcsg} calls.
+#' Starting with \code{lset == list(idx[1])}, \code{scsg}
+#' keeps iteratively building more connected subsgraphs by
+#' perfoming something like:  set1 = list(idx[1]).  set2 =
+#' lcsg(set1, idx, w). set3 = lcsg(set2, idx, w).  This is
+#' done until there are no more connected subgraphs among
+#' the elements of \code{idx}.
 #'
 #' @param set A vector of (presumably connected) vertices.
 #' @param lset A list of sets.
-#' @param idx A vector of vertices considered for inclusion in the
-#' subgraph, e.g., based on nearest neighbors.
-#' @param w The adjacency matrix for all vertices by row, but with only the \code{idx} columns
-#' @param verbose A logical value indicating whether very descriptive messages
-#' should be provided.  Default is \code{FALSE}.  If \code{TRUE}, this can
-#' be useful for diagnosing where the sequences of connected subgraphs is
-#' slowing down/having problems.
+#' @param idx A vector of vertices considered for inclusion
+#'   in the subgraph, e.g., based on nearest neighbors.
+#' @param w The adjacency matrix for all vertices by row,
+#'   but with only the \code{idx} columns
+#' @param verbose A logical value indicating whether very
+#'   descriptive messages should be provided.  Default is
+#'   \code{FALSE}.  If \code{TRUE}, this can be useful for
+#'   diagnosing where the sequences of connected subgraphs
+#'   is slowing down/having problems.
 #'
-#' @return A list of with all possible combinations of \code{set} and
-#' each possible connected vertex in \code{idx}, or \code{NULL} if none
-#' are possible.
+#' @return A list of with all possible combinations of
+#'   \code{set} and each possible connected vertex in
+#'   \code{idx}, or \code{NULL} if none are possible.
 #' @export
 #'
 #' @examples

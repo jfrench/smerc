@@ -19,25 +19,37 @@
 #'
 #' @inheritParams dmst.test
 #'
-#' @return Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
-#' \item{locids}{The location ids of regions in a significant cluster.}
-#' \item{pop}{The total population in the cluser window.}
-#' \item{cases}{The observed number of cases in the cluster window.}
-#' \item{expected}{The expected number of cases in the cluster window.}
-#' \item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-#' \item{rr}{Relative risk in the cluster window.}
-#' \item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-#' \item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
-#' \item{w}{The adjacency matrix of the cluster.}
-#' \item{r}{The maximum radius of the cluster (in terms of intercentroid distance from the starting region).}
-#' The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+#' @return Returns a list of length two of class scan. The
+#'   first element (clusters) is a list containing the
+#'   significant, non-ovlappering clusters, and has the the
+#'   following components: \item{locids}{The location ids of
+#'   regions in a significant cluster.} \item{pop}{The total
+#'   population in the cluser window.} \item{cases}{The
+#'   observed number of cases in the cluster window.}
+#'   \item{expected}{The expected number of cases in the
+#'   cluster window.} \item{smr}{Standarized mortaility
+#'   ratio (observed/expected) in the cluster window.}
+#'   \item{rr}{Relative risk in the cluster window.}
+#'   \item{loglikrat}{The loglikelihood ratio for the
+#'   cluster window (i.e., the log of the test statistic).}
+#'   \item{pvalue}{The pvalue of the test statistic
+#'   associated with the cluster window.} \item{w}{The
+#'   adjacency matrix of the cluster.} \item{r}{The maximum
+#'   radius of the cluster (in terms of intercentroid
+#'   distance from the starting region).} The second element
+#'   of the list is the centroid coordinates.  This is
+#'   needed for plotting purposes.
 #' @author Joshua French
-#' @importFrom parallel mclapply
-#' @importFrom stats rmultinom
 #' @export
-#' @references Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.
+#' @references Yao, Z., Tang, J., & Zhan, F. B. (2011).
+#'   Detection of arbitrarily-shaped clusters using a
+#'   neighbor-expanding approach: A case study on murine
+#'   typhus in South Texas. International journal of health
+#'   geographics, 10(1), 1.
 #'
-#' Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
+#'   Assuncao, R.M., Costa, M.A., Tavares, A. and Neto,
+#'   S.J.F. (2006). Fast detection of arbitrarily shaped
+#'   disease clusters, Statistics in Medicine, 25, 723-742.
 #' @examples
 #' data(nydf)
 #' data(nyw)
@@ -90,7 +102,7 @@ mlf.test = function(coords, cases, pop, w,
   # determine which call for simulations
   fcall = pbapply::pblapply
   # setup list for call
-  fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i){
+  fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i) {
     # simulate new data set
     ysim = stats::rmultinom(1, size = ty, prob = ex)
 

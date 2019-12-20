@@ -22,7 +22,8 @@ simulations to perform.}
 \item{nn}{A matrix of the k nearest neighbors for the
 regions described by \code{w}.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk

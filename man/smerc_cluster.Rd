@@ -53,7 +53,8 @@ used to construct the \code{smerc_cluster}.}
 \item{rel_param}{A names list with the relevant parameters
 associated with \code{method}.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{d}{A precomputed distance matrix based on \code{coords}}
 

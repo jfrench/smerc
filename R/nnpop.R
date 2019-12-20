@@ -45,7 +45,7 @@ nnpop = function(d, pop, ubpop) {
   # cumulative population is less than the desired
   # proportion of the total popuation
   return(apply(od, 2,
-               FUN = function(x){
+               FUN = function(x) {
                  csum = cumsum(pop[x])
                  x[which(csum <= tpop * ubpop)]
                }))

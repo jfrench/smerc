@@ -10,11 +10,11 @@ License: GPL (>=2)
 LazyLoad: yes
 Imports:
     pbapply, 
-    maps,
     smacpod,
     randtoolbox, 
     sp,
-    crayon
+    crayon,
+    matrixStats
 Suggests:
     lintr,
     maps,

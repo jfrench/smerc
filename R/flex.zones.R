@@ -53,7 +53,7 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     czones_id = numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
-        if ( (i %% pfreq) == 0) {
+        if ((i %% pfreq) == 0) {
           message(i, "/", N, ". Starting region ", i,
                   " at ", Sys.time(), ".")
         }
@@ -65,7 +65,7 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
       # determine if some izones are duplicated with czones
       # remove duplicates and then combine with czones
       dup_id = which(izones_id %in% czones_id)
-      if (length(dup_id) > 0 ) {
+      if (length(dup_id) > 0) {
         czones = combine.zones(czones, izones[-dup_id])
         czones_id = c(czones_id, izones_id[-dup_id])
       } else {

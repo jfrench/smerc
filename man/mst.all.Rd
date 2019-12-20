@@ -62,7 +62,9 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+\item{progress}{A logical value indicating whether a
+progress bar should be displayed.  The default is
+\code{TRUE}.}
 }
 \value{
 Returns a list of relevant information.  See

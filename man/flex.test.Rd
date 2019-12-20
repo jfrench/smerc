@@ -29,9 +29,12 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
-\item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
+\item{k}{An integer indicating the maximum number of
+regions to inclue in a potential cluster.  Default is
+10}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -65,13 +68,21 @@ or an integer to indicate number of child-processes
 \item{...}{Not used.}
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+Returns a list of length two of class scan. The
+  first element (clusters) is a list containing the
+  significant, non-ovlappering clusters, and has the the
+  following components:
 }
 \description{
-\code{flex.test} performs the flexibly-shaped scan test of Tango and Takahashi (2005).
+\code{flex.test} performs the flexibly-shaped scan test
+of Tango and Takahashi (2005).
 }
 \details{
-The test is performed using the spatial scan test based on the Poisson test statistic and a fixed number of cases.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
+The test is performed using the spatial scan test based
+on the Poisson test statistic and a fixed number of
+cases.  The first cluster is the most likely to be a
+cluster.  If no significant clusters are found, then the
+most likely cluster is returned (along with a warning).
 }
 \examples{
 data(nydf)
@@ -87,12 +98,18 @@ library(sp)
 plot(nypoly, col = color.clusters(out))
 }
 \references{
-Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
+Tango, T., & Takahashi, K. (2005). A flexibly
+  shaped spatial scan statistic for detecting clusters.
+  International journal of health geographics, 4(1), 11.
+  Kulldorff, M. (1997) A spatial scan statistic.
+  Communications in Statistics -- Theory and Methods 26,
+  1481-1496.
 }
 \seealso{
-\code{\link{scan.stat}}, \code{\link{plot.scan}},
-\code{\link{scan.test}}, \code{\link{uls.test}},
-\code{\link{dmst.test}}, \code{\link{bn.test}}
+\code{\link{scan.stat}},
+  \code{\link{plot.scan}}, \code{\link{scan.test}},
+  \code{\link{uls.test}}, \code{\link{dmst.test}},
+  \code{\link{bn.test}}
 }
 \author{
 Joshua French

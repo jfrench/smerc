@@ -29,15 +29,16 @@ the desired ellipses.}
 consider for each shape.}
 }
 \value{
-A list of nested nearest neighbors, the associated shapes and angles for each set of nn,
-and all of the shapes and angles you get for each zone constructed from the
-set of nearest neighbors.
+A list of nested nearest neighbors, the
+  associated shapes and angles for each set of nn, and
+  all of the shapes and angles you get for each zone
+  constructed from the set of nearest neighbors.
 }
 \description{
-\code{elliptic.nn} computes the nearest neighbors relationships
-for \code{elliptic.test}.  It will provide a list of
-nearest neighbors, and a list of the associated shape
-and angle.
+\code{elliptic.nn} computes the nearest neighbors
+relationships for \code{elliptic.test}.  It will provide
+a list of nearest neighbors, and a list of the associated
+shape and angle.
 }
 \examples{
 data(nydf)

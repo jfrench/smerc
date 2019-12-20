@@ -27,7 +27,8 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -43,7 +44,7 @@ a cluster is signficant.  Default is 0.10.}
 total population to consider for a cluster.}
 
 \item{ubd}{A proportion in (0, 1].  The distance of
-potential clusters must be no more than \code{ubd * m}, 
+potential clusters must be no more than \code{ubd * m},
 where \code{m} is the maximum intercentroid distance
 between all coordinates.}
 
@@ -61,18 +62,26 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
-\item{locids}{The location ids of regions in a significant cluster.}
-\item{pop}{The total population in the cluser window.}
-\item{cases}{The observed number of cases in the cluster window.}
-\item{expected}{The expected number of cases in the cluster window.}
-\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
-\item{rr}{Relative risk in the cluster window.}
-\item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
-\item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
-\item{w}{The adjacency matrix of the cluster.}
-\item{r}{The maximum radius of the cluster (in terms of intercentroid distance from the starting region).}
-The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
+Returns a list of length two of class scan. The
+  first element (clusters) is a list containing the
+  significant, non-ovlappering clusters, and has the the
+  following components: \item{locids}{The location ids of
+  regions in a significant cluster.} \item{pop}{The total
+  population in the cluser window.} \item{cases}{The
+  observed number of cases in the cluster window.}
+  \item{expected}{The expected number of cases in the
+  cluster window.} \item{smr}{Standarized mortaility
+  ratio (observed/expected) in the cluster window.}
+  \item{rr}{Relative risk in the cluster window.}
+  \item{loglikrat}{The loglikelihood ratio for the
+  cluster window (i.e., the log of the test statistic).}
+  \item{pvalue}{The pvalue of the test statistic
+  associated with the cluster window.} \item{w}{The
+  adjacency matrix of the cluster.} \item{r}{The maximum
+  radius of the cluster (in terms of intercentroid
+  distance from the starting region).} The second element
+  of the list is the centroid coordinates.  This is
+  needed for plotting purposes.
 }
 \description{
 \code{mlf.test} implements the Maxima Likelihood First
@@ -106,9 +115,15 @@ library(sp)
 plot(nypoly, col = color.clusters(out))
 }
 \references{
-Yao, Z., Tang, J., & Zhan, F. B. (2011). Detection of arbitrarily-shaped clusters using a neighbor-expanding approach: A case study on murine typhus in South Texas. International journal of health geographics, 10(1), 1.
+Yao, Z., Tang, J., & Zhan, F. B. (2011).
+  Detection of arbitrarily-shaped clusters using a
+  neighbor-expanding approach: A case study on murine
+  typhus in South Texas. International journal of health
+  geographics, 10(1), 1.
 
-Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742.
+  Assuncao, R.M., Costa, M.A., Tavares, A. and Neto,
+  S.J.F. (2006). Fast detection of arbitrarily shaped
+  disease clusters, Statistics in Medicine, 25, 723-742.
 }
 \author{
 Joshua French

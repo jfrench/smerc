@@ -3,15 +3,16 @@
 #' \code{elliptic.sim} efficiently performs
 #' \code{\link{elliptic.test}} on a simulated data set.  The
 #' function is meant to be used internally by the
-#' \code{\link{elliptic.test}} function, but is informative for
-#' better understanding the implementation of the test.
+#' \code{\link{elliptic.test}} function, but is informative
+#' for better understanding the implementation of the test.
 #'
 #' @inheritParams scan.sim
-#' @param nn A list of nearest neighbors produced by \code{\link{elliptic.nn}}.
+#' @param nn A list of nearest neighbors produced by
+#'   \code{\link{elliptic.nn}}.
 #' @inheritParams elliptic.test
-#' @param shape_all A vector of the shapes associated with all of 
-#' the possible zones constructed from \code{nn}.  This can
-#' be obtained from \code{\link{elliptic.nn}}.
+#' @param shape_all A vector of the shapes associated with
+#'   all of the possible zones constructed from \code{nn}.
+#'   This can be obtained from \code{\link{elliptic.nn}}.
 #'
 #' @return A vector with the maximum test statistic for each
 #'   simulated data set.
@@ -22,15 +23,15 @@
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' pop = nydf$pop
-#' enn = elliptic.nn(coords, pop, ubpop = 0.1, 
+#' enn = elliptic.nn(coords, pop, ubpop = 0.1,
 #'                   shape = c(1, 1.5), nangle = c(1, 4))
 #' cases = floor(nydf$cases)
 #' ty = sum(cases)
 #' ex = ty/sum(pop) * pop
 #' yin = nn.cumsum(enn$nn, cases)
 #' ein = nn.cumsum(enn$nn, ex)
-#' tsim = elliptic.sim(nsim = 2, nn = enn$nn, ty = ty, ex = ex, 
-#'                     a = 0.5, shape_all = enn$shape_all, 
+#' tsim = elliptic.sim(nsim = 2, nn = enn$nn, ty = ty, ex = ex,
+#'                     a = 0.5, shape_all = enn$shape_all,
 #'                     ein = ein, eout = ty - ein)
 elliptic.sim = function(nsim = 1, nn, ty, ex, a, shape_all,
                         ein, eout, cl = NULL) {

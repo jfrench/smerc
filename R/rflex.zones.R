@@ -100,7 +100,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
       czones_id = numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {
-          if ( (count %% pfreq) == 0) {
+          if ((count %% pfreq) == 0) {
             message(count, "/", nkeep, ". Starting region ",
                     i, " at ", Sys.time(), ".")
           }
@@ -113,7 +113,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
         # determine if some izones are duplicated with czones
         # remove duplicates and then combine with czones
         dup_id = which(izones_id %in% czones_id)
-        if (length(dup_id) > 0 ) {
+        if (length(dup_id) > 0) {
           czones = combine.zones(czones, izones[-dup_id])
           czones_id = c(czones_id, izones_id[-dup_id])
         } else {

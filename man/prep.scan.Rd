@@ -45,7 +45,8 @@ specifies that Euclidean distance should be used. If
 distance is used to calculate the intercentroid
 distance.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{d}{A precomputed distance matrix based on coords}
 }

@@ -1,19 +1,32 @@
 #' Plot object of class \code{scan}.
 #'
-#' Plot clusters (the centroids of the regions in each cluster) in different colors.  The most likely cluster is plotted with solid red circles by default.  Points not in a cluster are black open circles.  The other cluster points are plotted with different symbols and colors.
+#' Plot clusters (the centroids of the regions in each
+#' cluster) in different colors.  The most likely cluster is
+#' plotted with solid red circles by default.  Points not in
+#' a cluster are black open circles.  The other cluster
+#' points are plotted with different symbols and colors.
 #'
 #' @param x An object of class scan to be plotted.
-#' @param ... Additional graphical parameters passed to \code{plot} function.
-#' @param ccol Fill color of the plotted points.  Default is NULL, indicating red for the most likely cluster, and col = 3, 4, ..., up to the remaining number of clusters.
-#' @param cpch Plotting character to use for points in each cluster.  Default is NULL, indicating pch = 20 for the most likely cluster and then pch = 2, 3, .., up to the remaining number of clusters.
-#' @param add A logical indicating whether results should be drawn on existing map.
-#' @param usemap Logical indicating whether the maps::map function should be used to create a plot background for the coordinates.  Default is FALSE.  Use TRUE if you have longitude/latitude coordinates.
+#' @param ... Additional graphical parameters passed to
+#'   \code{plot} function.
+#' @param ccol Fill color of the plotted points.  Default is
+#'   NULL, indicating red for the most likely cluster, and
+#'   col = 3, 4, ..., up to the remaining number of
+#'   clusters.
+#' @param cpch Plotting character to use for points in each
+#'   cluster.  Default is NULL, indicating pch = 20 for the
+#'   most likely cluster and then pch = 2, 3, .., up to the
+#'   remaining number of clusters.
+#' @param add A logical indicating whether results should be
+#'   drawn on existing map.
+#' @param usemap Logical indicating whether the maps::map
+#'   function should be used to create a plot background for
+#'   the coordinates.  Default is FALSE.  Use TRUE if you
+#'   have longitude/latitude coordinates.
 #' @param mapargs A list of arguments for the map function.
-#' @importFrom graphics plot points segments
-#' @import maps
-#' @method plot scan
 #' @export
 #' @seealso \code{\link[maps]{map}}
+#' @method plot scan
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
@@ -30,9 +43,6 @@
 plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
                      add = FALSE, usemap = FALSE,
                      mapargs = list()) {
-  if (class(x) != "scan") {
-    stop("x must be a scan object.  See prep.scan.")
-  }
 
   # number of centroids
   nc = length(x$clusters)
@@ -55,20 +65,20 @@ plot.scan = function(x, ..., ccol = NULL, cpch = NULL,
 
   if (!add) {
     if (usemap) {
-      if (require(maps)) {
+      if (requireNamespace("maps", quietly = TRUE)) {
         do.call(maps::map, mapargs)
       } else {
         message("Please install the maps package to enable this functionality")
-        plot(coords, ...)
+        graphics::plot(coords, ...)
       }
     } else {
-      plot(coords, ...)
+      graphics::plot(coords, ...)
     }
   }
 
   graphics::points(coords, ...)
   # plot clusters
-  for (i in 1:nc) {
+  for (i in seq_len(nc)) {
     graphics::points(coords[x$clusters[[i]]$locids, 1],
                      coords[x$clusters[[i]]$locids, 2],
                      col = ccol[i], pch = cpch[i])
@@ -96,13 +106,13 @@ w2segments = function(w, coords) {
   nnb = sum(w != 0)
   count = 0
   seg = matrix(0, nrow = nnb, ncol = 4)
-  for (i in 1:nrow(w)) {
+  for (i in seq_len(w)) {
     nbi = which(w[i, ] != 0)
     nnbi = length(nbi)
-    seg[count + 1:nnbi, 1] = coords[i, 1]
-    seg[count + 1:nnbi, 2] = coords[i, 2]
-    seg[count + 1:length(nbi), 3] = coords[nbi, 1]
-    seg[count + 1:length(nbi), 4] = coords[nbi, 2]
+    seg[count + seq_len(nnbi), 1] = coords[i, 1]
+    seg[count + seq_len(nnbi), 2] = coords[i, 2]
+    seg[count + seq_along(nbi), 3] = coords[nbi, 1]
+    seg[count + seq_along(nbi), 4] = coords[nbi, 2]
     count = count + nnbi
   }
   return(seg)

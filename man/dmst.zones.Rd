@@ -26,7 +26,8 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -36,7 +37,7 @@ hypothesis.}
 total population to consider for a cluster.}
 
 \item{ubd}{A proportion in (0, 1].  The distance of
-potential clusters must be no more than \code{ubd * m}, 
+potential clusters must be no more than \code{ubd * m},
 where \code{m} is the maximum intercentroid distance
 between all coordinates.}
 
@@ -53,16 +54,19 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+\item{progress}{A logical value indicating whether a
+progress bar should be displayed.  The default is
+\code{TRUE}.}
 }
 \value{
-Returns a list with elements:
-\item{zones}{A list contained the location ids of
-  each potential cluster.}
-\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}
-\item{cases}{The observed number of cases in each zone.}
-\item{expected}{The expected number of cases each zone.}
-\item{pop}{The total population in each zone.}
+Returns a list with elements: \item{zones}{A list
+  contained the location ids of each potential cluster.}
+  \item{loglikrat}{The loglikelihood ratio for each zone
+  (i.e., the log of the test statistic).}
+  \item{cases}{The observed number of cases in each
+  zone.} \item{expected}{The expected number of cases
+  each zone.} \item{pop}{The total population in each
+  zone.}
 }
 \description{
 \code{dmst.zones} determines the zones for the Dynamic

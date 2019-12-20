@@ -10,7 +10,6 @@
 #'   simulations to perform.
 #' @param zones A list of zones to compute the test statistic
 #' over for each simulated data set.
-#' 
 #' @inheritParams flex.test
 #' @inheritParams scan.stat
 #'
