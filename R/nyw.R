@@ -10,5 +10,9 @@
 #' @source Waller, L.A. and Gotway, C.A. (2005).  Applied
 #' Spatial Statistics for Public Health Data.  Hoboken, NJ:
 #' Wiley.
-#' @references Waller, L.A., Turnbull, B.W., Clark, L.C., and Nasca, P. (1994) "Spatial Pattern Analysis to Detect Rare Disease Clusters" in Case Studies in Biometry, N. Lange, L. Ryan, L. Billard, D. Brillinger, L. Conquest, and J. Greenhouse (eds.) New York: John Wiley and Sons.
+#' @references Waller, L.A., Turnbull, B.W., Clark, L.C.,
+#' and Nasca, P. (1994) "Spatial Pattern Analysis to Detect
+#' Rare Disease Clusters" in Case Studies in Biometry,
+#' N. Lange, L. Ryan, L. Billard, D. Brillinger, L. Conquest,
+#' and J. Greenhouse (eds.) New York: John Wiley and Sons.
 NULL

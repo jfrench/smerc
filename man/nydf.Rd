@@ -9,11 +9,16 @@
  \item{longitude}{The longitude of the region centroid.
  These are NOT the original values provided by Waller and
  Gotway (2005), but are the right ones for plotting correctly.}
- \item{latitude}{The latitude of the region centroid.  These are NOT the original values provided by Waller and Gotway (2005), but are the right ones for plotting correctly.}
+ \item{latitude}{The latitude of the region centroid.
+ These are NOT the original values provided by Waller and
+ Gotway (2005), but are the right ones for plotting
+ correctly.}
  \item{population}{The population (1980 census) of the region.}
  \item{cases}{The number of leukemia cases between 1978-1982.}
- \item{x}{The original 'longitude' coordinate provided by Waller and Gotway (2005).}
- \item{y}{The original 'latitude coordinate provided by Waller and Gotway (2005).}
+ \item{x}{The original 'longitude' coordinate provided by
+ Waller and Gotway (2005).}
+ \item{y}{The original 'latitude coordinate provided by
+ Waller and Gotway (2005).}
 }}
 \source{
 Waller, L.A. and Gotway, C.A. (2005).

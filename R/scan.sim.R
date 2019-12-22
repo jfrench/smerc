@@ -36,7 +36,8 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
                 popin = popin, popout = popout, static = TRUE,
-                simdist = simdist, pop = pop)
+                simdist = simdist, pop = pop,
+                w = diag(length(ex)))
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {

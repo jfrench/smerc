@@ -10,5 +10,7 @@
 #' @usage data(nypoly)
 #'
 #' @format A SpatialPolygonDataFrame
-#' @source Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V., and Pebesma, E. J. (2013). Applied Spatial Data Analysis with R, 2nd edition. New York: Springer.
+#' @source Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V.,
+#' and Pebesma, E. J. (2013). Applied Spatial Data Analysis
+#' with R, 2nd edition. New York: Springer.
 NULL

@@ -536,3 +536,115 @@ arg_check_tango_w = function(w, N) {
   }
 }
 
+#' Check check.unique argument (of uls.zones)
+#'
+#' @param check.unique A single logical value
+#' @return NULL
+#' @noRd
+arg_check_check_unique = function(check.unique) {
+  if (length(check.unique) != 1) {
+    stop("check.unique must be a single value")
+  }
+  if (!is.logical(check.unique)) {
+    stop("check.unique must be a logical value")
+  }
+  if (!is.vector(check.unique)) {
+    stop("check.unique must be a vector (of length 1)")
+  }
+}
+
+#' Check total population argument
+#'
+#' @param tpop Total population
+#' @return NULL
+#' @noRd
+arg_check_tpop = function(tpop) {
+  if (length(tpop) != 1) {
+    stop("tpop must be a single value")
+  }
+  if (!is.numeric(tpop)) {
+    stop("tpop must be numeric")
+  }
+  if (!is.vector(tpop)) {
+    stop("tpop must be a vector (of length 1)")
+  }
+  if (tpop <= 0) {
+    stop("tpop must be >= 1")
+  }
+}
+
+#' Check total cases argument
+#'
+#' @param ty Total cases
+#' @return NULL
+#' @noRd
+arg_check_ty = function(ty) {
+  if (length(ty) != 1) {
+    stop("ty must be a single value")
+  }
+  if (!is.numeric(ty)) {
+    stop("ty must be numeric")
+  }
+  if (!is.vector(ty)) {
+    stop("ty must be a vector (of length 1)")
+  }
+  if (ty <= 0) {
+    stop("ty must be >= 1")
+  }
+}
+
+#' Check .sim arguments for type = "poisson"
+#'
+#' @param ein A vector of expected cases in each zone
+#' @param eout A vector of expected cases outside of each zone
+#' @param nz The number of zones
+#' @return NULL
+#' @noRd
+arg_check_sim_poisson_type = function(ein, eout, nz) {
+  if (is.null(ein) | is.null(eout)) {
+    stop("ein and eout must be provided when type='poisson'")
+  }
+  if (nz != length(ein)) {
+    stop("ein has improper length")
+  }
+  if (!is.vector(ein)) {
+    stop("ein must be a vector")
+  }
+  if (!is.numeric(ein)) {
+    stop("ein must be numeric")
+  }
+  if (nz != length(eout)) {
+    stop("eout has improper length")
+  }
+  if (!is.vector(eout)) {
+    stop("eout must be a vector")
+  }
+  if (!is.numeric(eout)) {
+    stop("eout must be numeric")
+  }
+}
+
+arg_check_sim_binomial_type = function(popin, popout, tpop, nz) {
+  if (is.null(popin) | is.null(popout) | is.null(tpop)) {
+    stop("popin, popout, and tpop must be provided when type='binomial'")
+  }
+  if (nz != length(popin)) {
+    stop("popin has improper length")
+  }
+  if (!is.vector(popin)) {
+    stop("popin must be a vector")
+  }
+  if (!is.numeric(popin)) {
+    stop("popin must be numeric")
+  }
+  if (nz != length(popout)) {
+    stop("popout has improper length")
+  }
+  if (!is.vector(popout)) {
+    stop("popout must be a vector")
+  }
+  if (!is.numeric(popout)) {
+    stop("popout must be numeric")
+  }
+  arg_check_tpop(tpop)
+}

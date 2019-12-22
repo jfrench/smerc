@@ -1,99 +1,62 @@
 #' Argument checking for *.sim functions
 #'
 #' Check the arguments of the \code{*.sim} functions.
+#'
+#' @param nsim Number of simulations
+#' @param ty Total number of cases
+#' @param ex Expected counts
+#' @param type Type of statistic
+#' @param nn List of nn (e.g., nnpop function)
+#' @param zones List of zones (e.g., scan.zones)
+#' @param ein List of expected in each zone
+#' @param eout List of expected out of each zone
+#' @param tpop Total population
+#' @param popin Population in each zone
+#' @param popout Population outside of each zone
+#' @param w Spatial adjacency matrix
+#' @param pop Vector of populations
+#' @param ubpop Population upperbound
+#' @param static Static zones. Logical. TRUE for scan.test.
+#' FALSE for uls.test.
+#' @param simdist Simulation distribution.
 #' @return NULL
 #' @noRd
-arg_check_sim = function(nsim,
-                         ty,
-                         ex,
-                         type,
-                         nn = NULL,
-                         zones = NULL,
-                         ein = NULL,
-                         eout = NULL,
-                         tpop = NULL,
-                         popin = NULL,
-                         popout = NULL,
-                         w = NULL,
-                         pop = NULL,
-                         ubpop = NULL,
-                         static,
+arg_check_sim = function(nsim, ty, ex, type,
+                         nn = NULL, zones = NULL,
+                         ein = NULL, eout = NULL,
+                         tpop = NULL, popin = NULL,
+                         popout = NULL, w = NULL,
+                         pop = NULL, ubpop = NULL,
+                         static = FALSE,
                          simdist = "multinomial") {
-  if (length(nsim) != 1 | !is.numeric(nsim) | nsim < 1) {
-    stop("nsim must be a positive integer")
+  arg_check_nsim(nsim)
+  arg_check_ty(ty)
+  N = length(ex)
+  arg_check_ex(ex, N)
+  arg_check_type(type)
+  if (!is.null(nn)) {
+    if (!is.list(nn)) stop("nn must be a list")
+    nz = sum(sapply(nn, length))
   }
-  if (length(ty) != 1) stop("ty must be a single number")
-  if (!is.numeric(ex)) stop("ex must be a numeric vector")
-  if (length(type) != 1 |
-      !is.element(type, c("poisson", "binomial"))) {
-    stop("type must be 'poisson' or 'binomial'")
+  if (!is.null(zones)) {
+    if (!is.list(zones)) stop("zones must be a list")
+    nz = length(zones)
   }
-  if (static) {
-    if (!is.null(nn)) {
-      if (!is.list(nn)) stop("nn must be a list")
-      nz = sum(sapply(nn, length))
-    }
-    if (!is.null(zones)) {
-      if (!is.list(zones)) stop("zones must be a list")
-      nz = length(zones)
-    }
-    if (type == "poisson") {
-      if (is.null(ein) | is.null(eout)) {
-        stop("ein and eout must be provided when type is 'poisson'")
-      }
-      if (nz != length(ein)) {
-        stop("ein has improper length")
-      }
-      if (nz != length(eout)) {
-        stop("eout has improper length")
-      }
-    }
-    if (type == "binomial") {
-      if (is.null(popin) | is.null(popout) | is.null(tpop)) {
-        stop("popin, popout, and tpop must be provided when type is 'binomial'")
-      }
-      if (nz != length(popin)) {
-        stop("popin has improper length")
-      }
-      if (nz != length(popout)) {
-        stop("popout has improper length")
-      }
-      if (length(tpop) != 1) {
-        stop("tpop must be a single number")
-      }
-    }
-  }
-  if (!is.null(w)) {
-    if (is.null(dim(w))) stop("w must be matrix-like")
-    if (length(dim(w)) != 2) stop("w must be two-dimensional")
-    if (nrow(w) != ncol(w)) stop("w must be square")
-  }
-  if (!is.null(tpop)) {
-    if (length(tpop) != 1 | !is.numeric(tpop)) {
-      stop("tpop must be a single number")
-    }
-  }
-  if (!is.null(w)) {
-    if (is.null(dim(w))) stop("w must be matrix-like")
-    if (length(dim(w)) != 2) stop("w must be two-dimensional")
-    if (nrow(w) != ncol(w)) stop("w must be square")
+  # if (type == "poisson") {
+  #   arg_check_sim_poisson_type(ein = ein, eout = eout, nz = nz)
+  # } else if (type == "binomial") {
+  #   arg_check_sim_binomial_type(popin = popin, popout = popout,
+  #                               tpop = tpop, nz = nz)
+  # }
+  arg_check_w(w, N)
+  if (!is.null(ubpop)) {
+    arg_check_ubpop
   }
   if (!is.null(pop)) {
-    if (!is.numeric(pop) | length(pop) != length(ex)) {
-      stop("pop must be a numeric vector with length = length(ex)")
-    }
+    arg_check_pop(pop, N)
   }
-  if (!is.null(ubpop)) {
-    if (length(ubpop) != 1 | ubpop <= 0 | ubpop > 1) {
-      stop("ubpop must be in (0, 1]")
-    }
-  }
-  if (length(simdist) != 1) {
-    stop("simdist must be a single character string")
-  }
-  if (simdist == "binomial") {
-    if (is.null(pop)) {
-      stop("pop must be specified when simdist == 'binomial'")
-    }
+  arg_check_simdist(simdist)
+  if (simdist == "binomial" & is.null(pop)) {
+    stop("pop must be specified when simdist == 'binomial'")
   }
 }

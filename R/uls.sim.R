@@ -31,8 +31,9 @@ uls.sim = function(nsim = 1, ty, ex, w, pop, ubpop,
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
-    ysim = stats::rmultinom(1, size = ty, prob = ex)
-    zones = uls.zones(ysim, pop = pop, w = w, ubpop = ubpop,
+    ysim = c(stats::rmultinom(1, size = ty, prob = ex))
+    zones = uls.zones(cases = ysim, pop = pop, w = w,
+                      ubpop = ubpop,
                       check.unique = check.unique)
     # compute test statistics for each zone
     yin = zones.sum(zones, ysim)

@@ -24,12 +24,9 @@
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
 uls.zones = function(cases, pop, w, ubpop = 0.5,
                      check.unique = FALSE) {
-  if (length(cases) != length(pop)) stop("length(cases) != length(pop)")
-  if (length(cases) != nrow(w)) stop("length(cases) != nrow(w)")
-  if (length(ubpop) != 1 | !is.numeric(ubpop)) {
-    stop("ubpop should be a single number")
-  }
-  if (ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
+  arg_check_uls_zones(cases = cases, pop = pop, w = w,
+                      ubpop = ubpop,
+                      check.unique = check.unique)
 
   # order rates from largest to smallest
   or = order(cases / pop, decreasing = TRUE);

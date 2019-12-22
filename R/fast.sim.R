@@ -23,7 +23,8 @@ fast.sim = function(nsim = 1, ty, ex, pop, ubpop,
                     type = "poisson", cl = NULL) {
   tpop = sum(pop)
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
-                tpop = tpop, ubpop = ubpop, static = FALSE)
+                tpop = tpop, ubpop = ubpop,
+                w = diag(length(ex)))
 
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
