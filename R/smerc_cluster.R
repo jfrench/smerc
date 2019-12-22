@@ -23,6 +23,7 @@
 smerc_cluster = function(tobs, zones, pvalue,
                          coords, cases, pop, ex, longlat,
                          method, rel_param,
+                         alpha,
                          w = NULL, d = NULL,
                          a = NULL, shape_all = NULL,
                          angle_all = NULL) {
@@ -150,6 +151,8 @@ new_smerc_cluster = function(tobs, zones, pvalue,
                  total_cases = ty,
                  cases_per_100k = ty / tpop * 1e5,
                  method = method,
-                 rel_param = rel_param),
+                 rel_param = rel_param,
+                 alpha = alpha,
+                 longlat = longlat),
             class = "smerc_cluster")
 }

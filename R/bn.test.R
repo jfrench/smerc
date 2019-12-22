@@ -97,8 +97,12 @@ bn.test = function(coords, cases, pop, cstar,
   sig_regions = cwins[op]
   sig_tstat = l[op]
   sig_p = pvalue[op]
-  prep.scan2(tobs = sig_tstat, zones = sig_regions,
-            pvalue = sig_p, coords = coords, cases = cases,
-            pop = pop, ex = ex, longlat = longlat,
-            w = NULL, d = d)
+
+  smerc_cluster(tobs = sig_tstat, zones = sig_regions,
+                pvalue = sig_p, coords = coords,
+                cases = cases, pop = pop, ex = ex,
+                longlat = longlat, method = "Besag-Newell",
+                rel_param = list(cstar = cstar,
+                                 modified = modified),
+                alpha = alpha, w = NULL, d = d)
 }

@@ -182,7 +182,7 @@ arg_check_zones = function(zones, N) {
 #' @noRd
 arg_check_pvalue = function(pvalue, N) {
   if (length(pvalue) != N) {
-    stop("length(pvalue) != length(pvalue)")
+    stop("length(pvalue) != nrow(coords)")
   }
   if (!is.numeric(pvalue)) {
     stop("pvalue should be numeric values")

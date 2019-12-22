@@ -182,8 +182,7 @@ scan.test = function(coords, cases, pop,
                                  simdist = simdist,
                                  nsim = nsim,
                                  ubpop = ubpop,
-                                 longlat = longlat,
-                                 alpha = alpha,
                                  min.cases = min.cases),
+                alpha = alpha,
                 w = NULL, d = d)
 }
