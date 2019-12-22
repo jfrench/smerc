@@ -40,14 +40,7 @@ arg_check_sim = function(nsim, ty, ex, type,
   }
   if (!is.null(zones)) {
     if (!is.list(zones)) stop("zones must be a list")
-    nz = length(zones)
   }
-  # if (type == "poisson") {
-  #   arg_check_sim_poisson_type(ein = ein, eout = eout, nz = nz)
-  # } else if (type == "binomial") {
-  #   arg_check_sim_binomial_type(popin = popin, popout = popout,
-  #                               tpop = tpop, nz = nz)
-  # }
   arg_check_w(w, N)
   if (!is.null(ubpop)) {
     arg_check_ubpop

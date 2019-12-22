@@ -648,3 +648,23 @@ arg_check_sim_binomial_type = function(popin, popout, tpop, nz) {
   }
   arg_check_tpop(tpop)
 }
+
+#' Check ubd argument
+#'
+#' @param ubd Distance upperbound (in terms of proportion)
+#' @return NULL
+#' @noRd
+arg_check_ubd = function(ubd) {
+  if (length(ubd) != 1) {
+    stop("ubd must be a single number")
+  }
+  if (!is.numeric(ubd)) {
+    stop("ubd must be numeric")
+  }
+  if (!is.vector(ubd)) {
+    stop("ubd must be a vector (of length 1)")
+  }
+  if (ubd <= 0 | ubd > 1) {
+    stop("ubd must be in (0, 1]")
+  }
+}

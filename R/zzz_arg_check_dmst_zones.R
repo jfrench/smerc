@@ -9,42 +9,15 @@
 arg_check_dmst_zones = function(coords, cases, pop, w, ex,
                                 ubpop, ubd, longlat, type,
                                 progress = FALSE) {
-  if (ncol(coords) != 2) {
-    stop("coords should have 2 columns")
-  }
-  if (nrow(coords) != length(cases)) {
-    stop("nrow(coords) != length(cases)")
-  }
-  if (length(cases) != length(pop)) {
-    stop("length(cases) != length(pop)")
-  }
-  if (!is.numeric(cases)) {
-    stop("cases must be numeric")
-  }
-  if (!is.numeric(pop)) {
-    stop("pop must be numeric")
-  }
-  if (length(cases) != nrow(w)) {
-    stop("length(cases) != nrow(w)")
-  }
-  if (length(cases) != length(ex)) {
-    stop("length(cases) != length(ex)")
-  }
-  if (length(ubpop) != 1 | !is.numeric(ubpop)) {
-    stop("ubpop should be a single number")
-  }
-  if (ubpop <= 0 | ubpop > 1) {
-    stop("ubpop not in (0, 1]")
-  }
-  if (length(ubd) != 1 | !is.numeric(ubd)) {
-    stop("ubd should be a single number")
-  }
-  if (ubd <= 0 | ubd > 1) {
-    stop("ubd not in (0, 1]")
-  }
-  if (length(longlat) != 1 || !is.logical(longlat)) {
-    stop("longlat must be a single logical value")
-  }
+  arg_check_coords(coords)
+  N = nrow(coords)
+  arg_check_cases(cases, N)
+  arg_check_pop(pop, N)
+  arg_check_w(w, N)
+  arg_check_ex(ex, N)
+  arg_check_ubpop(ubpop)
+  arg_check_ubd(ubd)
+  arg_check_longlat(longlat)
   if (!is.element(type, c("maxonly", "pruned", "all"))) {
     stop("Invalid type")
   }
