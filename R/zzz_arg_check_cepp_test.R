@@ -10,13 +10,12 @@
 #' @param nsim Number of simulations to perform
 #' @param longlat Logical. TRUE = great circle distance
 #' @param alpha Significance level
-#' @param noc Non-overlapping clusters returned (TRUE)
 #' @param simdist Simulation distribution
 #'
 #' @return NULL
 #' @noRd
 arg_check_cepp_test = function(coords, cases, pop, nstar,
-                               ex, nsim, longlat, alpha, noc,
+                               ex, nsim, longlat, alpha,
                                simdist) {
   arg_check_coords(coords)
   N = nrow(coords)
@@ -27,6 +26,5 @@ arg_check_cepp_test = function(coords, cases, pop, nstar,
   arg_check_alpha(alpha)
   arg_check_nsim(nsim)
   arg_check_longlat(longlat)
-  arg_check_noc(noc)
   arg_check_simdist(simdist)
 }

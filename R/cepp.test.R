@@ -41,14 +41,13 @@
 cepp.test = function(coords, cases, pop, nstar,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.10,
-                     longlat = FALSE, noc = TRUE,
+                     longlat = FALSE,
                      simdist = "multinomial") {
   # sanity checking
   arg_check_cepp_test(coords = coords, cases = cases,
                       pop = pop, nstar = nstar, ex = ex,
                       nsim = nsim, alpha = alpha,
-                      longlat = longlat, noc = noc,
-                      simdist = simdist)
+                      longlat = longlat, simdist = simdist)
 
   coords = as.matrix(coords)
 
@@ -72,20 +71,6 @@ cepp.test = function(coords, cases, pop, nstar,
   pvalue = mc.pvalue(cstar, csim)
 
   op = order(cstar, decreasing = TRUE)
-
-  if (noc) {
-    # determine idx of unique non-overlapping clusters in
-    # order of significance
-    u = smacpod::noc(nn[op])
-    op = op[u]
-    # return only significant clusters
-    if (pvalue[op][1] > alpha) {
-      warning("No significant clusters.  Returning most likely cluster.")
-      op = op[1]
-    } else {
-      op = op[which(pvalue[op] <= alpha)]
-    }
-  }
 
   # for the unique, non-overlapping clusters in order of
   # significance, find the associated test statistic,

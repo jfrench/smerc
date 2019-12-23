@@ -68,52 +68,13 @@ bn.test = function(coords, cases, pop, cstar,
                           lower.tail = FALSE)
   }
 
-  # op = order(pvalue)
-  #
-  # if (noc) {
-  #   # determine idx of unique non-overlapping clusters in
-  #   # order of significance
-  #   u = smacpod::noc(cwins[op])
-  #   op = op[u]
-  #   # return only significant clusters
-  #   if (pvalue[op][1] > alpha) {
-  #     warning("No significant clusters.  Returning most likely cluster.")
-  #     op = op[1]
-  #   } else {
-  #     op = op[which(pvalue[op] <= alpha)]
-  #   }
-  # }
+  # significant, ordered, non-overlapping clusters and
+  # information
+  pruned = sig_noc(tobs = l, zones = cwins, pvalue = pvalue,
+                   alpha = alpha, order_by = "pvalue")
 
-  op = order(pvalue)
-
-  # if (noc) {
-  #   # determine idx of unique non-overlapping clusters in
-  #   # order of significance
-  #   u = smacpod::noc(cwins[op])
-  #   op = op[u]
-  #   # return only significant clusters
-  #   if (pvalue[op][1] > alpha) {
-  #     warning("No significant clusters.  Returning most likely cluster.")
-  #     op = op[1]
-  #   } else {
-  #     op = op[which(pvalue[op] <= alpha)]
-  #   }
-  # }
-  #
-  #
-  # # for the unique, non-overlapping clusters in order of
-  # # significance, find the associated test statistic,
-  # # p-value, centroid, window radius, cases in window,
-  # # expected cases in window, population in window,
-  # # standarized mortality ratio, relative risk
-  # sig_regions = cwins[op]
-  # sig_tstat = l[op]
-  # sig_p = pvalue[op]
-
-  # smerc_cluster(tobs = sig_tstat, zones = sig_regions,
-  #               pvalue = sig_p, coords = coords,
-  smerc_cluster(tobs = l, zones = cwins,
-                pvalue = pvalue, coords = coords,
+  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
+                pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
                 longlat = longlat, method = "Besag-Newell",
                 rel_param = list(cstar = cstar,

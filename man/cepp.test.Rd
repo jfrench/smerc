@@ -13,7 +13,6 @@ cepp.test(
   nsim = 499,
   alpha = 0.1,
   longlat = FALSE,
-  noc = TRUE,
   simdist = "multinomial"
 )
 }
