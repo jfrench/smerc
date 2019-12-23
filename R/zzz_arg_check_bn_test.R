@@ -35,7 +35,7 @@
 #' @param modified A logical value for whether the test should be "modified"
 #' @noRd
 arg_check_bn_test = function(coords, cases, pop, cstar,
-                             longlat, alpha, noc, ex,
+                             longlat, alpha, ex,
                              modified) {
   arg_check_coords(coords)
   N = nrow(coords)
@@ -44,7 +44,6 @@ arg_check_bn_test = function(coords, cases, pop, cstar,
   arg_check_cstar(cstar, cases)
   arg_check_longlat(longlat)
   arg_check_alpha(alpha)
-  arg_check_noc(noc)
   arg_check_ex(ex, N)
   arg_check_modified(modified)
 }

@@ -12,7 +12,6 @@ bn.test(
   ex = sum(cases)/sum(pop) * pop,
   alpha = 0.1,
   longlat = FALSE,
-  noc = TRUE,
   modified = FALSE
 )
 }
@@ -40,12 +39,6 @@ specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
-
-\item{noc}{A logical value indicating whether all
-significant clusters should be returned (\code{FALSE})
-or only the non-overlapping clusters (\code{TRUE})
-arranged in order of significance.  The default is
-\code{TRUE}.}
 
 \item{modified}{A logical value indicating whether a
 modified version of the test should be performed.  The

@@ -45,12 +45,6 @@ specifies that Euclidean distance should be used. If
 distance is used to calculate the intercentroid
 distance.}
 
-\item{noc}{A logical value indicating whether all
-significant clusters should be returned (\code{FALSE})
-or only the non-overlapping clusters (\code{TRUE})
-arranged in order of significance.  The default is
-\code{TRUE}.}
-
 \item{simdist}{A character string indicating whether the
 simulated data should come from a \code{"multinomial"}
 or \code{"poisson"} distribution.  The default is

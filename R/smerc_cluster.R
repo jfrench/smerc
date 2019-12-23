@@ -1,7 +1,6 @@
 #' Prepare \code{smerc_cluster}
 #'
-#' \code{smerc_cluster} prepares a returns a
-#' \code{smerc_cluster}.
+#' \code{smerc_cluster} prepares a \code{smerc_cluster}.
 #'
 #' @param tobs The vector of observed test statistics for each zone
 #' @param zones A list of zones
@@ -18,7 +17,54 @@
 #' with \code{zones}.
 #' @param angle_all A vector of angle parameter associated with
 #' \code{zones}.
-#' @return A \code{smerc_cluster} object
+#' @param alpha The significance level of the test.
+#' @inheritParams scan.test
+#' @return A \code{smerc_cluster} object. The object
+#' generally has the following components:
+#' \item{clusters}{A list containing information about the significant
+#' clusters.  See further details below.}
+#' \item{coords}{The matrix of centroid coordinates.}
+#' \item{number_of_regions}{The number of regions considered.}
+#' \item{total_population}{The total population in the regions.}
+#' \item{total_cases}{The total number of cases in the regions.}
+#' \item{cases_per_100k}{The rate of cases per 100,000 persons.}
+#' \item{method}{The name of the method applied.}
+#' \item{rel_param}{A list of relevant method parameters.}
+#' \item{alpha}{The significance level.}
+#' \item{longlat}{A logical value indicating which type
+#' of distance was used.}
+#'
+#' Each element of the \code{clusters} component has:
+#' \item{locids}{The ids of the regions in the cluster.}
+#' \item{coords}{A matrix with the cluster centroid.}
+#' \item{r}{The radius of the region (from the starting
+#' region to last region of the cluster).}
+#' \item{max_dist}{The maximum intercentroid distance between
+#' all the regions in the cluster.}
+#' \item{pop}{The total population in the cluster.}
+#' \item{cases}{The number of cases in the cluster.}
+#' \item{expected}{The expected number of cases in the cluster.}
+#' \item{smr}{Standardized mortality ratio
+#' (\code{cases/expected}) in the cluster.}
+#' \item{rr}{Relative risk in the cluster window. This is
+#' \code{smr/((total_cases - cases)/
+#' (total_population - population))}.}
+#' \item{loglikrat}{The log of the likelihood ratio test
+#' statistic for the cluster. Only valid for the scan-type
+#' tests.}
+#' \item{test_statistic}{The test statistic for the cluster.}
+#' \item{pvalue}{The p-value of the test statistic
+#' associated with the cluster.}
+#' \item{w}{The adjacency information for the cluster.}
+#'
+#' For \code{\link{elliptic.test}}, \code{clusters}
+#' additionally has:
+#' \item{semiminor_axis}{The semi-minor axis length for the
+#' ellipse.}
+#' \item{semimajor_axis}{The
+#' semi-major axis length for the ellipse.}
+#' \item{angle}{The rotation angle of the ellipse.}
+#' \item{shape}{The shape of the ellipse.}
 #' @export
 smerc_cluster = function(tobs, zones, pvalue,
                          coords, cases, pop, ex, longlat,
@@ -35,13 +81,14 @@ smerc_cluster = function(tobs, zones, pvalue,
                           rel_param = rel_param,
                           w = w, d = d, a = a,
                           shape_all = shape_all,
-                          angle_all = angle_all)
+                          angle_all = angle_all,
+                          alpha)
   new_smerc_cluster(tobs = tobs, zones = zones,
                     pvalue = pvalue, coords = coords,
                     cases = cases, pop = pop, ex = ex,
                     longlat = longlat,
                     method = method,
-                    rel_param = rel_param,
+                    rel_param = rel_param, alpha = alpha,
                     w = w, d = d, a = a,
                     shape_all = shape_all,
                     angle_all = angle_all)
@@ -53,14 +100,15 @@ smerc_cluster = function(tobs, zones, pvalue,
 #' \code{smerc_cluster}
 #' @return A \code{smerc_cluster}
 #' @noRd
-new_smerc_cluster = function(tobs, zones, pvalue,
-                             coords, cases, pop, ex, longlat,
-                             method, rel_param,
-                             w, d,
-                             a, shape_all,
-                             angle_all) {
+new_smerc_cluster = function(tobs, zones, pvalue, coords,
+                             cases, pop, ex, longlat,
+                             method, rel_param, alpha, w, d,
+                             a, shape_all, angle_all) {
   # order zones from largest to smallest test statistic
   ozones = order(tobs, decreasing = TRUE)
+  if (method == "Besag-Newell") {
+    ozones = order(pvalue, decreasing = FALSE)
+  }
   zones = zones[ozones]
   tobs = tobs[ozones]
 

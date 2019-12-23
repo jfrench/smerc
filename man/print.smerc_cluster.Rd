@@ -4,7 +4,7 @@
 \alias{print.smerc_cluster}
 \title{Print object of class \code{smerc_cluster}.}
 \usage{
-\method{print}{smerc_cluster}(x, ...)
+\method{print}{smerc_cluster}(x, ..., extra = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{smerc_cluster}.}
@@ -14,6 +14,10 @@
   \describe{
     \item{\code{}}{}
   }}
+
+\item{extra}{A logical value. Default is \code{FALSE}.
+\code{TRUE} indicates that extra information should be
+printed.}
 }
 \description{
 Print \code{scan} object

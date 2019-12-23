@@ -18,13 +18,15 @@
 #' with \code{zones}. Relevant for \code{\link{elliptic.test}}.
 #' @param angle_all A vector of angle parameter associated with
 #' \code{zones}. Relevant for \code{\link{elliptic.test}}.
+#' @param alpha The significance level.
 #' @return A \code{smerc_cluster} object
 #' @noRd
 arg_check_smerc_cluster = function(tobs, zones, pvalue,
                                    coords, cases, pop, ex,
                                    longlat, method,
                                    rel_param, w, d, a,
-                                   shape_all, angle_all) {
+                                   shape_all, angle_all,
+                                   alpha) {
   arg_check_tobs(tobs)
   Ntobs = length(tobs)
   arg_check_zones(zones, Ntobs)
@@ -52,4 +54,5 @@ arg_check_smerc_cluster = function(tobs, zones, pvalue,
   if (!is.null(angle_all)) {
     arg_check_angle_all(angle_all, Ntobs)
   }
+  arg_check_alpha(alpha)
 }

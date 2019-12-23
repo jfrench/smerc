@@ -3,11 +3,6 @@
 #' \code{bn.test} implements the Besag-Newell test of Besag
 #' and Newell (1991) for finding disease clusters.
 #'
-#' @param noc A logical value indicating whether all
-#'   significant clusters should be returned (\code{FALSE})
-#'   or only the non-overlapping clusters (\code{TRUE})
-#'   arranged in order of significance.  The default is
-#'   \code{TRUE}.
 #' @param modified A logical value indicating whether a
 #'   modified version of the test should be performed.  The
 #'   original paper recommends computing the p-value for
@@ -45,13 +40,13 @@
 bn.test = function(coords, cases, pop, cstar,
                    ex = sum(cases) / sum(pop) * pop,
                    alpha = 0.10,
-                   longlat = FALSE, noc = TRUE,
+                   longlat = FALSE,
                    modified = FALSE) {
   # sanity checking
   arg_check_bn_test(coords = coords, cases = cases,
                     pop = pop, cstar = cstar,
                     longlat = longlat, alpha = alpha,
-                    noc = noc, ex = ex, modified = modified)
+                    ex = ex, modified = modified)
 
   coords = as.matrix(coords)
   # intercentroid distances
@@ -73,33 +68,52 @@ bn.test = function(coords, cases, pop, cstar,
                           lower.tail = FALSE)
   }
 
+  # op = order(pvalue)
+  #
+  # if (noc) {
+  #   # determine idx of unique non-overlapping clusters in
+  #   # order of significance
+  #   u = smacpod::noc(cwins[op])
+  #   op = op[u]
+  #   # return only significant clusters
+  #   if (pvalue[op][1] > alpha) {
+  #     warning("No significant clusters.  Returning most likely cluster.")
+  #     op = op[1]
+  #   } else {
+  #     op = op[which(pvalue[op] <= alpha)]
+  #   }
+  # }
+
   op = order(pvalue)
 
-  if (noc) {
-    # determine idx of unique non-overlapping clusters in
-    # order of significance
-    u = smacpod::noc(cwins[op])
-    op = op[u]
-    # return only significant clusters
-    if (pvalue[op][1] > alpha) {
-      warning("No significant clusters.  Returning most likely cluster.")
-      op = op[1]
-    } else {
-      op = op[which(pvalue[op] <= alpha)]
-    }
-  }
+  # if (noc) {
+  #   # determine idx of unique non-overlapping clusters in
+  #   # order of significance
+  #   u = smacpod::noc(cwins[op])
+  #   op = op[u]
+  #   # return only significant clusters
+  #   if (pvalue[op][1] > alpha) {
+  #     warning("No significant clusters.  Returning most likely cluster.")
+  #     op = op[1]
+  #   } else {
+  #     op = op[which(pvalue[op] <= alpha)]
+  #   }
+  # }
+  #
+  #
+  # # for the unique, non-overlapping clusters in order of
+  # # significance, find the associated test statistic,
+  # # p-value, centroid, window radius, cases in window,
+  # # expected cases in window, population in window,
+  # # standarized mortality ratio, relative risk
+  # sig_regions = cwins[op]
+  # sig_tstat = l[op]
+  # sig_p = pvalue[op]
 
-  # for the unique, non-overlapping clusters in order of
-  # significance, find the associated test statistic,
-  # p-value, centroid, window radius, cases in window,
-  # expected cases in window, population in window,
-  # standarized mortality ratio, relative risk
-  sig_regions = cwins[op]
-  sig_tstat = l[op]
-  sig_p = pvalue[op]
-
-  smerc_cluster(tobs = sig_tstat, zones = sig_regions,
-                pvalue = sig_p, coords = coords,
+  # smerc_cluster(tobs = sig_tstat, zones = sig_regions,
+  #               pvalue = sig_p, coords = coords,
+  smerc_cluster(tobs = l, zones = cwins,
+                pvalue = pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
                 longlat = longlat, method = "Besag-Newell",
                 rel_param = list(cstar = cstar,
