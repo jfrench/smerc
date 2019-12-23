@@ -160,20 +160,6 @@ scan.test = function(coords, cases, pop,
     pvalue = rep(1, length(tobs))
   }
 
-  # # determine which potential clusters are significant
-  # sigc = which(pvalue <= alpha, useNames = FALSE)
-  #
-  # # if there are no significant clusters, return most likely cluster
-  # if (length(sigc) == 0) {
-  #   sigc = which.max(tobs)
-  #   warning("No significant clusters.  Returning most likely cluster.")
-  # }
-  #
-  # # only keep significant clusters
-  # zones = zones[sigc]
-  # tobs = tobs[sigc]
-  # pvalue = pvalue[sigc]
-
   # significant, ordered, non-overlapping clusters and
   # information
   pruned = sig_noc(tobs = tobs, zones = zones,
@@ -182,8 +168,6 @@ scan.test = function(coords, cases, pop,
 
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
-#  smerc_cluster(tobs = tobs, zones = zones,
-#                pvalue = pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
                 longlat = longlat, method = "scan",
                 rel_param = list(type = type,

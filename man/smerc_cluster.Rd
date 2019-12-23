@@ -88,18 +88,18 @@ of distance was used.}
 
 Each element of the \code{clusters} component has:
 \item{locids}{The ids of the regions in the cluster.}
-\item{coords}{A matrix with the cluster centroid.}
+\item{centroid}{The cluster centroid.}
 \item{r}{The radius of the region (from the starting
 region to last region of the cluster).}
 \item{max_dist}{The maximum intercentroid distance between
 all the regions in the cluster.}
-\item{pop}{The total population in the cluster.}
+\item{population}{The total population in the cluster.}
 \item{cases}{The number of cases in the cluster.}
 \item{expected}{The expected number of cases in the cluster.}
 \item{smr}{Standardized mortality ratio
 (\code{cases/expected}) in the cluster.}
 \item{rr}{Relative risk in the cluster window. This is
-\code{smr/((total_cases - cases)/
+\code{(cases/pop)/((total_cases - cases)/
 (total_population - population))}.}
 \item{loglikrat}{The log of the likelihood ratio test
 statistic for the cluster. Only valid for the scan-type
