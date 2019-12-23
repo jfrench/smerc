@@ -20,8 +20,9 @@ indicating the argument by which to order \code{zones}.}
 }
 \value{
 A list with the significant, ordered,
-non-overlapping \code{tobs}, \code{zones}, and
-\code{pvalue}.
+non-overlapping \code{tobs}, \code{zones}, \code{pvalue}.,
+and \code{idx} (a vector with the relevant indices of
+the original zones).
 }
 \description{
 \code{sig_noc} return the significant, non-overlapping

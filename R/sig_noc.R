@@ -7,8 +7,9 @@
 #' @inheritParams smerc_cluster
 #'
 #' @return A list with the significant, ordered,
-#' non-overlapping \code{tobs}, \code{zones}, and
-#' \code{pvalue}.
+#' non-overlapping \code{tobs}, \code{zones}, \code{pvalue}.,
+#' and \code{idx} (a vector with the relevant indices of
+#' the original zones).
 #' @export
 #' @examples
 #' tobs = c(1, 3, 2)
@@ -30,6 +31,8 @@ sig_noc = function(tobs, zones, pvalue, alpha,
     stop("order_by must be 'tobs' or 'pvalue'")
   }
 
+  # create idx from original list of zones
+  idx = seq_len(N)
   # determine if there are any significant zones
   minp = which.min(pvalue)
   if (pvalue[minp] > alpha) {
@@ -42,6 +45,7 @@ sig_noc = function(tobs, zones, pvalue, alpha,
   tobs = tobs[sig]
   zones = zones[sig]
   pvalue = pvalue[sig]
+  idx = idx[sig]
 
   # order zones from most to least significant
   if (order_by == "tobs") {
@@ -53,13 +57,15 @@ sig_noc = function(tobs, zones, pvalue, alpha,
   tobs = tobs[ozones]
   zones = zones[ozones]
   pvalue = pvalue[ozones]
+  idx = idx[ozones]
 
   # determine significant non-overlapping clusters
   # in order of significance
   sig = smacpod::noc(zones)
   return(list(tobs = tobs[sig],
               zones = zones[sig],
-              pvalue = pvalue[sig]))
+              pvalue = pvalue[sig],
+              idx = idx[sig]))
 }
 
 
