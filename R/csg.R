@@ -64,6 +64,8 @@
 #' nn10 = order(d[1,])[1:10]
 #' w = nyw[, nn10]
 #' nb3 = scsg(nn10, w, verbose = TRUE)
+#'@export
+#'@rdname csg_old
 csg = function(set, idx, w) {
   if (ncol(w) != length(idx)) {
     stop("ncol(w) != length(idx)")
@@ -84,7 +86,7 @@ csg = function(set, idx, w) {
 }
 
 #' @export
-#' @rdname csg
+#' @rdname csg_old
 lcsg = function(lset, idx, w) {
   x = unlist(lapply(lset, csg, w = w, idx = idx),
              recursive = FALSE)
@@ -96,7 +98,7 @@ lcsg = function(lset, idx, w) {
 }
 
 #' @export
-#' @rdname csg
+#' @rdname csg_old
 scsg = function(idx, w, verbose = FALSE) {
   # initial set
   nidx = length(idx)

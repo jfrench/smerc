@@ -7,6 +7,7 @@
 \method{plot}{smerc_cluster}(
   x,
   ...,
+  nclusters = length(x$clusters),
   ccol = NULL,
   cpch = NULL,
   add = FALSE,
@@ -17,13 +18,13 @@
 \arguments{
 \item{x}{An object of class scan to be plotted.}
 
-\item{...}{Additional graphical parameters passed to
+\item{...}{Additional graphical parameters passed to the
 \code{plot} function.}
 
+\item{nclusters}{Number of clusters to plot.}
+
 \item{ccol}{Fill color of the plotted points.  Default is
-NULL, indicating red for the most likely cluster, and
-col = 3, 4, ..., up to the remaining number of
-clusters.}
+\code{grDevices::hcl.colors(nclusters, palette = "viridis")}.}
 
 \item{cpch}{Plotting character to use for points in each
 cluster.  Default is NULL, indicating pch = 20 for the
@@ -35,8 +36,8 @@ drawn on existing map.}
 
 \item{usemap}{Logical indicating whether the maps::map
 function should be used to create a plot background for
-the coordinates.  Default is FALSE.  Use TRUE if you
-have longitude/latitude coordinates.}
+the coordinates.  Default is \code{FALSE}.  Use
+\code{TRUE} if you have longitude/latitude coordinates.}
 
 \item{mapargs}{A list of arguments for the map function.}
 }
@@ -51,9 +52,9 @@ points are plotted with different symbols and colors.
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, nsim = 49,
-                longlat = TRUE, alpha = 0.12)
-plot(out)
+                pop = nydf$pop, nsim = 0,
+                longlat = TRUE, alpha = 1)
+plot(out, nclusters = 3)
 ## plot output for new york state
 # specify desired argument values
 mapargs = list(database = "county", region = "new york",
@@ -61,5 +62,5 @@ mapargs = list(database = "county", region = "new york",
                ylim = range(out$coords[,2]))
 # needed for "county" database (unless you execute library(maps))
 data(countyMapEnv, package = "maps")
-plot(out, usemap = TRUE, mapargs = mapargs)
+plot(out, nclusters = 3, usemap = TRUE, mapargs = mapargs)
 }

@@ -4,7 +4,9 @@
 \name{nyw}
 \alias{nyw}
 \title{Adjacency matrix for New York leukemia data.}
-\format{A matrix of dimension 281 x 281.}
+\format{
+A matrix of dimension 281 x 281.
+}
 \source{
 Waller, L.A. and Gotway, C.A. (2005).  Applied
 Spatial Statistics for Public Health Data.  Hoboken, NJ:

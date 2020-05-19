@@ -668,3 +668,28 @@ arg_check_ubd = function(ubd) {
     stop("ubd must be in (0, 1]")
   }
 }
+
+#' Check nclusters argument
+#'
+#' @param nclusters Number of clusters to plot
+#' @param N length(x$clusters) from a smerc_cluster
+#'
+#' @return NULL
+#' @noRd
+arg_check_nclusters = function(nclusters, N) {
+  if (length(nclusters) != 1) {
+    stop("nclusters must have length 1")
+  }
+  if (!is.numeric(nclusters)) {
+    stop("nclusters must be a numeric value")
+  }
+  if (!is.vector(nclusters)) {
+    stop("nclusters must be a vector (of length 1)")
+  }
+  if (nclusters < 1) {
+    stop("nclusters must be >= 1")
+  }
+  if (nclusters > N) {
+    stop("nclusters must be <= length(x$clusters)")
+  }
+}

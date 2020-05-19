@@ -144,16 +144,14 @@ new_smerc_cluster = function(tobs, zones, pvalue, coords,
     }, simplify = FALSE)
   }
   if (!is.null(a)) {
-    sig_shape = shape_all[zones[sig]]
-    sig_angle = angle_all[ozones[sig]]
-    sig_minor = unname(sapply(seq_along(zones), function(i) {
+    minor = unname(sapply(seq_along(zones), function(i) {
       first = zones[[i]][1]
       last = utils::tail(zones[[i]], 1)
       dist.ellipse(coords[c(first, last),, drop = FALSE],
-                   shape = sig_shape[i],
-                   angle = sig_angle[i])[1, 2]
+                   shape = shape_all[i],
+                   angle = angle_all[i])[1, 2]
     }))
-    sig_major = sig_minor * sig_shape
+    major = minor * shape_all
     loglikrat = stat.poisson(yin, ty - yin, ein, ty - ein)
   } else if (method == "Besag-Newell") {
     loglikrat = NA
@@ -169,10 +167,10 @@ new_smerc_cluster = function(tobs, zones, pvalue, coords,
     clusters[[i]]$r = zone_r[i]
     clusters[[i]]$max_dist = max_dist[i]
     if (!is.null(a)) {
-      clusters[[i]]$semiminor_axis = sig_minor[i]
-      clusters[[i]]$semimajor_axis = sig_major[i]
-      clusters[[i]]$angle = sig_angle[i]
-      clusters[[i]]$shape = sig_shape[i]
+      clusters[[i]]$semiminor_axis = minor[i]
+      clusters[[i]]$semimajor_axis = major[i]
+      clusters[[i]]$angle = angle_all[i]
+      clusters[[i]]$shape = shape_all[i]
     }
     clusters[[i]]$population = popin[i]
     clusters[[i]]$cases = yin[i]

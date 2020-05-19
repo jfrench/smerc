@@ -88,10 +88,10 @@ out = scan.test(coords = coords, cases = floor(nydf$cases),
                 alpha = 1, longlat = TRUE)
 ## plot output for new york state
 # specify desired argument values
-mapargs = list(database = "state", region = "new york",
+mapargs = list(database = "county", region = "new york",
 xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 # needed for "state" database (unless you execute library(maps))
-data(stateMapEnv, package = "maps")
+data(countyMapEnv, package = "maps")
 plot(out, usemap = TRUE, mapargs = mapargs)
 
 # a second example to match the results of Waller and Gotway (2005)

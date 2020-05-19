@@ -4,7 +4,9 @@
 \name{nypoly}
 \alias{nypoly}
 \title{SpatialPolygonsDataFrame for New York leukemia data.}
-\format{A SpatialPolygonDataFrame}
+\format{
+A SpatialPolygonDataFrame
+}
 \source{
 Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V.,
 and Pebesma, E. J. (2013). Applied Spatial Data Analysis

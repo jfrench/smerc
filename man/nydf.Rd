@@ -4,7 +4,8 @@
 \name{nydf}
 \alias{nydf}
 \title{Leukemia data for 281 regions in New York.}
-\format{A data frame with 281 rows and 4 columns:
+\format{
+A data frame with 281 rows and 4 columns:
 \describe{
  \item{longitude}{The longitude of the region centroid.
  These are NOT the original values provided by Waller and
@@ -19,7 +20,8 @@
  Waller and Gotway (2005).}
  \item{y}{The original 'latitude coordinate provided by
  Waller and Gotway (2005).}
-}}
+}
+}
 \source{
 Waller, L.A. and Gotway, C.A. (2005).
 Applied Spatial Statistics for Public Health Data.
