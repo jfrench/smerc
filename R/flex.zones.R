@@ -40,8 +40,15 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     if (verbose) {
       message("constructing connected subgraphs:")
       fcall = pbapply::pblapply
+      fcall_list = list(X = seq_len(N), function(i, ...) {
+        scsg2(nn, w, idx = i)
+      }, cl = cl)
+      # determine zones
+      czones = unlist(do.call(fcall, fcall_list),
+                      use.names = FALSE, recursive = FALSE)
+      return(czones[distinct(czones)])
     } else {
-      fcall = lapply
+      return(scsg2(nn, w))
     }
 
     # determine zones
@@ -76,5 +83,5 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     return(czones)
   }
   # determine distinct zones
-  czones[distinct(czones)]
+  # czones[distinct(czones)]
 }
