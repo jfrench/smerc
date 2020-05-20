@@ -90,7 +90,7 @@ rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
                         use.names = FALSE, recursive = FALSE)
         return(czones[distinct(czones)])
       } else {
-        return(scsg2(nn, w))
+        return(scsg2(nn, w,  idx = keep))
       }
     } else {
       czones = list()
