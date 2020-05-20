@@ -58,7 +58,7 @@
 #' bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
 #'                      type = "binomial", pop = pop)
 #' }
-rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
+rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
                        type = "poisson", pop = NULL,
                        cl = NULL, loop = FALSE,
                        verbose = FALSE, pfreq = 1) {
