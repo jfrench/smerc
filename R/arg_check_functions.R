@@ -275,8 +275,8 @@ arg_check_angle_all = function(angle_all, N) {
   if (!is.vector(angle_all)) {
     stop("angle_all should be a vector")
   }
-  if (min(angle_all) < 0 | max(angle_all) >= 180) {
-    stop("All angles must be in (0, 180)")
+  if (min(angle_all) < 0 | max(angle_all) >= 360) {
+    stop("All angles must be in [0, 360)")
   }
 }
 
