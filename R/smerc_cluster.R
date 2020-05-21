@@ -111,14 +111,14 @@ new_smerc_cluster = function(tobs, zones, pvalue, coords,
   # for the unique, non-overlapping clusters in order of significance,
   # find the associated centroid,
   # zone radius, cases in window, expected cases in window,
-  # population in window, standarized mortality ration, relative risk
+  # population in window, standarized mortality ratio, relative risk
   centroid_id = sapply(zones, utils::head, n = 1)
   boundary_id = sapply(zones, utils::tail, n = 1)
 
   if (!is.null(d)) {
     zone_r = d[cbind(centroid_id, boundary_id)]
   } else {
-    zone_r = rep(NA, length(centroid))
+    zone_r = rep(NA, length(centroid_id))
   }
   # maximum centroid distance
   max_dist = unname(sapply(zones, function(x) {
