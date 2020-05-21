@@ -7,12 +7,13 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-elliptic_test_check = elliptic.test2(coords = coords,
+elliptic_test_check = elliptic.test(coords = coords,
                                      cases = floor(nydf$cases),
                                      pop = nydf$pop, ubpop = 0.1,
                                      nsim = 19,
                                      alpha = 0.12)
 
+context("check elliptic.test with reference")
 test_that("elliptic.test and elliptic_test_ref match", {
   for (i in seq_along(elliptic_test_ref$clusters)) {
     expect_equal(elliptic_test_ref$clusters[[i]]$locids, elliptic_test_check$clusters[[i]]$locids)

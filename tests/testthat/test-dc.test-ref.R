@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-dc_test_check = dc.test2(coords = coords, cases = floor(nydf$cases),
-                               pop = nydf$pop, w = nyw,
-                               alpha = 0.12, longlat = TRUE,
-                               nsim = 19, ubpop = 0.1, ubd = 0.2)
+dc_test_check = dc.test(coords = coords, cases = floor(nydf$cases),
+                        pop = nydf$pop, w = nyw,
+                        alpha = 0.12, longlat = TRUE,
+                        nsim = 19, ubpop = 0.1, ubd = 0.2)
 
+context("check dc.test with reference")
 test_that("dc.test and dc_test_ref match", {
   for (i in seq_along(dc_test_ref$clusters)) {
     expect_equal(dc_test_ref$clusters[[i]]$locids, dc_test_check$clusters[[i]]$locids)

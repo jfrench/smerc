@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-mlink_test_check = mlink.test2(coords = coords, cases = floor(nydf$cases),
+mlink_test_check = mlink.test(coords = coords, cases = floor(nydf$cases),
                                pop = nydf$pop, w = nyw,
                                alpha = 0.12, longlat = TRUE,
                                nsim = 19, ubpop = 0.1, ubd = 0.2)
 
+context("check mlink.test with reference")
 test_that("mlink.test and mlink_test_ref match", {
   for (i in seq_along(mlink_test_ref$clusters)) {
     expect_equal(mlink_test_ref$clusters[[i]]$locids, mlink_test_check$clusters[[i]]$locids)

@@ -57,7 +57,7 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-rflex.test2 = function(coords, cases, pop, w, k = 50,
+rflex.test = function(coords, cases, pop, w, k = 50,
                      ex = sum(cases) / sum(pop) * pop,
                      type = "poisson",
                      nsim = 499,

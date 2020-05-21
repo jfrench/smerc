@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-uls_test_check = uls.test2(coords = coords, cases = floor(nydf$cases),
+uls_test_check = uls.test(coords = coords, cases = floor(nydf$cases),
                pop = nydf$pop, w = nyw,
                alpha = 0.05, longlat = TRUE,
                nsim = 19, ubpop = 0.5)
 
+context("check uls.test with reference")
 test_that("uls.test and uls_test_ref match", {
   for (i in seq_along(uls_test_ref$clusters)) {
     expect_equal(uls_test_ref$clusters[[i]]$locids, uls_test_check$clusters[[i]]$locids)

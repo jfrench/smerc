@@ -50,7 +50,7 @@
 #'                pop = nydf$pop,
 #'                alpha = 0.05, longlat = TRUE,
 #'                nsim = 49, ubpop = 0.5)
-fast.test2 = function(coords, cases, pop,
+fast.test = function(coords, cases, pop,
                     ex = sum(cases) / sum(pop) * pop,
                     nsim = 499, alpha = 0.1,
                     ubpop = 0.5, longlat = FALSE,

@@ -41,7 +41,7 @@
 #'                    nsim = 2,
 #'                    alpha = 0.12,
 #'                    shape = 1.5, nangle = 4)
-elliptic.test2 = function(coords, cases, pop,
+elliptic.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5,

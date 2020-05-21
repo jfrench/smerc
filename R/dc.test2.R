@@ -42,13 +42,13 @@
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
 #' out = dc.test(coords = coords, cases = floor(nydf$cases),
-#'                  pop = nydf$pop, w = nyw,
-#'                  alpha = 0.12, longlat = TRUE,
-#'                  nsim = 5, ubpop = 0.1, ubd = 0.2)
+#'               pop = nydf$population, w = nyw,
+#'               alpha = 0.12, longlat = TRUE,
+#'               nsim = 5, ubpop = 0.1, ubd = 0.2)
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-dc.test2 = function(coords, cases, pop, w,
+dc.test = function(coords, cases, pop, w,
                    ex = sum(cases) / sum(pop) * pop,
                    nsim = 499, alpha = 0.1,
                    ubpop = 0.5, ubd = 1,

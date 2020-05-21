@@ -61,7 +61,7 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-mlf.test2 = function(coords, cases, pop, w,
+mlf.test = function(coords, cases, pop, w,
                     ex = sum(cases) / sum(pop) * pop,
                     nsim = 499, alpha = 0.1,
                     ubpop = 0.5, ubd = 0.5,

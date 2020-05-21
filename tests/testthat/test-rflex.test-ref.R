@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-rflex_test_check = rflex.test2(coords = coords, cases = floor(nydf$cases),
+rflex_test_check = rflex.test(coords = coords, cases = floor(nydf$cases),
                              w = nyw, k = 15,
                              pop = nydf$pop, nsim = 19,
                              alpha = 0.1, longlat = TRUE)
 
+context("check rflex.test with reference")
 test_that("rflex.test and rflex_test_ref match", {
   for (i in seq_along(rflex_test_ref$clusters)) {
     expect_equal(rflex_test_ref$clusters[[i]]$locids, rflex_test_check$clusters[[i]]$locids)

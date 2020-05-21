@@ -7,13 +7,14 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-mlf_test_check = mlf.test2(coords = coords, cases = floor(nydf$cases),
-                           pop = nydf$pop, w = nyw,
-                           alpha = 0.12, longlat = TRUE,
-                           nsim = 19, ubpop = 0.1, ubd = 0.5)
+mlf_test_check = mlf.test(coords = coords, cases = floor(nydf$cases),
+                          pop = nydf$pop, w = nyw,
+                          alpha = 0.12, longlat = TRUE,
+                          nsim = 19, ubpop = 0.1, ubd = 0.5)
 
+context("check mlf.test with reference")
 test_that("mlf.test and mlf_test_ref match", {
-  for(i in seq_along(mlf_test_ref$clusters)) {
+  for (i in seq_along(mlf_test_ref$clusters)) {
     expect_equal(mlf_test_ref$clusters[[i]]$locids, mlf_test_check$clusters[[i]]$locids)
     # expect_equal(mlf_test_ref$clusters[[i]]$coords, mlf_test_check$clusters[[i]]$centroid)
     # expect_equal(mlf_test_ref$clusters[[i]]$r, mlf_test_check$clusters[[i]]$r)

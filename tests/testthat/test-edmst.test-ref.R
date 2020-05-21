@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-edmst_test_check = edmst.test2(coords = coords, cases = floor(nydf$cases),
-                               pop = nydf$pop, w = nyw,
-                               alpha = 0.12, longlat = TRUE,
-                               nsim = 19, ubpop = 0.1, ubd = 0.2)
+edmst_test_check = edmst.test(coords = coords, cases = floor(nydf$cases),
+                              pop = nydf$pop, w = nyw,
+                              alpha = 0.12, longlat = TRUE,
+                              nsim = 19, ubpop = 0.1, ubd = 0.2)
 
+context("check edmst.test with reference")
 test_that("edmst.test and edmst_test_ref match", {
   for (i in seq_along(edmst_test_ref$clusters)) {
     expect_equal(edmst_test_ref$clusters[[i]]$locids, edmst_test_check$clusters[[i]]$locids)

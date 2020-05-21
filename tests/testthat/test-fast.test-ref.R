@@ -7,11 +7,12 @@ data(nydf)
 data(nyw)
 coords = with(nydf, cbind(longitude, latitude))
 set.seed(1)
-fast_test_check = fast.test2(coords = coords, cases = floor(nydf$cases),
-                             pop = nydf$pop,
-                             alpha = 0.1, longlat = TRUE,
-                             nsim = 19, ubpop = 0.5)
+fast_test_check = fast.test(coords = coords, cases = floor(nydf$cases),
+                            pop = nydf$pop,
+                            alpha = 0.1, longlat = TRUE,
+                            nsim = 19, ubpop = 0.5)
 
+context("check fast.test with reference")
 test_that("fast.test and fast_test_ref match", {
   for (i in seq_along(fast_test_ref$clusters)) {
     expect_equal(fast_test_ref$clusters[[i]]$locids, fast_test_check$clusters[[i]]$locids)

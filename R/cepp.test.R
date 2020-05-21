@@ -80,10 +80,19 @@ cepp.test = function(coords, cases, pop, nstar,
   sig_regions = nn[op]
   sig_tstat = cstar[op]
   sig_p = pvalue[op]
-  prep.scan2(tobs = sig_tstat, zones = sig_regions,
-            pvalue = sig_p, coords = coords, cases = cases,
-            pop = pop, ex = ex, longlat = longlat,
-            w = NULL, d = d)
+
+  # significant, ordered, non-overlapping clusters and
+  # information
+  pruned = sig_noc(tobs = cstar, zones = nn, pvalue = pvalue,
+                   alpha = alpha, order_by = "tobs")
+
+  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
+                pvalue = pruned$pvalue, coords = coords,
+                cases = cases, pop = pop, ex = ex,
+                longlat = longlat, method = "CEPP",
+                rel_param = list(nstar = nstar,
+                                 simdist = simdist),
+                alpha = alpha, w = NULL, d = d)
 }
 
 #' Argument checking for cepp.test
