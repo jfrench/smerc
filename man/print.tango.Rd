@@ -18,7 +18,8 @@
 \item{digits}{Number of significant digits to print.}
 }
 \description{
-Print \code{tango} object
+Print a \code{tango} object. If the \code{crayon} package
+is installed, then the results are printed in color.
 }
 \examples{
 data(nydf)

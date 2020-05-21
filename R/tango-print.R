@@ -14,7 +14,9 @@
 #' results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 #' results
 print.tango = function(x, ..., digits = 2) {
-  if (!requireNamespace(crayon, quietly = TRUE)) {
+  if (requireNamespace("crayon", quietly = TRUE)) {
+    print_tango_crayon(x, digits)
+  } else {
     cat("method: Tango's index\n")
     index = base::signif(x$tstat, digits = digits)
     gof = base::signif(x$gof, digits = digits)
@@ -33,32 +35,41 @@ print.tango = function(x, ..., digits = 2) {
       pvalue_sim = base::signif(x$pvalue.sim, digits = digits)
       cat(paste("Monte Carlo p-value:", pvalue_sim), sep = "\n")
     }
-  } else if (requireNamespace("crayon", quietly = TRUE)){
-    message(paste(crayon::blue("method:"),
-                  crayon::magenta("Tango's index")))
-    index = base::signif(x$tstat, digits = digits)
-    gof = base::signif(x$gof, digits = digits)
-    sa = base::signif(x$sa, digits = digits)
-    tstat_chisq = base::signif(x$tstat.chisq, digits = digits)
-    dfc = base::signif(x$dfc, digits = digits)
-    pvalue_chisq = base::signif(x$pvalue.chisq, digits = digits)
+  }
+}
 
-    message(paste(crayon::blue("index:"),
-                  crayon::magenta(index)))
-    message(paste(crayon::blue("goodness-of-fit component:"),
-                  crayon::magenta(gof)))
-    message(paste(crayon::blue("spatial autocorrelation component:"),
-                  crayon::magenta(sa)))
-    message(paste(crayon::blue("chi-square statistic:"),
-                  crayon::magenta(tstat_chisq)))
-    message(paste(crayon::blue("chi-square df:"),
-                  crayon::magenta(dfc)))
-    message(paste(crayon::blue("chi-square p-value:"),
-                  crayon::magenta(pvalue_chisq)))
-    if (!is.null(x$pvalue.sim)) {
-      pvalue_sim = base::signif(x$pvalue.sim, digits = digits)
-      message(paste(crayon::blue("Monte Carlo p-value:"),
-                    crayon::magenta(pvalue_sim)))
-    }
+#' Tango print in color using crayon package
+#'
+#' @param x tango object
+#' @param digits Number of significant digits
+#' @return NULL
+#' @export
+#' @noRd
+tango_print_crayon = function(x, digits) {
+  message(paste(crayon::blue("method:"),
+                crayon::magenta("Tango's index")))
+  index = base::signif(x$tstat, digits = digits)
+  gof = base::signif(x$gof, digits = digits)
+  sa = base::signif(x$sa, digits = digits)
+  tstat_chisq = base::signif(x$tstat.chisq, digits = digits)
+  dfc = base::signif(x$dfc, digits = digits)
+  pvalue_chisq = base::signif(x$pvalue.chisq, digits = digits)
+
+  message(paste(crayon::blue("index:"),
+                crayon::magenta(index)))
+  message(paste(crayon::blue("goodness-of-fit component:"),
+                crayon::magenta(gof)))
+  message(paste(crayon::blue("spatial autocorrelation component:"),
+                crayon::magenta(sa)))
+  message(paste(crayon::blue("chi-square statistic:"),
+                crayon::magenta(tstat_chisq)))
+  message(paste(crayon::blue("chi-square df:"),
+                crayon::magenta(dfc)))
+  message(paste(crayon::blue("chi-square p-value:"),
+                crayon::magenta(pvalue_chisq)))
+  if (!is.null(x$pvalue.sim)) {
+    pvalue_sim = base::signif(x$pvalue.sim, digits = digits)
+    message(paste(crayon::blue("Monte Carlo p-value:"),
+                  crayon::magenta(pvalue_sim)))
   }
 }
