@@ -13,9 +13,9 @@ Imports:
     smacpod,
     randtoolbox, 
     sp,
-    crayon,
     matrixStats
 Suggests:
+    crayon,
     lintr,
     maps,
     testthat, 
