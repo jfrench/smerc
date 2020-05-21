@@ -23,13 +23,13 @@
 #' \code{longlat}.
 #'
 #' @inheritParams dmst.test
-#' @return Returns a \code{scan} object.
+#' @return Returns a \code{smerc_cluster} object.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{flex.test}}, \code{\link{uls.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @references Costa, M.A. and Assuncao, R.M. and Kulldorff,
 #'   M. (2012) Constrained spanning tree algorithms for
 #'   irregularly-shaped spatial clustering, Computational
@@ -108,7 +108,7 @@ mlink.test = function(coords, cases, pop, w,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "mlink",
+                longlat = longlat, method = "maximum linkage",
                 rel_param = list(type = "poisson",
                                  simdist = "multinomial",
                                  nsim = nsim,

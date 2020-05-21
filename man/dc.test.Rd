@@ -62,7 +62,7 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{dc.test} implements the Double Connection spatial
@@ -110,10 +110,10 @@ Costa, M.A. and Assuncao, R.M. and Kulldorff,
   <https://doi.org/10.1016/j.csda.2011.11.001>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{flex.test}}, \code{\link{uls.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
 }
 \author{
 Joshua French

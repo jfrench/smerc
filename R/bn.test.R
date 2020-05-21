@@ -15,12 +15,12 @@
 #' @inheritParams scan.test
 #' @inheritParams casewin
 #'
-#' @return Returns a \code{scan} object.
+#' @return Returns a \code{smerc_cluster} object.
 #' @author Joshua French
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{flex.test}}, \code{\link{dmst.test}},
-#'   \code{\link{uls.test}}, \code{\link{mlf.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.test}}
 #' @export
 #' @references Besag, J. and Newell, J.  (1991). The
 #'   detection of clusters in rare diseases, Journal of the

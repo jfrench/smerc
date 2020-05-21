@@ -25,13 +25,13 @@
 #' \code{longlat}.
 #'
 #' @inheritParams dmst.test
-#' @return Returns a \code{scan} object.
+#' @return Returns a \code{smerc_cluster} object.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{flex.test}}, \code{\link{uls.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @references Costa, M.A. and Assuncao, R.M. and Kulldorff,
 #'   M. (2012) Constrained spanning tree algorithms for
 #'   irregularly-shaped spatial clustering, Computational
@@ -104,15 +104,6 @@ dc.test = function(coords, cases, pop, w,
     pvalue = rep(1, length(tobs))
   }
 
-  # determine which potential clusters are significant
-  sigc = which(pvalue <= alpha, useNames = FALSE)
-
-  # if there are no significant clusters, return most likely cluster
-  if (length(sigc) == 0) {
-    sigc = which.max(tobs)
-    warning("No significant clusters.  Returning most likely cluster.")
-  }
-
   # significant, ordered, non-overlapping clusters and
   # information
   pruned = sig_noc(tobs = tobs, zones = zones,
@@ -122,7 +113,7 @@ dc.test = function(coords, cases, pop, w,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "dc",
+                longlat = longlat, method = "double connection",
                 rel_param = list(type = "poisson",
                                  simdist = "multinomial",
                                  nsim = nsim,

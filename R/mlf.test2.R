@@ -40,6 +40,10 @@
 #'   of the list is the centroid coordinates.  This is
 #'   needed for plotting purposes.
 #' @author Joshua French
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @export
 #' @references Yao, Z., Tang, J., & Zhan, F. B. (2011).
 #'   Detection of arbitrarily-shaped clusters using a
@@ -131,7 +135,7 @@ mlf.test = function(coords, cases, pop, w,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "mlf",
+                longlat = longlat, method = "maxima likelihood first",
                 rel_param = list(type = "poisson",
                                  simdist = "multinomial",
                                  nsim = nsim,

@@ -62,7 +62,7 @@ or an integer to indicate number of child-processes
 }
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{dmst.test} implements the dynamic Minimum Spanning
@@ -105,10 +105,10 @@ Assuncao, R.M., Costa, M.A., Tavares, A. and
   723-742.  <https://doi.org/10.1002/sim.2411>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{flex.test}}, \code{\link{uls.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
 }
 \author{
 Joshua French

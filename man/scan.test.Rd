@@ -67,7 +67,7 @@ conditions on the total number of cases observed. The
 other options are \code{"poisson"} and \code{"binomial"}}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{scan.test} performs the original spatial scan test
@@ -120,10 +120,10 @@ Waller, L.A. and Gotway, C.A. (2005). Applied Spatial
 Statistics for Public Health Data. Hoboken, NJ: Wiley.
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{uls.test}},
-  \code{\link{flex.test}}, \code{\link{dmst.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}
 }
 \author{
 Joshua French

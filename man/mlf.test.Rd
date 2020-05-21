@@ -125,6 +125,12 @@ Yao, Z., Tang, J., & Zhan, F. B. (2011).
   S.J.F. (2006). Fast detection of arbitrarily shaped
   disease clusters, Statistics in Medicine, 25, 723-742.
 }
+\seealso{
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
+}
 \author{
 Joshua French
 }

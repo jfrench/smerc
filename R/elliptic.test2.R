@@ -21,6 +21,10 @@
 #'   default is 0.5.
 #'
 #' @inherit scan.test return params
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @author Joshua French
 #' @export
 #' @references Kulldorff, M. (1997) A spatial scan
@@ -126,6 +130,7 @@ elliptic.test = function(coords, cases, pop,
                                  nsim = nsim,
                                  ubpop = ubpop,
                                  min.cases = min.cases,
+                                 a_penalty = a,
                                  shapes = shape,
                                  nangles = nangle),
                 alpha = alpha,

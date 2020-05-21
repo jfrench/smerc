@@ -115,10 +115,10 @@ Tango, T. and Takahashi, K. (2012), A
   Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{uls.test}}, \code{\link{dmst.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
 }
 \author{
 Joshua French

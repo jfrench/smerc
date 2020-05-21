@@ -19,10 +19,10 @@
 #'   following components:
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{uls.test}}, \code{\link{dmst.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @references Tango, T., & Takahashi, K. (2005). A flexibly
 #'   shaped spatial scan statistic for detecting clusters.
 #'   International journal of health geographics, 4(1), 11.
@@ -102,7 +102,7 @@ flex.test = function(coords, cases, pop, w, k = 10,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "flex",
+                longlat = longlat, method = "flexible",
                 rel_param = list(type = type,
                                  simdist = "multinomial",
                                  nsim = nsim,

@@ -1,14 +1,14 @@
-#' Summary of \code{scan} object
+#' Summary of \code{smerc_cluster} object
 #'
-#' Summary of object of class \code{scan}.
+#' Summary of object of class \code{smerc_cluster}.
 #'
-#' @param object An object of class \code{scan}.
+#' @param object An object of class \code{smerc_cluster}.
 #' @inheritDotParams base::summary
 #' @param idx A index vector indicating the elements of
 #' \code{object$clusters} to print information for. The default
 #' is all clusters.
 #' @param digits Integer indicating the number of decimal places.
-#' @method summary scan
+#' @method summary smerc_cluster
 #' @export
 #' @examples
 #' data(nydf)
@@ -17,9 +17,9 @@
 #'                 pop = nydf$pop, nsim = 49,
 #'                 longlat = TRUE, alpha = 0.12)
 #' summary(out)
-summary.scan = function(object, ...,
-                        idx = seq_along(object$clusters),
-                        digits = 1) {
+summary.smerc_cluster = function(object, ...,
+                                 idx = seq_along(object$clusters),
+                                 digits = 1) {
   if (min(idx) < 1 | max(idx) > length(object$clusters)) {
     stop("invalid idx values")
   }

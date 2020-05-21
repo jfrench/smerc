@@ -66,7 +66,7 @@ is \code{"binomial"}.}
 a cluster.  The default is 2.}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{elliptic.test} performs the elliptical scan test of
@@ -103,6 +103,12 @@ Kulldorff, M., Huang, L., Pickle,
 L. and Duczmal, L. (2006) An elliptic spatial scan
 statistic. Statististics in Medicine, 25:3929-3943.
 <doi:10.1002/sim.2490>
+}
+\seealso{
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
 }
 \author{
 Joshua French

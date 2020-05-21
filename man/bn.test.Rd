@@ -51,7 +51,7 @@ region, and computes the p-value for the cluster as
 is \code{modified = FALSE}.}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{bn.test} implements the Besag-Newell test of Besag
@@ -76,10 +76,10 @@ Besag, J. and Newell, J.  (1991). The
   Royal Statistical Society, Series A, 154, 327-333.
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{flex.test}}, \code{\link{dmst.test}},
-  \code{\link{uls.test}}, \code{\link{mlf.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.test}}
 }
 \author{
 Joshua French

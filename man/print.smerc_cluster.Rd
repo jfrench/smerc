@@ -20,7 +20,7 @@
 printed.}
 }
 \description{
-Print \code{scan} object
+Print \code{smerc_cluster} object
 }
 \examples{
 data(nydf)

@@ -113,7 +113,7 @@ cepp1 = cepp(varx = coords[,1], vary = coords[,2],
              numsim = 9, type = "poisson")
 
 cepp2 = suppressWarnings(cepp.test(coords = coords, cases = cases, pop = pop,
-                  nstar = 15000, alpha = 0.1, nsim = 0))
+                  nstar = 15000, alpha = 1, nsim = 0))
 
 d = sp::spDists(coords)
 # find smallest windows with cumulative population of

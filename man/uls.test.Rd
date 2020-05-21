@@ -124,10 +124,10 @@ Patil, G.P. & Taillie, C. Upper level set
   <doi:10.1023/B:EEST.0000027208.48919.7e>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{flex.test}}, \code{\link{dmst.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}, \code{\link{scan.test}}
 }
 \author{
 Joshua French

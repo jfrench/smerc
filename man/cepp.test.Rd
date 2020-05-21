@@ -51,7 +51,7 @@ or \code{"poisson"} distribution.  The default is
 cases observed in each simulated data set.}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{cepp.test} implements the Cluster Evaluation
@@ -80,8 +80,10 @@ Bruce W. Turnbull, Eric J. Iwano, William S. Burnett,
   <doi:10.1093/oxfordjournals.aje.a115775>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.test}}
 }
 \author{
 Joshua French

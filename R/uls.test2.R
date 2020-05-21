@@ -43,10 +43,10 @@
 #'   of the list is the centroid coordinates.  This is
 #'   needed for plotting purposes.
 #' @author Joshua French
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{flex.test}}, \code{\link{dmst.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @export
 #' @references Patil, G.P. & Taillie, C. Upper level set
 #'   scan statistic for detecting arbitrarily shaped

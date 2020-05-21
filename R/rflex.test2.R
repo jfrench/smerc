@@ -37,10 +37,10 @@
 #'   needed for plotting purposes.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{uls.test}}, \code{\link{dmst.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @references Tango, T. and Takahashi, K. (2012), A
 #'   flexible spatial scan statistic with a restricted
 #'   likelihood ratio for detecting disease clusters.
@@ -111,7 +111,7 @@ rflex.test = function(coords, cases, pop, w, k = 50,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "rflex",
+                longlat = longlat, method = "restricted flexible",
                 rel_param = list(type = type,
                                  simdist = "multinomial",
                                  nsim = nsim,

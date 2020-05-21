@@ -15,10 +15,12 @@
 #' \code{"multinomial"}, which fixes the total number of
 #' cases observed in each simulated data set.
 #'
-#' @return Returns a \code{scan} object.
+#' @return Returns a \code{smerc_cluster} object.
 #' @author Joshua French
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.test}}
 #' @export
 #' @references Bruce W. Turnbull, Eric J. Iwano, William S. Burnett,
 #'   Holly L. Howe, Larry C. Clark (1990).  Monitoring for Clusters of Disease:
@@ -91,7 +93,8 @@ cepp.test = function(coords, cases, pop, nstar,
                 cases = cases, pop = pop, ex = ex,
                 longlat = longlat, method = "CEPP",
                 rel_param = list(nstar = nstar,
-                                 simdist = simdist),
+                                 simdist = simdist,
+                                 nsim = nsim),
                 alpha = alpha, w = NULL, d = d)
 }
 

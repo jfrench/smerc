@@ -26,13 +26,13 @@
 #'   potential clusters must be no more than \code{ubd * m},
 #'   where \code{m} is the maximum intercentroid distance
 #'   between all coordinates.
-#' @return Returns a \code{scan} object.
+#' @return Returns a \code{smerc_cluster} object.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{scan.test}},
-#'   \code{\link{flex.test}}, \code{\link{uls.test}},
-#'   \code{\link{bn.test}}
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
 #'   Neto, S.J.F. (2006). Fast detection of arbitrarily
 #'   shaped disease clusters, Statistics in Medicine, 25,
@@ -119,7 +119,7 @@ dmst.test = function(coords, cases, pop, w,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "dmst",
+                longlat = longlat, method = "dynamic minimum spanning tree",
                 rel_param = list(type = "poisson",
                                  simdist = "multinomial",
                                  nsim = nsim,

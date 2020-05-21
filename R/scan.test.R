@@ -40,11 +40,11 @@
 #' other options are \code{"poisson"} and \code{"binomial"}
 #' @inheritParams pbapply::pblapply
 #'
-#' @return Returns a \code{scan} object.
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{uls.test}},
-#'   \code{\link{flex.test}}, \code{\link{dmst.test}},
-#'   \code{\link{bn.test}}
+#' @return Returns a \code{smerc_cluster} object.
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}
 #' @author Joshua French
 #' @export
 #' @references Kulldorff, M. (1997) A spatial scan
@@ -169,7 +169,7 @@ scan.test = function(coords, cases, pop,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "scan",
+                longlat = longlat, method = "circular scan",
                 rel_param = list(type = type,
                                  simdist = simdist,
                                  nsim = nsim,
