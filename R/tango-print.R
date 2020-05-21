@@ -45,7 +45,7 @@ print.tango = function(x, ..., digits = 2) {
 #' @return NULL
 #' @export
 #' @noRd
-tango_print_crayon = function(x, digits) {
+print_tango_crayon = function(x, digits) {
   message(paste(crayon::blue("method:"),
                 crayon::magenta("Tango's index")))
   index = base::signif(x$tstat, digits = digits)

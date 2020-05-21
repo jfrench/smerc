@@ -83,7 +83,7 @@ uls.zones = function(cases, pop, w, ubpop = 0.5,
         } else {
           on = order(sapply(uz[wl], length), decreasing = TRUE)
           uzwlon = uz[wl[on]]
-          uzwlon = uzwlon[smacpod::noc(uzwlon)]
+          uzwlon = uzwlon[noz(uzwlon)]
           for (k in seq_along(uzwlon)) {
             counter = counter + 1
             uz2[counter] = uzwlon[k]

@@ -61,7 +61,7 @@ sig_noc = function(tobs, zones, pvalue, alpha,
 
   # determine significant non-overlapping clusters
   # in order of significance
-  sig = smacpod::noc(zones)
+  sig = noz(zones)
   return(list(tobs = tobs[sig],
               zones = zones[sig],
               pvalue = pvalue[sig],

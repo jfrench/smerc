@@ -10,7 +10,6 @@ License: GPL (>=2)
 LazyLoad: yes
 Imports:
     pbapply, 
-    smacpod,
     randtoolbox, 
     sp,
     matrixStats
