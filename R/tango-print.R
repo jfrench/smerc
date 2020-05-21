@@ -38,12 +38,13 @@ print.tango = function(x, ..., digits = 2) {
   }
 }
 
-#' Tango print in color using crayon package
+#' Print tango object in color
+#'
+#' Print tango object in color using crayon package
 #'
 #' @param x tango object
 #' @param digits Number of significant digits
 #' @return NULL
-#' @export
 #' @noRd
 print_tango_crayon = function(x, digits) {
   message(paste(crayon::blue("method:"),
