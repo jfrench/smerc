@@ -91,11 +91,11 @@ print.smerc_cluster = function(x, ..., extra = FALSE) {
       cat(paste(("total regions:"),
                     (x$number_of_regions)), sep = "\n")
       cat(paste(("total cases:"),
-                    (x$total_cases)), sep = "\n")
+                    round(x$total_cases, 2)), sep = "\n")
       cat(paste(("total population:"),
                     (x$total_population)), sep = "\n")
       cat(paste(("cases per 100,000 persons:"),
-                    (x$cases_per_100k)), sep = "\n")
+                    round(x$cases_per_100k, 2)), sep = "\n")
     }
   }
 }
@@ -180,11 +180,11 @@ print_smerc_cluster_crayon = function(x, extra) {
       message(paste(crayon::blue("total regions:"),
                     crayon::magenta(x$number_of_regions)))
       message(paste(crayon::blue("total cases:"),
-                    crayon::magenta(x$total_cases)))
+                    crayon::magenta(round(x$total_cases, 2))))
       message(paste(crayon::blue("total population:"),
                     crayon::magenta(x$total_population)))
       message(paste(crayon::blue("cases per 100,000 persons:"),
-                    crayon::magenta(x$cases_per_100k)))
+                    crayon::magenta(round(x$cases_per_100k, 2))))
     }
   }
 }
