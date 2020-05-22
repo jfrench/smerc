@@ -55,12 +55,10 @@ print.smerc_cluster = function(x, ..., extra = FALSE) {
                     (rel_param$a_penalty)), sep = "\n")
     }
     if (!is.null(rel_param$shapes)) {
-      cat(paste(("shapes:"),
-                    (paste(rel_param$shapes, collapse = ', ')), sep = "\n"))
+      cat(paste("shapes:", paste(rel_param$shapes, collapse = ', ')), sep = "\n")
     }
     if (!is.null(rel_param$nangles)) {
-      cat(paste(("angles per shape:"),
-                    (paste(rel_param$nangles, collapse = ', ')), sep = "\n"))
+      cat(paste("angles per shape:", paste(rel_param$nangles, collapse = ', ')), sep = "\n")
     }
     if (!is.null(rel_param$cstar)) {
       cat(paste(("case radius:"),
