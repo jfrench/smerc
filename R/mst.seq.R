@@ -127,25 +127,19 @@ mst.seq = function(start, neighbors, cases, pop, w, ex, ty,
     # which regions are connected to c_zone
     # and satisfy the population constraints
     sw = w[c_zone, cmn, drop = FALSE]
+
+    # count number of connections between c_zone and
+    # neighbors
     if (i == 1 | nlinks == "one") {
       # can only be single connected region first iteration
-      # connected = cmn[which(matrixStats::colMaxs(sw) == 1)]
-      # connected = cmn[matrixStats::colSums2(sw) >= 1]
       connected = cmn[colSums(sw) >= 1]
-    } else {
-      # count number of connections between c_zone and
-      # neighbors
-      # nconnect = matrixStats::colSums2(sw)
+    } else if (nlinks == "two") {
+      connected = cmn[colSums(sw) >= 2]
+    } else if (nlinks == "max") {
       nconnect = colSums(sw)
-
-      if (nlinks == "two") {
-        # double connection
-        connected = cmn[which(nconnect >= 2)]
-      } else if (nlinks == "max") {
-        # mlink connection
-        connected = cmn[which(nconnect == max(nconnect))]
-      }
+      connected = cmn[nconnect == max(nconnect)]
     }
+
     # new popin when adding each potential neighbor to c_zone
     p_popin = popin[i] + pop[connected]
 
