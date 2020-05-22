@@ -129,11 +129,14 @@ mst.seq = function(start, neighbors, cases, pop, w, ex, ty,
     sw = w[c_zone, cmn, drop = FALSE]
     if (i == 1 | nlinks == "one") {
       # can only be single connected region first iteration
-      connected = cmn[which(matrixStats::colMaxs(sw) == 1)]
+      # connected = cmn[which(matrixStats::colMaxs(sw) == 1)]
+      # connected = cmn[matrixStats::colSums2(sw) >= 1]
+      connected = cmn[colSums(sw) >= 1]
     } else {
       # count number of connections between c_zone and
       # neighbors
-      nconnect = matrixStats::colSums2(sw)
+      # nconnect = matrixStats::colSums2(sw)
+      nconnect = colSums(sw)
 
       if (nlinks == "two") {
         # double connection
