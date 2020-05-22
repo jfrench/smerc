@@ -4,8 +4,20 @@
 \alias{mst.all}
 \title{Minimum spanning tree for all regions}
 \usage{
-mst.all(neighbors, cases, pop, w, ex, ty, max_pop, type = "maxonly",
-  nlinks = "one", early = FALSE, cl = NULL, progress = FALSE)
+mst.all(
+  neighbors,
+  cases,
+  pop,
+  w,
+  ex,
+  ty,
+  max_pop,
+  type = "maxonly",
+  nlinks = "one",
+  early = FALSE,
+  cl = NULL,
+  progress = FALSE
+)
 }
 \arguments{
 \item{neighbors}{A list containing the vector of
@@ -50,7 +62,9 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+\item{progress}{A logical value indicating whether a
+progress bar should be displayed.  The default is
+\code{TRUE}.}
 }
 \value{
 Returns a list of relevant information.  See

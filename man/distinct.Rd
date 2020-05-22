@@ -9,26 +9,27 @@ distinct(x, N = max(unlist(x)))
 \arguments{
 \item{x}{A list of integers}
 
-\item{N}{The largest integer value across all elements of \code{x}.}
+\item{N}{The largest integer value across all elements of
+\code{x}.}
 }
 \value{
 A vector with the distinct indices.
 }
 \description{
-\code{distinct} takes a list of integer vectors and 
+\code{distinct} takes a list of integer vectors and
 returns the list indices that contain unique combinations
-of elements.  This function is NOT robust against 
-misuse, so please use properly.
+of elements.  This function is NOT robust against misuse,
+so please use properly.
 }
 \details{
-Assume that \code{k} is the largest integer value in 
+Assume that \code{k} is the largest integer value in
 \code{x}.  A vector of the largest \code{k} prime numbers
-is obtained (call this \code{pri}).  The algorithm takes 
+is obtained (call this \code{pri}).  The algorithm takes
 the sum of the log of \code{pri[x[[i]]]} for each element
 of \code{x}, and determines which sums are unique.  This
 is why the elements of \code{x} must be integer vectors.
 The prime aspect of the algorithm is critical, as it
-ensures that a none of the values are multiples of the 
+ensures that a none of the values are multiples of the
 others, ensuring uniqueness.
 
 Note: this algorithm has only been applied to data sets
@@ -40,7 +41,8 @@ x = list(1:3, 3:1, 1:4, 4:1, c(1, 2, 4, 6), c(6, 4, 1, 2))
 x[distinct(x)]
 }
 \references{
-Algorithm based on suggestion at \url{https://stackoverflow.com/a/29824978}.
+Algorithm based on suggestion at
+  \url{https://stackoverflow.com/a/29824978}.
 }
 \author{
 Joshua French

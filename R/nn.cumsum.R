@@ -1,16 +1,18 @@
 #' Cumulative sum over nearest neighbors
 #'
-#' \code{nn.cumsum} computes the cumulative sum of \code{y} for
-#' the sequences of indices in each element of the list
+#' \code{nn.cumsum} computes the cumulative sum of \code{y}
+#' for the sequences of indices in each element of the list
 #' contained in \code{nn}.
 #'
-#' @param nn A list of nearest neighbors in the format produced by \code{\link{nnpop}}.
+#' @param nn A list of nearest neighbors in the format
+#'   produced by \code{\link{nnpop}}.
 #' @param y A numeric vector of values to be summed over.
-#' @param simplify A logical value indicating whether the results
-#' should be simplified to a numeric vector.  The default is
-#' \code{TRUE}.
+#' @param simplify A logical value indicating whether the
+#'   results should be simplified to a numeric vector.  The
+#'   default is \code{TRUE}.
 #'
-#' @return A vector or list, depending on the value of \code{simplify}.
+#' @return A vector or list, depending on the value of
+#'   \code{simplify}.
 #' @export
 #'
 #' @examples

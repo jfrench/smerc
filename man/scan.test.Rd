@@ -4,9 +4,20 @@
 \alias{scan.test}
 \title{Spatial Scan Test}
 \usage{
-scan.test(coords, cases, pop, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, ubpop = 0.5, longlat = FALSE,
-  cl = NULL, type = "poisson", min.cases = 2)
+scan.test(
+  coords,
+  cases,
+  pop,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  ubpop = 0.5,
+  longlat = FALSE,
+  cl = NULL,
+  type = "poisson",
+  min.cases = 2,
+  simdist = "multinomial"
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -31,7 +42,7 @@ a cluster is signficant.  Default is 0.10.}
 total population to consider for a cluster.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
@@ -43,15 +54,20 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{min.cases}{The minimum number of cases required for
 a cluster.  The default is 2.}
+
+\item{simdist}{Character string indicating the simulation
+distribution. The default is \code{"multinomial"}, which
+conditions on the total number of cases observed. The
+other options are \code{"poisson"} and \code{"binomial"}}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{scan.test} performs the original spatial scan test
@@ -72,10 +88,10 @@ out = scan.test(coords = coords, cases = floor(nydf$cases),
                 alpha = 1, longlat = TRUE)
 ## plot output for new york state
 # specify desired argument values
-mapargs = list(database = "state", region = "new york",
+mapargs = list(database = "county", region = "new york",
 xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 # needed for "state" database (unless you execute library(maps))
-data(stateMapEnv, package = "maps")
+data(countyMapEnv, package = "maps")
 plot(out, usemap = TRUE, mapargs = mapargs)
 
 # a second example to match the results of Waller and Gotway (2005)
@@ -92,7 +108,7 @@ out2 = scan.test(coords = coords, cases = floor(nydf$cases),
                   alpha = 1, longlat = TRUE)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
-c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
+sget(out2$clusters, name = "cases")[1:3]
 }
 \references{
 Kulldorff, M. (1997) A spatial scan
@@ -104,10 +120,10 @@ Waller, L.A. and Gotway, C.A. (2005). Applied Spatial
 Statistics for Public Health Data. Hoboken, NJ: Wiley.
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{uls.test}},
-  \code{\link{flex.test}}, \code{\link{dmst.test}},
-  \code{\link{bn.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.stat}}
 }
 \author{
 Joshua French

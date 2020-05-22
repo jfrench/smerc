@@ -4,8 +4,16 @@
 \alias{bn.test}
 \title{Besag-Newell Test}
 \usage{
-bn.test(coords, cases, pop, cstar, ex = sum(cases)/sum(pop) * pop,
-  alpha = 0.1, longlat = FALSE, noc = TRUE, modified = FALSE)
+bn.test(
+  coords,
+  cases,
+  pop,
+  cstar,
+  ex = sum(cases)/sum(pop) * pop,
+  alpha = 0.1,
+  longlat = FALSE,
+  modified = FALSE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -27,16 +35,10 @@ hypothesis.}
 a cluster is signficant.  Default is 0.10.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
-
-\item{noc}{A logical value indicating whether all
-significant clusters should be returned (\code{FALSE})
-or only the non-overlapping clusters (\code{TRUE})
-arranged in order of significance.  The default is
-\code{TRUE}.}
 
 \item{modified}{A logical value indicating whether a
 modified version of the test should be performed.  The
@@ -49,7 +51,7 @@ region, and computes the p-value for the cluster as
 is \code{modified = FALSE}.}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{bn.test} implements the Besag-Newell test of Besag
@@ -74,10 +76,10 @@ Besag, J. and Newell, J.  (1991). The
   Royal Statistical Society, Series A, 154, 327-333.
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}},
-  \code{\link{flex.test}}, \code{\link{dmst.test}},
-  \code{\link{uls.test}}, \code{\link{mlf.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.test}}
 }
 \author{
 Joshua French

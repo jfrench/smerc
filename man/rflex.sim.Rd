@@ -4,8 +4,16 @@
 \alias{rflex.sim}
 \title{Perform \code{rflex.test} on simualated data}
 \usage{
-rflex.sim(nsim = 1, nn, w, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL)
+rflex.sim(
+  nsim = 1,
+  nn,
+  w,
+  ex,
+  alpha1 = 0.2,
+  type = "poisson",
+  pop = NULL,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -14,7 +22,8 @@ simulations to perform.}
 \item{nn}{A matrix of the k nearest neighbors for the
 regions described by \code{w}.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -22,9 +31,9 @@ hypothesis.}
 
 \item{alpha1}{The middle p-value threshold.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{pop}{The population size associated with each
 region.}

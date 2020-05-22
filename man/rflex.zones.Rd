@@ -4,16 +4,27 @@
 \alias{rflex.zones}
 \title{Determine zones for flexibly shaped spatial scan test}
 \usage{
-rflex.zones(nn, w, cases, ex, alpha1 = 0.2, type = "poisson",
-  pop = NULL, cl = NULL, loop = FALSE, verbose = FALSE,
-  pfreq = 1)
+rflex.zones(
+  nn,
+  w,
+  cases,
+  ex,
+  alpha1 = 0.2,
+  type = "poisson",
+  pop = NULL,
+  cl = NULL,
+  loop = FALSE,
+  verbose = FALSE,
+  pfreq = 1
+)
 }
 \arguments{
 \item{nn}{An n by k matrix providing the k nearest
 neighbors of each region, presumably produced by the
 \code{\link{knn}} function.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{cases}{The number of cases observed in each region.}
 
@@ -23,9 +34,9 @@ hypothesis.}
 
 \item{alpha1}{The middle p-value threshold.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{pop}{The population size associated with each
 region.  The default is \code{NULL} since this argument

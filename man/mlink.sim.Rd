@@ -19,7 +19,8 @@ preferably from the \code{\link{nndist}} function.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{pop}{The population size associated with each
 region.}

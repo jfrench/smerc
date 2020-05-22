@@ -9,17 +9,18 @@ mc.pvalue(tobs, tsim)
 \arguments{
 \item{tobs}{A vector observed test statistics}
 
-\item{tsim}{A vector of test statistics from simulated data}
+\item{tsim}{A vector of test statistics from simulated
+data}
 }
 \value{
 A vector of p-values.
 }
 \description{
-\code{mc.pvalue} computes the Monte Carlo p-value of 
-each element of \code{tobs} using the relationship
-\code{(sum(tsim >= x) + 1)/(nsim + 1)} where \code{x}
-is a specific element of \code{tobs} and 
-\code{nsim = length(tsim)}.
+\code{mc.pvalue} computes the Monte Carlo p-value of each
+element of \code{tobs} using the relationship
+\code{(sum(tsim >= x) + 1)/(nsim + 1)} where \code{x} is
+a specific element of \code{tobs} and \code{nsim =
+length(tsim)}.
 }
 \examples{
 mc.pvalue(8:10, 1:9)

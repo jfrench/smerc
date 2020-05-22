@@ -82,16 +82,16 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
       if (verbose) {
         message("constructing connected subgraphs:")
         fcall = pbapply::pblapply
+        fcall_list = list(X = keep, function(i, ...) {
+          scsg2(nn, w, idx = i)
+        }, cl = cl)
+        # determine zones
+        czones = unlist(do.call(fcall, fcall_list),
+                        use.names = FALSE, recursive = FALSE)
+        return(czones[distinct(czones)])
       } else {
-        fcall = lapply
+        return(scsg2(nn, w,  idx = keep))
       }
-      fcall_list = list(X = keep, function(i, ...) {
-        idxi = intersect(nn[[i]], keep)
-        scsg(idxi, w[, idxi, drop = FALSE])
-      }, cl = cl)
-      # determine zones
-      czones = unlist(do.call(fcall, fcall_list),
-                      use.names = FALSE, recursive = FALSE)
     } else {
       czones = list()
 
@@ -100,20 +100,21 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
       czones_id = numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {
-          if ( (count %% pfreq) == 0) {
+          if ((count %% pfreq) == 0) {
             message(count, "/", nkeep, ". Starting region ",
                     i, " at ", Sys.time(), ".")
           }
         }
-        idxi = intersect(nn[[i]], keep)
+        # idxi = intersect(nn[[i]], keep)
         # zones for idxi
-        izones = scsg(idxi, w[, idxi, drop = FALSE])
+        # izones = scsg(idxi, w[, idxi, drop = FALSE])
+        izones = scsg2(nn, w, idx = i)
         # determine unique ids for izones
         izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
         # determine if some izones are duplicated with czones
         # remove duplicates and then combine with czones
         dup_id = which(izones_id %in% czones_id)
-        if (length(dup_id) > 0 ) {
+        if (length(dup_id) > 0) {
           czones = combine.zones(czones, izones[-dup_id])
           czones_id = c(czones_id, izones_id[-dup_id])
         } else {
@@ -125,7 +126,6 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
       return(czones)
     }
     # determine distinct zones
-    return(czones[distinct(czones)])
   } else {
     czones = vector("list", 1)
     czones[[1]] = numeric(0)

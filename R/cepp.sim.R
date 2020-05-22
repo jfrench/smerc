@@ -30,11 +30,11 @@
 #' # determine ts
 #' wts = cepp.weights(nn, nydf$pop, nstar)
 #' tsim = cepp.sim(1, nn = nn, ty = ty, ex = ex, wts = wts)
-cepp.sim = function(nsim = 1, nn, ty, ex, wts, simtype = "multinomial") {
+cepp.sim = function(nsim = 1, nn, ty, ex, wts, simdist = "multinomial") {
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(idx) {
     # simulate new data
-    if (simtype == "multinomial") {
+    if (simdist == "multinomial") {
       ysim = stats::rmultinom(1, size = ty, prob = ex)
     } else {
       ysim = stats::rpois(length(ex), lambda = ex)

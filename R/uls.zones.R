@@ -22,13 +22,11 @@
 #' data(nydf)
 #' data(nyw)
 #' uls.zones(cases = nydf$cases, pop = nydf$population, w = nyw)
-uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
-  if (length(cases) != length(pop)) stop("length(cases) != length(pop)")
-  if (length(cases) != nrow(w)) stop("length(cases) != nrow(w)")
-  if (length(ubpop) != 1 | !is.numeric(ubpop)) {
-    stop("ubpop should be a single number")
-  }
-  if (ubpop <= 0 | ubpop > 1) stop("ubpop not in (0, 1]")
+uls.zones = function(cases, pop, w, ubpop = 0.5,
+                     check.unique = FALSE) {
+  arg_check_uls_zones(cases = cases, pop = pop, w = w,
+                      ubpop = ubpop,
+                      check.unique = check.unique)
 
   # order rates from largest to smallest
   or = order(cases / pop, decreasing = TRUE);
@@ -85,7 +83,7 @@ uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
         } else {
           on = order(sapply(uz[wl], length), decreasing = TRUE)
           uzwlon = uz[wl[on]]
-          uzwlon = uzwlon[smacpod::noc(uzwlon)]
+          uzwlon = uzwlon[noz(uzwlon)]
           for (k in seq_along(uzwlon)) {
             counter = counter + 1
             uz2[counter] = uzwlon[k]
@@ -96,4 +94,24 @@ uls.zones = function(cases, pop, w, ubpop = 0.5, check.unique = FALSE) {
     }
   }
   return(uz)
+}
+
+#' Check uls.zones arguments
+#'
+#' @param cases A vector of cases
+#' @param pop A vector of populations for each region
+#' @param w A spatial adjacency matrix
+#' @param ubpop A population upperbound
+#' @param check.unique A logical value. TRUE means check for
+#' unique rates between regions.
+#' @return NULL
+#' @noRd
+arg_check_uls_zones = function(cases, pop, w, ubpop,
+                               check.unique) {
+  N = length(cases)
+  arg_check_cases(cases, N)
+  arg_check_pop(pop, N)
+  arg_check_w(w, N)
+  arg_check_ubpop(ubpop)
+  arg_check_check_unique(check.unique)
 }

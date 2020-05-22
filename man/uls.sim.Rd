@@ -4,8 +4,17 @@
 \alias{uls.sim}
 \title{Perform \code{uls.test} on simulated data}
 \usage{
-uls.sim(nsim = 1, ty, ex, w, pop, ubpop, type = "poisson",
-  check.unique = FALSE, cl = NULL)
+uls.sim(
+  nsim = 1,
+  ty,
+  ex,
+  w,
+  pop,
+  ubpop,
+  type = "poisson",
+  check.unique = FALSE,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -26,9 +35,9 @@ region.}
 \item{ubpop}{The upperbound of the proportion of the
 total population to consider for a cluster.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{check.unique}{A logical value indicating whether a
 check for unique values should be determined.  The

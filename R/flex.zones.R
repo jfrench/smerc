@@ -33,15 +33,22 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
 
   if (!loop) {
     fcall_list = list(X = seq_len(N), function(i, ...) {
-      scsg(nn[[i]], w[, nn[[i]], drop = FALSE])
+      scsg2(nn, w, idx = i)
     }, cl = cl)
 
     # determine which apply function to use
     if (verbose) {
       message("constructing connected subgraphs:")
       fcall = pbapply::pblapply
+      fcall_list = list(X = seq_len(N), function(i, ...) {
+        scsg2(nn, w, idx = i)
+      }, cl = cl)
+      # determine zones
+      czones = unlist(do.call(fcall, fcall_list),
+                      use.names = FALSE, recursive = FALSE)
+      return(czones[distinct(czones)])
     } else {
-      fcall = lapply
+      return(scsg2(nn, w))
     }
 
     # determine zones
@@ -53,19 +60,19 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     czones_id = numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
-        if ( (i %% pfreq) == 0) {
+        if ((i %% pfreq) == 0) {
           message(i, "/", N, ". Starting region ", i,
                   " at ", Sys.time(), ".")
         }
       }
       # zones for idxi
-      izones = scsg(nn[[i]], w[, nn[[i]], drop = FALSE])
+      izones = scsg2(nn, w, idx = i)
       # determine unique ids for izones
       izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
       # determine if some izones are duplicated with czones
       # remove duplicates and then combine with czones
       dup_id = which(izones_id %in% czones_id)
-      if (length(dup_id) > 0 ) {
+      if (length(dup_id) > 0) {
         czones = combine.zones(czones, izones[-dup_id])
         czones_id = c(czones_id, izones_id[-dup_id])
       } else {
@@ -76,5 +83,5 @@ flex.zones = function(coords, w, k = 10, longlat = FALSE,
     return(czones)
   }
   # determine distinct zones
-  czones[distinct(czones)]
+  # czones[distinct(czones)]
 }

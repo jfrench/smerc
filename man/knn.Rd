@@ -11,12 +11,14 @@ knn(coords, longlat = FALSE, k = 1, d = NULL)
 coordinates for the regions.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
 
-\item{k}{An integer indicating the maximum number of regions to inclue in a potential cluster.  Default is 10}
+\item{k}{An integer indicating the maximum number of
+regions to inclue in a potential cluster.  Default is
+10}
 
 \item{d}{An n by n distance matrix.  If provided,
 this is used instead of computing \code{d} based on

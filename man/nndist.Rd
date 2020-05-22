@@ -12,7 +12,7 @@ containing the intercentroid distance between the
 \eqn{n} region centroids.}
 
 \item{ubd}{A proportion in (0, 1].  The distance of
-potential clusters must be no more than \code{ubd * m}, 
+potential clusters must be no more than \code{ubd * m},
 where \code{m} is the maximum intercentroid distance
 between all coordinates.}
 }

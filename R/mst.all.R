@@ -54,7 +54,9 @@
 #'   \code{TRUE}, each sequence is stopped when the next
 #'   potential zone doesn't produce a test statistic larger
 #'   than the current zone. The default is \code{FALSE}.
-#' @param progress A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.
+#' @param progress A logical value indicating whether a
+#'   progress bar should be displayed.  The default is
+#'   \code{TRUE}.
 #' @return Returns a list of relevant information.  See
 #'   Details.
 #' @author Joshua French

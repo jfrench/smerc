@@ -4,9 +4,19 @@
 \alias{flex.sim}
 \title{Perform \code{flex.test} on simualated data}
 \usage{
-flex.sim(nsim = 1, zones, ty, ex, type = "poisson", ein = NULL,
-  eout = NULL, tpop = NULL, popin = NULL, popout = NULL,
-  cl = NULL)
+flex.sim(
+  nsim = 1,
+  zones,
+  ty,
+  ex,
+  type = "poisson",
+  ein = NULL,
+  eout = NULL,
+  tpop = NULL,
+  popin = NULL,
+  popout = NULL,
+  cl = NULL
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -21,9 +31,9 @@ over for each simulated data set.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{type}{The type of scan statistic to implement. The
-default is \code{"poisson"}, with the other choice
-being \code{"binomial"}.}
+\item{type}{The type of scan statistic to compute. The
+default is \code{"poisson"}. The other choice
+is \code{"binomial"}.}
 
 \item{ein}{The expected number of cases in the zone.
 Conventionally, this is the estimated overall disease

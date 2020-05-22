@@ -4,9 +4,17 @@
 \alias{cepp.test}
 \title{Cluster Evalation Permutation Procedure Test}
 \usage{
-cepp.test(coords, cases, pop, nstar, ex = sum(cases)/sum(pop) * pop,
-  nsim = 499, alpha = 0.1, longlat = FALSE, noc = TRUE,
-  simtype = "multinomial")
+cepp.test(
+  coords,
+  cases,
+  pop,
+  nstar,
+  ex = sum(cases)/sum(pop) * pop,
+  nsim = 499,
+  alpha = 0.1,
+  longlat = FALSE,
+  simdist = "multinomial"
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -31,25 +39,19 @@ compute the p-value.}
 a cluster is signficant.  Default is 0.10.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
 
-\item{noc}{A logical value indicating whether all
-significant clusters should be returned (\code{FALSE})
-or only the non-overlapping clusters (\code{TRUE})
-arranged in order of significance.  The default is
-\code{TRUE}.}
-
-\item{simtype}{A character string indicating whether the
+\item{simdist}{A character string indicating whether the
 simulated data should come from a \code{"multinomial"}
 or \code{"poisson"} distribution.  The default is
 \code{"multinomial"}, which fixes the total number of
 cases observed in each simulated data set.}
 }
 \value{
-Returns a \code{scan} object.
+Returns a \code{smerc_cluster} object.
 }
 \description{
 \code{cepp.test} implements the Cluster Evaluation
@@ -78,8 +80,10 @@ Bruce W. Turnbull, Eric J. Iwano, William S. Burnett,
   <doi:10.1093/oxfordjournals.aje.a115775>
 }
 \seealso{
-\code{\link{scan.stat}},
-  \code{\link{plot.scan}}, \code{\link{scan.test}}
+\code{\link{print.smerc_cluster}},
+\code{\link{summary.smerc_cluster}},
+\code{\link{plot.smerc_cluster}},
+\code{\link{scan.test}}
 }
 \author{
 Joshua French

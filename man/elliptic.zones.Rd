@@ -4,8 +4,13 @@
 \alias{elliptic.zones}
 \title{Determine zones for \code{elliptic.test}}
 \usage{
-elliptic.zones(coords, pop, ubpop = 0.5, shape = c(1, 1.5, 2, 3, 4, 5),
-  nangle = c(1, 4, 6, 9, 12, 15))
+elliptic.zones(
+  coords,
+  pop,
+  ubpop = 0.5,
+  shape = c(1, 1.5, 2, 3, 4, 5),
+  nangle = c(1, 4, 6, 9, 12, 15)
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid

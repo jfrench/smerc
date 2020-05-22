@@ -4,9 +4,18 @@
 \alias{dc.zones}
 \title{Determine zones for the Double Connected scan test}
 \usage{
-dc.zones(coords, cases, pop, w, ex = sum(cases)/sum(pop) * pop,
-  ubpop = 0.5, ubd = 1, longlat = FALSE, cl = NULL,
-  progress = TRUE)
+dc.zones(
+  coords,
+  cases,
+  pop,
+  w,
+  ex = sum(cases)/sum(pop) * pop,
+  ubpop = 0.5,
+  ubd = 1,
+  longlat = FALSE,
+  cl = NULL,
+  progress = TRUE
+)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
@@ -17,7 +26,8 @@ coordinates for the regions.}
 \item{pop}{The population size associated with each
 region.}
 
-\item{w}{A binary spatial adjacency matrix for the regions.}
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
 
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
@@ -27,12 +37,12 @@ hypothesis.}
 total population to consider for a cluster.}
 
 \item{ubd}{A proportion in (0, 1].  The distance of
-potential clusters must be no more than \code{ubd * m}, 
+potential clusters must be no more than \code{ubd * m},
 where \code{m} is the maximum intercentroid distance
 between all coordinates.}
 
 \item{longlat}{The default is \code{FALSE}, which
-specifies that Euclidean distance should be used.If
+specifies that Euclidean distance should be used. If
 \code{longlat} is \code{TRUE}, then the great circle
 distance is used to calculate the intercentroid
 distance.}
@@ -44,16 +54,19 @@ or an integer to indicate number of child-processes
 (see Details on performance).
 }
 
-\item{progress}{A logical value indicating whether a progress bar should be displayed.  The default is \code{TRUE}.}
+\item{progress}{A logical value indicating whether a
+progress bar should be displayed.  The default is
+\code{TRUE}.}
 }
 \value{
-Returns a list with elements:
-\item{zones}{A list contained the location ids of
-  each potential cluster.}
-\item{loglikrat}{The loglikelihood ratio for each zone (i.e., the log of the test statistic).}
-\item{cases}{The observed number of cases in each zone.}
-\item{expected}{The expected number of cases each zone.}
-\item{pop}{The total population in each zone.}
+Returns a list with elements: \item{zones}{A list
+  contained the location ids of each potential cluster.}
+  \item{loglikrat}{The loglikelihood ratio for each zone
+  (i.e., the log of the test statistic).}
+  \item{cases}{The observed number of cases in each
+  zone.} \item{expected}{The expected number of cases
+  each zone.} \item{pop}{The total population in each
+  zone.}
 }
 \description{
 \code{dc.zones} determines the zones for the Double
@@ -79,8 +92,8 @@ all_zones = dc.zones(coords, cases = floor(nydf$cases),
                      ubd = .25, longlat = TRUE)
 }
 \references{
-Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)
-  Constrained spanning tree algorithms for
+Costa, M.A. and Assuncao, R.M. and Kulldorff,
+  M. (2012) Constrained spanning tree algorithms for
   irregularly-shaped spatial clustering, Computational
   Statistics & Data Analysis, 56(6), 1771-1783.
   <https://doi.org/10.1016/j.csda.2011.11.001>

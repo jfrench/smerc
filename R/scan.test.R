@@ -25,22 +25,26 @@
 #' @param alpha The significance level to determine whether
 #'   a cluster is signficant.  Default is 0.10.
 #' @param longlat The default is \code{FALSE}, which
-#'   specifies that Euclidean distance should be used.If
+#'   specifies that Euclidean distance should be used. If
 #'   \code{longlat} is \code{TRUE}, then the great circle
 #'   distance is used to calculate the intercentroid
 #'   distance.
-#' @param type The type of scan statistic to implement. The
-#'   default is \code{"poisson"}, with the other choice
-#'   being \code{"binomial"}.
+#' @param type The type of scan statistic to compute. The
+#'   default is \code{"poisson"}. The other choice
+#'   is \code{"binomial"}.
 #' @param min.cases The minimum number of cases required for
 #'   a cluster.  The default is 2.
+#' @param simdist Character string indicating the simulation
+#' distribution. The default is \code{"multinomial"}, which
+#' conditions on the total number of cases observed. The
+#' other options are \code{"poisson"} and \code{"binomial"}
 #' @inheritParams pbapply::pblapply
 #'
-#' @return Returns a \code{scan} object.
-#' @seealso \code{\link{scan.stat}},
-#'   \code{\link{plot.scan}}, \code{\link{uls.test}},
-#'   \code{\link{flex.test}}, \code{\link{dmst.test}},
-#'   \code{\link{bn.test}}
+#' @return Returns a \code{smerc_cluster} object.
+#' @seealso \code{\link{print.smerc_cluster}},
+#' \code{\link{summary.smerc_cluster}},
+#' \code{\link{plot.smerc_cluster}},
+#' \code{\link{scan.stat}}
 #' @author Joshua French
 #' @export
 #' @references Kulldorff, M. (1997) A spatial scan
@@ -58,10 +62,10 @@
 #'                 alpha = 1, longlat = TRUE)
 #' ## plot output for new york state
 #' # specify desired argument values
-#' mapargs = list(database = "state", region = "new york",
+#' mapargs = list(database = "county", region = "new york",
 #' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 #' # needed for "state" database (unless you execute library(maps))
-#' data(stateMapEnv, package = "maps")
+#' data(countyMapEnv, package = "maps")
 #' plot(out, usemap = TRUE, mapargs = mapargs)
 #'
 #' # a second example to match the results of Waller and Gotway (2005)
@@ -78,20 +82,24 @@
 #'                   alpha = 1, longlat = TRUE)
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
-#' c(out2$clusters[[1]]$cases, out2$clusters[[2]]$cases, out2$clusters[[3]]$cases)
+#' sget(out2$clusters, name = "cases")[1:3]
 scan.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
                      type = "poisson",
-                     min.cases = 2) {
+                     min.cases = 2,
+                     simdist = "multinomial") {
   # argument checking
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, longlat, TRUE,
-                      k = 1, w = diag(nrow(coords)))
-  if (length(min.cases) != 1 | min.cases < 1) {
-    stop("min.cases must be a single number and >= 1")
-  }
+  type = match.arg(type, c("poisson", "binomial"))
+  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
+  arg_check_scan_test(coords = coords, cases = cases,
+                      pop = pop, ex = ex, nsim = nsim,
+                      alpha = alpha, ubpop = ubpop,
+                      longlat = longlat,
+                      k = 1, w = diag(nrow(coords)),
+                      type = type, simdist = simdist,
+                      min.cases = min.cases)
 
   # convert to proper format
   coords = as.matrix(coords)
@@ -111,7 +119,7 @@ scan.test = function(coords, cases, pop,
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = nn.cumsum(nn, ex)
-    eout = ty - ein
+    eout = sum(ex) - ein
     popin = NULL
     popout = NULL
     tpop = NULL
@@ -145,28 +153,78 @@ scan.test = function(coords, cases, pop,
     tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
                     ex = ex, type = type, ein = ein,
                     eout = eout, popin = popin,
-                    popout = popout, tpop = tpop, cl = cl)
+                    popout = popout, tpop = tpop, cl = cl,
+                    simdist = simdist, pop = pop)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
   }
 
-  # determine which potential clusters are significant
-  sigc = which(pvalue <= alpha, useNames = FALSE)
+  # significant, ordered, non-overlapping clusters and
+  # information
+  pruned = sig_noc(tobs = tobs, zones = zones,
+                   pvalue = pvalue, alpha = alpha,
+                   order_by = "tobs")
 
-  # if there are no significant clusters, return most likely cluster
-  if (length(sigc) == 0) {
-    sigc = which.max(tobs)
-    warning("No significant clusters.  Returning most likely cluster.")
-  }
-
-  # only keep significant clusters
-  zones = zones[sigc]
-  tobs = tobs[sigc]
-  pvalue = pvalue[sigc]
-
-  prep.scan(tobs = tobs, zones = zones, pvalue = pvalue,
-            coords = coords, cases = cases, pop = pop,
-            ex = ex, longlat = longlat, w = NULL,
-            d = d)
+  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
+                pvalue = pruned$pvalue, coords = coords,
+                cases = cases, pop = pop, ex = ex,
+                longlat = longlat, method = "circular scan",
+                rel_param = list(type = type,
+                                 simdist = simdist,
+                                 nsim = nsim,
+                                 ubpop = ubpop,
+                                 min.cases = min.cases),
+                alpha = alpha,
+                w = NULL, d = d)
 }
+
+#' Argument checking for scan tests
+#'
+#' @param coords A matrix of coordinates
+#' @param cases A vector of numeric cases
+#' @param pop A vector of population values
+#' @param ex A vector of expected counts
+#' @param nsim A non-negative integer
+#' @param alpha A value greater than 0
+#' @param nreport Not used
+#' @param ubpop A value between 0 and 1
+#' @param longlat A logical. TRUE is great circle distance.
+#' @param parallel Not used.
+#' @param k Number of nearest neighbors. Not always needed.
+#' @param w A spatial proximity matrix
+#' @param type Statistic type
+#' @param simdist Distribution of simulation
+#' @param min.cases Minimum number of cases. Only for scan.test.
+#' @return NULL
+#' @noRd
+arg_check_scan_test =
+  function(coords, cases, pop, ex, nsim, alpha,
+           nreport = NULL,
+           ubpop, longlat, parallel = NULL, k, w, type = NULL,
+           simdist = NULL, min.cases = NULL) {
+  arg_check_coords(coords)
+  N = nrow(coords)
+  arg_check_cases(cases, N)
+  arg_check_pop(pop, N)
+  arg_check_ex(ex, N)
+  arg_check_nsim(nsim)
+  arg_check_alpha(alpha)
+  # nreport no check, deprecated
+  arg_check_ubpop(ubpop)
+  arg_check_longlat(longlat)
+  # parallel no check, deprecated
+  arg_check_k(k, N)
+  arg_check_w(w, N)
+  if (!is.null(type)) {
+    arg_check_type(type)
+  }
+  if (!is.null(simdist)) {
+    arg_check_simdist(simdist)
+  }
+  arg_check_simdist(simdist)
+  if (!is.null(min.cases)) {
+    arg_check_min_cases(min.cases)
+  }
+}
+
