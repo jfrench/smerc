@@ -41,11 +41,9 @@ bn23mod = bn.test(coords = coords,
                cstar = 23,
                modified = TRUE)
 
-bnse23 = SpatialEpi::besag_newell(geo = coords,
-                                 cases = cases,
-                                 population = pop,
-                                 k = 23,
-                                 alpha = 0.1)
+fpath = system.file("testdata",  package = "smerc")
+fname = paste(fpath, "/bn_test_ref.rda", sep = "")
+load(fname)
 
 test_that("check accuracy for bn.test modified for NY data", {
   expect_equal(bn23mod$clusters[[1]]$locids,

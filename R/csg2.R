@@ -93,8 +93,8 @@ scsg2 = function(nn, w, idx = seq_along(nn),
   if (is.null(nlevel)) {
     nlevel = max(sapply(nn, length))
   }
-  # list to stor all results
-  lcz_all = vector("list", length(nn))
+  # list to store all results
+  lcz_all = vector("list", length(idx))
 
   # set stopping conditions
   # stop if nidx == 1, otherwise, consider expanding subgraph
