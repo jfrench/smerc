@@ -1,3 +1,4 @@
+context("check loop flex, rflex.zones")
 # preliminaries
 data(nydf)
 data(nyw)
@@ -16,7 +17,6 @@ rzones = rflex.zones(nn, w = nyw, cases = floor(cases), ex = ex)
 rzones2 = rflex.zones(nn, w = nyw, cases = floor(cases),
                       ex = ex, loop = TRUE)
 
-context("check loop flex, rflex.zones")
 test_that("compare flex.zones and rflex.zones w/ and w/o loop", {
   expect_equal(fzones, fzones2)
   expect_equal(rzones, rzones2)

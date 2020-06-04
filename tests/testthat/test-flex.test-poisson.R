@@ -1,3 +1,4 @@
+context("check accuracy of flex.test poisson")
 set.seed(16)
 data(nydf)
 data(nyw)
@@ -8,7 +9,6 @@ outp = flex.test(coords = coords, cases = cases, pop = pop,
                   w = nyw, k = 10, nsim = 99, alpha = 1)
 
 # results taken from flex_test_ny_poisson_10nn_cartesian
-context("check accuracy of flex.test poisson")
 test_that("check accuracy for flex.test poisson", {
   expect_equal(sort(outp$clusters[[1]]$locids),
                c(85, 86, 88, 89, 90, 92, 93))

@@ -1,3 +1,4 @@
+context("check scan.sim accuracy for different distributions")
 set.seed(2)
 nsim = 499
 data(nydf)
@@ -25,7 +26,6 @@ summa = summary(sa)
 summb = summary(sb)
 summc = summary(sc)
 
-context("check scan.sim accuracy for different distributions")
 test_that("check accuracy for scan.sim", {
   expect_true(round(summa[2], 1) - round(summb[2], 1) <= 0.1)
   expect_true(round(summb[2], 1) - round(summc[2], 1) <= 0.1)

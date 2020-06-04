@@ -1,9 +1,9 @@
+context("check scan.test accuracy")
 set.seed(2)
 coords = runif(8)
 coords = data.frame(x = runif(4), y = runif(4))
 data(nydf)
 ## update test to be faster by restricting population
-context("check scan.test accuracy")
 out = scan.test(coords = cbind(nydf$longitude, nydf$latitude),
                 cases = floor(nydf$cases), pop = nydf$population,
                 longlat = FALSE, nsim = 49, alpha = 1,

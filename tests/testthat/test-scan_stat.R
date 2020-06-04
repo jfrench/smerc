@@ -1,3 +1,4 @@
+context("test scan_test related functions")
 data(nydf)
 cases = floor(nydf$cases)
 pop = nydf$pop
@@ -27,7 +28,6 @@ t3 = scan.stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
 t4 = stat.binom(yin = yin, yout = yout, ty = ty,
                 popin = popin, popout = popout, tpop = tpop)
 
-context("test scan_test related functions")
 test_that("check accuracy for scan_test for NY data", {
   # taken from satscannyoutpoisson
   expect_equal(round(t1, 6), 14.780276)

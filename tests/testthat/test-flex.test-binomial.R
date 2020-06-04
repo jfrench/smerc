@@ -1,3 +1,4 @@
+context("check accuracy of flex.test binomial")
 set.seed(16)
 data(nydf)
 data(nyw)
@@ -9,7 +10,6 @@ outb = flex.test(coords = coords, cases = cases, pop = pop,
                  type = "binomial")
 
 # results taken from flex_test_ny_binomial_10nn_cartesian
-context("check accuracy of flex.test binomial")
 test_that("check accuracy for flex.test binomial", {
   expect_equal(sort(outb$clusters[[1]]$locids),
                c(85, 86, 88, 89, 90, 92, 93))

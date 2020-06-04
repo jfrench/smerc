@@ -1,3 +1,4 @@
+context("check accuracy of elliptical.test a = 0")
 set.seed(10)
 data(nydf)
 coords = nydf[, c("longitude", "latitude")]
@@ -12,12 +13,12 @@ min.cases = 2
 alpha = 1
 
 nsim = 19
+pbapply::pboptions(type = "none")
 out0 = elliptic.test(coords, cases, pop, nsim = nsim,
                      alpha = 1, a = 0, ubpop = 0.1)
 locids01 = c(46, 53, 45, 41, 44, 38, 52, 43, 54, 39, 50, 15, 40, 49, 16, 14, 1,
              48, 37, 13, 17, 11, 2, 12, 47)
 locids05 = c(64, 65, 67, 62, 68)
-context("check accuracy of elliptic.test w/ a = 0")
 test_that("check accuracy for elliptical.test a = 0", {
   expect_equal(locids01,
                out0$clusters[[1]]$locids)

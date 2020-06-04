@@ -1,3 +1,4 @@
+context("check accuracy of tango.test")
 data(nydf)
 coords = as.matrix(nydf[, c("x", "y")])
 
@@ -30,7 +31,6 @@ aprox = df1 + sqrt(2 * df1) * stat1
 w = dweights(coords, kappa = 1)
 results = tango.test(nydf$cases, nydf$pop, w, nsim = 0)
 
-context("check accuracy of tango.test")
 test_that("check accuracy for tango.test for NY data", {
   expect_equal(df1, results$dfc)
   expect_equal(aprox[1, 1], results$tstat.chisq)
