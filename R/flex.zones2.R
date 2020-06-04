@@ -32,23 +32,14 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
   nn = knn(coords = coords, longlat = longlat, k = k)
   N = nrow(coords)
   idx = seq_along(nn)
+  lprimes = log(randtoolbox::get.primes(N))
 
   if (!loop) {
-    lprimes = log(randtoolbox::get.primes(N))
-
-    # determine which apply function to use
-    if (verbose) {
-      message("constructing connected subgraphs:")
-      czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = TRUE, lprimes)
-    } else {
-      czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = FALSE, lprimes)
-    }
-
-    czones = unlist(lapply(seq_along(czones), function(i) {
-      lapply(czones[[i]], function(x) {
-        nn[[idx[i]]][x]
-      })
-    }), recursive = FALSE)
+    # get list of list of logical vectors
+    czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = verbose, lprimes)
+    # convert to zone indices
+    czones = logical2idx_zones(czones, nn, idx)
+    # return distinct zones
     return(czones[distinct(czones)])
   } else {
     czones = list()
@@ -61,10 +52,12 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
                   " at ", Sys.time(), ".")
         }
       }
-      # zones for idxi
+      # logical vector zones for idxi
       izones = scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
+      # convert to region ids
+      izones = logical2idx_zones(izones, nn, idx = i)
       # determine unique ids for izones
-      izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
+      izones_id = sapply(izones, function(xi) sum(lprimes[xi]))
       # determine if some izones are duplicated with czones
       # remove duplicates and then combine with czones
       dup_id = which(izones_id %in% czones_id)
@@ -79,3 +72,16 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
     return(czones)
   }
 }
+
+logical2idx_zones = function(czones, nn, idx) {
+  # for each element of czones,
+  # strip the element (which is a list of logical vectors)
+  # for each element of the list of logical vectors
+  # get the nn for idx i and then subset with each logical vector
+  unlist(lapply(seq_along(czones), function(i) {
+    lapply(czones[[i]], function(x) {
+      nn[[idx[i]]][x]
+    })
+  }), recursive = FALSE)
+}
+

@@ -1,6 +1,6 @@
 #' Determine zones for flexibly shaped spatial scan test
 #'
-#' \code{rflex.zones} determines the unique zones to
+#' \code{rflex.zones2} determines the unique zones to
 #' consider for the flexibly shaped spatial scan test of
 #' Tango and Takahashi (2012).  The algorithm uses a
 #' breadth-first search to find all subgraphs connected to
@@ -50,15 +50,15 @@
 #' pop = nydf$pop
 #' ex = pop * sum(cases)/sum(pop)
 #' # zones for poisson model
-#' pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+#' pzones = rflex.zones2(nn, w = nyw, cases = cases, ex = ex)
 #' \dontrun{
-#' pzones = rflex.zones(nn, w = nyw, cases = cases,
+#' pzones = rflex.zones2(nn, w = nyw, cases = cases,
 #'                       ex = ex, verbose = TRUE)
 #' # zones for binomial model
-#' bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
+#' bzones = rflex.zones2(nn, w = nyw, cases = cases, ex = ex,
 #'                      type = "binomial", pop = pop)
 #' }
-rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
+rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
                        type = "poisson", pop = NULL,
                        cl = NULL, loop = FALSE,
                        verbose = FALSE, pfreq = 1) {
@@ -70,6 +70,7 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
   # determine which regions are "hot" (keep) or "cold" (remove)
   keep = which(p < alpha1)
   nkeep = length(keep)
+  k = max(sapply(nn, length))
 
   if (length(keep) > 0) {
     remove = setdiff(seq_along(ex), keep)
@@ -77,40 +78,34 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
     # remove connections when p >= alpha1
     w[, remove] = 0
 
+    N = nrow(w)
+    idx = keep
+    lprimes = log(randtoolbox::get.primes(N))
+
     if (!loop) {
-      # determine which apply function to use
-      if (verbose) {
-        message("constructing connected subgraphs:")
-        fcall = pbapply::pblapply
-        fcall_list = list(X = keep, function(i, ...) {
-          scsg2(nn, w, idx = i)
-        }, cl = cl)
-        # determine zones
-        czones = unlist(do.call(fcall, fcall_list),
-                        use.names = FALSE, recursive = FALSE)
-        return(czones[distinct(czones)])
-      } else {
-        return(scsg2(nn, w,  idx = keep))
-      }
+      # get list of list of logical vectors
+      czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = verbose, lprimes)
+      # convert to zone indices
+      czones = logical2idx_zones(czones, nn, idx)
+      # return distinct zones
+      return(czones[distinct(czones)])
     } else {
       czones = list()
-
-      count = 1
-      pri = randtoolbox::get.primes(length(cases))
+      pri = randtoolbox::get.primes(N)
       czones_id = numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {
-          if ((count %% pfreq) == 0) {
-            message(count, "/", nkeep, ". Starting region ",
-                    i, " at ", Sys.time(), ".")
+          if ((i %% pfreq) == 0) {
+            message(i, "/", N, ". Starting region ", i,
+                    " at ", Sys.time(), ".")
           }
         }
-        # idxi = intersect(nn[[i]], keep)
-        # zones for idxi
-        # izones = scsg(idxi, w[, idxi, drop = FALSE])
-        izones = scsg2(nn, w, idx = i)
+        # logical vector zones for idxi
+        izones = scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
+        # convert to region ids
+        izones = logical2idx_zones(izones, nn, idx = i)
         # determine unique ids for izones
-        izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
+        izones_id = sapply(izones, function(xi) sum(lprimes[xi]))
         # determine if some izones are duplicated with czones
         # remove duplicates and then combine with czones
         dup_id = which(izones_id %in% czones_id)
@@ -121,11 +116,9 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
           czones = combine.zones(czones, izones)
           czones_id = c(czones_id, izones_id)
         }
-        count = count + 1
       }
       return(czones)
     }
-    # determine distinct zones
   } else {
     czones = vector("list", 1)
     czones[[1]] = numeric(0)
