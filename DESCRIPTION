@@ -10,9 +10,11 @@ Description: Implements statistical methods for analyzing the counts of areal da
 License: GPL (>=2)
 LazyLoad: yes
 Imports:
-    pbapply, 
-    randtoolbox, 
-    sp
+    pbapply,
+    randtoolbox,
+    sp,
+    Rcpp,
+    RcppProgress
 Suggests:
     crayon,
     lintr,
@@ -21,3 +23,6 @@ Suggests:
     SpatialEpi
 Encoding: UTF-8
 RoxygenNote: 7.1.0
+LinkingTo: 
+    Rcpp,
+    RcppProgress
