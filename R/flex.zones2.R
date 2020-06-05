@@ -36,7 +36,7 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
 
   if (!loop) {
     # get list of list of logical vectors
-    czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = verbose, lprimes)
+    czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, lprimes = lprimes, verbose = verbose)
     # convert to zone indices
     czones = logical2idx_zones(czones, nn, idx)
     # return distinct zones
