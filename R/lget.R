@@ -1,10 +1,10 @@
 #' Apply getElement over a list
 #'
 #' \code{lget} or \code{lgetElement} applies
-#' \code{\link{getElement}} to a
-#' list using \code{\link{lapply}}. \code{sget} and
+#' \code{\link[base]{getElement}} to a
+#' list using \code{\link[base]{lapply}}. \code{sget} and
 #' \code{sgetElement} do the same thing with
-#' \code{\link{sapply}}
+#' \code{\link[base]{sapply}}.
 #'
 #' @param X A list.
 #' @inheritParams base::getElement
