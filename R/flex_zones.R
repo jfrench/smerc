@@ -1,6 +1,6 @@
 #' Determine zones for flexibly shaped spatial scan test
 #'
-#' \code{flex.zones2} determines the unique zones to consider
+#' \code{flex_zones} determines the unique zones to consider
 #' for the flexibly shaped spatial scan test of Tango and
 #' Takahashi (2005).  The algorithm uses a breadth-first
 #' search to find all subgraphs connected to each vertex
@@ -21,12 +21,12 @@
 #' data(nydf)
 #' data(nyw)
 #' coords = cbind(nydf$x, nydf$y)
-#' zones = flex.zones2(coords, w = nyw, k = 3)
+#' zones = flex_zones(coords, w = nyw, k = 3)
 #' \dontrun{
 #' # see what happens when verbose = TRUE
-#' zones = flex.zones2(coords, w = nyw, k = 3, verbose = TRUE)
+#' zones = flex_zones(coords, w = nyw, k = 3, verbose = TRUE)
 #' }
-flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
+flex_zones = function(coords, w, k = 10, longlat = FALSE,
                        cl = NULL, loop = FALSE,
                        verbose = FALSE, pfreq = 1) {
   nn = knn(coords = coords, longlat = longlat, k = k)
@@ -38,7 +38,7 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
     # get list of list of logical vectors
     czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, lprimes = lprimes, verbose = verbose)
     # convert to zone indices
-    czones = logical2idx_zones(czones, nn, idx)
+    czones = logical2zones(czones, nn, idx)
     # return distinct zones
     return(czones[distinct(czones)])
   } else {
@@ -55,7 +55,7 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
       # logical vector zones for idxi
       izones = scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
       # convert to region ids
-      izones = logical2idx_zones(izones, nn, idx = i)
+      izones = logical2zones(izones, nn, idx = i)
       # determine unique ids for izones
       izones_id = sapply(izones, function(xi) sum(lprimes[xi]))
       # determine if some izones are duplicated with czones
@@ -73,7 +73,15 @@ flex.zones2 = function(coords, w, k = 10, longlat = FALSE,
   }
 }
 
-logical2idx_zones = function(czones, nn, idx) {
+#' Convert logical vector to zone
+#'
+#' @param czones List of list of logical vectors
+#' @param nn List of nearest neighbor indices
+#' @param idx Relevant nn indices
+#' @return List of list of zones
+#' @export
+#' @keywords internal
+logical2zones = function(czones, nn, idx = seq_along(nn)) {
   # for each element of czones,
   # strip the element (which is a list of logical vectors)
   # for each element of the list of logical vectors

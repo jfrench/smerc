@@ -46,10 +46,10 @@ of the same length as \code{X} with the
 }
 \description{
 \code{lget} or \code{lgetElement} applies
-\code{\link{getElement}} to a
-list using \code{\link{lapply}}. \code{sget} and
+\code{getElement} to a
+list using \code{\link[base]{lapply}}. \code{sget} and
 \code{sgetElement} do the same thing with
-\code{\link{sapply}}
+\code{sapply}.
 }
 \examples{
 e1 = list(x = rnorm(5),

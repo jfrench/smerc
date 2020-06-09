@@ -86,7 +86,7 @@ rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
       # get list of list of logical vectors
       czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, verbose = verbose, lprimes)
       # convert to zone indices
-      czones = logical2idx_zones(czones, nn, idx)
+      czones = logical2zones(czones, nn, idx)
       # return distinct zones
       return(czones[distinct(czones)])
     } else {
@@ -103,7 +103,7 @@ rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
         # logical vector zones for idxi
         izones = scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
         # convert to region ids
-        izones = logical2idx_zones(izones, nn, idx = i)
+        izones = logical2zones(izones, nn, idx = i)
         # determine unique ids for izones
         izones_id = sapply(izones, function(xi) sum(lprimes[xi]))
         # determine if some izones are duplicated with czones

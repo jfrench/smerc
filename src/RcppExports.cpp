@@ -6,24 +6,73 @@
 using namespace Rcpp;
 
 // scsg2_cpp
-std::list<std::list<std::vector<bool>>> scsg2_cpp(List nn, IntegerMatrix w, IntegerVector idx, unsigned int nlevel, NumericVector lprimes, bool verbose);
+std::list<std::list<std::vector<bool>>> scsg2_cpp(List& nn, IntegerMatrix& w, IntegerVector& idx, unsigned int& nlevel, NumericVector& lprimes, bool verbose);
 RcppExport SEXP _smerc_scsg2_cpp(SEXP nnSEXP, SEXP wSEXP, SEXP idxSEXP, SEXP nlevelSEXP, SEXP lprimesSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type nn(nnSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type w(wSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type idx(idxSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type nlevel(nlevelSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type lprimes(lprimesSEXP);
+    Rcpp::traits::input_parameter< List& >::type nn(nnSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type idx(idxSEXP);
+    Rcpp::traits::input_parameter< unsigned int& >::type nlevel(nlevelSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type lprimes(lprimesSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     rcpp_result_gen = Rcpp::wrap(scsg2_cpp(nn, w, idx, nlevel, lprimes, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// stat_poisson_cpp
+NumericVector stat_poisson_cpp(NumericVector yin, NumericVector yout, NumericVector ein, NumericVector eout, double a, NumericVector shape);
+RcppExport SEXP _smerc_stat_poisson_cpp(SEXP yinSEXP, SEXP youtSEXP, SEXP einSEXP, SEXP eoutSEXP, SEXP aSEXP, SEXP shapeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type yin(yinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type yout(youtSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ein(einSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type eout(eoutSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type shape(shapeSEXP);
+    rcpp_result_gen = Rcpp::wrap(stat_poisson_cpp(yin, yout, ein, eout, a, shape));
+    return rcpp_result_gen;
+END_RCPP
+}
+// stat_poisson0_cpp
+NumericVector stat_poisson0_cpp(NumericVector& yin, NumericVector yout, NumericVector& ein, NumericVector& eout);
+RcppExport SEXP _smerc_stat_poisson0_cpp(SEXP yinSEXP, SEXP youtSEXP, SEXP einSEXP, SEXP eoutSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector& >::type yin(yinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type yout(youtSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type ein(einSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type eout(eoutSEXP);
+    rcpp_result_gen = Rcpp::wrap(stat_poisson0_cpp(yin, yout, ein, eout));
+    return rcpp_result_gen;
+END_RCPP
+}
+// stat_binom_cpp
+NumericVector stat_binom_cpp(NumericVector yin, NumericVector yout, double ty, NumericVector popin, NumericVector popout, double tpop);
+RcppExport SEXP _smerc_stat_binom_cpp(SEXP yinSEXP, SEXP youtSEXP, SEXP tySEXP, SEXP popinSEXP, SEXP popoutSEXP, SEXP tpopSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type yin(yinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type yout(youtSEXP);
+    Rcpp::traits::input_parameter< double >::type ty(tySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type popin(popinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type popout(popoutSEXP);
+    Rcpp::traits::input_parameter< double >::type tpop(tpopSEXP);
+    rcpp_result_gen = Rcpp::wrap(stat_binom_cpp(yin, yout, ty, popin, popout, tpop));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_smerc_scsg2_cpp", (DL_FUNC) &_smerc_scsg2_cpp, 6},
+    {"_smerc_stat_poisson_cpp", (DL_FUNC) &_smerc_stat_poisson_cpp, 6},
+    {"_smerc_stat_poisson0_cpp", (DL_FUNC) &_smerc_stat_poisson0_cpp, 4},
+    {"_smerc_stat_binom_cpp", (DL_FUNC) &_smerc_stat_binom_cpp, 6},
     {NULL, NULL, 0}
 };
 

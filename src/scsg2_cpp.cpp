@@ -14,9 +14,9 @@ double hash_cz(std::vector<bool> &cz, const NumericVector &lprimes) {
 }
 
 std::list<std::vector<bool>> link_cz_nb(std::vector<bool> &cz,
-                                           const IntegerVector &nb,
-                                           std::unordered_set<double> &lz_hash_table,
-                                           const NumericVector &lprimes) {
+                                        const IntegerVector &nb,
+                                        std::unordered_set<double> &lz_hash_table,
+                                        const NumericVector &lprimes) {
   unsigned int nb_size = nb.length();
   std::list<std::vector<bool>> lz;
   for(unsigned int i = 0; i < nb_size; i++) {
@@ -126,12 +126,12 @@ IntegerMatrix sub_cnn(IntegerMatrix &x, IntegerVector &cnn) {
 #include <progress.hpp>
 #include <progress_bar.hpp>
 // [[Rcpp::export]]
-std::list<std::list<std::vector<bool>>> scsg2_cpp(List nn,
-                                              IntegerMatrix w,
-                                              IntegerVector idx,
-                                              unsigned int nlevel,
-                                              NumericVector lprimes,
-                                              bool verbose=false) {
+std::list<std::list<std::vector<bool>>> scsg2_cpp(List &nn,
+                                                  IntegerMatrix &w,
+                                                  IntegerVector &idx,
+                                                  unsigned int &nlevel,
+                                                  NumericVector &lprimes,
+                                                  bool verbose=false) {
   // declare int
   unsigned int i, clevel, nidx = idx.length();
 
@@ -199,4 +199,104 @@ std::list<std::list<std::vector<bool>>> scsg2_cpp(List nn,
     z.emplace_back(std::move(clz));
   }
   return z;
+}
+
+// [[Rcpp::export]]
+NumericVector stat_poisson_cpp(NumericVector yin,
+                               NumericVector yout,
+                               NumericVector ein,
+                               NumericVector eout,
+                               double a,
+                               NumericVector shape) {
+  unsigned int yin_length = yin.length();
+  double lrin, lrout;
+  NumericVector tall(yin_length, 0);
+
+  // determine if there will be any problematic statistics
+  for (unsigned int i = 0; i < yin_length; i++) {
+    // compute statistic for good locations
+    // yin > 0 and yin/ein > yout/ein
+    if (yin[i] > 0) {
+      lrin = log(yin[i]) - log(ein[i]);
+      lrout = log(yout[i]) - log(eout[i]);
+      if (lrin > lrout) {
+        tall[i] = yin[i] * lrin + yout[i] * lrout;
+      }
+    }
+  }
+
+  // update test statistic if a > 0 for all shape values > 1
+  if (a > 0) {
+    // elliptical regions
+    for (unsigned int j = 0; j < yin_length; j++) {
+      if (shape[j] > 1) {
+        tall[j] = tall[j] * pow(((4 * shape[j]) / pow(shape[j] + 1, 2)), a);
+      }
+    }
+  }
+  return tall;
+}
+
+// [[Rcpp::export]]
+NumericVector stat_poisson0_cpp(NumericVector &yin,
+                                NumericVector yout,
+                                NumericVector &ein,
+                                NumericVector &eout) {
+  unsigned int yin_length = yin.length();
+  double lrin, lrout;
+  NumericVector tall(yin_length, 0);
+
+  // determine if there will be any problematic statistics
+  for (unsigned int i = 0; i < yin_length; i++) {
+    // compute statistic for good locations
+    // yin > 0 and yin/ein > yout/ein
+    if (yin[i] > 0) {
+      lrin = log(yin[i]) - log(ein[i]);
+      lrout = log(yout[i]) - log(eout[i]);
+      if (lrin > lrout) {
+        tall[i] = yin[i] * lrin + yout[i] * lrout;
+      }
+    }
+  }
+  return tall;
+}
+
+// [[Rcpp::export]]
+NumericVector stat_binom_cpp(NumericVector yin,
+                             NumericVector yout,
+                             double ty,
+                             NumericVector popin,
+                             NumericVector popout,
+                             double tpop) {
+
+  unsigned int yin_length = yin.length();
+  double lrin, lrout, py_in, py_out;
+  NumericVector tall(yin_length, 0);
+
+  // determine if there will be any problematic statistics
+  for (unsigned int i = 0; i < yin_length; i++) {
+    // compute statistic for good locations
+    // yin > 0 and yin / popin > yout / popout
+    if (yin[i] > 0) {
+      lrin = log(yin[i]) - log(popin[i]);
+      lrout = log(yout[i]) - log(popout[i]);
+      if (lrin > lrout) {
+        py_in = popin[i] - yin[i];
+        py_out = popout[i] - yout[i];
+        tall[i] = yin[i] * lrin +
+          py_in * (log(py_in) - log(popin[i])) +
+          yout[i] * lrout +
+          py_out * (log(py_out) - log(popout[i])) -
+          ty * log(ty) - (tpop - ty) * log(tpop - ty) +
+          tpop * log(tpop);
+        // tall = yin * (log(yin) - log(popin)) +
+        //py_in * (log(py_in) - log(popin)) +
+        // yout * (log(yout) - log(popout)) +
+        // py_out * (log(py_out) - log(popout)) -
+        // ty * log(ty) - (tpop - ty) * log(tpop - ty) +
+        // tpop * log(tpop)
+      }
+    }
+  }
+  return tall;
 }

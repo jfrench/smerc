@@ -15,13 +15,13 @@ fzones3 = flex.zones(coords, w = nyw, k = 3, longlat = TRUE,
 fzones4 = suppressMessages(flex.zones(coords, w = nyw, k = 3, longlat = TRUE,
                      loop = TRUE, verbose = TRUE))
 
-# construct zones w/ flex.zones2
-fzones1b = flex.zones2(coords, w = nyw, k = 3, longlat = TRUE)
-fzones2b = flex.zones2(coords, w = nyw, k = 3, longlat = TRUE,
+# construct zones w/ flex_zones
+fzones1b = flex_zones(coords, w = nyw, k = 3, longlat = TRUE)
+fzones2b = flex_zones(coords, w = nyw, k = 3, longlat = TRUE,
                      verbose = TRUE)
-fzones3b = flex.zones2(coords, w = nyw, k = 3, longlat = TRUE,
+fzones3b = flex_zones(coords, w = nyw, k = 3, longlat = TRUE,
                      loop = TRUE)
-fzones4b = suppressMessages(flex.zones2(coords, w = nyw, k = 3, longlat = TRUE,
+fzones4b = suppressMessages(flex_zones(coords, w = nyw, k = 3, longlat = TRUE,
                                       loop = TRUE, verbose = TRUE))
 
 nn = knn(coords, longlat = TRUE, k = 10)

@@ -5,3 +5,15 @@ scsg2_cpp <- function(nn, w, idx, nlevel, lprimes, verbose = FALSE) {
     .Call(`_smerc_scsg2_cpp`, nn, w, idx, nlevel, lprimes, verbose)
 }
 
+stat_poisson_cpp <- function(yin, yout, ein, eout, a, shape) {
+    .Call(`_smerc_stat_poisson_cpp`, yin, yout, ein, eout, a, shape)
+}
+
+stat_poisson0_cpp <- function(yin, yout, ein, eout) {
+    .Call(`_smerc_stat_poisson0_cpp`, yin, yout, ein, eout)
+}
+
+stat_binom_cpp <- function(yin, yout, ty, popin, popout, tpop) {
+    .Call(`_smerc_stat_binom_cpp`, yin, yout, ty, popin, popout, tpop)
+}
+
