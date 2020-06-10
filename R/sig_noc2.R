@@ -1,6 +1,6 @@
 #' Return most significant, non-overlapping zones
 #'
-#' \code{sig_noc} return the significant, non-overlapping
+#' \code{sig_noc2} return the significant, non-overlapping
 #' zones order from most significant to least significant.
 #' @param order_by Either \code{'tobs'} or \code{'pvalue'},
 #' indicating the argument by which to order \code{zones}.
@@ -15,8 +15,8 @@
 #' tobs = c(1, 3, 2)
 #' zones = list(1:2, 1:3, 2:3)
 #' pvalue = c(0.5, 0.01, 0.02)
-#' sig_noc(tobs, zones, pvalue, alpha = 0.05)
-sig_noc = function(tobs, zones, pvalue, alpha,
+#' sig_noc2(tobs, zones, pvalue, alpha = 0.05)
+sig_noc2 = function(tobs, zones, pvalue, alpha,
                    order_by = "tobs") {
   # argument checking
   N = length(tobs)
@@ -61,9 +61,8 @@ sig_noc = function(tobs, zones, pvalue, alpha,
 
   # determine significant non-overlapping clusters
   # in order of significance
-  sig = noz(zones)
-  # use c++ for substantial efficiency increase
-  # sig = noc_cpp(zones)
+  # add 1 since c++ indexes at 0
+  sig = noc_cpp(zones) + 1
   return(list(tobs = tobs[sig],
               zones = zones[sig],
               pvalue = pvalue[sig],

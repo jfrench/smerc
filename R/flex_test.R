@@ -51,22 +51,34 @@ flex_test = function(coords, cases, pop, w, k = 10,
     longlat = lonlat
     warning("lonlat is deprecated. Please use longlat.")
   }
-  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, 0.5, longlat, FALSE, k = k,
-                      w = w, type = type)
+  # arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+  #                     nsim + 1, 0.5, longlat, FALSE, k = k,
+  #                     w = w, type = type)
 
   coords = as.matrix(coords)
   # get list of nearest neighbors
   nn = knn(coords, longlat = longlat, k = k)
   # get vector of log primes
-  lprimes = randtoolbox::get.primes(nrow(coords))
+  lprimes = log(randtoolbox::get.primes(nrow(w)))
   # convert type to integer
   itype = ifelse(type == "poisson", 0, 1)
   # run flex_test via cpp
-  # pruned = flex_test_cpp(nn = nn, cases = cases, pop = pop, w = w, k = k,
-  #                        ex = ex, type = itype, nsim = nsim, alpha = alpha,
-  #                        lprimes = lprimes, verbose = TRUE)
-  # # convert z from nested list of logicals to list of zones
+  pruned = flex_test_cpp(nn = nn, cases = cases, pop = pop, w = w, k = k,
+                         ex = ex, type = itype, nsim = nsim, alpha = alpha,
+                         lprimes = lprimes, verbose = TRUE)
+  pruned = sig_noc(tobs = pruned$tobs, zones = pruned$zones,
+                   pvalue = pruned$pvalues, alpha = alpha,
+                   order_by = "tobs")
+  # pruned2 = NULL
+  # pruned2$zones = logical2zones(pruned$zones, nn)
+  # # convert tobs and pvalues from nested lists of vectors to vectors
+  # pruned2$tobs = unlist(pruned$tobs)
+  # pruned2$pvalue = unlist(pruned$pvalue)
+  # pruned3 = sig_noc(tobs = pruned2$tobs, zones = pruned2$zones,
+  #                   pvalue = pruned2$pvalue, alpha = 1,
+  #                   order_by = "tobs")
+  # return(pruned3)
+  # convert z from nested list of logicals to list of zones
   # pruned$zones = logical2zones(pruned$zones, nn)
   # # convert tobs and pvalues from nested lists of vectors to vectors
   # pruned$tobs = unlist(pruned$tobs)
@@ -74,14 +86,15 @@ flex_test = function(coords, cases, pop, w, k = 10,
   # pruned = sig_noc(tobs = pruned$tobs, zones = pruned$zones,
   #                  pvalue = pruned$pvalue, alpha = alpha,
   #                  order_by = "tobs")
-  # smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-  #               pvalue = pruned$pvalue, coords = coords,
-  #               cases = cases, pop = pop, ex = ex,
-  #               longlat = longlat, method = "flexible",
-  #               rel_param = list(type = type,
-  #                                simdist = "multinomial",
-  #                                nsim = nsim,
-  #                                k = k),
-  #               alpha = alpha,
-  #               w = w, d = NULL)
+  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
+                pvalue = pruned$pvalue, coords = coords,
+                cases = cases, pop = pop, ex = ex,
+                longlat = longlat, method = "flexible",
+                rel_param = list(type = type,
+                                 simdist = "multinomial",
+                                 nsim = nsim,
+                                 k = k,
+                                 nn = nn),
+                alpha = alpha,
+                w = w, d = NULL)
 }
