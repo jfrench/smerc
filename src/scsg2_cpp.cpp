@@ -387,6 +387,8 @@ NumericVector col_maxes(NumericMatrix &x) {
   return maxes;
 }
 
+// Determine simulated test statistics for flexible scan method
+// with poisson statistic and multinomial simulated data
 NumericVector flex_sim_prmulti(std::list<std::vector<bool>> &zidx,
                                std::vector<NumericVector> &ysim,
                                IntegerVector &cnn,
@@ -431,12 +433,15 @@ std::vector<NumericVector> mc_pvalues_nested(std::vector<NumericVector> &tobs_ne
 
 std::vector<NumericVector> pvalues_nested_1(std::vector<NumericVector> &tobs_nested) {
   std::vector<NumericVector> pvalues_nested;
+  double one = 1;
   unsigned tobs_size = tobs_nested.size();
   for (unsigned int i = 0; i < tobs_size; i++) {
-    pvalues_nested.emplace_back(NumericVector(tobs_nested[i].length(), 1));
+    NumericVector t1(tobs_nested[i].length(), one);
+    pvalues_nested.emplace_back(t1);
   }
   return pvalues_nested;
 }
+
 
 void sig_zidx(std::list<std::vector<bool>> &zidx, LogicalVector &sig) {
   unsigned int sig_length = sig.length();
@@ -529,8 +534,7 @@ List flex_test_cpp (List nn,
                     unsigned int nsim,
                     double alpha,
                     NumericVector lprimes,
-                    bool verbose = true
-) {
+                    bool verbose = true) {
   IntegerVector idx = seq(1, nn.length());
   if (verbose) {
     Rcout << "determining candidate zones" << std::endl;
