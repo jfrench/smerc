@@ -1,6 +1,6 @@
 #' Determine zones for flexibly shaped spatial scan test
 #'
-#' \code{rflex.zones2} determines the unique zones to
+#' \code{rflex_zones} determines the unique zones to
 #' consider for the flexibly shaped spatial scan test of
 #' Tango and Takahashi (2012).  The algorithm uses a
 #' breadth-first search to find all subgraphs connected to
@@ -50,15 +50,15 @@
 #' pop = nydf$pop
 #' ex = pop * sum(cases)/sum(pop)
 #' # zones for poisson model
-#' pzones = rflex.zones2(nn, w = nyw, cases = cases, ex = ex)
+#' pzones = rflex_zones(nn, w = nyw, cases = cases, ex = ex)
 #' \dontrun{
-#' pzones = rflex.zones2(nn, w = nyw, cases = cases,
+#' pzones = rflex_zones(nn, w = nyw, cases = cases,
 #'                       ex = ex, verbose = TRUE)
 #' # zones for binomial model
-#' bzones = rflex.zones2(nn, w = nyw, cases = cases, ex = ex,
+#' bzones = rflex_zones(nn, w = nyw, cases = cases, ex = ex,
 #'                      type = "binomial", pop = pop)
 #' }
-rflex.zones2 = function(nn, w, cases, ex, alpha1 = 0.2,
+rflex_zones = function(nn, w, cases, ex, alpha1 = 0.2,
                        type = "poisson", pop = NULL,
                        cl = NULL, loop = FALSE,
                        verbose = FALSE, pfreq = 1) {

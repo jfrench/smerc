@@ -8,8 +8,8 @@ pop = nydf$population
 outp = flex.test(coords = coords, cases = cases, pop = pop,
                   w = nyw, k = 10, nsim = 99, alpha = 1)
 
-outp_ = flex_test(coords = coords, cases = cases, pop = pop,
-                 w = nyw, k = 10, nsim = 99, alpha = 1)
+invisible(capture.output(outp_ <- flex_test(coords = coords, cases = cases, pop = pop,
+                 w = nyw, k = 10, nsim = 99, alpha = 1)))
 
 # results taken from flex_test_ny_poisson_10nn_cartesian
 test_that("check accuracy for flex.test poisson", {
