@@ -8,3 +8,5 @@
     instead of 'scan' class. Create print, plot, and summary
     functions for smerc_cluster class. Add ex argument to
     bn.test. Improve speed of flex.zones function.
+1.3 Create flex_zones and flex_test to use C++ code for speed.
+    Add vignette regarding how to use package.

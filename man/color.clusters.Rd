@@ -4,7 +4,7 @@
 \alias{color.clusters}
 \title{Color clusters}
 \usage{
-color.clusters(x, col = 2:(length(x$clusters) + 1))
+color.clusters(x, col = grDevices::hcl.colors(length(x$clusters)))
 }
 \arguments{
 \item{x}{An object of class scan produced by a function

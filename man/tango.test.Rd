@@ -2,7 +2,7 @@
 % Please edit documentation in R/tango.test.R
 \name{tango.test}
 \alias{tango.test}
-\title{Tango's cluster detection test}
+\title{Tango's clustering detection test}
 \usage{
 tango.test(cases, pop, w, nsim = 0)
 }

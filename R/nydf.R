@@ -25,7 +25,7 @@
 #'  \item{cases}{The number of leukemia cases between 1978-1982.}
 #'  \item{x}{The original 'longitude' coordinate provided by
 #'  Waller and Gotway (2005).}
-#'  \item{y}{The original 'latitude coordinate provided by
+#'  \item{y}{The original 'latitude' coordinate provided by
 #'  Waller and Gotway (2005).}
 #' }
 #' @source Waller, L.A. and Gotway, C.A. (2005).

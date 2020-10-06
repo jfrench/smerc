@@ -24,7 +24,7 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-color.clusters = function(x, col = 2:(length(x$clusters) + 1)) {
+color.clusters = function(x, col = grDevices::hcl.colors(length(x$clusters))) {
   if (class(x) != "scan" & class(x) != "smerc_cluster") {
     stop("x should be an object of class scan or smerc_cluster.")
   }

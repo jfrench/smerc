@@ -1,4 +1,4 @@
-#' Tango's cluster detection test
+#' Tango's clustering detection test
 #'
 #' \code{tango.test} performs a test for clustering proposed
 #' by Tango (1995).  The test uses Tango's chi-square

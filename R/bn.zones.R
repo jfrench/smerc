@@ -1,6 +1,6 @@
 #' Determine case windows (circles)
 #'
-#' \code{casewin} determines the case windows (circles) for
+#' \code{bn.zones} determines the case windows (circles) for
 #' the Besag-Newell method.
 #'
 #' Using the distances provided in \code{d}, for each
@@ -27,8 +27,8 @@
 #' data(nydf)
 #' coords = as.matrix(nydf[,c("longitude", "latitude")])
 #' d = sp::spDists(coords, longlat = FALSE)
-#' cwins = casewin(d, cases = nydf$cases, cstar = 6)
-casewin = function(d, cases, cstar) {
+#' cwins = bn.zones(d, cases = nydf$cases, cstar = 6)
+bn.zones = function(d, cases, cstar) {
   # order distances for each region
   # results has each column showing order of indices from
   # smallest to largest distance
@@ -45,3 +45,7 @@ casewin = function(d, cases, cstar) {
                 function(i) od[seq_len(size_cwin[i]), i]
   ))
 }
+
+#' @rdname bn.zones
+#' @export
+casewin = bn.zones
