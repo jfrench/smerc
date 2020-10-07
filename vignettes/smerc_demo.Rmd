@@ -139,27 +139,27 @@ str(ezones)
 
 ## References
 
-Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742. <https://doi.org/10.1002/sim.2411>
+Assuncao, R.M., Costa, M.A., Tavares, A. and Neto, S.J.F. (2006). Fast detection of arbitrarily shaped disease clusters, Statistics in Medicine, 25, 723-742. \doi{doi:10.1002/sim.2411}
 
 Besag, J. and Newell, J. (1991). The detection of clusters in rare diseases, Journal of the Royal Statistical Society, Series A, 154, 327-333.
 
-Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012) Constrained spanning tree algorithms for irregularly-shaped spatial clustering, Computational Statistics & Data Analysis, 56(6), 1771-1783. <https://doi.org/10.1016/j.csda.2011.11.001>
+Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012) Constrained spanning tree algorithms for irregularly-shaped spatial clustering, Computational Statistics & Data Analysis, 56(6), 1771-1783. \doi{doi:10.1016/j.csda.2011.11.001}
 
-Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics - Theory and Methods, 26(6): 1481-1496, <doi:10.1080/03610929708831995>
+Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics - Theory and Methods, 26(6): 1481-1496, \doi{doi:10.1080/03610929708831995}
 
-Kulldorff, M., Huang, L., Pickle, L. and Duczmal, L. (2006) An elliptic spatial scan statistic. Statististics in Medicine, 25:3929-3943. <doi:10.1002/sim.2490>
+Kulldorff, M., Huang, L., Pickle, L. and Duczmal, L. (2006) An elliptic spatial scan statistic. Statististics in Medicine, 25:3929-3943. \doi{doi:10.1002/sim.2490}
 
-Neill, D. B. (2012), Fast subset scan for spatial pattern detection. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 74: 337-360. <doi:10.1111/j.1467-9868.2011.01014.x>
+Neill, D. B. (2012), Fast subset scan for spatial pattern detection. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 74: 337-360. \doi{doi:10.1111/j.1467-9868.2011.01014.x}
 
-Patil, G.P. & Taillie, C. Upper level set scan statistic for detecting arbitrarily shaped hotspots. Environmental and Ecological Statistics (2004) 11(2):183-197. <doi:10.1023/B:EEST.0000027208.48919.7e>
+Patil, G.P. & Taillie, C. Upper level set scan statistic for detecting arbitrarily shaped hotspots. Environmental and Ecological Statistics (2004) 11(2):183-197. \doi{doi:10.1023/B:EEST.0000027208.48919.7e}
 
 Tango, T. (1995) A class of tests for detecting "general" and "focused" clustering of rare diseases. Statistics in Medicine. 14, 2323-2334.
 
 Tango, T., & Takahashi, K. (2005). A flexibly shaped spatial scan statistic for detecting clusters. International journal of health geographics, 4(1), 11. Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics – Theory and Methods 26, 1481-1496.
 
-Tango, T. and Takahashi, K. (2012), A flexible spatial scan statistic with a restricted likelihood ratio for detecting disease clusters. Statist. Med., 31: 4207-4218. <doi:10.1002/sim.5478>
+Tango, T. and Takahashi, K. (2012), A flexible spatial scan statistic with a restricted likelihood ratio for detecting disease clusters. Statist. Med., 31: 4207-4218. \doi{doi:10.1002/sim.5478}
 
-Turnbull, Bruce W., Iwano, Eric J., Burnett, William S., Howe, Holly L., Clark, Larry C. (1990). Monitoring for Clusters of Disease: Application to Leukemia Incidence in Upstate New York, American Journal of Epidemiology, 132(supp1):136-143. <doi:10.1093/oxfordjournals.aje.a115775>
+Turnbull, Bruce W., Iwano, Eric J., Burnett, William S., Howe, Holly L., Clark, Larry C. (1990). Monitoring for Clusters of Disease: Application to Leukemia Incidence in Upstate New York, American Journal of Epidemiology, 132(supp1):136-143. \doi{doi:10.1093/oxfordjournals.aje.a115775}
 
 Waller, L.A. and Gotway, C.A. (2005). Applied Spatial Statistics for Public Health Data. Hoboken, NJ: Wiley.
 

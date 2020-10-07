@@ -22,7 +22,7 @@
 #'   M. (2012) Constrained spanning tree algorithms for
 #'   irregularly-shaped spatial clustering, Computational
 #'   Statistics & Data Analysis, 56(6), 1771-1783.
-#'   <https://doi.org/10.1016/j.csda.2011.11.001>
+#'   <doi:10.1016/j.csda.2011.11.001>
 #' @export
 #' @examples
 #' data(nydf)

@@ -36,7 +36,7 @@
 #' @references Assuncao, R.M., Costa, M.A., Tavares, A. and
 #'   Neto, S.J.F. (2006). Fast detection of arbitrarily
 #'   shaped disease clusters, Statistics in Medicine, 25,
-#'   723-742.  <https://doi.org/10.1002/sim.2411>
+#'   723-742.  <doi:10.1002/sim.2411>
 #' @examples
 #' data(nydf)
 #' data(nyw)
