@@ -56,7 +56,7 @@ distance is used to calculate the intercentroid
 distance.}
 
 \item{cl}{
-A cluster object created by \code{\link[parallel]{makeCluster}},
+A cluster object created by \code{\link{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).

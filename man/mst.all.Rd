@@ -56,7 +56,7 @@ potential zone doesn't produce a test statistic larger
 than the current zone. The default is \code{FALSE}.}
 
 \item{cl}{
-A cluster object created by \code{\link[parallel]{makeCluster}},
+A cluster object created by \code{\link{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).

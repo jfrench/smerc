@@ -10,3 +10,4 @@
     bn.test. Improve speed of flex.zones function.
 1.3 Create flex_zones and flex_test to use C++ code for speed.
     Add vignette regarding how to use package.
+1.3.1 Fix noLD testing bug.
