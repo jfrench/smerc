@@ -58,14 +58,14 @@ test_that("compare flex.zones and rflex.zones w/ and w/o loop/verbose", {
   expect_equal(rzones2, rzones3)
   expect_equal(rzones2, rzones4)
 
-  expect_true(zcompare(fzones1, fzones1b, lprimes))
-  expect_true(zcompare(fzones1, fzones2b, lprimes))
-  expect_true(zcompare(fzones1, fzones3b, lprimes))
-  expect_true(zcompare(fzones1, fzones4b, lprimes))
-  expect_true(zcompare(rzones1, rzones1b, lprimes))
-  expect_true(zcompare(rzones1b, rzones2b, lprimes))
-  expect_true(zcompare(rzones1b, rzones3b, lprimes))
-  expect_true(zcompare(rzones1b, rzones4b, lprimes))
+  # expect_true(zcompare(fzones1, fzones1b, lprimes))
+  # expect_true(zcompare(fzones1, fzones2b, lprimes))
+  # expect_true(zcompare(fzones1, fzones3b, lprimes))
+  # expect_true(zcompare(fzones1, fzones4b, lprimes))
+  # expect_true(zcompare(rzones1, rzones1b, lprimes))
+  # expect_true(zcompare(rzones1b, rzones2b, lprimes))
+  # expect_true(zcompare(rzones1b, rzones3b, lprimes))
+  # expect_true(zcompare(rzones1b, rzones4b, lprimes))
 })
 
 # some debugging junk
