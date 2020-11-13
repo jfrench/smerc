@@ -43,6 +43,7 @@ rzones4b = suppressMessages(rflex_zones(nn, w = nyw, cases = floor(cases), ex = 
                                        loop = TRUE, verbose = TRUE))
 
 lprimes = log(randtoolbox::get.primes(length(nn)))
+# lprimes = log(randtoolbox::get.primes(length(nn * 10)))
 # compare list of zones with possibly different orderings
 zcompare = function(z1, z2, lprimes) {
   s1 = sapply(z1, function(x) sum(lprimes[x]))
