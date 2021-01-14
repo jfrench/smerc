@@ -1,3 +1,4 @@
+context("check accuracy of rflex.test binomial")
 set.seed(15)
 data(nydf)
 data(nyw)
@@ -8,8 +9,6 @@ outb = rflex.test(coords = cbind(nydf$longitude, nydf$latitude),
                   nsim = 99, alpha = 1, longlat = FALSE,
                   alpha1 = 0.2,
                   type = "binomial")
-
-context("check accuracy of rflex.test binomial")
 # results taken from rflex_test_ny_binomial_50nn_cartesian
 test_that("check accuracy for rflex.test binomial ", {
   expect_equal(sort(outb$clusters[[1]]$locids),

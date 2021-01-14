@@ -61,7 +61,10 @@ sig_noc = function(tobs, zones, pvalue, alpha,
 
   # determine significant non-overlapping clusters
   # in order of significance
-  sig = noz(zones)
+  # sig = noz(zones)
+  # use c++ for substantial efficiency increase
+  # offset by 1 since c++ starts index at 0
+  sig = noc_cpp(zones) + 1
   return(list(tobs = tobs[sig],
               zones = zones[sig],
               pvalue = pvalue[sig],

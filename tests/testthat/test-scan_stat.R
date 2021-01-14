@@ -1,3 +1,4 @@
+context("test scan_test related functions")
 data(nydf)
 cases = floor(nydf$cases)
 pop = nydf$pop
@@ -15,7 +16,9 @@ ein = sum(ex[zone])
 yout = ty - yin
 eout = ty - ein
 t1 = scan.stat(yin = yin, ty = ty, ein = ein)
+t1_ = scan_stat(yin = yin, ty = ty, ein = ein)
 t2 = stat.poisson(yin = yin, yout = yout, ein = ein, eout = eout)
+t2_ = stat_poisson(yin = yin, yout = yout, ein = ein, eout = eout)
 
 zone = c(1, 2, 3, 12, 13, 14, 15, 35, 47, 49)
 yin = sum(cases[zone])
@@ -24,10 +27,14 @@ yout = ty - yin
 popout = tpop - popin
 t3 = scan.stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
                type = "binomial")
+t3_ = scan_stat(yin = yin, ty = ty, popin = popin, tpop = tpop,
+               type = "binomial")
+
 t4 = stat.binom(yin = yin, yout = yout, ty = ty,
                 popin = popin, popout = popout, tpop = tpop)
+t4_ = stat_binom(yin = yin, yout = yout, ty = ty,
+                popin = popin, popout = popout, tpop = tpop)
 
-context("test scan_test related functions")
 test_that("check accuracy for scan_test for NY data", {
   # taken from satscannyoutpoisson
   expect_equal(round(t1, 6), 14.780276)
@@ -35,4 +42,10 @@ test_that("check accuracy for scan_test for NY data", {
   # taken from scan_binomial
   expect_equal(round(t3, 5), 8.47836)
   expect_equal(round(t4, 5), 8.47836)
+
+  # compare stat.poisson, stat_poisson, etc
+  expect_equal(t1, t1_)
+  expect_equal(t2, t2_)
+  expect_equal(t3, t3_)
+  expect_equal(t4, t4_)
 })

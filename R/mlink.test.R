@@ -1,22 +1,20 @@
-#' Double Connection spatial scan test
+#' Maximum Linkage spatial scan test
 #'
-#' \code{dc.test} implements the Double Connection spatial
+#' \code{mlink.test} implements the Maximum Linkage spatial
 #' scan test of Costa et al. (2012). Starting with a single
 #' region as a current zone, new candidate zones are
 #' constructed by combining the current zone with the
 #' connected region that maximizes the resulting likelihood
 #' ratio test statistic, with the added constraint that the
-#' region must have at least two connection (i.e., shares a
-#' border with) at least two of the regoins in the current
-#' zone.  This procedure is repeated until adding a
-#' connected region does not increase the test statistic (or
-#' the population or distance upper bounds are reached).
-#' The same procedure is repeated for each region.  The
-#' clusters returned are non-overlapping, ordered from most
-#' significant to least significant. The first cluster is
-#' the most likely to be a cluster. If no significant
-#' clusters are found, then the most likely cluster is
-#' returned (along with a warning).
+#' region has the maximum connections (i.e., shares a border
+#' with) with the regions in the current zone.  This
+#' procedure is repeated until the population or distance
+#' upper bounds constraints are reached.  The same procedure
+#' is repeated for each region.  The clusters returned are
+#' non-overlapping, ordered from most significant to least
+#' significant. The first cluster is the most likely to be a
+#' cluster. If no significant clusters are found, then the
+#' most likely cluster is returned (along with a warning).
 #'
 #' The maximum intercentroid distance can be found by
 #' executing the command:
@@ -36,28 +34,25 @@
 #'   M. (2012) Constrained spanning tree algorithms for
 #'   irregularly-shaped spatial clustering, Computational
 #'   Statistics & Data Analysis, 56(6), 1771-1783.
-#'   <https://doi.org/10.1016/j.csda.2011.11.001>
+#'   <doi:10.1016/j.csda.2011.11.001>
 #' @examples
 #' data(nydf)
 #' data(nyw)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' out = dc.test(coords = coords, cases = floor(nydf$cases),
-#'               pop = nydf$population, w = nyw,
-#'               alpha = 0.12, longlat = TRUE,
-#'               nsim = 5, ubpop = 0.1, ubd = 0.2)
+#' out = mlink.test(coords = coords, cases = floor(nydf$cases),
+#'                  pop = nydf$pop, w = nyw,
+#'                  alpha = 0.12, longlat = TRUE,
+#'                  nsim = 2, ubpop = 0.05, ubd = 0.1)
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-dc.test = function(coords, cases, pop, w,
+mlink.test = function(coords, cases, pop, w,
                    ex = sum(cases) / sum(pop) * pop,
-                   nsim = 499, alpha = 0.1,
-                   ubpop = 0.5, ubd = 1,
-                   longlat = FALSE, cl = NULL) {
+                   nsim = 499, alpha = 0.1, ubpop = 0.5,
+                   ubd = 1, longlat = FALSE, cl = NULL) {
   # sanity checking
-  arg_check_scan_test(coords = coords, cases = cases,
-                      pop = pop, ex = ex, nsim = nsim,
-                      alpha = alpha,
-                      ubpop = ubpop, longlat = longlat,
+  arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
+                      nsim + 1, ubpop, longlat, FALSE,
                       k = 1, w = w)
 
   coords = as.matrix(coords) # ensure proper format
@@ -66,14 +61,14 @@ dc.test = function(coords, cases, pop, w,
 
   # intercentroid distances
   d = sp::spDists(as.matrix(coords), longlat = TRUE)
-  # upperbound for zone populations
+  # upperbound for zone population
   max_pop = ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound
   nn = nndist(d, ubd)
 
   all_zones = mst.all(nn, cases = cases, pop = pop, w = w,
                       ex = ex, ty = ty, max_pop = max_pop,
-                      type = "all", nlinks = "two", early = TRUE,
+                      type = "all", nlinks = "max", early = FALSE,
                       cl = cl, progress = FALSE)
   # extract relevant information
   nn2 = lapply(all_zones, getElement, name = "locids")
@@ -96,7 +91,7 @@ dc.test = function(coords, cases, pop, w,
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
-    tsim = dc.sim(nsim = nsim, nn = nn, ty = ty,
+    tsim = mlink.sim(nsim = nsim, nn = nn, ty = ty,
                   ex = ex, w = w, pop = pop,
                   max_pop = max_pop, cl = cl)
     pvalue = mc.pvalue(tobs, tsim)
@@ -113,7 +108,7 @@ dc.test = function(coords, cases, pop, w,
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
                 cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "double connection",
+                longlat = longlat, method = "maximum linkage",
                 rel_param = list(type = "poisson",
                                  simdist = "multinomial",
                                  nsim = nsim,

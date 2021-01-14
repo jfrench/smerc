@@ -4,3 +4,7 @@
   packageStartupMessage(greet)
   # End Exclude Linting
 }
+
+.onUnload <- function (libpath) {
+  library.dynam.unload("smerc", libpath)
+}

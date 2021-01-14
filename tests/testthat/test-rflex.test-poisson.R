@@ -1,3 +1,4 @@
+context("check accuracy of rflex.test poisson")
 set.seed(15)
 data(nydf)
 data(nyw)
@@ -7,7 +8,6 @@ outp = rflex.test(coords = cbind(nydf$longitude, nydf$latitude),
                   w = nyw, k = 50,
                   nsim = 99, alpha = 1, longlat = FALSE,
                   alpha1 = 0.2)
-context("check accuracy of rflex.test poisson")
 # results taken from rflex_test_ny_poisson_50nn_cartesian
 # compare with FlexScan original for NY data
 test_that("check accuracy for rflex.test poisson", {

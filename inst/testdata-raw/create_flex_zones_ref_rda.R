@@ -4,10 +4,10 @@ fpath = system.file("testdata",  package = "smerc")
 data(nydf)
 coords = as.matrix(nydf[, c("x", "y")])
 data(nyw)
-flex10_zones_ref = flex.zones(coords, nyw, k = 10)
+flex5_zones_ref = flex.zones(coords, nyw, k = 5)
 
-fname = paste(fpath, "/flex10_zones_ref.rda", sep = "")
-save(flex10_zones_ref,
+fname = paste(fpath, "/flex5_zones_ref.rda", sep = "")
+save(flex5_zones_ref,
      compress = "bzip2",
      file = fname,
      version = 2)

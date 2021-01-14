@@ -43,7 +43,7 @@ region.  The default is \code{NULL} since this argument
 is only needed for \code{type = "binomial"}.}
 
 \item{cl}{
-A cluster object created by \code{\link[parallel]{makeCluster}},
+A cluster object created by \code{\link{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).

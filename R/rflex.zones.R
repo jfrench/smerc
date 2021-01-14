@@ -137,9 +137,8 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
 #'
 #' Check the arguments of rflex.zones
 #'
-#' @keywords internal
 #' @return NULL
-#' @export
+#' @noRd
 arg_check_rflex_zones = function(nn, w, cases, ex,
                                  alpha1, type, pop,
                                  loop, pfreq, verbose) {

@@ -33,6 +33,10 @@
 #' x[distinct(x)]
 distinct = function(x, N = max(unlist(x))) {
   pri = randtoolbox::get.primes(N)
-  sums = sapply(x, function(xi) sum(log(pri[xi])))
+  if (capabilities()[["long.double"]]) {
+    sums = sapply(x, function(xi) sum(log(pri[xi])))
+  } else {
+    sums = sapply(x, function(xi) sum(sort(log(pri[xi]))))
+  }
   which(!duplicated(sums))
 }

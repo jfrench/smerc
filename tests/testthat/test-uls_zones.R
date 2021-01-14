@@ -1,8 +1,9 @@
+context("test uls.zones matches PULSE example")
+
 # Recreate examples from PULSE paper
 # PULSE, progressive upper level set scan statistic for
 # geospatial hotspot detection
 # GP Patil, SW Joshi, RE Koli
-
 
 # Table 1
 cases = c(90, 80, 80, 80, 80, 80, 70, 70, 60, 50, 40, 30)
@@ -56,7 +57,6 @@ z2[[5]] = 1:6
 uz2 = uls.zones(cases2, pop2, w2, ubpop = 1, check.unique = TRUE)
 uz2 = sapply(uz2, sort)
 
-context("test uls.zones matches PULSE example")
 test_that("check accuracy of uls.zones", {
   expect_equal(z[1:4], uz[1:4])
   expect_equal(z2, uz2)

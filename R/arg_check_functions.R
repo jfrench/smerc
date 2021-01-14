@@ -46,8 +46,8 @@ arg_check_pop = function(pop, N) {
   if (!is.vector(pop)) {
     stop("pop should be a vector")
   }
-  if (min(pop) < 1) {
-    stop("pop values must be >= 1")
+  if (min(pop) < 0) {
+    stop("pop values must be >= 0")
   }
 }
 
