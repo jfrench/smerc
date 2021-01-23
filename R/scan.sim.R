@@ -35,7 +35,8 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     cl = NULL,
                     simdist = "multinomial",
                     pop = NULL,
-                    min.cases,
+                    min.cases = 0,
+                    wdup,
                     return_type = "max") {
   # match simdist with options
   simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
@@ -64,7 +65,7 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
     # compute test statistics for each zone
     yin = nn.cumsum(nn, ysim)
     # determine candidate zones that meet min.cases requirement
-    keep = which(yin >= min.cases)
+    keep = which((yin >= min.cases) & !wdup)
     # keep zones meeting min.cases requirement
     yin = yin[keep]
     if (type == "poisson") {

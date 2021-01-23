@@ -165,17 +165,12 @@ elbow_stat = function(coords, cases, pop,
                   popout = popout, tpop = tpop, cl = cl,
                   simdist = simdist, pop = pop,
                   min.cases = 0,
+                  wdup = wdup,
                   return_type = "all")
 
   # for each population upper bound, determine the maximum test
   # statistic for each simulated data set
-  message("partitioning statistics by ubpop_seq:")
-  tsim_seq = tsim_ubpop_seq(ubpop_seq = ubpop_seq,
-                            tall_yin_sim = tall_yin_sim,
-                            min.cases = min.cases,
-                            popin = popin,
-                            tpop = tpop)
-  message("partitioning statistics by ubpop_seq:")
+  message("partitioning statistics by ubpop_seq")
   tsim_seq = tsim_ubpop_seq(ubpop_seq = ubpop_seq,
                             tall_yin_sim = tall_yin_sim,
                             min.cases = min.cases,
@@ -214,21 +209,19 @@ elbow_stat = function(coords, cases, pop,
   sig_yin_seq = lapply(sig_zones_seq, zones.sum, y = cases)
   # get expected cases in each sig zone for each population upper bound
   sig_ein_seq = lapply(sig_zones_seq, zones.sum, y = ex)
-  # get order
-  sig_order_seq = lapply(sig_ein_seq, order, decreasing = FALSE)
 
-  # # # get sum of cases for all sig zones for each population upper bound
-  # sig_cumsum_yin_seq = sapply(sig_yin_seq_zones, cumsum)
-  # # get expected cases in each sig zone for each population upper bound
-  # sig_ein_seq_zones = sapply(sig_zones_seq, zones.sum, y = ex)
-  # # get sum of ex for all sig zones for each population upper bound
-  # sig_cumsum_ein_seq = sapply(sig_ein_seq_zones, cumsum)
+  # compute gini coefficients for sequence of population upper bounds
+  gini_seq = mapply(gini_coeff,
+                    casein = sig_yin_seq,
+                    exin = sig_ein_seq,
+                    MoreArgs = list(ty = ty))
 
   # assign any non-significant sums (in case only a MLC returned)
   all_sig = (sapply(pvalue_seq, min) < alpha)
 
 
   structure(list(neg_lrt = neg_lrt,
+                 gini_coef = gini_seq * all_sig,
                  ubpop_seq = ubpop_seq),
             class = "smerc_elbow_stats")
 }
@@ -247,6 +240,22 @@ seq_pop_idx = function(popin, tpop, ubpop_seq) {
   sapply(ubpop_seq, function(ubpop, prop_popin) {
     prop_popin <= ubpop
   }, prop_popin = popin/tpop)
+}
+
+# compute gini coefficient based on cases in each cluster
+# expected cases in each cluster
+# total number of cases
+gini_coeff = function(casein, exin, ty) {
+  # order by ex
+  o = order(exin, decreasing = FALSE)
+
+  # compute cumulative proportion of cases, ex in sig clusters
+  # in order of ex
+  cp_casein = cumsum(casein[o]) / ty
+  cp_exin = cumsum(exin[o]) / ty
+
+  # compute gini coefficient
+  2 * (.5 - MESS::auc(c(0, cp_casein, 1), c(0, cp_exin, 1)))
 }
 
 # keep the tobs that satisfy two constraints:

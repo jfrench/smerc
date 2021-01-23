@@ -154,7 +154,8 @@ scan.test = function(coords, cases, pop,
                     ex = ex, type = type, ein = ein,
                     eout = eout, popin = popin,
                     popout = popout, tpop = tpop, cl = cl,
-                    simdist = simdist, pop = pop)
+                    simdist = simdist, pop = pop,
+                    min.cases = min.cases, wdup = wdup)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))
