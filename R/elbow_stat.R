@@ -85,8 +85,8 @@
 #' sget(out2$clusters, name = "cases")[1:3]
 elbow_stat = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
-                     nsim = 499, alpha = 0.1,
-                     ubpop = seq(0.01, 0.5, len = 50),
+                     nsim = 499, alpha = 0.05,
+                     ubpop_seq = seq(0.01, 0.5, len = 50),
                      longlat = FALSE, cl = NULL,
                      type = "poisson",
                      min.cases = 2,
@@ -108,84 +108,205 @@ elbow_stat = function(coords, cases, pop,
   # compute inter-centroid distances
   d = sp::spDists(coords, longlat = longlat)
 
-  # for each region, determine sorted nearest neighbors
-  # subject to population constraint
-  nn = scan.nn(d, pop, ubpop)
-
-  # determine total number of cases in each successive
-  # window, total number of cases
-  yin = nn.cumsum(nn, cases)
-  ty = sum(cases) # sum of all cases
-
-  # compute population values in each region
+  # total number of cases
+  ty = sum(cases)
+  # total population
   tpop = sum(pop)
-  popin = nn.cumsum(nn, pop)
-  popout = tpop - popin
+
+  # for each region, determine sorted nearest neighbors
+  # subject to LARGEST population constraint
+  nn = scan.nn(d, pop, max(ubpop_seq))
+  # determine duplicate zones
+  wdup = nndup(nn, N)
+
+  # compute number of cases in each candidate zone
+  # only keep non-duplicated zones
+  yin = nn.cumsum(nn, cases)[!wdup]
+  # compute number of cases in each candidate zone
+  # only keep non-duplicated zones
+  popin = nn.cumsum(nn, pop)[!wdup]
+  # determine non-duplicated zones
+  zones = nn2zones(nn)[!wdup]
 
   # compute test statistics for observed data
   if (type == "poisson") {
     ein = nn.cumsum(nn, ex)
     eout = sum(ex) - ein
-    # popin = NULL
-    # popout = NULL
-    # tpop = NULL
+    popout = NULL
     tobs = stat.poisson(yin, ty - yin, ein, eout)
   } else if (type == "binomial") {
     ein = NULL
     eout = NULL
-    # tpop = sum(pop)
-    # popin = nn.cumsum(nn, pop)
-    # popout = tpop - popin
+    popout = tpop - popin
     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
   }
 
-  # determine distinct zones
-  wdup = nndup(nn, N)
+  # determine tobs for each population upper bound
+  tobs_seq = tobs_keep_seq(tobs = tobs,
+                           ubpop_seq = ubpop_seq,
+                           popin = popin,
+                           tpop = tpop,
+                           yin = yin,
+                           min.cases = min.cases)
 
-  # remove zones with a test statistic of 0 or don't have
-  # min number of cases or are duplicted
-  w0 = which(tobs == 0 | yin < min.cases | wdup)
+  # determine zones for each population upper bound
+  zones_seq = tobs_keep_seq(tobs = zones,
+                            ubpop_seq = ubpop_seq,
+                            popin = popin,
+                            tpop = tpop,
+                            yin = yin,
+                            min.cases = min.cases)
 
-  # determine zones
-  zones = nn2zones(nn)
+  # compute test statistics for simulated data for all candidate zones
+  message("computing statistics for simulated data:")
+  tall_yin_sim = scan.sim(nsim = nsim, nn = nn, ty = ty,
+                  ex = ex, type = type, ein = ein,
+                  eout = eout, popin = popin,
+                  popout = popout, tpop = tpop, cl = cl,
+                  simdist = simdist, pop = pop,
+                  min.cases = 0,
+                  return_type = "all")
 
-  # remove zones with a test statistic of 0
-  zones = zones[-w0]
-  tobs = tobs[-w0]
+  # for each population upper bound, determine the maximum test
+  # statistic for each simulated data set
+  message("partitioning statistics by ubpop_seq:")
+  tsim_seq = tsim_ubpop_seq(ubpop_seq = ubpop_seq,
+                            tall_yin_sim = tall_yin_sim,
+                            min.cases = min.cases,
+                            popin = popin,
+                            tpop = tpop)
+  message("partitioning statistics by ubpop_seq:")
+  tsim_seq = tsim_ubpop_seq(ubpop_seq = ubpop_seq,
+                            tall_yin_sim = tall_yin_sim,
+                            min.cases = min.cases,
+                            popin = popin,
+                            tpop = tpop)
 
-  # find the maximum statistic for each population upperbound
+  message("computing p-values by ubpop_seq")
+  pvalue_seq = pbapply::pbmapply(mc.pvalue, tobs = tobs_seq, tsim = tsim_seq)
 
-  # compute test statistics for simulated data
-  if (nsim > 0) {
-    message("computing statistics for simulated data:")
-    tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
-                    ex = ex, type = type, ein = ein,
-                    eout = eout, popin = popin,
-                    popout = popout, tpop = tpop, cl = cl,
-                    simdist = simdist, pop = pop)
-    pvalue = mc.pvalue(tobs, tsim)
-  } else {
-    pvalue = rep(1, length(tobs))
-  }
+  # determine significant clusters for each population upper bound
+  pruned_seq = suppressWarnings(
+    mapply(
+      FUN = sig_noc,
+      tobs = tobs_seq,
+      zones = zones_seq,
+      pvalue = pvalue_seq,
+      MoreArgs = list(alpha = alpha,
+                      order_by = "tobs"),
+      SIMPLIFY = FALSE
+    )
+  )
+  # extract the significant (or most likely cluster) tobs
+  # for each population upper bound
+  sig_tobs_seq = lget(pruned_seq, name = "tobs")
 
-  # significant, ordered, non-overlapping clusters and
-  # information
-  pruned = sig_noc(tobs = tobs, zones = zones,
-                   pvalue = pvalue, alpha = alpha,
-                   order_by = "tobs")
+  # compute the negative sum of the test statistics (or MLC)
+  neg_lrt = -sapply(sig_tobs_seq, sum)
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "circular scan",
-                rel_param = list(type = type,
-                                 simdist = simdist,
-                                 nsim = nsim,
-                                 ubpop = ubpop,
-                                 min.cases = min.cases),
-                alpha = alpha,
-                w = NULL, d = d)
+  # for the significant clusters, compute the total cases and total ex
+  # get sig pvalues for each population upper bound
+  sig_pvalue_seq = lget(pruned_seq, name = "pvalue")
+  # get sig zones for each population upper bound
+  sig_zones_seq = lget(pruned_seq, name = "zones")
+
+  # get number of cases in each sig zone for each population upper bound
+  sig_yin_seq = lapply(sig_zones_seq, zones.sum, y = cases)
+  # get expected cases in each sig zone for each population upper bound
+  sig_ein_seq = lapply(sig_zones_seq, zones.sum, y = ex)
+  # get order
+  sig_order_seq = lapply(sig_ein_seq, order, decreasing = FALSE)
+
+  # # # get sum of cases for all sig zones for each population upper bound
+  # sig_cumsum_yin_seq = sapply(sig_yin_seq_zones, cumsum)
+  # # get expected cases in each sig zone for each population upper bound
+  # sig_ein_seq_zones = sapply(sig_zones_seq, zones.sum, y = ex)
+  # # get sum of ex for all sig zones for each population upper bound
+  # sig_cumsum_ein_seq = sapply(sig_ein_seq_zones, cumsum)
+
+  # assign any non-significant sums (in case only a MLC returned)
+  all_sig = (sapply(pvalue_seq, min) < alpha)
+
+
+  structure(list(neg_lrt = neg_lrt,
+                 ubpop_seq = ubpop_seq),
+            class = "smerc_elbow_stats")
 }
+
+# for each population upper bound, determine the zones with
+# population size <= to that upper bound
+#' Title
+#'
+#' @param popin vector of population in each candidate zone
+#' @param tpop total population across all regions
+#' @param ubpop_seq # sequence of population upper bounds to consider
+#'
+#' @return logical matrix indicating which candidate zones
+#' satisfy the sequence of population constraints
+seq_pop_idx = function(popin, tpop, ubpop_seq) {
+  sapply(ubpop_seq, function(ubpop, prop_popin) {
+    prop_popin <= ubpop
+  }, prop_popin = popin/tpop)
+}
+
+# keep the tobs that satisfy two constraints:
+# 1. the population size constrained by ubpop
+# 2. the number of cases constrained by min.cases
+tobs_keep = function(tobs, ubpop, popin, tpop, yin, min.cases) {
+  # determine which candidate zones satisfy population constraint
+  keep_pop = (popin/tpop <= ubpop)
+  # determine which candidate zones satisfy min.cases constraint
+  keep_cases = (yin >= min.cases)
+  # return the observed statistics that satisfy both requirements
+  tobs[keep_pop & keep_cases]
+}
+
+# return a list with the tobs that satisfy two constraints:
+# 1. the population size constrained by ubpop
+# 2. the number of cases constrained by min.cases
+# for each ubpop in ubpop_seq
+tobs_keep_seq = function(tobs, ubpop_seq, popin, tpop, yin, min.cases) {
+  lapply(seq_along(ubpop_seq), function(i) {
+    tobs_keep(tobs = tobs,
+              ubpop = ubpop_seq[i],
+              popin = popin,
+              tpop = tpop,
+              yin = yin,
+              min.cases = min.cases)
+  })
+}
+
+# based on a specific ubpop, determine the maximum test statistic
+# for each simulated data set while accounting for the min.cases
+# requirement
+tsim_ubpop = function(ubpop, tall_yin_sim, min.cases, popin, tpop) {
+  # determine which candidate zones satisfy population constraint
+  keep_pop = (popin/tpop <= ubpop)
+  # for each simulated data set, determine the maximum test
+  # statistic for the zones satisfying the population constraint
+  # and the min.cases constraint
+  sapply(seq_along(tall_yin_sim), function(i) {
+    # determine zones satisfying the min.cases constraint
+    keep_cases = (tall_yin_sim[[i]]$yin >= min.cases)
+    # max of statistic satisfying both constraints
+    max(tall_yin_sim[[i]]$tall[keep_pop & keep_cases])
+  })
+}
+
+# based on the sequence ubpop_seq, determine the maximum test statistic
+# for each simulated data set while accounting for the min.cases
+# requirement
+tsim_ubpop_seq = function(ubpop_seq, tall_yin_sim, min.cases, popin, tpop) {
+  # for each ubpop in ubpop_seq, compute the maximum test statistic
+  # for each simulated data set
+  pbapply::pbsapply(X = ubpop_seq,
+         FUN = tsim_ubpop,
+         tall_yin_sim = tall_yin_sim,
+         min.cases = min.cases,
+         popin = popin,
+         tpop = tpop, simplify = FALSE)
+}
+
 
 #' Argument checking for scan tests
 #'
@@ -196,7 +317,7 @@ elbow_stat = function(coords, cases, pop,
 #' @param nsim A non-negative integer
 #' @param alpha A value greater than 0
 #' @param nreport Not used
-#' @param ubpop A value between 0 and 1
+#' @param ubpop_seq An ascending sequence of values between min(pop)/sum(pop) and 0.5.
 #' @param longlat A logical. TRUE is great circle distance.
 #' @param parallel Not used.
 #' @param k Number of nearest neighbors. Not always needed.
@@ -206,11 +327,11 @@ elbow_stat = function(coords, cases, pop,
 #' @param min.cases Minimum number of cases. Only for scan.test.
 #' @return NULL
 #' @noRd
-arg_check_scan_test =
+arg_check_elbow_stat =
   function(coords, cases, pop, ex, nsim, alpha,
            nreport = NULL,
-           ubpop, longlat, parallel = NULL, k, w, type = NULL,
-           simdist = NULL, min.cases = NULL) {
+           ubpop_seq, longlat, parallel = NULL, k, w, type = NULL,
+           simdist = NULL, min.cases = NULL, return_type) {
   arg_check_coords(coords)
   N = nrow(coords)
   arg_check_cases(cases, N)
@@ -236,3 +357,10 @@ arg_check_scan_test =
   }
 }
 
+# cumulative sum of counts associated with significant zones
+sig_zones_cumsum = function(zones, y) {
+  if (!is.list(zones)) stop("zones must be a list")
+  if (!is.numeric(y)) stop("y must be a numeric vector")
+  vapply(zones, function(x) cumsum(y[x]), FUN.VALUE = numeric(1),
+         USE.NAMES = FALSE)
+}

@@ -9,9 +9,13 @@
 #' @inheritParams flex.sim
 #' @inheritParams scan.test
 #' @param nn A list of nearest neighbors produced by \code{\link{nnpop}}.
+#' @param return_type A character vector (\code{"max"} or \code{"all"}) indicating whether the
+#' maximum statistic for each simulated data set should be returned (default) or the
+#' test statistics for all candidate zones for all simulated data set.
 #'
-#' @return A vector with the maximum test statistic for each
-#'   simulated data set.
+#' @return If \code{return_type == "max"}, a vector with the maximum test statistic for each
+#'   simulated data set. If \code{return_type == "all"}, then a matrix with all statistics for
+#'   all candidate zones for all simulated data sets.
 #' @export
 #'
 #' @examples
@@ -30,7 +34,9 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,
                     simdist = "multinomial",
-                    pop = NULL) {
+                    pop = NULL,
+                    min.cases,
+                    return_type = "max") {
   # match simdist with options
   simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
@@ -40,7 +46,7 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                 w = diag(length(ex)))
 
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim = pbapply::pblapply(seq_len(nsim), function(i, return_type) {
     # simulate new data
     if (simdist == "multinomial") {
       ysim = stats::rmultinom(1, size = ty, prob = ex)
@@ -57,14 +63,28 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
     }
     # compute test statistics for each zone
     yin = nn.cumsum(nn, ysim)
+    # determine candidate zones that meet min.cases requirement
+    keep = which(yin >= min.cases)
+    # keep zones meeting min.cases requirement
+    yin = yin[keep]
     if (type == "poisson") {
-      tall = stat.poisson(yin, ty - yin, ein, eout)
+      tall = stat.poisson(yin, ty - yin, ein[keep], eout[keep])
     } else if (type == "binomial") {
-      tall = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
+      tall = stat.binom(yin, ty - yin, ty, popin[keep], popout[keep], tpop)
     }
-    max(tall)
-  })
-  unlist(tsim, use.names = FALSE)
+    if (return_type == "max") {
+      max(tall)
+    } else if (return_type == "all") {
+      # return(tall)
+      return(list(tall = tall, yin = yin))
+    }
+  }, return_type = return_type)
+  # simplify returned output based on return_type
+  if (return_type == "max") {
+    return(unlist(tsim, use.names = FALSE))
+  } else if (return_type == "all") {
+    return(tsim)
+  }
 }
 
 #' Argument checking for *.sim functions
