@@ -1,46 +1,47 @@
-#' Perform \code{scan.test} on simulated data
+#' Perform \code{scan.test} on simulated data sequentially
 #'
-#' \code{scan.sim} efficiently performs
+#' \code{seq_scan_sim} efficiently performs
 #' \code{\link{scan.test}} on a simulated data set.  The
 #' function is meant to be used internally by the
-#' \code{\link{scan.test}} function, but is informative for
-#' better understanding the implementation of the test.
+#' \code{\link{optimal_ubpop}} function.
 #'
-#' @inheritParams flex.sim
+#' @inheritParams scan.sim
 #' @inheritParams scan.test
-#' @param nn A list of nearest neighbors produced by \code{\link{nnpop}}.
+#' @param ldup A logical vector indicating positions of duplicated zones. Not intended for user use.
+#' @param return_type A character vector (\code{"max"} or \code{"all"}) indicating whether the
+#' maximum statistic for each simulated data set should be returned (default) or the
+#' test statistics for all candidate zones for all simulated data set.
 #'
-#' @return A vector with the maximum test statistic for each
-#'   simulated data set.
+#' @return If \code{return_type == "max"}, a vector with the maximum test statistic for each
+#'   simulated data set. If \code{return_type == "all"}, then a list with all statistics for
+#'   all non-duplicated candidate zones for all simulated data sets.
 #' @export
-#'
-#' @examples
-#' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' d = sp::spDists(as.matrix(coords), longlat = TRUE)
-#' nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
-#' cases = floor(nydf$cases)
-#' ty = sum(cases)
-#' ex = ty/sum(nydf$pop) * nydf$pop
-#' yin = nn.cumsum(nn, cases)
-#' ein = nn.cumsum(nn, ex)
-#' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
-scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
+#' @keywords internal
+seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,
                     simdist = "multinomial",
-                    pop = NULL) {
+                    pop = NULL,
+                    min.cases = 0,
+                    ldup = NULL,
+                    return_type = "max") {
   # match simdist with options
   simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
+  arg_check_seq_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
                 popin = popin, popout = popout, static = TRUE,
                 simdist = simdist, pop = pop,
-                w = diag(length(ex)))
+                w = diag(length(ex)),
+                ldup = ldup,
+                return_type = return_type)
+  # assume there are no duplicates if ldup not provided
+  if(is.null(ldup)) {
+    ldup = rep(FALSE, length(unlist(nn)))
+  }
 
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim = pbapply::pblapply(seq_len(nsim), function(i, return_type) {
     # simulate new data
     if (simdist == "multinomial") {
       ysim = stats::rmultinom(1, size = ty, prob = ex)
@@ -55,16 +56,26 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                            prob = ex / pop)
       ty = sum(ysim)
     }
-    # compute test statistics for each zone
-    yin = nn.cumsum(nn, ysim)
+    # compute test statistics for each zone that aren't duplicated
+    yin = nn.cumsum(nn, ysim)[!ldup]
     if (type == "poisson") {
       tall = stat.poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {
       tall = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
     }
-    max(tall)
-  })
-  unlist(tsim, use.names = FALSE)
+    tall[yin < min.cases] = 0
+    if (return_type == "max") {
+      max(tall)
+    } else if (return_type == "all") {
+      return(tall)
+    }
+  }, return_type = return_type)
+  # simplify returned output based on return_type
+  if (return_type == "max") {
+    return(unlist(tsim, use.names = FALSE))
+  } else if (return_type == "all") {
+    return(tsim)
+  }
 }
 
 #' Argument checking for *.sim functions
@@ -90,14 +101,16 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
 #' @param simdist Simulation distribution.
 #' @return NULL
 #' @noRd
-arg_check_sim = function(nsim, ty, ex, type,
+arg_check_seq_sim = function(nsim, ty, ex, type,
                          nn = NULL, zones = NULL,
                          ein = NULL, eout = NULL,
                          tpop = NULL, popin = NULL,
                          popout = NULL, w = NULL,
                          pop = NULL, ubpop = NULL,
                          static = FALSE,
-                         simdist = "multinomial") {
+                         simdist = "multinomial",
+                         ldup = NULL,
+                         return_type = "max") {
   arg_check_nsim(nsim)
   arg_check_ty(ty)
   N = length(ex)
@@ -121,5 +134,10 @@ arg_check_sim = function(nsim, ty, ex, type,
   if (simdist == "binomial" & is.null(pop)) {
     stop("pop must be specified when simdist == 'binomial'")
   }
+  arg_check_ldup(ldup)
+  if (length(ldup) != length(unlist(nn))) {
+    stop("length(ldup) doesn't match the number of total candidate zones (length(unlist(nn)))")
+  }
+  arg_check_return_type_scan_sim(return_type)
 }
 
