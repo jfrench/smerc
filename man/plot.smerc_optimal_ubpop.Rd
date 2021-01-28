@@ -15,7 +15,7 @@
 The other valid options are \code{"elbow"} and \code{"gini"}.}
 }
 \description{
-Plot results of \link{\code{optimal_ubpop}}. This is only meant for a visual
+Plot results of \code{\link{optimal_ubpop}}. This is only meant for a visual
 summary of the results. Users will need to access the elements of the \code{smerc_optimal_ubpop} object \code{x}
 if they want to create a custom plot.
 }
@@ -25,7 +25,7 @@ coords = with(nydf, cbind(longitude, latitude))
 ubpop_stats = optimal_ubpop(coords = coords, cases  = nydf$cases,
                             pop = nydf$pop, nsim = 49,
                             ubpop = seq(0.05, 0.5, by = 0.05))
-plot(ubpop_stats)
+\dontrun{plot(ubpop_stats)}
 plot(ubpop_stats, method = "elbow")
 plot(ubpop_stats$ubpop_seq, ubpop_stats$neg_lrt)
 plot(ubpop_stats, method = "gini")

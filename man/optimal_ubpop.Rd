@@ -87,7 +87,7 @@ ubpop_stats = optimal_ubpop(coords = coords, cases  = nydf$cases,
                             pop = nydf$pop, nsim = 49,
                             ubpop = seq(0.05, 0.5, by = 0.05))
 ubpop_stats
-plot(ubpop_stats)
+\dontrun{plot(ubpop_stats)}
 }
 \references{
 Blah
