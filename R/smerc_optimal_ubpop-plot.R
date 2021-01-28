@@ -9,6 +9,7 @@
 #' @param method The method to plot. The default is \code{"all"}.
 #' The other valid options are \code{"elbow"} and \code{"gini"}.
 #' @export
+#' @seealso \code{\link{optimal_ubpop}}
 #' @method plot smerc_optimal_ubpop
 #' @examples
 #' data(nydf)
@@ -23,9 +24,13 @@
 #' plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_coef)
 plot.smerc_optimal_ubpop = function(x, ..., method = "all") {
   if (method == "all") {
+    # get current value of mfrow
+    original_mfrow = graphics::par()$mfrow
     graphics::par(mfrow = c(1, 2))
     plot_elbow(x)
     plot_gini(x)
+    # return mfrow to original mfrow
+    graphics::par(mfrow = original_mfrow)
   } else if (method == "elbow") {
     plot_elbow(x)
   } else if (method == "gini") {

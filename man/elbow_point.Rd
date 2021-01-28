@@ -30,6 +30,9 @@ elbow_point(x, y)
 \references{
 \url{https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line}
 }
+\seealso{
+\code{\link{optimal_ubpop}}
+}
 \author{
 Joshua French and Mohammad Meysami
 }

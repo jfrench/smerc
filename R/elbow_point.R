@@ -9,6 +9,7 @@
 #' @return A list with the index (\code{idx}), x-value (\code{x}) and
 #' y-value (\code{y}) of the elbow point.
 #' @export
+#' @seealso \code{\link{optimal_ubpop}}
 #' @references  \url{https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line}
 #' @examples
 #' # generate some data

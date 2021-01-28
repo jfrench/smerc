@@ -31,3 +31,6 @@ plot(ubpop_stats$ubpop_seq, ubpop_stats$neg_lrt)
 plot(ubpop_stats, method = "gini")
 plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_coef)
 }
+\seealso{
+\code{\link{optimal_ubpop}}
+}
