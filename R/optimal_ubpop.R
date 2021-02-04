@@ -152,6 +152,7 @@ optimal_ubpop = function(coords, cases, pop,
       SIMPLIFY = FALSE
     )
   )
+
   # extract the significant (or most likely cluster) tobs
   # for each population upper bound
   sig_tobs_seq = lget(pruned_seq, name = "tobs")
@@ -181,6 +182,7 @@ optimal_ubpop = function(coords, cases, pop,
 
   # assign any non-significant sums (in case only a MLC returned)
   all_sig = (sapply(pvalue_seq, min) < alpha)
+  all_sig2 = (sapply(sig_pvalue_seq, min) < alpha)
 
   # compute gini coefficient
   gini_coef = gini_seq * all_sig
@@ -190,7 +192,13 @@ optimal_ubpop = function(coords, cases, pop,
                  gini_coef = gini_seq * all_sig,
                  eb_point = eb_point,
                  elbow_ubpop = eb_point$x,
-                 gini_ubpop = ubpop_seq[which.max(gini_coef)]),
+                 gini_ubpop = ubpop_seq[which.max(gini_coef)]#,
+                 # gini_seq = gini_seq,
+                 # all_sig = all_sig,
+                 # all_sig2 = all_sig2,
+                 # sig_yin_seq = sig_yin_seq,
+                 # sig_ein_seq = sig_ein_seq
+                 ),
             class = "smerc_optimal_ubpop")
 }
 
