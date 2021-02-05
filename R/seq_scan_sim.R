@@ -10,13 +10,11 @@
 #'   intended for user use.
 #' @param lseq_zones A list of logical vectors specifying the sequence of
 #'   relevant zones based on ubpop constraints
-#' @return If a matrix with the maximum test statistics. Each row of the matrix
-#'   provides the maximum test statistics for a particular set of population
-#'   constraints.
-#' @export A list with the maximum statistic for each population upperbound for
+#' @return A list with the maximum statistic for each population upperbound for
 #'   each simulated data set. Each element will have a vector of maximums for
 #'   each simulated data set corresponding to the sequence of ubpop values. The
 #'   list will have \code{nsim} elements.
+#' @export
 #' @keywords internal
 seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
