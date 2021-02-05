@@ -19,9 +19,9 @@
 #'                             ubpop = seq(0.05, 0.5, by = 0.05))
 #' \dontrun{plot(ubpop_stats)}
 #' plot(ubpop_stats, method = "elbow")
-#' plot(ubpop_stats$ubpop_seq, ubpop_stats$neg_lrt)
+#' plot(ubpop_stats$ubpop_seq, ubpop_stats$elbow_method$stats)
 #' plot(ubpop_stats, method = "gini")
-#' plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_coef)
+#' plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_method$stats)
 plot.smerc_optimal_ubpop = function(x, ..., method = "all") {
   if (method == "all") {
     # get current value of mfrow
@@ -39,14 +39,14 @@ plot.smerc_optimal_ubpop = function(x, ..., method = "all") {
 }
 
 plot_elbow = function(x) {
-  graphics::plot(x$ubpop_seq, x$neg_lrt, xlab = "% population", ylab = "-LRT")
-  graphics::points(x$eb_point$x, x$eb_point$y, pch = 19)
+  graphics::plot(x$ubpop_seq, x$elbow_method$stats, xlab = "% population", ylab = "-LRT")
+  graphics::points(x$elbow_method$elbow_x, x$elbow_method$elbow_y, pch = 19)
   graphics::abline(v = x$elbow_ubpop)
   graphics::title(paste("elbow:", round(x$elbow_ubpop, 2) * 100, "%"))
 }
 
 plot_gini = function(x) {
-  graphics::plot(x$ubpop_seq, x$gini_coef, xlab = "% population", ylab = "gini coefficient")
+  graphics::plot(x$ubpop_seq, x$gini_method$stats, xlab = "% population", ylab = "gini coefficient")
   graphics::abline(v = x$gini_ubpop)
   graphics::title(paste("gini:", round(x$gini_ubpop, 2) * 100, "%"))
 }

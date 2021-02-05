@@ -1,20 +1,20 @@
 #' Optimal Population Upper Bound Statistics
 #'
-#' \code{optimal_ubpop} computes statistics for choosing an
-#' optimal population upper bound. \code{ubpop_seq} is a sequence of values
-#' to consider as the optimal choice of upper bound. The smallest value must
-#' be at least \code{min(pop)/sum(pop)} and should generally be less than 0.5.
+#' \code{optimal_ubpop} computes statistics for choosing an optimal population
+#' upper bound. \code{ubpop_seq} is a sequence of values to consider as the
+#' optimal choice of upper bound. The smallest value must be at least
+#' \code{min(pop)/sum(pop)} and should generally be less than 0.5.
 #'
 #' @inheritParams scan.test
-#' @param ubpop_seq A strictly increasing numeric vector with values between min(pop)/sum(pop) and 1. The default is \code{seq(0.01, 0.5, len = 50)}.
+#' @param ubpop_seq A strictly increasing numeric vector with values between
+#'   min(pop)/sum(pop) and 1. The default is \code{seq(0.01, 0.5, len = 50)}.
 #'
 #' @return Returns a \code{smerc_optimal_ubpop} object. This includes:
-#' \item{ubpop_seq}{The sequence of population bounds considered}
-#' \item{neg_lrt}{The negative likelihood ratio test statistics of \code{ubpop_seq} for the elbow method}
-#' \item{gini_coef}{The Gini coefficients of \code{ubpop_seq} for the elbow method}
-#' \item{eb_point}{A list with the index of the elbow point, the x-value of the elbow point, and the y-value of the elbow point}
-#' \item{elbow_ubpop}{The population upperbound suggested by the elbow method}
-#' \item{gini_ubpop}{The population upperbound suggested by the Gini method}
+#'   \item{ubpop_seq}{The sequence of population bounds considered}
+#'   \item{elbow_method}{An object with statistics related to the elbow method}
+#'   \item{gini_method}{An object with statistics related to the gini method}
+#'   \item{elbow_ubpop}{The population upperbound suggested by the elbow method}
+#'   \item{gini_ubpop}{The population upperbound suggested by the Gini method}
 #' @seealso \code{\link{scan.test}}
 #' @author Joshua French
 #' @export
@@ -27,7 +27,7 @@
 #'                             ubpop = seq(0.05, 0.5, by = 0.05))
 #' ubpop_stats
 #' \dontrun{plot(ubpop_stats)}
-optimal_ubpop2 = function(coords, cases, pop,
+optimal_ubpop = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.05,
                      ubpop_seq = seq(0.01, 0.5, len = 50),
@@ -66,7 +66,7 @@ optimal_ubpop2 = function(coords, cases, pop,
                  gini_method = gstats,
                  elbow_ubpop = estats$elbow_x,
                  gini_ubpop = gstats$gini_x),
-            class = "smerc_optimal_ubpop2")
+            class = "smerc_optimal_ubpop")
 }
 
 # compute gini coefficient based on cases in each cluster

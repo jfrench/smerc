@@ -27,9 +27,9 @@ ubpop_stats = optimal_ubpop(coords = coords, cases  = nydf$cases,
                             ubpop = seq(0.05, 0.5, by = 0.05))
 \dontrun{plot(ubpop_stats)}
 plot(ubpop_stats, method = "elbow")
-plot(ubpop_stats$ubpop_seq, ubpop_stats$neg_lrt)
+plot(ubpop_stats$ubpop_seq, ubpop_stats$elbow_method$stats)
 plot(ubpop_stats, method = "gini")
-plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_coef)
+plot(ubpop_stats$ubpop_seq, ubpop_stats$gini_method$stats)
 }
 \seealso{
 \code{\link{optimal_ubpop}}

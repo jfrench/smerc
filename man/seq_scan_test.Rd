@@ -38,7 +38,8 @@ compute the p-value.}
 \item{alpha}{The significance level to determine whether
 a cluster is signficant.  Default is 0.10.}
 
-\item{ubpop_seq}{A strictly increasing numeric vector with values between min(pop)/sum(pop) and 1. The default is \code{seq(0.01, 0.5, len = 50)}.}
+\item{ubpop_seq}{A strictly increasing numeric vector with values between
+min(pop)/sum(pop) and 1. The default is \code{seq(0.01, 0.5, len = 50)}.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used. If

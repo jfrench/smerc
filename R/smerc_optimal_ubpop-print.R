@@ -16,6 +16,4 @@ print.smerc_optimal_ubpop = function(x, ...) {
   cat("ubpop recommendations:\n")
   print(data.frame(method = c("elbow", "gini"),
              ubpop = c(x$elbow_ubpop, x$gini_ubpop)))
-  # cat("elbow method recommends ubpop = ", x$elbow_ubpop, "\n")
-  # cat("gini method recommends ubpop = ", x$gini_ubpop, "\n")
 }
