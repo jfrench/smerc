@@ -1,7 +1,7 @@
 #' Sequential Scan Test
 #'
 #' Performs a series of sequential scan tests by ubpop. Only minimal information is returned
-#' for each test.
+#' for each test. This is intended for internal use by the smerc package.
 #'
 #' @inheritParams optimal_ubpop
 #'
@@ -88,14 +88,14 @@ seq_scan_test = function(coords, cases, pop,
   # for each population constraint
   # each row contains the set of maximum statistics for each population constraint
   message("computing statistics for simulated data:")
-  tsim_seq = seq_scan_sim2(nsim = nsim, nn = nn, ty = ty,
-                           ex = ex, type = type, ein = ein,
-                           eout = eout, popin = popin,
-                           popout = popout, tpop = tpop, cl = cl,
-                           simdist = simdist, pop = pop,
-                           min.cases = min.cases,
-                           ldup = ldup,
-                           lseq_zones = lseq_zones)
+  tsim_seq = seq_scan_sim(nsim = nsim, nn = nn, ty = ty,
+                          ex = ex, type = type, ein = ein,
+                          eout = eout, popin = popin,
+                          popout = popout, tpop = tpop, cl = cl,
+                          simdist = simdist, pop = pop,
+                          min.cases = min.cases,
+                          ldup = ldup,
+                          lseq_zones = lseq_zones)
 
   message("computing p-values")
   pvalue_seq = pbapply::pblapply(seq_along(ubpop_seq), function(i) {

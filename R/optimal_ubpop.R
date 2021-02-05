@@ -3,7 +3,7 @@
 #' \code{optimal_ubpop} computes statistics for choosing an optimal population
 #' upper bound. \code{ubpop_seq} is a sequence of values to consider as the
 #' optimal choice of upper bound. The smallest value must be at least
-#' \code{min(pop)/sum(pop)} and should generally be less than 0.5.
+#' \code{min(pop)/sum(pop)} and should generally be less than or equal to 0.5.
 #'
 #' @inheritParams scan.test
 #' @param ubpop_seq A strictly increasing numeric vector with values between
@@ -18,7 +18,14 @@
 #' @seealso \code{\link{scan.test}}
 #' @author Joshua French
 #' @export
-#' @references Blah
+#' @references
+#' Meysami, Mohammad, French, Joshua P., and Lipner, Ettie M. The estimation of
+#' the optimal cluster upper bound for scan methods in retrospective disease
+#' surveillance. Submitted.
+#'
+#' Han, J., Zhu, L., Kulldorff, M. et al. Using Gini coefficient to determining
+#' optimal cluster reporting sizes for spatial scan statistics. Int J Health
+#' Geogr 15, 27 (2016). <doi:10.1186/s12942-016-0056-6>
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))

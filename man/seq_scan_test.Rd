@@ -73,7 +73,7 @@ the pruned list has the elements \code{tobs}, \code{zones}, \code{pvalue}.
 }
 \description{
 Performs a series of sequential scan tests by ubpop. Only minimal information is returned
-for each test.
+for each test. This is intended for internal use by the smerc package.
 }
 \seealso{
 \code{\link{scan.test}}

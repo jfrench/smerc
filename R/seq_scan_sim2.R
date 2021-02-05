@@ -1,8 +1,8 @@
-#' Perform \code{scan.test} on simulated data sequentially
+#' Perform scan test on simulated data sequentially
 #'
-#' \code{seq_scan_sim2} efficiently performs \code{\link{scan.test}} on a
+#' \code{seq_scan_sim} efficiently performs \code{\link{scan.test}} on a
 #' simulated data set.  The function is meant to be used internally by the
-#' \code{\link{optimal_ubpop}} function.
+#' \code{\link{optimal_ubpop}} function in the smerc package.
 #'
 #' @inheritParams scan.sim
 #' @inheritParams scan.test
@@ -13,9 +13,12 @@
 #' @return If a matrix with the maximum test statistics. Each row of the matrix
 #'   provides the maximum test statistics for a particular set of population
 #'   constraints.
-#' @export
+#' @export A list with the maximum statistic for each population upperbound for
+#'   each simulated data set. Each element will have a vector of maximums for
+#'   each simulated data set corresponding to the sequence of ubpop values. The
+#'   list will have \code{nsim} elements.
 #' @keywords internal
-seq_scan_sim2 = function(nsim = 1, nn, ty, ex, type = "poisson",
+seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,
@@ -26,7 +29,7 @@ seq_scan_sim2 = function(nsim = 1, nn, ty, ex, type = "poisson",
                     lseq_zones) {
   # match simdist with options
   simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
-  arg_check_seq_scan_sim2(nsim = nsim, ty = ty, ex = ex, type = type,
+  arg_check_seq_scan_sim(nsim = nsim, ty = ty, ex = ex, type = type,
                 nn = nn, ein = ein, eout = eout, tpop = tpop,
                 popin = popin, popout = popout, static = TRUE,
                 simdist = simdist, pop = pop,
@@ -98,7 +101,7 @@ seq_scan_sim2 = function(nsim = 1, nn, ty, ex, type = "poisson",
 
 #' @return NULL
 #' @noRd
-arg_check_seq_scan_sim2 = function(nsim, ty, ex, type,
+arg_check_seq_scan_sim = function(nsim, ty, ex, type,
                          nn = NULL, zones = NULL,
                          ein = NULL, eout = NULL,
                          tpop = NULL, popin = NULL,
