@@ -27,8 +27,11 @@ pruned_seq_test = seq_scan_test(coords = coords,
                            min.cases = min.cases,
                            simdist = simdist)
 
-
-context("check seq_scan_test with reference")
+context("check seq_scan_test with reference (1st elements only)")
 test_that("seq_scan_test matches ref", {
-    expect_equal(pruned_seq_test, pruned_seq)
+  for (i in seq_along(pruned_seq_test)) {
+    expect_equal(pruned_seq_test[[i]]$tobs[1], pruned_seq[[i]]$tobs[1])
+    expect_equal(pruned_seq_test[[i]]$zones[[1]], pruned_seq[[i]]$zones[[1]])
+    expect_equal(pruned_seq_test[[i]]$idx[1], pruned_seq[[i]]$idx[1])
+  }
 })

@@ -155,7 +155,7 @@ gini_stats = function(x, ubpop_seq, cases, ex, alpha) {
                     MoreArgs = list(ty = sum(cases)))
 
   # assign any non-significant sums (in case only a MLC returned)
-  all_sig = (sapply(sig_pvalue_seq, min) < alpha)
+  all_sig = (sapply(sig_pvalue_seq, min) <= alpha)
 
   # compute gini coefficient seq corrected
   gini_seq_sig = gini_seq * all_sig
@@ -167,12 +167,7 @@ gini_stats = function(x, ubpop_seq, cases, ex, alpha) {
                  stats = gini_seq_sig,
                  gini_idx = gidx,
                  gini_x = ubpop_seq[gidx],
-                 gini_y = gini_seq[gidx]#,
-                 # gini_seq_sig = gini_seq_sig,
-                 # gini_seq = gini_seq,
-                 # all_sig = all_sig,
-                 # sig_yin_seq = sig_yin_seq,
-                 # sig_ein_seq = sig_ein_seq
+                 gini_y = gini_seq[gidx]
   ), class = "gini_stats")
 }
 
