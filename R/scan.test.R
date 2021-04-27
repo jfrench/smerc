@@ -120,6 +120,11 @@ scan.test = function(coords, cases, pop,
   if (type == "poisson") {
     ein = nn.cumsum(nn, ex)
     eout = sum(ex) - ein
+    # correct for the situation when the expected number of cases
+    # is not the same as the observed number of cases
+    mult = ty / sum(ex)
+    ein = ein * mult
+    eout = eout * mult
     popin = NULL
     popout = NULL
     tpop = NULL
