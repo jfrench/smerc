@@ -3,7 +3,7 @@
 #' \code{clusters} extracts the clusters contained in a
 #' \code{\link{smerc_cluster}} object.
 #'
-#' @param x An object of class \code{smerc_cluster} from the \code{\link{spscan.test}}
+#' @param x An object of class \code{smerc_cluster}.
 #'
 #' @return A list. Each element of the list is a vector with the indices of event
 #' locations in the associated cluster.
