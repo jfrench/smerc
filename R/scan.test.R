@@ -67,6 +67,8 @@
 #' # needed for "state" database (unless you execute library(maps))
 #' data(countyMapEnv, package = "maps")
 #' plot(out, usemap = TRUE, mapargs = mapargs)
+#' # extract detected clusteers
+#' clusters(out)
 #'
 #' # a second example to match the results of Waller and Gotway (2005)
 #' # in chapter 7 of their book (pp. 220-221).

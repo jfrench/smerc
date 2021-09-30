@@ -73,6 +73,11 @@ A very basic `plot` mechanism is provided for `smerc_cluster` objects. The plot 
 plot(scan_out) # basic plot of scan.test results
 ```
 
+If you want to extract the detected clusters from a `smerc_cluster` object, then the `clusters` function can be used. The function returns a list: each element of the list is a vector with the indices of the regions included in the cluster. The first element of the list contains the regions comprising the most likely cluster, the second element contains the regions for the second most likely cluster, etc.
+```{r}
+clusters(scan_out)
+```
+
 If a polygon-like structure is associated with each region, then the `color.clusters` can be used to easily produce nicer plots. E.g., we can use the `nypoly` object to create a nicer map of our results.
 ```{r}
 plot(nypoly, col = color.clusters(scan_out)) #nicer plot of scan.test results
