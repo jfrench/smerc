@@ -7,7 +7,7 @@
 clusters(x)
 }
 \arguments{
-\item{x}{An object of class \code{smerc_cluster} from the \code{\link{spscan.test}}}
+\item{x}{An object of class \code{smerc_cluster}.}
 }
 \value{
 A list. Each element of the list is a vector with the indices of event

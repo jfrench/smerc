@@ -16,8 +16,8 @@
 #'                 alpha = 0.2, longlat = TRUE)
 #' clusters(out)
 clusters = function(x) {
-  if (!is.element("smerc_cluster", class(x))) {
-    stop("x must have smerc_cluster class")
+  if (!any(is.element(class(x), c("smerc_cluster", "spscan")))) {
+    stop("x must have smerc_cluster or spscan class")
   }
   lget(x$clusters, "locids")
 }
