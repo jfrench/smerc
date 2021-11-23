@@ -3,7 +3,7 @@
 #' Print \code{smerc_optimal_ubpop} object
 #'
 #' @param x An object of class \code{smerc_optimal_ubpop}.
-#' @inheritDotParams base::print
+#' @param ... Not currently implemented.
 #' @export
 #' @examples
 #' data(nydf)

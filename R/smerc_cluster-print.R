@@ -3,7 +3,7 @@
 #' Print \code{smerc_cluster} object
 #'
 #' @param x An object of class \code{smerc_cluster}.
-#' @inheritDotParams base::print
+#' @param \dots Not currently implemented.
 #' @param extra A logical value. Default is \code{FALSE}.
 #' \code{TRUE} indicates that extra information should be
 #' printed.
