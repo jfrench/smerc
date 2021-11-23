@@ -10,6 +10,7 @@
 #' @param col A vector of colors to color the clusters in
 #'   \code{x}.  Should have same length as the number of
 #'   clusters in \code{x}.
+#' @inheritParams summary.smerc_cluster
 #' @return Returns a vector with colors for each
 #'   region/centroid for the data set used to construct
 #'   \code{x}.
@@ -24,12 +25,12 @@
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-color.clusters = function(x, col = grDevices::hcl.colors(length(x$clusters))) {
+color.clusters = function(x, idx = seq_along(x$clusters), col = grDevices::hcl.colors(length(idx))) {
   if (class(x) != "scan" & class(x) != "smerc_cluster") {
     stop("x should be an object of class scan or smerc_cluster.")
   }
-  if (length(x$clusters) != length(col)) {
-    stop("The number of colors must match the number of clusters.")
+  if (length(idx) != length(col)) {
+    stop("The number of colors must match the length of idx.")
   }
 
   mycol = numeric(nrow(x$coords))

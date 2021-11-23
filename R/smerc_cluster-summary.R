@@ -4,11 +4,22 @@
 #'
 #' @param object An object of class \code{smerc_cluster}.
 #' @inheritDotParams base::summary
-#' @param idx A index vector indicating the elements of
+#' @param idx An index vector indicating the elements of
 #' \code{object$clusters} to print information for. The default
 #' is all clusters.
 #' @param digits Integer indicating the number of decimal places.
 #' @method summary smerc_cluster
+#' @return A \code{data.frame} with columns:
+#' \item{nregions}{The number of regions in the cluster.}
+#' \item{max_dist}{The maximum intercentroid distance between all the regions
+#' in the cluster.}
+#' \item{cases}{The number of cases in the cluster.}
+#' \item{ex}{The expected number of cases in the cluster.}
+#' \item{rr}{Relative risk in the cluster window. This is
+#' \code{(cases/pop)/((total_cases - cases)/
+#' (total_population - population))}.}
+#' \item{stat}{The test statistic for the cluster.}
+#' \item{p}{The p-value of the test statistic associated with the cluster.}
 #' @export
 #' @examples
 #' data(nydf)
@@ -23,8 +34,8 @@ summary.smerc_cluster = function(object, ...,
   if (min(idx) < 1 | max(idx) > length(object$clusters)) {
     stop("invalid idx values")
   }
-  regions = sapply(object$clusters[idx], function(i) length(i$locids))
-  max_dist = base::round(sget(object$clusters, "max_dist"),
+  nregions = sapply(object$clusters[idx], function(i) length(i$locids))
+  max_dist = base::round(sget(object$clusters[idx], "max_dist"),
                          digits = digits)
   cases = sget(object$clusters[idx], "cases")
   ex = base::round(sget(object$clusters[idx], "expected"),
@@ -34,7 +45,7 @@ summary.smerc_cluster = function(object, ...,
   stat = base::round(sget(object$clusters[idx], "test_statistic"),
                      digits = 1)
   p = sget(object$clusters[idx], "pvalue")
-  data.frame(regions,
+  data.frame(nregions,
              max_dist,
              cases,
              ex,

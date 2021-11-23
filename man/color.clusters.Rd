@@ -4,11 +4,19 @@
 \alias{color.clusters}
 \title{Color clusters}
 \usage{
-color.clusters(x, col = grDevices::hcl.colors(length(x$clusters)))
+color.clusters(
+  x,
+  idx = seq_along(x$clusters),
+  col = grDevices::hcl.colors(length(idx))
+)
 }
 \arguments{
 \item{x}{An object of class scan produced by a function
 such as \code{scan.test}.}
+
+\item{idx}{An index vector indicating the elements of
+\code{object$clusters} to print information for. The default
+is all clusters.}
 
 \item{col}{A vector of colors to color the clusters in
 \code{x}.  Should have same length as the number of
