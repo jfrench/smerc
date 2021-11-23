@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // subv_int
 std::vector<int> subv_int(std::vector<int>& v, std::vector<int> idx);
 RcppExport SEXP _smerc_subv_int(SEXP vSEXP, SEXP idxSEXP) {

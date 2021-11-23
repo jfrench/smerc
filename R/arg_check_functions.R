@@ -403,8 +403,8 @@ arg_check_min_cases = function(min.cases) {
   if (!is.vector(min.cases)) {
     stop("min.cases must be a vector (of length 1)")
   }
-  if (min.cases < 1) {
-    stop("min.cases must be be >= 1")
+  if (min.cases < 0) {
+    stop("min.cases must be be >= 0")
   }
 }
 
@@ -693,3 +693,65 @@ arg_check_nclusters = function(nclusters, N) {
     stop("nclusters must be <= length(x$clusters)")
   }
 }
+
+#' Check ldup argument
+#'
+#' @param ldup A logical vector
+#' @return NULL
+#' @noRd
+arg_check_ldup = function(ldup) {
+  if (!is.null(ldup)) {
+    if (!is.vector(ldup)) {
+      stop("ldup must be a vector")
+    }
+    if (!is.logical(ldup)) {
+      stop("ldup must be a logical vector")
+    }
+  }
+}
+
+#' Check return_type argument of scan.sim function
+#'
+#' @param return_type "max" or "all"
+#' @return NULL
+#' @noRd
+arg_check_return_type_scan_sim = function(return_type) {
+  if (length(return_type) != 1) {
+    stop("return_type must be a single character string")
+  }
+  if (!is.character(return_type)) {
+    stop("return_type must be a character string")
+  }
+  if (!is.element(return_type, c("max", "all"))) {
+    stop('return_type must be "max" or "all"')
+  }
+}
+
+#' Check ubpop_seq argument
+#'
+#' @param ubpop_seq A sequence of values in (0, 1)
+#' @return NULL
+#' @noRd
+arg_check_ubpop_seq = function(ubpop_seq, lb) {
+  if (!is.numeric(ubpop_seq)) {
+    stop("ubpop_seq must be numeric")
+  }
+  if (!is.vector(ubpop_seq)) {
+    stop("ubpop_seq must be a vector")
+  }
+  if (min(ubpop_seq) < lb) {
+    stop("min(ubpop_seq) must be >= min(pop)/sum(pop)")
+  }
+  if (max(ubpop_seq) >= 1) {
+    stop("max(ubpop_seq) must be <= 1")
+  }
+  if (length(ubpop_seq) < 10) {
+    warning("ubpop_seq should probably have at least 10 values")
+  }
+  if (is.unsorted(ubpop_seq)) {
+    stop("ubpop_seq must be a (strictly) increasing sequence of values")
+  }
+}
+
+
+

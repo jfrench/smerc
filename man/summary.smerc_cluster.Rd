@@ -15,11 +15,24 @@
     \item{\code{}}{}
   }}
 
-\item{idx}{A index vector indicating the elements of
+\item{idx}{An index vector indicating the elements of
 \code{object$clusters} to print information for. The default
 is all clusters.}
 
 \item{digits}{Integer indicating the number of decimal places.}
+}
+\value{
+A \code{data.frame} with columns:
+\item{nregions}{The number of regions in the cluster.}
+\item{max_dist}{The maximum intercentroid distance between all the regions
+in the cluster.}
+\item{cases}{The number of cases in the cluster.}
+\item{ex}{The expected number of cases in the cluster.}
+\item{rr}{Relative risk in the cluster window. This is
+\code{(cases/pop)/((total_cases - cases)/
+(total_population - population))}.}
+\item{stat}{The test statistic for the cluster.}
+\item{p}{The p-value of the test statistic associated with the cluster.}
 }
 \description{
 Summary of object of class \code{smerc_cluster}.
@@ -29,6 +42,9 @@ data(nydf)
 coords = with(nydf, cbind(x, y))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 49,
-                longlat = TRUE, alpha = 0.12)
+                longlat = TRUE, alpha = 0.2)
+# summarize all clusters
 summary(out)
+# summarize clusters 1 and 3
+summary(out, idx = c(1, 3))
 }
