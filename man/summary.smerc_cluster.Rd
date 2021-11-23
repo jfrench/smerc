@@ -42,6 +42,9 @@ data(nydf)
 coords = with(nydf, cbind(x, y))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 49,
-                longlat = TRUE, alpha = 0.12)
+                longlat = TRUE, alpha = 0.2)
+# summarize all clusters
 summary(out)
+# summarize clusters 1 and 3
+summary(out, idx = c(1, 3))
 }

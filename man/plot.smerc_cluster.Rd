@@ -7,7 +7,8 @@
 \method{plot}{smerc_cluster}(
   x,
   ...,
-  nclusters = length(x$clusters),
+  idx = seq_along(x$clusters),
+  nclusters = NULL,
   ccol = NULL,
   cpch = NULL,
   add = FALSE,
@@ -21,7 +22,11 @@
 \item{...}{Additional graphical parameters passed to the
 \code{plot} function.}
 
-\item{nclusters}{Number of clusters to plot.}
+\item{idx}{An index vector indicating the elements of
+\code{x$clusters} to print information for. The default
+is all clusters.}
+
+\item{nclusters}{Number of clusters to plot. Deprecated. Use \code{idx}.}
 
 \item{ccol}{Fill color of the plotted points.  Default is
 \code{grDevices::hcl.colors(nclusters, palette = "viridis")}.}
@@ -54,7 +59,8 @@ coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 0,
                 longlat = TRUE, alpha = 1)
-plot(out, nclusters = 3)
+# plot only 3 most likely clusters
+plot(out, idx = 1:3)
 ## plot output for new york state
 # specify desired argument values
 mapargs = list(database = "county", region = "new york",
@@ -62,5 +68,6 @@ mapargs = list(database = "county", region = "new york",
                ylim = range(out$coords[,2]))
 # needed for "county" database (unless you execute library(maps))
 data(countyMapEnv, package = "maps")
-plot(out, nclusters = 3, usemap = TRUE, mapargs = mapargs)
+# plot only the 1st and 3rd clusters
+plot(out, idx = 1:3, usemap = TRUE, mapargs = mapargs)
 }

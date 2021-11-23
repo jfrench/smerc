@@ -37,11 +37,18 @@ are not part of any cluster have no color.
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
 out = scan.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, alpha = 0.12, longlat = TRUE,
+                pop = nydf$pop, alpha = 0.2, longlat = TRUE,
                 nsim = 9)
 data(nypoly)
 library(sp)
-plot(nypoly, col = color.clusters(out))
+# plot all clusters
+plot(nypoly, col = color.clusters(out), axes = TRUE)
+# zoom in on small cluster
+plot(nypoly, col = color.clusters(out),
+     xlim = c(400000, 450000),
+     ylim = c(4750000, 4800000))
+# plot only clusters 1 and 3
+plot(nypoly, col = color.clusters(out, idx = c(1, 3)))
 }
 \author{
 Joshua French

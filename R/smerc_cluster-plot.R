@@ -9,7 +9,8 @@
 #' @param x An object of class scan to be plotted.
 #' @param ... Additional graphical parameters passed to the
 #'   \code{plot} function.
-#' @param nclusters Number of clusters to plot.
+#' @inheritParams clusters
+#' @param nclusters Number of clusters to plot. Deprecated. Use \code{idx}.
 #' @param ccol Fill color of the plotted points.  Default is
 #' \code{grDevices::hcl.colors(nclusters, palette = "viridis")}.
 #' @param cpch Plotting character to use for points in each
@@ -31,7 +32,8 @@
 #' out = scan.test(coords = coords, cases = floor(nydf$cases),
 #'                 pop = nydf$pop, nsim = 0,
 #'                 longlat = TRUE, alpha = 1)
-#' plot(out, nclusters = 3)
+#' # plot only 3 most likely clusters
+#' plot(out, idx = 1:3)
 #' ## plot output for new york state
 #' # specify desired argument values
 #' mapargs = list(database = "county", region = "new york",
@@ -39,12 +41,19 @@
 #'                ylim = range(out$coords[,2]))
 #' # needed for "county" database (unless you execute library(maps))
 #' data(countyMapEnv, package = "maps")
-#' plot(out, nclusters = 3, usemap = TRUE, mapargs = mapargs)
+#' # plot only the 1st and 3rd clusters
+#' plot(out, idx = 1:3, usemap = TRUE, mapargs = mapargs)
 plot.smerc_cluster = function(x, ...,
-                              nclusters = length(x$clusters),
+                              idx = seq_along(x$clusters),
+                              nclusters = NULL,
                               ccol = NULL, cpch = NULL,
                               add = FALSE, usemap = FALSE,
                               mapargs = list()) {
+
+  if (min(idx) < 1 | max(idx) > length(x$clusters)) {
+    stop("invalid idx values")
+  }
+  nclusters = length(idx)
   arg_check_nclusters(nclusters, length(x$clusters))
   # number of centroids
   nc = nclusters
@@ -82,7 +91,7 @@ plot.smerc_cluster = function(x, ...,
 
   graphics::points(coords, ...)
   # plot clusters
-  for (i in seq_len(nc)) {
+  for (i in idx) {
     graphics::points(coords[x$clusters[[i]]$locids, 1],
                      coords[x$clusters[[i]]$locids, 2],
                      col = ccol[i], pch = cpch[i])
