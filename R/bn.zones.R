@@ -41,7 +41,7 @@ bn.zones = function(d, cases, cstar) {
   # proportion of the total popuation
   wins = apply(od, 2, FUN = function(x) cumsum(cases[x]))
   size_cwin = apply(wins >= cstar, 2, which.max)
-  return(sapply(seq_along(size_cwin),
+  return(lapply(seq_along(size_cwin),
                 function(i) od[seq_len(size_cwin[i]), i]
   ))
 }
