@@ -34,8 +34,9 @@
 #' cases = nydf$cases
 #' pop = nydf$pop
 #' out = cepp.test(coords = coords, cases = cases, pop = pop,
-#'                 nstar = 1000, alpha = 0.1)
+#'                 nstar = 1000, alpha = 0.99)
 #' plot(out)
+#' summary(out)
 #'
 #' data(nypoly)
 #' library(sp)
@@ -82,11 +83,12 @@ cepp.test = function(coords, cases, pop, nstar,
   sig_regions = nn[op]
   sig_tstat = cstar[op]
   sig_p = pvalue[op]
+  sig_wts = wts[op]
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_noc(tobs = cstar, zones = nn, pvalue = pvalue,
-                   alpha = alpha, order_by = "tobs")
+  pruned = sig_noc_mod(tobs = cstar, zones = nn, pvalue = pvalue,
+                       alpha = alpha, order_by = "tobs")
 
   smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
                 pvalue = pruned$pvalue, coords = coords,
@@ -95,7 +97,8 @@ cepp.test = function(coords, cases, pop, nstar,
                 rel_param = list(nstar = nstar,
                                  simdist = simdist,
                                  nsim = nsim),
-                alpha = alpha, w = NULL, d = d)
+                alpha = alpha, w = NULL, d = d,
+                weights = sig_wts[pruned$sig])
 }
 
 #' Argument checking for cepp.test

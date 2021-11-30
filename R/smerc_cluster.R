@@ -18,6 +18,8 @@
 #' @param angle_all A vector of angle parameter associated with
 #' \code{zones}.
 #' @param alpha The significance level of the test.
+#' @param weights A vector of weights that multiply the \code{cases}, \code{ex}, and
+#' \code{pop} prior to computing summary statistics.
 #' @inheritParams scan.test
 #' @return A \code{smerc_cluster} object. The object
 #' generally has the following components:
@@ -72,7 +74,8 @@ smerc_cluster = function(tobs, zones, pvalue,
                          alpha,
                          w = NULL, d = NULL,
                          a = NULL, shape_all = NULL,
-                         angle_all = NULL) {
+                         angle_all = NULL,
+                         weights = NULL) {
   arg_check_smerc_cluster(tobs = tobs, zones = zones,
                           pvalue = pvalue, coords = coords,
                           cases = cases, pop = pop, ex = ex,
@@ -91,7 +94,8 @@ smerc_cluster = function(tobs, zones, pvalue,
                     rel_param = rel_param, alpha = alpha,
                     w = w, d = d, a = a,
                     shape_all = shape_all,
-                    angle_all = angle_all)
+                    angle_all = angle_all,
+                    weights = weights)
 }
 
 #' Construct \code{smerc_cluster}
@@ -103,7 +107,8 @@ smerc_cluster = function(tobs, zones, pvalue,
 new_smerc_cluster = function(tobs, zones, pvalue, coords,
                              cases, pop, ex, longlat,
                              method, rel_param, alpha, w, d,
-                             a, shape_all, angle_all) {
+                             a, shape_all, angle_all,
+                             weights) {
   # total cases and population
   ty = sum(cases)
   tpop = sum(pop)
@@ -130,6 +135,17 @@ new_smerc_cluster = function(tobs, zones, pvalue, coords,
   yin = zones.sum(zones, cases)
   ein = zones.sum(zones, ex)
   popin = zones.sum(zones, pop)
+  if (!is.null(weights)) {
+    yin = sapply(seq_along(zones), function(i) {
+      sum(cases[zones[[i]]] * weights[[i]])
+    })
+    ein = sapply(seq_along(zones), function(i) {
+      sum(ex[zones[[i]]] * weights[[i]])
+    })
+    popin = sapply(seq_along(zones), function(i) {
+      sum(pop[zones[[i]]] * weights[[i]])
+    })
+  }
   smr = yin / ein
   rr_num = yin / popin
   rr_den = (ty - yin) / (tpop - popin)

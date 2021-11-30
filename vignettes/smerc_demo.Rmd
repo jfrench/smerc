@@ -54,7 +54,7 @@ class(scan_out)
 A `smerc_cluster` object has a default print option that summarizes relevant details about the object produced by the function.
 
 In this case, we receive the following:
-```{r}
+```{r, collapse=TRUE}
 scan_out # print scan.test results
 ```
 
@@ -102,16 +102,17 @@ Other non-scan method for the detection of clusters and/or clustering of cases f
 
 `bn.test` performs the Besag-Newell test (Besag and Newell, 1991) and returns a `smerc_cluster`. The `print`, `summary`, and `plot` methods are available, as before.
 
-```{r}
+```{r, collapse=TRUE}
 bn_out = bn.test(coords = coords, cases = cases, pop = pop, cstar = 20,
                  alpha = 0.01) # perform besag-newell test
 bn_out # print results
 summary(bn_out) # summarize results
 plot(bn_out) # plot results
 ```
+
 The Cluster Evaluation Permutation Procedure (CEPP) proposed by Turnbull et al. (1990) can be performed using `cepp.test`. The function returns a `smerc_cluster` object with `print`, `summary`, and `plot` functions.
 
-```{r}
+```{r, collapse=TRUE}
 # perform CEPP test
 cepp_out = cepp.test(coords = coords, cases = cases, pop = pop,
                      nstar = 5000, nsim = 99, alpha = 0.1)
@@ -119,16 +120,18 @@ cepp_out # print results
 summary(cepp_out) # summarize results
 plot(cepp_out) # plot results
 ```
+
 Tango's clustering detection test (Tango, 1995) can be performed via the `tango.test` function. The `dweights` function can be used to construct the weights for the test. The `tango.test` function produces
 and object of class `tango`, which has a native `print` function
 and a `plot` function that compares the goodness-of-fit and spatial autocorrelation components of Tango's statistic for the observed data and the simulated data sets.
 
-```{r}
+```{r, collapse=TRUE}
 w = dweights(coords, kappa = 1) # construct weights matrix
 tango_out = tango.test(cases, pop, w, nsim = 49) # perform tango's test
 tango_out # print results
 plot(tango_out) # plot results
 ```
+
 ## Additional details about cluster detection methods
 
 Nearly all cluster detection methods have both a `*.zones` function that returns all the candidate zones for the method and a `*.sim` function that is used to produce results for data simulated under the null hypothesis. These are unlikely to interest most users, but may be useful for individuals wanting to better understand how these methods work or are interested in developing new methods based off existing ones. The `*.sim` functions are not meant for general use, as they are written to take very specific arguments that the user could easily misuse.

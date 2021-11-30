@@ -8,7 +8,8 @@ scan.zones(coords, pop, ubpop = 0.5, longlat = FALSE)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
-coordinates for the regions.}
+coordinates for the regions in the form (x, y) or
+(longitude, latitude) is using great circle distance.}
 
 \item{pop}{The population size associated with each
 region.}

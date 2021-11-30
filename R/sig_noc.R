@@ -71,6 +71,63 @@ sig_noc = function(tobs, zones, pvalue, alpha,
               idx = idx[sig]))
 }
 
+# sig_noc modified for cepp.test
+sig_noc_mod = function(tobs, zones, pvalue, alpha, order_by = "tobs") {
+  # argument checking
+  N = length(tobs)
+  arg_check_tobs(tobs)
+  arg_check_zones(zones, N)
+  arg_check_pvalue(pvalue, N)
+  arg_check_alpha(alpha)
+  if (length(order_by) != 1) {
+    stop("order_by must have length 1")
+  }
+  if (!is.element(order_by, c("tobs", "pvalue"))) {
+    stop("order_by must be 'tobs' or 'pvalue'")
+  }
+
+  # create idx from original list of zones
+  idx = seq_len(N)
+  # determine if there are any significant zones
+  minp = which.min(pvalue)
+  if (pvalue[minp] > alpha) {
+    warning("No significant clusters.  Returning most likely cluster.")
+    sig = minp
+  } else {
+    sig = which(pvalue <= alpha)
+  }
+  # only keep significant zones and info
+  tobs = tobs[sig]
+  zones = zones[sig]
+  pvalue = pvalue[sig]
+  idx = idx[sig]
+
+  # order zones from most to least significant
+  if (order_by == "tobs") {
+    ozones = order(tobs, decreasing = TRUE)
+  } else {
+    ozones = order(pvalue, decreasing = FALSE)
+  }
+  # reorder zones and info
+  tobs = tobs[ozones]
+  zones = zones[ozones]
+  pvalue = pvalue[ozones]
+  idx = idx[ozones]
+
+  # determine significant non-overlapping clusters
+  # in order of significance
+  # sig = noz(zones)
+  # use c++ for substantial efficiency increase
+  # offset by 1 since c++ starts index at 0
+  sig = noc_cpp(zones) + 1
+  return(list(tobs = tobs[sig],
+              zones = zones[sig],
+              pvalue = pvalue[sig],
+              idx = idx[sig],
+              sig = sig))
+}
+
+
 
 
 
