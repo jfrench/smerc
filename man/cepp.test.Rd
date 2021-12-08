@@ -66,8 +66,9 @@ coords = with(nydf, cbind(x, y))
 cases = nydf$cases
 pop = nydf$pop
 out = cepp.test(coords = coords, cases = cases, pop = pop,
-                nstar = 1000, alpha = 0.1)
+                nstar = 1000, alpha = 0.99)
 plot(out)
+summary(out)
 
 data(nypoly)
 library(sp)
