@@ -361,7 +361,7 @@ IntegerVector rpois_rcpp(unsigned int &n, NumericVector &lambda) {
     // update lambda_i to match next realized value with correct mean
     lambda_i++;
     // restart lambda_i at 0 if end of lambda reached
-    if (lambda_i == lambda.length()) {
+    if (lambda_i == lambda.size()) {
       lambda_i = 0;
     }
   }
