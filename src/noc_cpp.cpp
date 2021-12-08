@@ -32,7 +32,7 @@ bool does_intersect_vi(std::vector<int> x, std::vector<int> &y) {
 std::vector<int> noc_cpp(std::vector<std::vector<int>> x) {
   unsigned int x_size = x.size();
   std::vector<int> remain_idx(x_size);
-  for (int k = 0; k < x_size; k++) {
+  for (unsigned int k = 0; k < x_size; k++) {
     remain_idx[k] = k;
   }
   unsigned int i = 0;
