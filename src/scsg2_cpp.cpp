@@ -355,13 +355,14 @@ std::vector<NumericVector> rmultinom_alt(unsigned int &n,
 
 IntegerVector rpois_rcpp(unsigned int &n, NumericVector &lambda) {
   unsigned int lambda_i = 0;
+  unsigned int lambda_size = lambda.size();
   IntegerVector sim(n);
   for (unsigned int i = 0; i < n; i++) {
     sim[i] = R::rpois(lambda[lambda_i]);
     // update lambda_i to match next realized value with correct mean
     lambda_i++;
     // restart lambda_i at 0 if end of lambda reached
-    if (lambda_i == lambda.size()) {
+    if (lambda_i == lambda_size) {
       lambda_i = 0;
     }
   }
