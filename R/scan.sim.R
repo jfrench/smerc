@@ -63,7 +63,7 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
       tall = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
     }
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }
 

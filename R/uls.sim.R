@@ -46,6 +46,6 @@ uls.sim = function(nsim = 1, ty, ex, w, pop, ubpop,
                         popin, tpop - popin, tpop)
     }
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }
