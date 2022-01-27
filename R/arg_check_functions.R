@@ -145,13 +145,13 @@ arg_check_modified = function(modified) {
 #' @noRd
 arg_check_tobs = function(tobs) {
   if (!is.numeric(tobs)) {
-    stop("tobs should be numeric values")
+    stop("tobs (the vector of observed test statistics) should be numeric values")
   }
   if (!is.vector(tobs)) {
-    stop("tobs should be a vector")
+    stop("tobs (the vector of observed test statistics) should be a vector")
   }
   if (min(tobs) < 0) {
-    stop("tobs values must be >= 0")
+    warning("tobs values (the vector of observed test statistics) should be >= 0. The user may want to check for numerical precision issues.")
   }
 }
 

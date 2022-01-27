@@ -109,8 +109,8 @@ stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
   lrout = log(yout[good]) - log(eout[good])
   # compute statistics for good locations
   tall[good] = yin[good] * lrin + yout[good] * lrout
-  # if indicator not satisfied, set to 0
-  tall[good][lrin < lrout] = 0
+  # if indicator not satisfied (yin/ein > yout/eout, yin > ein, eout > yout), set to 0
+  tall[good][lrin < lrout | ein >= yin | yout >= eout] = 0
   if (a > 0) {
     i = which(shape > 1)
     tall[i] = tall[i] * (4 * shape[i] / (shape[i] + 1) ^ 2) ^ a

@@ -147,7 +147,7 @@ scan.test = function(coords, cases, pop,
   wdup = nndup(nn, N)
 
   # remove zones with a test statistic of 0 or don't have
-  # min number of cases or are duplicted
+  # min number of cases or are duplicated
   w0 = which(tobs == 0 | yin < min.cases | wdup)
 
   # determine zones
