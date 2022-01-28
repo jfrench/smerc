@@ -69,7 +69,7 @@ seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
     sapply(lseq_zones, function(lzones) {
       max(tall[lzones])
     })
-  })
+  }, cl = cl)
   return(tsim)
 }
 

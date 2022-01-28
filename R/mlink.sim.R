@@ -40,6 +40,6 @@ mlink.sim = function(nsim = 1, nn, ty, ex, w, pop, max_pop,
             max_pop = max_pop, type = "maxonly",
             early = FALSE, nlinks = "max", progress = FALSE)
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }

@@ -42,7 +42,7 @@ elliptic.sim = function(nsim = 1, nn, ty, ex, a, shape_all,
     # compute test statistics for each zone
     yin = nn.cumsum(nn, ysim)
     max(stat.poisson(yin, ty - yin, ein, eout, a, shape_all))
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }
 
