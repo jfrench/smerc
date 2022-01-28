@@ -42,6 +42,6 @@ fast.sim = function(nsim = 1, ty, ex, pop, ubpop,
                         popin, tpop - popin, tpop)
     }
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }

@@ -61,6 +61,6 @@ rflex.sim = function(nsim = 1, nn, w, ex, alpha1 = 0.2,
                         popin, tpop - popin, tpop)
     }
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }

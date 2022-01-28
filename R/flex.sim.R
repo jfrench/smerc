@@ -48,7 +48,7 @@ flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson",
                         popin, popout, tpop)
     }
     max(tall)
-  })
+  }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }
 
