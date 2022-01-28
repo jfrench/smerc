@@ -9,11 +9,7 @@
 \arguments{
 \item{x}{An object of class \code{tango}.}
 
-\item{...}{
-  Arguments passed on to \code{\link[base:print]{base::print}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{\dots}{Not currently implemented.}
 
 \item{digits}{Number of significant digits to print.}
 }

@@ -18,7 +18,8 @@ cepp.test(
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
-coordinates for the regions.}
+coordinates for the regions in the form (x, y) or
+(longitude, latitude) is using great circle distance.}
 
 \item{cases}{The number of cases observed in each region.}
 
@@ -65,8 +66,9 @@ coords = with(nydf, cbind(x, y))
 cases = nydf$cases
 pop = nydf$pop
 out = cepp.test(coords = coords, cases = cases, pop = pop,
-                nstar = 1000, alpha = 0.1)
+                nstar = 1000, alpha = 0.99)
 plot(out)
+summary(out)
 
 data(nypoly)
 library(sp)

@@ -256,6 +256,10 @@ NumericVector stat_poisson0_cpp(NumericVector &yin,
       if (lrin > lrout) {
         tall[i] = yin[i] * lrin + yout[i] * lrout;
       }
+      // statistic can't be negative
+      if (tall[i] < 0) {
+        tall[i] = 0;
+      }
     }
   }
   return tall;
@@ -304,7 +308,7 @@ NumericVector stat_binom_cpp(NumericVector yin,
 // add elements of nv for which corresponding bv value is true
 double sum_nv_bv(NumericVector &nv, std::vector<bool> &bv) {
   double tsum = 0;
-  int i = 0;
+  unsigned int i = 0;
   for (auto bv_it = bv.begin(); bv_it != bv.end(); bv_it++) {
     if (*bv_it) {
       tsum += nv[i];
@@ -318,7 +322,7 @@ double sum_nv_bv(NumericVector &nv, std::vector<bool> &bv) {
 NumericVector zidx_sum(std::list<std::vector<bool>> &zidx,
                        NumericVector &yidx) {
   NumericVector tsums(zidx.size());
-  int i = 0;
+  unsigned int i = 0;
   auto zidx_end = zidx.end();
   for (auto zidx_it = zidx.begin(); zidx_it != zidx_end; zidx_it++) {
     tsums[i] = sum_nv_bv(yidx, *zidx_it);
@@ -355,13 +359,14 @@ std::vector<NumericVector> rmultinom_alt(unsigned int &n,
 
 IntegerVector rpois_rcpp(unsigned int &n, NumericVector &lambda) {
   unsigned int lambda_i = 0;
+  unsigned int lambda_size = lambda.size();
   IntegerVector sim(n);
   for (unsigned int i = 0; i < n; i++) {
     sim[i] = R::rpois(lambda[lambda_i]);
     // update lambda_i to match next realized value with correct mean
     lambda_i++;
     // restart lambda_i at 0 if end of lambda reached
-    if (lambda_i == lambda.length()) {
+    if (lambda_i == lambda_size) {
       lambda_i = 0;
     }
   }
@@ -415,7 +420,7 @@ NumericVector mc_pvalue_cpp(NumericVector &tobs, NumericVector &tsim) {
   unsigned int nsim = tsim.length();
   unsigned int ntobs = tobs.length();
   NumericVector pvalues(ntobs);
-  for (int i = 0; i < ntobs; i++) {
+  for (unsigned int i = 0; i < ntobs; i++) {
     pvalues[i] = (static_cast<double>(sum(tsim >= tobs[i])) + 1)/(nsim + 1);
   }
   return pvalues;
@@ -463,7 +468,7 @@ void sig_zidx(std::list<std::vector<bool>> &zidx, LogicalVector &sig) {
 std::vector<int> cz2zone(std::vector<bool> &cz, IntegerVector &cnn) {
   unsigned int cz_size = cz.size();
   std::vector<int> zone;
-  for(int i = 0; i < cz_size; i++) {
+  for(unsigned int i = 0; i < cz_size; i++) {
     if (cz[i]) {
       zone.push_back(cnn[i]);
     }

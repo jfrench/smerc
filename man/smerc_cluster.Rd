@@ -20,7 +20,8 @@ smerc_cluster(
   d = NULL,
   a = NULL,
   shape_all = NULL,
-  angle_all = NULL
+  angle_all = NULL,
+  weights = NULL
 )
 }
 \arguments{
@@ -31,7 +32,8 @@ smerc_cluster(
 \item{pvalue}{The p-value associated with each test statistic}
 
 \item{coords}{An \eqn{n \times 2} matrix of centroid
-coordinates for the regions.}
+coordinates for the regions in the form (x, y) or
+(longitude, latitude) is using great circle distance.}
 
 \item{cases}{The number of cases observed in each region.}
 
@@ -69,6 +71,9 @@ with \code{zones}.}
 
 \item{angle_all}{A vector of angle parameter associated with
 \code{zones}.}
+
+\item{weights}{A vector of weights that multiply the \code{cases}, \code{ex}, and
+\code{pop} prior to computing summary statistics.}
 }
 \value{
 A \code{smerc_cluster} object. The object

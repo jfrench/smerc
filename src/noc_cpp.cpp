@@ -5,7 +5,7 @@ using namespace std;
 // [[Rcpp::export]]
 std::vector<int> subv_int(std::vector<int> &v, std::vector<int> idx) {
   std::vector<int> subv;
-  for (int i = 0; i < idx.size(); i++) {
+  for (unsigned int i = 0; i < idx.size(); i++) {
     subv.push_back(std::move(v[idx[i]]));
   }
   return subv;
@@ -30,19 +30,19 @@ bool does_intersect_vi(std::vector<int> x, std::vector<int> &y) {
 
 // [[Rcpp::export]]
 std::vector<int> noc_cpp(std::vector<std::vector<int>> x) {
-  int x_size = x.size();
+  unsigned int x_size = x.size();
   std::vector<int> remain_idx(x_size);
-  for (int k = 0; k < x_size; k++) {
+  for (unsigned int k = 0; k < x_size; k++) {
     remain_idx[k] = k;
   }
-  int i = 0;
+  unsigned int i = 0;
   std::vector<int> u(1);
   u[0] = 0;
 
   std::vector<int> inter;
   while (i < x_size) {
     inter.clear();
-    for (int j = 0; j < remain_idx.size(); j++) {
+    for (unsigned int j = 0; j < remain_idx.size(); j++) {
       if (!does_intersect_vi(x[i], x[remain_idx[j]])) {
         inter.push_back(j);
       }

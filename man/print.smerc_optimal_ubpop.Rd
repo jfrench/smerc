@@ -9,11 +9,7 @@
 \arguments{
 \item{x}{An object of class \code{smerc_optimal_ubpop}.}
 
-\item{...}{
-  Arguments passed on to \code{\link[base:print]{base::print}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{...}{Not currently implemented.}
 }
 \description{
 Print \code{smerc_optimal_ubpop} object

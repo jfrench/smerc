@@ -5,7 +5,7 @@
 #'
 #' @param x An object of class \code{tango}.
 #' @param digits Number of significant digits to print.
-#' @inheritDotParams base::print
+#' @param \dots Not currently implemented.
 #' @export
 #' @examples
 #' data(nydf)

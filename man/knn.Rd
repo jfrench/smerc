@@ -8,7 +8,8 @@ knn(coords, longlat = FALSE, k = 1, d = NULL)
 }
 \arguments{
 \item{coords}{An \eqn{n \times 2} matrix of centroid
-coordinates for the regions.}
+coordinates for the regions in the form (x, y) or
+(longitude, latitude) is using great circle distance.}
 
 \item{longlat}{The default is \code{FALSE}, which
 specifies that Euclidean distance should be used. If

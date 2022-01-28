@@ -9,11 +9,7 @@
 \arguments{
 \item{x}{An object of class \code{smerc_cluster}.}
 
-\item{...}{
-  Arguments passed on to \code{\link[base:print]{base::print}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{\dots}{Not currently implemented.}
 
 \item{extra}{A logical value. Default is \code{FALSE}.
 \code{TRUE} indicates that extra information should be

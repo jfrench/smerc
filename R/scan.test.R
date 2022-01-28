@@ -11,7 +11,8 @@
 #' warning).
 #'
 #' @param coords An \eqn{n \times 2} matrix of centroid
-#'   coordinates for the regions.
+#'   coordinates for the regions in the form (x, y) or
+#'   (longitude, latitude) is using great circle distance.
 #' @param cases The number of cases observed in each region.
 #' @param pop The population size associated with each
 #'   region.
@@ -78,13 +79,15 @@
 #' # However, the SatScan program takes coordinates in the order
 #' # 'latitude' and 'longitude', so the results are slightly different
 #' # from the example above.
+#' # Note: the correct code below would use cbind(x, y), i.e.,
+#' # cbind(longitude, latitude)
 #' coords = with(nydf, cbind(y, x))
 #' out2 = scan.test(coords = coords, cases = floor(nydf$cases),
 #'                   pop = nydf$pop, nsim = 0,
 #'                   alpha = 1, longlat = TRUE)
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
-#' sget(out2$clusters, name = "cases")[1:3]
+#' clusters(out2, idx = 1:3)
 scan.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
@@ -144,7 +147,7 @@ scan.test = function(coords, cases, pop,
   wdup = nndup(nn, N)
 
   # remove zones with a test statistic of 0 or don't have
-  # min number of cases or are duplicted
+  # min number of cases or are duplicated
   w0 = which(tobs == 0 | yin < min.cases | wdup)
 
   # determine zones
