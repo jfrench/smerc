@@ -215,8 +215,8 @@ NumericVector stat_poisson_cpp(NumericVector yin,
   // determine if there will be any problematic statistics
   for (unsigned int i = 0; i < yin_length; i++) {
     // compute statistic for good locations
-    // yin > 0 and yin/ein > yout/ein and yin > ein and yout < eout
-    if (yin[i] > 0 & yin[i] > ein[i] & yout[i] < eout[i]) {
+    // yin > 0 and yin/ein > yout/ein
+    if (yin[i] > 0) {
       lrin = log(yin[i]) - log(ein[i]);
       lrout = log(yout[i]) - log(eout[i]);
       if (lrin > lrout) {
@@ -249,12 +249,16 @@ NumericVector stat_poisson0_cpp(NumericVector &yin,
   // determine if there will be any problematic statistics
   for (unsigned int i = 0; i < yin_length; i++) {
     // compute statistic for good locations
-    // yin > 0 and yin/ein > yout/ein and yin > ein and yout < eout
-    if (yin[i] > 0 & yin[i] > ein[i] & yout[i] < eout[i]) {
+    // yin > 0 and yin/ein > yout/ein
+    if (yin[i] > 0) {
       lrin = log(yin[i]) - log(ein[i]);
       lrout = log(yout[i]) - log(eout[i]);
       if (lrin > lrout) {
         tall[i] = yin[i] * lrin + yout[i] * lrout;
+      }
+      // statistic can't be negative
+      if (tall[i] < 0) {
+        tall[i] = 0;
       }
     }
   }

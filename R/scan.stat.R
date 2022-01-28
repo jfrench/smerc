@@ -101,8 +101,7 @@ scan.stat = function(yin, ein = NULL, eout = NULL, ty,
 #' @rdname scan.stat
 stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
   # determine if there will be any problematic statistics
-  # (yin/ein > yout/eout, yin > ein, eout > yout)
-  good = which(yin > 0 & ein < yin & yout < eout)
+  good = which(yin > 0)
   # create vector for storage
   tall = numeric(length(yin))
   # log ratio observed/expected (in and out) for good locations
@@ -110,7 +109,7 @@ stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
   lrout = log(yout[good]) - log(eout[good])
   # compute statistics for good locations
   tall[good] = yin[good] * lrin + yout[good] * lrout
-  # if indicator not satisfied (yin/ein > yout/eout, yin > ein, eout > yout), set to 0
+  # if indicator not satisfied (yin/ein > yout/eout), set to 0
   tall[good][lrin < lrout] = 0
   if (a > 0) {
     i = which(shape > 1)

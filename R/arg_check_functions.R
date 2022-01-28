@@ -151,7 +151,10 @@ arg_check_tobs = function(tobs) {
     stop("tobs (the vector of observed test statistics) should be a vector")
   }
   if (min(tobs) < 0) {
-    warning("tobs values (the vector of observed test statistics) should be >= 0. The user may want to check for numerical precision issues.")
+    warning("tobs values (the vector of observed test statistics) should be >= 0.")
+    message("The following negative values were detected", tobs[tobs < 0])
+    message("If the negative values are nearly zero, then this is likely a numeric precision issue that can be ignored.")
+    message("If the negative values are not close to zero, then a more serious problem may be present.")
   }
 }
 
