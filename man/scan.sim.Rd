@@ -17,7 +17,8 @@ scan.sim(
   popout = NULL,
   cl = NULL,
   simdist = "multinomial",
-  pop = NULL
+  pop = NULL,
+  min.cases = 2
 )
 }
 \arguments{
@@ -67,6 +68,9 @@ other options are \code{"poisson"} and \code{"binomial"}}
 
 \item{pop}{The population size associated with each
 region.}
+
+\item{min.cases}{The minimum number of cases required for
+a cluster.  The default is 2.}
 }
 \value{
 A vector with the maximum test statistic for each

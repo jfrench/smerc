@@ -93,7 +93,7 @@ mapargs = list(database = "county", region = "new york",
 xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 # needed for "state" database (unless you execute library(maps))
 data(countyMapEnv, package = "maps")
-plot(out, usemap = TRUE, mapargs = mapargs)
+plot(out, usemap = TRUE, mapargs = mapargs, idx = 1:3)
 # extract detected clusteers
 clusters(out)
 

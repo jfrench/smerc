@@ -67,7 +67,7 @@
 #' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
 #' # needed for "state" database (unless you execute library(maps))
 #' data(countyMapEnv, package = "maps")
-#' plot(out, usemap = TRUE, mapargs = mapargs)
+#' plot(out, usemap = TRUE, mapargs = mapargs, idx = 1:3)
 #' # extract detected clusteers
 #' clusters(out)
 #'
@@ -164,7 +164,7 @@ scan.test = function(coords, cases, pop,
                     ex = ex, type = type, ein = ein,
                     eout = eout, popin = popin,
                     popout = popout, tpop = tpop, cl = cl,
-                    simdist = simdist, pop = pop)
+                    simdist = simdist, pop = pop, min.cases = min.cases)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))

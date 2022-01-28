@@ -34,14 +34,15 @@
 #'                     a = 0.5, shape_all = enn$shape_all,
 #'                     ein = ein, eout = ty - ein)
 elliptic.sim = function(nsim = 1, nn, ty, ex, a, shape_all,
-                        ein, eout, cl = NULL) {
+                        ein, eout, cl = NULL, min.cases = 2) {
   # compute max test stat for nsim simulated data sets
   tsim = pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
     ysim = stats::rmultinom(1, size = ty, prob = ex)
     # compute test statistics for each zone
     yin = nn.cumsum(nn, ysim)
-    max(stat.poisson(yin, ty - yin, ein, eout, a, shape_all))
+    # make sure minimum number of cases satisfied
+    max(stat.poisson(yin, ty - yin, ein, eout, a, shape_all)[yin >= min.cases])
   }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }

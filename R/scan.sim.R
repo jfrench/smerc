@@ -30,7 +30,8 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,
                     simdist = "multinomial",
-                    pop = NULL) {
+                    pop = NULL,
+                    min.cases = 2) {
   # match simdist with options
   simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
   arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
@@ -62,7 +63,8 @@ scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
     } else if (type == "binomial") {
       tall = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
     }
-    max(tall)
+    # make sure minimum number of cases satisfied
+    max(tall[yin >= min.cases])
   }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }

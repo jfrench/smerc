@@ -100,7 +100,8 @@ elliptic.test = function(coords, cases, pop,
     tsim = elliptic.sim(nsim = nsim, nn = enn$nn, ty = ty,
                         ex = ex, a = a,
                         shape_all = enn$shape_all,
-                        ein = ein, eout = eout, cl = cl)
+                        ein = ein, eout = eout, cl = cl,
+                        min.cases = min.cases)
 
     # p-values associated with these max statistics for each centroid
     pvalue = mc.pvalue(tobs, tsim)

@@ -4,7 +4,18 @@
 \alias{elliptic.sim}
 \title{Perform \code{elliptic.test} on simulated data}
 \usage{
-elliptic.sim(nsim = 1, nn, ty, ex, a, shape_all, ein, eout, cl = NULL)
+elliptic.sim(
+  nsim = 1,
+  nn,
+  ty,
+  ex,
+  a,
+  shape_all,
+  ein,
+  eout,
+  cl = NULL,
+  min.cases = 2
+)
 }
 \arguments{
 \item{nsim}{A positive integer indicating the number of
@@ -41,6 +52,9 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).
 }
+
+\item{min.cases}{The minimum number of cases required for
+a cluster.  The default is 2.}
 }
 \value{
 A vector with the maximum test statistic for each
