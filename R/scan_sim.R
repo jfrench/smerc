@@ -25,7 +25,8 @@
 #' yin = nn.cumsum(nn, cases)
 #' ein = nn.cumsum(nn, ex)
 #' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
-scan.sim = function(nsim = 1, nn, ty, ex, type = "poisson",
+#' tsim = scan_sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
+scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
                     ein = NULL, eout = NULL,
                     tpop = NULL, popin = NULL, popout = NULL,
                     cl = NULL,

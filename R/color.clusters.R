@@ -33,7 +33,7 @@
 #' # plot only clusters 1 and 3
 #' plot(nypoly, col = color.clusters(out, idx = c(1, 3)))
 color.clusters = function(x, idx = seq_along(x$clusters), col = grDevices::hcl.colors(length(idx))) {
-  if (class(x) != "scan" & class(x) != "smerc_cluster") {
+  if (!any(is.element(class(x), c("scan", "smerc_cluster")))) {
     stop("x should be an object of class scan or smerc_cluster.")
   }
   if (min(idx) < 1 | max(idx) > length(x$clusters)) {

@@ -45,6 +45,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// stat_poisson_adj_cpp
+NumericVector stat_poisson_adj_cpp(NumericVector yin, NumericVector yout, NumericVector logein, NumericVector logeout, double a, NumericVector pen, unsigned int min_cases, bool return_max);
+RcppExport SEXP _smerc_stat_poisson_adj_cpp(SEXP yinSEXP, SEXP youtSEXP, SEXP logeinSEXP, SEXP logeoutSEXP, SEXP aSEXP, SEXP penSEXP, SEXP min_casesSEXP, SEXP return_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type yin(yinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type yout(youtSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type logein(logeinSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type logeout(logeoutSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type pen(penSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type min_cases(min_casesSEXP);
+    Rcpp::traits::input_parameter< bool >::type return_max(return_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(stat_poisson_adj_cpp(yin, yout, logein, logeout, a, pen, min_cases, return_max));
+    return rcpp_result_gen;
+END_RCPP
+}
 // scsg2_cpp
 std::list<std::list<std::vector<bool>>> scsg2_cpp(List& nn, IntegerMatrix& w, IntegerVector& idx, unsigned int& nlevel, NumericVector& lprimes, bool verbose);
 RcppExport SEXP _smerc_scsg2_cpp(SEXP nnSEXP, SEXP wSEXP, SEXP idxSEXP, SEXP nlevelSEXP, SEXP lprimesSEXP, SEXP verboseSEXP) {
@@ -145,6 +163,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_smerc_subv_int", (DL_FUNC) &_smerc_subv_int, 2},
     {"_smerc_does_intersect_vi", (DL_FUNC) &_smerc_does_intersect_vi, 2},
     {"_smerc_noc_cpp", (DL_FUNC) &_smerc_noc_cpp, 1},
+    {"_smerc_stat_poisson_adj_cpp", (DL_FUNC) &_smerc_stat_poisson_adj_cpp, 8},
     {"_smerc_scsg2_cpp", (DL_FUNC) &_smerc_scsg2_cpp, 6},
     {"_smerc_stat_poisson_cpp", (DL_FUNC) &_smerc_stat_poisson_cpp, 6},
     {"_smerc_stat_poisson0_cpp", (DL_FUNC) &_smerc_stat_poisson0_cpp, 4},

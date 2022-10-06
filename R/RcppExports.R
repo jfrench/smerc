@@ -13,6 +13,10 @@ noc_cpp <- function(x) {
     .Call(`_smerc_noc_cpp`, x)
 }
 
+stat_poisson_adj_cpp <- function(yin, yout, logein, logeout, a, pen, min_cases, return_max) {
+    .Call(`_smerc_stat_poisson_adj_cpp`, yin, yout, logein, logeout, a, pen, min_cases, return_max)
+}
+
 scsg2_cpp <- function(nn, w, idx, nlevel, lprimes, verbose = FALSE) {
     .Call(`_smerc_scsg2_cpp`, nn, w, idx, nlevel, lprimes, verbose)
 }

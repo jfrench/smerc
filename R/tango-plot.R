@@ -32,7 +32,7 @@
 plot.tango = function(x, ...,
                       obs.list = list(pch = 20),
                       sim.list = list(pch = 2)) {
-  if (class(x) != "tango") {
+  if (!is.element("tango", class(x))) {
     stop("x should be a tango object")
   }
 
