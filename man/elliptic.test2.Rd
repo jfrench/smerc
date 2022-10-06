@@ -87,11 +87,13 @@ warning).
 \examples{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
+set.seed(1)
 out = elliptic.test(coords = coords,
                    cases = floor(nydf$cases),
                    pop = nydf$pop, ubpop = 0.1,
                    nsim = 99,
                    alpha = 0.12)
+set.seed(1)
 out2 = elliptic.test2(coords = coords,
                    cases = floor(nydf$cases),
                    pop = nydf$pop, ubpop = 0.1,

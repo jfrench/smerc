@@ -30,8 +30,17 @@ hypothesis.}
 
 \item{ty}{The total number of cases in the study area.}
 
+\item{logein}{The \code{log} of the expected number of
+cases in each candidate zone.}
+
+\item{logeout}{The \code{log} of the expected number of
+cases outside of each candidate zone.}
+
 \item{a}{The penalty for the spatial scan statistic.  The
 default is 0.5.}
+
+\item{pen}{The eccentricity penalty for each candidate
+zone.}
 
 \item{min.cases}{The minimum number of cases required for
 a cluster.  The default is 2.}
@@ -42,10 +51,6 @@ or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).
 }
-
-\item{shape_all}{A vector of the shapes associated with
-all of the possible zones constructed from \code{nn}.
-This can be obtained from \code{\link{elliptic.nn}}.}
 }
 \value{
 A vector with the maximum test statistic for each
@@ -69,14 +74,17 @@ ty = sum(cases)
 ex = ty/sum(pop) * pop
 yin = nn.cumsum(enn$nn, cases)
 ein = nn.cumsum(enn$nn, ex)
-tsim = elliptic.sim(nsim = 99, nn = enn$nn, ty = ty, ex = ex,
+set.seed(1)
+tsim = elliptic.sim(nsim = 3, nn = enn$nn, ty = ty, ex = ex,
                     a = 0.5, shape_all = enn$shape_all,
                     ein = ein, eout = ty - ein)
 logein = log(ein)
-logeout = log(ty - eout)
-pen = elliptic.penalty(a, enn$shape_all)
-tsim2 = elliptic.sim.adj(nsim = 99, ex = ex,
+logeout = log(ty - ein)
+pen = elliptic.penalty(0.5, enn$shape_all)
+set.seed(1)
+tsim2 = elliptic.sim.adj(nsim = 3, ex = ex,
                          nn = enn$nn, ty = ty,
                          logein = logein, logeout = logeout,
                          a = 0.5, pen = pen)
+all.equal(tsim, tsim2)
 }

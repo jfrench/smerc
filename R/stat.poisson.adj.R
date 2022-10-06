@@ -27,7 +27,7 @@
 #' enn = elliptic.nn(coords, nydf$pop, ubpop = 0.015)
 #' cases = floor(nydf$cases)
 #' ty = sum(cases)
-#' ex = ty/sum(pop) * pop
+#' ex = ty/sum(nydf$pop) * nydf$pop
 #' yin = nn.cumsum(enn$nn, cases)
 #' ein = nn.cumsum(enn$nn, ex)
 #' logein = log(ein)

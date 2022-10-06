@@ -10,9 +10,7 @@
 #' @param nn A list of nearest neighbors produced by
 #'   \code{\link{elliptic.nn}}.
 #' @inheritParams elliptic.test
-#' @param shape_all A vector of the shapes associated with
-#'   all of the possible zones constructed from \code{nn}.
-#'   This can be obtained from \code{\link{elliptic.nn}}.
+#' @inheritParams stat.poisson.adj
 #'
 #' @return A vector with the maximum test statistic for each
 #'   simulated data set.
