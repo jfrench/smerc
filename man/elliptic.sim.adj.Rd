@@ -36,8 +36,8 @@ cases in each candidate zone.}
 \item{logeout}{The \code{log} of the expected number of
 cases outside of each candidate zone.}
 
-\item{a}{A tuning parameter for the adjusted
-log-likelihood ratio.  See details.}
+\item{a}{The penalty for the spatial scan statistic.  The
+default is 0.5.}
 
 \item{pen}{The eccentricity penalty for each candidate
 zone.}
@@ -74,17 +74,11 @@ ty = sum(cases)
 ex = ty/sum(pop) * pop
 yin = nn.cumsum(enn$nn, cases)
 ein = nn.cumsum(enn$nn, ex)
-set.seed(1)
-tsim = elliptic.sim(nsim = 3, nn = enn$nn, ty = ty, ex = ex,
-                    a = 0.5, shape_all = enn$shape_all,
-                    ein = ein, eout = ty - ein)
 logein = log(ein)
 logeout = log(ty - ein)
 pen = elliptic.penalty(0.5, enn$shape_all)
-set.seed(1)
-tsim2 = elliptic.sim.adj(nsim = 3, ex = ex,
+tsim = elliptic.sim.adj(nsim = 3, ex = ex,
                          nn = enn$nn, ty = ty,
                          logein = logein, logeout = logeout,
                          a = 0.5, pen = pen)
-all.equal(tsim, tsim2)
 }

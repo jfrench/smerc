@@ -39,17 +39,10 @@
 #' @examples
 #' data(nydf)
 #' coords = nydf[,c("x", "y")]
-#' set.seed(1)
 #' out = elliptic.test(coords = coords,
 #'                    cases = floor(nydf$cases),
 #'                    pop = nydf$pop, ubpop = 0.1,
-#'                    nsim = 99,
-#'                    alpha = 0.12)
-#' set.seed(1)
-#' out2 = elliptic.test.old(coords = coords,
-#'                    cases = floor(nydf$cases),
-#'                    pop = nydf$pop, ubpop = 0.1,
-#'                    nsim = 99,
+#'                    nsim = 2,
 #'                    alpha = 0.12)
 elliptic.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,

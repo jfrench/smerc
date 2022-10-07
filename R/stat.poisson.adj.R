@@ -6,6 +6,8 @@
 #' \code{\link[smerc]{scan.stat}} for correctness.
 #' \code{stat_poisson_adj} is a C++ version implementation
 #' of the code and should be faster.
+#' \code{stat_binomial_adj} is a C++ version implementation
+#' of \code{\link[smerc]{stat.binom}}.
 #'
 #' @inheritParams scan.stat
 #' @inheritParams scan.test
@@ -15,6 +17,10 @@
 #'   cases outside of each candidate zone.
 #' @param pen The eccentricity penalty for each candidate
 #'   zone.
+#' @param logpopin The \code{log} of the population in each
+#' candidate zone.
+#' @param logpopout The \code{log} of the population outside
+#' of each candidate zone.
 #' @param return.max A logical value. Default is \code{FALSE}. If
 #' \code{TRUE}, then only the maximum statistic is returned.
 #'
@@ -65,6 +71,15 @@ stat.poisson.adj = function(yin, ty, logein, logeout, a = 0,
 stat_poisson_adj = function(yin, ty, logein, logeout, a = 0,
                             pen = 1, min.cases = 2,
                             return.max = FALSE) {
-  .Call(`_smerc_stat_poisson_adj_cpp`, yin, ty - yin, logein, logeout, a, pen, min.cases, return.max)
+  .Call(`_smerc_stat_poisson_adj_cpp`, yin, ty, logein, logeout, a, pen, min.cases, return.max)
 }
 
+#' @export
+#' @rdname stat.poisson.adj
+stat_binom_adj <- function(yin, ty, popin, popout,
+                           logpopin, logpopout, tpop,
+                           min.cases = 2,
+                           return.max = FALSE) {
+  .Call(`_smerc_stat_binom_adj_cpp`, yin, ty, popin, popout,
+        logpopin, logpopout, tpop, min.cases, return.max)
+}

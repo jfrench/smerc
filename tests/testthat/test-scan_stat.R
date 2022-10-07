@@ -19,6 +19,9 @@ t1 = scan.stat(yin = yin, ty = ty, ein = ein)
 t1_ = scan_stat(yin = yin, ty = ty, ein = ein)
 t2 = stat.poisson(yin = yin, yout = yout, ein = ein, eout = eout)
 t2_ = stat_poisson(yin = yin, yout = yout, ein = ein, eout = eout)
+t2_adj = stat_poisson_adj(yin = yin, ty = ty,
+                          logein = log(ein),
+                          logeout = log(eout))
 
 zone = c(1, 2, 3, 12, 13, 14, 15, 35, 47, 49)
 yin = sum(cases[zone])
@@ -34,8 +37,13 @@ t4 = stat.binom(yin = yin, yout = yout, ty = ty,
                 popin = popin, popout = popout, tpop = tpop)
 t4_ = stat_binom(yin = yin, yout = yout, ty = ty,
                 popin = popin, popout = popout, tpop = tpop)
+t4_adj = stat_binom_adj(yin = yin, ty = ty,
+                        popin = popin, popout = popout,
+                        logpopin = log(popin),
+                        logpopout = log(popout),
+                        tpop = tpop)
 
-test_that("check accuracy for scan_test for NY data", {
+test_that("check accuracy for scan.stat for NY data", {
   # taken from satscannyoutpoisson
   expect_equal(round(t1, 6), 14.780276)
   expect_equal(round(t2, 6), 14.780276)
@@ -49,3 +57,11 @@ test_that("check accuracy for scan_test for NY data", {
   expect_equal(t3, t3_)
   expect_equal(t4, t4_)
 })
+
+test_that("check accuracy for stat_poisson_adj and stat_binomial_adj", {
+
+  # compare stat_poisson, stat_poisson_adj, etc
+  expect_equal(t2, t2_adj)
+  expect_equal(t4, t4_adj)
+})
+

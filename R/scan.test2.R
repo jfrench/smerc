@@ -58,9 +58,11 @@
 #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
+#' set.seed(1)
 #' out = scan.test(coords = coords, cases = floor(nydf$cases),
 #'                 pop = nydf$pop, nsim = 499,
 #'                 alpha = 0.10, longlat = TRUE)
+#' set.seed(1)
 #' out2 = scan.test2(coords = coords, cases = floor(nydf$cases),
 #'                 pop = nydf$pop, nsim = 499,
 #'                 alpha = 0.10, longlat = TRUE)
@@ -107,17 +109,28 @@ scan.test2 = function(coords, cases, pop,
     mult = ty / sum(ex)
     ein = ein * mult
     eout = eout * mult
+    logein = log(ein)
+    logeout = log(eout)
     popin = NULL
     popout = NULL
+    logpopin = NULL
+    logpopout = NULL
     tpop = NULL
-    tobs = stat_poisson(yin, ty - yin, ein, eout)
+    tobs = stat_poisson_adj(yin, ty, logein, logeout,
+                            min.cases = min.cases)
   } else if (type == "binomial") {
-    ein = NULL
-    eout = NULL
+    logein = NULL
+    logeout = NULL
     tpop = sum(pop)
     popin = nn.cumsum(nn, pop)
     popout = tpop - popin
-    tobs = stat_binom(yin, ty - yin, ty, popin, popout, tpop)
+    logpopin = log(popin)
+    logpopout = log(popout)
+    tobs = stat_binom_adj(yin, ty, popin, popout,
+                          logpopin = logpopin,
+                          logpopout = logpopout,
+                          tpop = tpop,
+                          min.cases = min.cases)
   }
   # tobs in nn format
   tobs_nn = split(tobs, f = rep(seq_along(nn), times = nnn))
@@ -128,11 +141,17 @@ scan.test2 = function(coords, cases, pop,
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
-    tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
-                    ex = ex, type = type, ein = ein,
-                    eout = eout, popin = popin,
-                    popout = popout, tpop = tpop, cl = cl,
-                    simdist = simdist, pop = pop, min.cases = min.cases)
+    tsim = scan.sim.adj(nsim = nsim, nn = nn, ty = ty,
+                        ex = ex, type = type,
+                        logein = logein,
+                        logeout = logeout,
+                        popin = popin,
+                        popout = popout, tpop = tpop,
+                        logpopin = logpopin,
+                        logpopout = logpopout,
+                        cl = cl,
+                        simdist = simdist, pop = pop,
+                        min.cases = min.cases)
     pvalue = mc.pvalue(tobs, tsim)
   } else {
     pvalue = rep(1, length(tobs))

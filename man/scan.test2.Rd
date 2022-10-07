@@ -84,9 +84,11 @@ warning).
 \examples{
 data(nydf)
 coords = with(nydf, cbind(longitude, latitude))
+set.seed(1)
 out = scan.test(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 499,
                 alpha = 0.10, longlat = TRUE)
+set.seed(1)
 out2 = scan.test2(coords = coords, cases = floor(nydf$cases),
                 pop = nydf$pop, nsim = 499,
                 alpha = 0.10, longlat = TRUE)

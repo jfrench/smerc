@@ -13,8 +13,12 @@ noc_cpp <- function(x) {
     .Call(`_smerc_noc_cpp`, x)
 }
 
-stat_poisson_adj_cpp <- function(yin, yout, logein, logeout, a, pen, min_cases, return_max) {
-    .Call(`_smerc_stat_poisson_adj_cpp`, yin, yout, logein, logeout, a, pen, min_cases, return_max)
+stat_poisson_adj_cpp <- function(yin, ty, logein, logeout, a, pen, min_cases, return_max) {
+    .Call(`_smerc_stat_poisson_adj_cpp`, yin, ty, logein, logeout, a, pen, min_cases, return_max)
+}
+
+stat_binom_adj_cpp <- function(yin, ty, popin, popout, logpopin, logpopout, tpop, min_cases, return_max) {
+    .Call(`_smerc_stat_binom_adj_cpp`, yin, ty, popin, popout, logpopin, logpopout, tpop, min_cases, return_max)
 }
 
 scsg2_cpp <- function(nn, w, idx, nlevel, lprimes, verbose = FALSE) {

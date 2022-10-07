@@ -49,8 +49,8 @@ the desired ellipses.}
 \item{nangle}{The number of angles (between 0 and 180) to
 consider for each shape.}
 
-\item{a}{A tuning parameter for the adjusted
-log-likelihood ratio.  See details.}
+\item{a}{The penalty for the spatial scan statistic.  The
+default is 0.5.}
 
 \item{cl}{
 A cluster object created by \code{\link{makeCluster}},
@@ -87,17 +87,10 @@ warning).
 \examples{
 data(nydf)
 coords = nydf[,c("x", "y")]
-set.seed(1)
 out = elliptic.test(coords = coords,
                    cases = floor(nydf$cases),
                    pop = nydf$pop, ubpop = 0.1,
-                   nsim = 99,
-                   alpha = 0.12)
-set.seed(1)
-out2 = elliptic.test.old(coords = coords,
-                   cases = floor(nydf$cases),
-                   pop = nydf$pop, ubpop = 0.1,
-                   nsim = 99,
+                   nsim = 2,
                    alpha = 0.12)
 }
 \references{

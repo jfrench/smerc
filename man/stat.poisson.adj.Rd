@@ -3,6 +3,7 @@
 \name{stat.poisson.adj}
 \alias{stat.poisson.adj}
 \alias{stat_poisson_adj}
+\alias{stat_binom_adj}
 \title{Compute Poisson test statistic}
 \usage{
 stat.poisson.adj(
@@ -23,6 +24,18 @@ stat_poisson_adj(
   logeout,
   a = 0,
   pen = 1,
+  min.cases = 2,
+  return.max = FALSE
+)
+
+stat_binom_adj(
+  yin,
+  ty,
+  popin,
+  popout,
+  logpopin,
+  logpopout,
+  tpop,
   min.cases = 2,
   return.max = FALSE
 )
@@ -49,6 +62,20 @@ a cluster.  The default is 2.}
 
 \item{return.max}{A logical value. Default is \code{FALSE}. If
 \code{TRUE}, then only the maximum statistic is returned.}
+
+\item{popin}{The total population in the zone.}
+
+\item{popout}{The population outside the zone.  This
+should be \code{tpop - popin} and is computed
+automatically if not provided.}
+
+\item{logpopin}{The \code{log} of the population in each
+candidate zone.}
+
+\item{logpopout}{The \code{log} of the population outside
+of each candidate zone.}
+
+\item{tpop}{The total population in the study area.}
 }
 \value{
 A numeric vector.
@@ -60,6 +87,8 @@ to compare the results against
 \code{\link[smerc]{scan.stat}} for correctness.
 \code{stat_poisson_adj} is a C++ version implementation
 of the code and should be faster.
+\code{stat_binomial_adj} is a C++ version implementation
+of \code{\link[smerc]{stat.binom}}.
 }
 \examples{
 data(nydf)
