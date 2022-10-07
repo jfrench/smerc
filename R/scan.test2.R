@@ -56,17 +56,40 @@
 #' Waller, L.A. and Gotway, C.A. (2005). Applied Spatial
 #' Statistics for Public Health Data. Hoboken, NJ: Wiley.
 #' @examples
+#' #' @examples
 #' data(nydf)
 #' coords = with(nydf, cbind(longitude, latitude))
-#' set.seed(1)
 #' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 499,
-#'                 alpha = 0.10, longlat = TRUE)
-#' set.seed(1)
-#' out2 = scan.test2(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 499,
-#'                 alpha = 0.10, longlat = TRUE)
-scan.test2 = function(coords, cases, pop,
+#'                 pop = nydf$pop, nsim = 0,
+#'                 alpha = 1, longlat = TRUE)
+#' ## plot output for new york state
+#' # specify desired argument values
+#' mapargs = list(database = "county", region = "new york",
+#' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
+#' # needed for "state" database (unless you execute library(maps))
+#' data(countyMapEnv, package = "maps")
+#' plot(out, usemap = TRUE, mapargs = mapargs, idx = 1:3)
+#' # extract detected clusteers
+#' clusters(out)
+#'
+#' # a second example to match the results of Waller and Gotway (2005)
+#' # in chapter 7 of their book (pp. 220-221).
+#' # Note that the 'longitude' and 'latitude' used by them has
+#' # been switched.  When giving their input to SatScan, the coords
+#' # were given in the order 'longitude' and 'latitude'.
+#' # However, the SatScan program takes coordinates in the order
+#' # 'latitude' and 'longitude', so the results are slightly different
+#' # from the example above.
+#' # Note: the correct code below would use cbind(x, y), i.e.,
+#' # cbind(longitude, latitude)
+#' coords = with(nydf, cbind(y, x))
+#' out2 = scan.test(coords = coords, cases = floor(nydf$cases),
+#'                   pop = nydf$pop, nsim = 0,
+#'                   alpha = 1, longlat = TRUE)
+#' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
+#' # the second set of results match
+#' clusters(out2, idx = 1:3)
+scan.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5, longlat = FALSE, cl = NULL,
