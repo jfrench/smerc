@@ -30,13 +30,13 @@ is middle p-value computed by Tango and Takahashi (2012).
 }
 \examples{
 data(nydf)
-cases = floor(nydf$cases)
-pop = nydf$pop
-ex = pop * sum(cases)/sum(pop)
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ex <- pop * sum(cases) / sum(pop)
 # zones for poisson model
-pp = rflex.midp(cases, ex)
+pp <- rflex.midp(cases, ex)
 # zones for binomial model
-bp = rflex.midp(cases, ex, type = "binomial", pop = pop)
+bp <- rflex.midp(cases, ex, type = "binomial", pop = pop)
 }
 \references{
 Tango, T. and Takahashi, K. (2012), A

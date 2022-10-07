@@ -44,91 +44,100 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = cbind(nydf$x, nydf$y)
-#' nn = knn(coords, k = 5)
-#' cases = floor(nydf$cases)
-#' pop = nydf$pop
-#' ex = pop * sum(cases)/sum(pop)
+#' coords <- cbind(nydf$x, nydf$y)
+#' nn <- knn(coords, k = 5)
+#' cases <- floor(nydf$cases)
+#' pop <- nydf$pop
+#' ex <- pop * sum(cases) / sum(pop)
 #' # zones for poisson model
-#' pzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex)
+#' pzones <- rflex.zones(nn, w = nyw, cases = cases, ex = ex)
 #' \dontrun{
-#' pzones = rflex.zones(nn, w = nyw, cases = cases,
-#'                       ex = ex, verbose = TRUE)
+#' pzones <- rflex.zones(nn,
+#'   w = nyw, cases = cases,
+#'   ex = ex, verbose = TRUE
+#' )
 #' # zones for binomial model
-#' bzones = rflex.zones(nn, w = nyw, cases = cases, ex = ex,
-#'                      type = "binomial", pop = pop)
+#' bzones <- rflex.zones(nn,
+#'   w = nyw, cases = cases, ex = ex,
+#'   type = "binomial", pop = pop
+#' )
 #' }
-rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
-                       type = "poisson", pop = NULL,
-                       cl = NULL, loop = FALSE,
-                       verbose = FALSE, pfreq = 1) {
-  arg_check_rflex_zones(nn, w, cases, ex, alpha1, type, pop,
-                        loop, pfreq, verbose)
+rflex.zones <- function(nn, w, cases, ex, alpha1 = 0.2,
+                        type = "poisson", pop = NULL,
+                        cl = NULL, loop = FALSE,
+                        verbose = FALSE, pfreq = 1) {
+  arg_check_rflex_zones(
+    nn, w, cases, ex, alpha1, type, pop,
+    loop, pfreq, verbose
+  )
 
   # compute mid p-value
-  p = rflex.midp(cases, ex, type = type, pop = pop)
+  p <- rflex.midp(cases, ex, type = type, pop = pop)
   # determine which regions are "hot" (keep) or "cold" (remove)
-  keep = which(p < alpha1)
-  nkeep = length(keep)
+  keep <- which(p < alpha1)
+  nkeep <- length(keep)
 
   if (length(keep) > 0) {
-    remove = setdiff(seq_along(ex), keep)
+    remove <- setdiff(seq_along(ex), keep)
 
     # remove connections when p >= alpha1
-    w[, remove] = 0
+    w[, remove] <- 0
 
     if (!loop) {
       # determine which apply function to use
       if (verbose) {
         message("constructing connected subgraphs:")
-        fcall = pbapply::pblapply
-        fcall_list = list(X = keep, function(i, ...) {
+        fcall <- pbapply::pblapply
+        fcall_list <- list(X = keep, function(i, ...) {
           scsg2(nn, w, idx = i)
         }, cl = cl)
         # determine zones
-        czones = unlist(do.call(fcall, fcall_list),
-                        use.names = FALSE, recursive = FALSE)
+        czones <- unlist(do.call(fcall, fcall_list),
+          use.names = FALSE, recursive = FALSE
+        )
         return(czones[distinct(czones)])
       } else {
-        return(scsg2(nn, w,  idx = keep))
+        return(scsg2(nn, w, idx = keep))
       }
     } else {
-      czones = list()
+      czones <- list()
 
-      count = 1
-      pri = randtoolbox::get.primes(length(cases))
-      czones_id = numeric(0) # unique identifier of each zone
+      count <- 1
+      pri <- randtoolbox::get.primes(length(cases))
+      czones_id <- numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {
           if ((count %% pfreq) == 0) {
-            message(count, "/", nkeep, ". Starting region ",
-                    i, " at ", Sys.time(), ".")
+            message(
+              count, "/", nkeep, ". Starting region ",
+              i, " at ", Sys.time(), "."
+            )
           }
         }
         # idxi = intersect(nn[[i]], keep)
         # zones for idxi
         # izones = scsg(idxi, w[, idxi, drop = FALSE])
-        izones = scsg2(nn, w, idx = i)
+        izones <- scsg2(nn, w, idx = i)
         # determine unique ids for izones
-        izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
+        izones_id <- sapply(izones, function(xi) sum(log(pri[xi])))
         # determine if some izones are duplicated with czones
         # remove duplicates and then combine with czones
-        dup_id = which(izones_id %in% czones_id)
+        dup_id <- which(izones_id %in% czones_id)
         if (length(dup_id) > 0) {
-          czones = combine.zones(czones, izones[-dup_id])
-          czones_id = c(czones_id, izones_id[-dup_id])
+          czones <- combine.zones(czones, izones[-dup_id])
+          czones_id <- c(czones_id, izones_id[-dup_id])
         } else {
-          czones = combine.zones(czones, izones)
-          czones_id = c(czones_id, izones_id)
+          czones <- combine.zones(czones, izones)
+          czones_id <- c(czones_id, izones_id)
         }
-        count = count + 1
+        count <- count + 1
       }
       return(czones)
     }
     # determine distinct zones
   } else {
-    czones = vector("list", 1)
-    czones[[1]] = numeric(0)
+    czones <- vector("list", 1)
+    czones[[1]] <- numeric(0)
     return(czones)
   }
 }
@@ -139,11 +148,11 @@ rflex.zones = function(nn, w, cases, ex, alpha1 = 0.2,
 #'
 #' @return NULL
 #' @noRd
-arg_check_rflex_zones = function(nn, w, cases, ex,
-                                 alpha1, type, pop,
-                                 loop, pfreq, verbose) {
+arg_check_rflex_zones <- function(nn, w, cases, ex,
+                                  alpha1, type, pop,
+                                  loop, pfreq, verbose) {
   if (is.list(dim(nn))) stop("nn must be a list of nn vectors")
-  N = length(nn)
+  N <- length(nn)
   if (nrow(w) != N) stop("nrow(w) must match length(nn)")
   if (length(cases) != N) stop("length(cases) must match length(nn)")
   if (length(alpha1) != 1 | alpha1 <= 0) {

@@ -56,66 +56,77 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = uls.test(coords = coords, cases = floor(nydf$cases),
-#'                pop = nydf$pop, w = nyw,
-#'                alpha = 0.05, longlat = TRUE,
-#'                nsim = 9, ubpop = 0.5)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- uls.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, w = nyw,
+#'   alpha = 0.05, longlat = TRUE,
+#'   nsim = 9, ubpop = 0.5
+#' )
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-uls.test = function(coords, cases, pop, w,
-                    ex = sum(cases) / sum(pop) * pop,
-                    nsim = 499, alpha = 0.1,
-                    ubpop = 0.5, longlat = FALSE,
-                    cl = NULL, type = "poisson",
-                    check.unique = FALSE) {
+uls.test <- function(coords, cases, pop, w,
+                     ex = sum(cases) / sum(pop) * pop,
+                     nsim = 499, alpha = 0.1,
+                     ubpop = 0.5, longlat = FALSE,
+                     cl = NULL, type = "poisson",
+                     check.unique = FALSE) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, longlat, TRUE,
-                      k = 1, w = w, type = type)
+    nsim + 1, ubpop, longlat, TRUE,
+    k = 1, w = w, type = type
+  )
 
-  coords = as.matrix(coords)
-  zones = uls.zones(cases, pop, w, ubpop)
+  coords <- as.matrix(coords)
+  zones <- uls.zones(cases, pop, w, ubpop)
 
   # compute needed information
-  ty = sum(cases)
-  yin = zones.sum(zones, cases)
+  ty <- sum(cases)
+  yin <- zones.sum(zones, cases)
 
   # compute test statistics for observed data
   if (type == "poisson") {
-    ein = zones.sum(zones, ex)
-    tobs = stat.poisson(yin, ty - yin, ein, ty - ein)
+    ein <- zones.sum(zones, ex)
+    tobs <- stat.poisson(yin, ty - yin, ein, ty - ein)
   } else if (type == "binomial") {
-    tpop = sum(pop)
-    popin = zones.sum(zones, pop)
-    tobs = stat.binom(yin, ty - yin, ty, popin, tpop - popin, tpop)
+    tpop <- sum(pop)
+    popin <- zones.sum(zones, pop)
+    tobs <- stat.binom(yin, ty - yin, ty, popin, tpop - popin, tpop)
   }
 
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
-    tsim = uls.sim(nsim = nsim, ty = ty, ex = ex, w = w,
-                   pop = pop, ubpop = ubpop, cl = cl)
-    pvalue = mc.pvalue(tobs, tsim)
+    tsim <- uls.sim(
+      nsim = nsim, ty = ty, ex = ex, w = w,
+      pop = pop, ubpop = ubpop, cl = cl
+    )
+    pvalue <- mc.pvalue(tobs, tsim)
   } else {
-    pvalue = rep(1, length(tobs))
+    pvalue <- rep(1, length(tobs))
   }
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_noc(tobs = tobs, zones = zones,
-                   pvalue = pvalue, alpha = alpha,
-                   order_by = "tobs")
+  pruned <- sig_noc(
+    tobs = tobs, zones = zones,
+    pvalue = pvalue, alpha = alpha,
+    order_by = "tobs"
+  )
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "upper level set",
-                rel_param = list(type = type,
-                                 simdist = "multinomial",
-                                 nsim = nsim,
-                                 ubpop = ubpop),
-                alpha = alpha,
-                w = w, d = NULL)
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "upper level set",
+    rel_param = list(
+      type = type,
+      simdist = "multinomial",
+      nsim = nsim,
+      ubpop = ubpop
+    ),
+    alpha = alpha,
+    w = w, d = NULL
+  )
 }

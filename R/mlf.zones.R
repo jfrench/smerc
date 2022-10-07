@@ -38,40 +38,46 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = as.matrix(nydf[,c("x", "y")])
-#' mlf.zones(coords, cases = floor(nydf$cases),
-#'           pop = nydf$pop, w = nyw, longlat = TRUE)
-mlf.zones = function(coords, cases, pop, w,
-                     ex = sum(cases) / sum(pop) * pop,
-                     ubpop = 0.5, ubd = 1, longlat = FALSE) {
+#' coords <- as.matrix(nydf[, c("x", "y")])
+#' mlf.zones(coords,
+#'   cases = floor(nydf$cases),
+#'   pop = nydf$pop, w = nyw, longlat = TRUE
+#' )
+mlf.zones <- function(coords, cases, pop, w,
+                      ex = sum(cases) / sum(pop) * pop,
+                      ubpop = 0.5, ubd = 1, longlat = FALSE) {
   # sanity checking
-  arg_check_dmst_zones(coords = coords, cases = cases,
-                       pop = pop, w = w, ex = ex,
-                       ubpop = ubpop, ubd = ubd,
-                       longlat = longlat, type = "all",
-                       progress = FALSE)
+  arg_check_dmst_zones(
+    coords = coords, cases = cases,
+    pop = pop, w = w, ex = ex,
+    ubpop = ubpop, ubd = ubd,
+    longlat = longlat, type = "all",
+    progress = FALSE
+  )
   # total number of cases
-  ty = sum(cases)
+  ty <- sum(cases)
 
   # calculate test statistics for each individual region
   # yin, ein, eout, ty
-  tobs = scan.stat(cases, ex, ty - ex, ty)
+  tobs <- scan.stat(cases, ex, ty - ex, ty)
 
   # determine starting region for maxima likelihood first algorithm
-  start = which.max(tobs)
+  start <- which.max(tobs)
 
   # intercentroid distances
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- sp::spDists(as.matrix(coords), longlat = longlat)
 
   # upperbound for population in zone
-  max_pop = ubpop * sum(pop)
+  max_pop <- ubpop * sum(pop)
   # upperbound for distance between centroids in zone
-  max_dist = ubd * max(d)
+  max_dist <- ubd * max(d)
 
   # find neighbors of starting region
-  start_neighbors = which(d[start, ] <= max_dist)
+  start_neighbors <- which(d[start, ] <= max_dist)
 
   # return sequence of candidate zones (or a subset depending on type)
   mst.seq(start, start_neighbors, cases, pop, w, ex, ty,
-          max_pop, type = "pruned")
+    max_pop,
+    type = "pruned"
+  )
 }

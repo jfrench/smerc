@@ -68,10 +68,10 @@ better understanding the implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-pop = nydf$pop
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-tsim = uls.sim(1, ty, ex, nyw, pop = pop, ubpop = 0.5)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+tsim <- uls.sim(1, ty, ex, nyw, pop = pop, ubpop = 0.5)
 }

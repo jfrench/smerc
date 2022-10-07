@@ -26,9 +26,9 @@ the original zones).
 zones ordered from most significant to least significant (assuming the zones are already in order)
 }
 \examples{
-tobs = c(3, 2, 1)
-zones = list(1:2, 3:4, 5:6)
-pvalue = c(0.001, 0.05, 0.15)
+tobs <- c(3, 2, 1)
+zones <- list(1:2, 3:4, 5:6)
+pvalue <- c(0.001, 0.05, 0.15)
 sig_prune(tobs, zones, pvalue, alpha = 0.05)
 }
 \keyword{internal}

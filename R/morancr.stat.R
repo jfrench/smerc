@@ -16,18 +16,18 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' ex = sum(nydf$cases)/sum(nydf$pop)*nydf$pop
+#' ex <- sum(nydf$cases) / sum(nydf$pop) * nydf$pop
 #' morancr.stat(cases = nydf$cases, w = nyw, ex = ex)
-morancr.stat = function(cases, w, ex) {
+morancr.stat <- function(cases, w, ex) {
   arg_check_morancr_stat(cases = cases, pop = cases + 1, w = w, ex = ex)
-  y_std = matrix((cases - ex)/sqrt(ex))
-  return(sum(w * y_std %*% t(y_std))/sum(w))
+  y_std <- matrix((cases - ex) / sqrt(ex))
+  return(sum(w * y_std %*% t(y_std)) / sum(w))
 }
 
 #' Argument checking for moran_cr.test
 #'
 #' @noRd
-arg_check_morancr_stat = function(cases, pop, w, ex) {
+arg_check_morancr_stat <- function(cases, pop, w, ex) {
   if (!is.numeric(cases)) {
     stop("cases should be a numeric values")
   }
@@ -37,7 +37,7 @@ arg_check_morancr_stat = function(cases, pop, w, ex) {
   if (min(cases) < 0) {
     stop("cases must have non-negative values")
   }
-  N = length(cases)
+  N <- length(cases)
   if (length(pop) != N) {
     stop("length(pop) != length(cases)")
   }
@@ -69,4 +69,3 @@ arg_check_morancr_stat = function(cases, pop, w, ex) {
     stop("w must be 0s and 1s")
   }
 }
-

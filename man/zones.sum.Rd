@@ -22,13 +22,13 @@ indices in each element of the list contained in \code{zones}.
 \examples{
 # show nn.cumsum example for a circular scan setting
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-zones = scan.zones(coords, pop = nydf$pop, ubpop = 0.1)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+zones <- scan.zones(coords, pop = nydf$pop, ubpop = 0.1)
 # compute cumulative sums over all nn
-szones = zones.sum(zones, cases)
+szones <- zones.sum(zones, cases)
 # compute cumulative sums over just the first set of nn
-szones2 = sapply(zones, function(x) sum(cases[x]))
+szones2 <- sapply(zones, function(x) sum(cases[x]))
 # check equality
 all.equal(szones, szones2)
 }

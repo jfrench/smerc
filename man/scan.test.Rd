@@ -84,14 +84,18 @@ warning).
 \examples{
 #' @examples
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-out = scan.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, nsim = 0,
-                alpha = 1, longlat = TRUE)
+coords <- with(nydf, cbind(longitude, latitude))
+out <- scan.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, nsim = 0,
+  alpha = 1, longlat = TRUE
+)
 ## plot output for new york state
 # specify desired argument values
-mapargs = list(database = "county", region = "new york",
-xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
+mapargs <- list(
+  database = "county", region = "new york",
+  xlim = range(out$coords[, 1]), ylim = range(out$coords[, 2])
+)
 # needed for "state" database (unless you execute library(maps))
 data(countyMapEnv, package = "maps")
 plot(out, usemap = TRUE, mapargs = mapargs, idx = 1:3)
@@ -108,10 +112,12 @@ clusters(out)
 # from the example above.
 # Note: the correct code below would use cbind(x, y), i.e.,
 # cbind(longitude, latitude)
-coords = with(nydf, cbind(y, x))
-out2 = scan.test(coords = coords, cases = floor(nydf$cases),
-                  pop = nydf$pop, nsim = 0,
-                  alpha = 1, longlat = TRUE)
+coords <- with(nydf, cbind(y, x))
+out2 <- scan.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, nsim = 0,
+  alpha = 1, longlat = TRUE
+)
 # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 # the second set of results match
 clusters(out2, idx = 1:3)

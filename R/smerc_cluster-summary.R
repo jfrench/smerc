@@ -23,37 +23,44 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(x, y))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 49,
-#'                 longlat = TRUE, alpha = 0.2)
+#' coords <- with(nydf, cbind(x, y))
+#' out <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, nsim = 49,
+#'   longlat = TRUE, alpha = 0.2
+#' )
 #' # summarize all clusters
 #' summary(out)
 #' # summarize clusters 1 and 3
 #' summary(out, idx = c(1, 3))
-summary.smerc_cluster = function(object, ...,
-                                 idx = seq_along(object$clusters),
-                                 digits = 1) {
+summary.smerc_cluster <- function(object, ...,
+                                  idx = seq_along(object$clusters),
+                                  digits = 1) {
   if (min(idx) < 1 | max(idx) > length(object$clusters)) {
     stop("invalid idx values")
   }
-  nregions = sapply(object$clusters[idx], function(i) length(i$locids))
-  max_dist = base::round(sget(object$clusters[idx], "max_dist"),
-                         digits = digits)
-  cases = sget(object$clusters[idx], "cases")
-  ex = base::round(sget(object$clusters[idx], "expected"),
-                   digits = digits)
-  rr = base::round(sget(object$clusters[idx], "rr"),
-                   digits = digits)
-  stat = base::round(sget(object$clusters[idx], "test_statistic"),
-                     digits = 1)
-  p = sget(object$clusters[idx], "pvalue")
-  data.frame(nregions,
-             max_dist,
-             cases,
-             ex,
-             rr,
-             stat,
-             p
+  nregions <- sapply(object$clusters[idx], function(i) length(i$locids))
+  max_dist <- base::round(sget(object$clusters[idx], "max_dist"),
+    digits = digits
+  )
+  cases <- sget(object$clusters[idx], "cases")
+  ex <- base::round(sget(object$clusters[idx], "expected"),
+    digits = digits
+  )
+  rr <- base::round(sget(object$clusters[idx], "rr"),
+    digits = digits
+  )
+  stat <- base::round(sget(object$clusters[idx], "test_statistic"),
+    digits = 1
+  )
+  p <- sget(object$clusters[idx], "pvalue")
+  data.frame(
+    nregions,
+    max_dist,
+    cases,
+    ex,
+    rr,
+    stat,
+    p
   )
 }

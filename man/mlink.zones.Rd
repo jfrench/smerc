@@ -86,11 +86,13 @@ distance across all regions}.
 \examples{
 data(nydf)
 data(nyw)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
 # find zone with max statistic starting from each individual region
-all_zones = mlink.zones(coords, cases = floor(nydf$cases),
-                        nydf$pop, w = nyw, ubpop = 0.25,
-                        ubd = .25, longlat = TRUE)
+all_zones <- mlink.zones(coords,
+  cases = floor(nydf$cases),
+  nydf$pop, w = nyw, ubpop = 0.25,
+  ubd = .25, longlat = TRUE
+)
 }
 \references{
 Costa, M.A. and Assuncao, R.M. and Kulldorff, M. (2012)

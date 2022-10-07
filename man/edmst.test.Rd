@@ -93,11 +93,13 @@ based on the specified values of \code{coords} and
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-out = edmst.test(coords = coords, cases = floor(nydf$cases),
-                 pop = nydf$pop, w = nyw,
-                 alpha = 0.12, longlat = TRUE,
-                 nsim = 5, ubpop = 0.1, ubd = 0.2)
+coords <- with(nydf, cbind(longitude, latitude))
+out <- edmst.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, w = nyw,
+  alpha = 0.12, longlat = TRUE,
+  nsim = 5, ubpop = 0.1, ubd = 0.2
+)
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))

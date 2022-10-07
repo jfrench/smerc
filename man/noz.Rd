@@ -10,7 +10,7 @@ noz(x)
 \item{x}{A list containing the candidate zones.}
 }
 \value{
-A vector with the list indices of the 
+A vector with the list indices of the
   non-overlapping zones.
 }
 \description{
@@ -26,12 +26,12 @@ first candidate zone, the function excludes every
 candidate zone that intersects the first (any other
 candidate zone that shares indices with the first zone).
 Moving onto the next non-overlapping candidate zone,
-the process is repeated. 
+the process is repeated.
 The function returns the indices (in the list of
 zones) of the zones that do not overlap.
 }
 \examples{
-x = list(1:2, 1:3, 4:5, 4:6, 7:8)
+x <- list(1:2, 1:3, 4:5, 4:6, 7:8)
 noz(x)
 }
 \author{

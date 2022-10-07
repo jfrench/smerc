@@ -42,9 +42,9 @@ neighbors are ordered from nearest to farthest.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
-d = as.matrix(dist(coords))
-nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
+d <- as.matrix(dist(coords))
+nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
 }
 \author{
 Joshua French

@@ -19,25 +19,27 @@
 #' data(nydf)
 #' data(nyw)
 #' morancr.test(cases = nydf$cases, pop = nydf$pop, w = nyw, nsim = 9)
-morancr.test = function(cases, pop, w, ex = sum(cases) / sum(pop) * pop,
+morancr.test <- function(cases, pop, w, ex = sum(cases) / sum(pop) * pop,
                          nsim = 499, alternative = "greater") {
   arg_check_morancr_stat(cases = cases, pop = pop, w = w, ex = ex)
   arg_check_nsim(nsim)
-  alternative = match.arg(alternative, c("greater", "less", "two.sided"))
-  tstat = morancr.stat(cases = cases, w = w, ex = ex)
-  tsim = morancr.sim(nsim = nsim, cases = cases, w = w, ex = ex)
-  pvalue = NA
+  alternative <- match.arg(alternative, c("greater", "less", "two.sided"))
+  tstat <- morancr.stat(cases = cases, w = w, ex = ex)
+  tsim <- morancr.sim(nsim = nsim, cases = cases, w = w, ex = ex)
+  pvalue <- NA
   if (alternative == "two.sided") {
-    pvalue = (sum(abs(tsim) >= abs(tstat)) + 1) / (nsim + 1)
+    pvalue <- (sum(abs(tsim) >= abs(tstat)) + 1) / (nsim + 1)
   } else if (alternative == "greater") {
-    pvalue = (sum(tsim >= tstat) + 1) / (nsim + 1)
+    pvalue <- (sum(tsim >= tstat) + 1) / (nsim + 1)
   } else if (alternative == "less") {
-    pvalue = (sum(tsim <= tstat) + 1) / (nsim + 1)
+    pvalue <- (sum(tsim <= tstat) + 1) / (nsim + 1)
   }
-  return(structure(list(test_statistic = tstat,
-                        tsim = tsim,
-                        pvalue = pvalue,
-                        alternative = alternative,
-                        nsim = nsim,
-                        simdist = "multinomial"), class = "smerc_similarity_test"))
+  return(structure(list(
+    test_statistic = tstat,
+    tsim = tsim,
+    pvalue = pvalue,
+    alternative = alternative,
+    nsim = nsim,
+    simdist = "multinomial"
+  ), class = "smerc_similarity_test"))
 }

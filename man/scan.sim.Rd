@@ -111,23 +111,24 @@ better understanding the implementation of the test.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-d = sp::spDists(as.matrix(coords), longlat = TRUE)
-nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(nydf$pop) * nydf$pop
-yin = nn.cumsum(nn, cases)
-ein = nn.cumsum(nn, ex)
-tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
+coords <- with(nydf, cbind(longitude, latitude))
+d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(nydf$pop) * nydf$pop
+yin <- nn.cumsum(nn, cases)
+ein <- nn.cumsum(nn, ex)
+tsim <- scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-d = sp::spDists(as.matrix(coords), longlat = TRUE)
-nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(nydf$pop) * nydf$pop
-yin = nn.cumsum(nn, cases)
-ein = nn.cumsum(nn, ex)
-tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
+coords <- with(nydf, cbind(longitude, latitude))
+d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(nydf$pop) * nydf$pop
+yin <- nn.cumsum(nn, cases)
+ein <- nn.cumsum(nn, ex)
+tsim <- scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
 }
+\keyword{internal}

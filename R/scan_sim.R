@@ -16,53 +16,57 @@
 #'
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' d = sp::spDists(as.matrix(coords), longlat = TRUE)
-#' nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
-#' cases = floor(nydf$cases)
-#' ty = sum(cases)
-#' ex = ty/sum(nydf$pop) * nydf$pop
-#' yin = nn.cumsum(nn, cases)
-#' ein = nn.cumsum(nn, ex)
-#' tsim = scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
-#' tsim = scan_sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
-scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
-                    ein = NULL, eout = NULL,
-                    tpop = NULL, popin = NULL, popout = NULL,
-                    cl = NULL,
-                    simdist = "multinomial",
-                    pop = NULL,
-                    min.cases = 2) {
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+#' nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
+#' cases <- floor(nydf$cases)
+#' ty <- sum(cases)
+#' ex <- ty / sum(nydf$pop) * nydf$pop
+#' yin <- nn.cumsum(nn, cases)
+#' ein <- nn.cumsum(nn, ex)
+#' tsim <- scan.sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
+#' tsim <- scan_sim(nsim = 1, nn, ty, ex, ein = ein, eout = sum(ex) - ein)
+scan_sim <- function(nsim = 1, nn, ty, ex, type = "poisson",
+                     ein = NULL, eout = NULL,
+                     tpop = NULL, popin = NULL, popout = NULL,
+                     cl = NULL,
+                     simdist = "multinomial",
+                     pop = NULL,
+                     min.cases = 2) {
   # match simdist with options
-  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
-  arg_check_sim(nsim = nsim, ty = ty, ex = ex, type = type,
-                nn = nn, ein = ein, eout = eout, tpop = tpop,
-                popin = popin, popout = popout, static = TRUE,
-                simdist = simdist, pop = pop,
-                w = diag(length(ex)))
+  simdist <- match.arg(simdist, c("multinomial", "poisson", "binomial"))
+  arg_check_sim(
+    nsim = nsim, ty = ty, ex = ex, type = type,
+    nn = nn, ein = ein, eout = eout, tpop = tpop,
+    popin = popin, popout = popout, static = TRUE,
+    simdist = simdist, pop = pop,
+    w = diag(length(ex))
+  )
 
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim <- pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
     if (simdist == "multinomial") {
-      ysim = stats::rmultinom(1, size = ty, prob = ex)
+      ysim <- stats::rmultinom(1, size = ty, prob = ex)
     } else if (simdist == "poisson") {
-      ysim = stats::rpois(length(ex), lambda = ex)
-      ty = sum(ysim)
-      mult = ty / sum(ex)
-      ein = ein * mult
-      eout = eout * mult
+      ysim <- stats::rpois(length(ex), lambda = ex)
+      ty <- sum(ysim)
+      mult <- ty / sum(ex)
+      ein <- ein * mult
+      eout <- eout * mult
     } else if (simdist == "binomial") {
-      ysim = stats::rbinom(n = length(ex), size = pop,
-                           prob = ex / pop)
-      ty = sum(ysim)
+      ysim <- stats::rbinom(
+        n = length(ex), size = pop,
+        prob = ex / pop
+      )
+      ty <- sum(ysim)
     }
     # compute test statistics for each zone
-    yin = nn.cumsum(nn, ysim)
+    yin <- nn.cumsum(nn, ysim)
     if (type == "poisson") {
-      tall = stat_poisson(yin, ty - yin, ein, eout)
+      tall <- stat_poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {
-      tall = stat_binom(yin, ty - yin, ty, popin, popout, tpop)
+      tall <- stat_binom(yin, ty - yin, ty, popin, popout, tpop)
     }
     # make sure minimum number of cases satisfied
     max(tall[yin >= min.cases])
@@ -93,22 +97,22 @@ scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
 #' @param simdist Simulation distribution.
 #' @return NULL
 #' @noRd
-arg_check_sim = function(nsim, ty, ex, type,
-                         nn = NULL, zones = NULL,
-                         ein = NULL, eout = NULL,
-                         tpop = NULL, popin = NULL,
-                         popout = NULL, w = NULL,
-                         pop = NULL, ubpop = NULL,
-                         static = FALSE,
-                         simdist = "multinomial") {
+arg_check_sim <- function(nsim, ty, ex, type,
+                          nn = NULL, zones = NULL,
+                          ein = NULL, eout = NULL,
+                          tpop = NULL, popin = NULL,
+                          popout = NULL, w = NULL,
+                          pop = NULL, ubpop = NULL,
+                          static = FALSE,
+                          simdist = "multinomial") {
   arg_check_nsim(nsim)
   arg_check_ty(ty)
-  N = length(ex)
+  N <- length(ex)
   arg_check_ex(ex, N)
   arg_check_type(type)
   if (!is.null(nn)) {
     if (!is.list(nn)) stop("nn must be a list")
-    nz = sum(sapply(nn, length))
+    nz <- sum(sapply(nn, length))
   }
   if (!is.null(zones)) {
     if (!is.list(zones)) stop("zones must be a list")
@@ -125,4 +129,3 @@ arg_check_sim = function(nsim, ty, ex, type,
     stop("pop must be specified when simdist == 'binomial'")
   }
 }
-

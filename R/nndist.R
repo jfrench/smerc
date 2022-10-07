@@ -20,16 +20,16 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' d = as.matrix(dist(coords))
-#' nn = nndist(d, ubd = 0.01)
-nndist = function(d, ubd) {
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' d <- as.matrix(dist(coords))
+#' nn <- nndist(d, ubd = 0.01)
+nndist <- function(d, ubd) {
   if (is.null(dim(d))) stop("d must be matrix-like")
   if (nrow(d) != ncol(d)) stop("d must be square")
   if (length(ubd) != 1 | !is.numeric(ubd) | ubd <= 0) {
     stop("ubd must be a single positive value")
   }
-  max_dist = ubd * max(d)
+  max_dist <- ubd * max(d)
   # find all neighbors from each starting zone within distance upperbound
   lapply(seq_len(nrow(d)), function(i) unname(which(d[i, ] <= max_dist)))
 }

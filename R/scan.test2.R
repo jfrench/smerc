@@ -58,14 +58,18 @@
 #' @examples
 #' #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 0,
-#'                 alpha = 1, longlat = TRUE)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, nsim = 0,
+#'   alpha = 1, longlat = TRUE
+#' )
 #' ## plot output for new york state
 #' # specify desired argument values
-#' mapargs = list(database = "county", region = "new york",
-#' xlim = range(out$coords[,1]), ylim = range(out$coords[,2]))
+#' mapargs <- list(
+#'   database = "county", region = "new york",
+#'   xlim = range(out$coords[, 1]), ylim = range(out$coords[, 2])
+#' )
 #' # needed for "state" database (unless you execute library(maps))
 #' data(countyMapEnv, package = "maps")
 #' plot(out, usemap = TRUE, mapargs = mapargs, idx = 1:3)
@@ -82,120 +86,134 @@
 #' # from the example above.
 #' # Note: the correct code below would use cbind(x, y), i.e.,
 #' # cbind(longitude, latitude)
-#' coords = with(nydf, cbind(y, x))
-#' out2 = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                   pop = nydf$pop, nsim = 0,
-#'                   alpha = 1, longlat = TRUE)
+#' coords <- with(nydf, cbind(y, x))
+#' out2 <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, nsim = 0,
+#'   alpha = 1, longlat = TRUE
+#' )
 #' # the cases observed for the clusters in Waller and Gotway: 117, 47, 44
 #' # the second set of results match
 #' clusters(out2, idx = 1:3)
-scan.test = function(coords, cases, pop,
-                     ex = sum(cases) / sum(pop) * pop,
-                     nsim = 499, alpha = 0.1,
-                     ubpop = 0.5, longlat = FALSE, cl = NULL,
-                     type = "poisson",
-                     min.cases = 2,
-                     simdist = "multinomial") {
+scan.test <- function(coords, cases, pop,
+                      ex = sum(cases) / sum(pop) * pop,
+                      nsim = 499, alpha = 0.1,
+                      ubpop = 0.5, longlat = FALSE, cl = NULL,
+                      type = "poisson",
+                      min.cases = 2,
+                      simdist = "multinomial") {
   # argument checking
-  type = match.arg(type, c("poisson", "binomial"))
-  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
-  arg_check_scan_test(coords = coords, cases = cases,
-                      pop = pop, ex = ex, nsim = nsim,
-                      alpha = alpha, ubpop = ubpop,
-                      longlat = longlat,
-                      k = 1, w = diag(nrow(coords)),
-                      type = type, simdist = simdist,
-                      min.cases = min.cases)
+  type <- match.arg(type, c("poisson", "binomial"))
+  simdist <- match.arg(simdist, c("multinomial", "poisson", "binomial"))
+  arg_check_scan_test(
+    coords = coords, cases = cases,
+    pop = pop, ex = ex, nsim = nsim,
+    alpha = alpha, ubpop = ubpop,
+    longlat = longlat,
+    k = 1, w = diag(nrow(coords)),
+    type = type, simdist = simdist,
+    min.cases = min.cases
+  )
 
   # convert to proper format
-  coords = as.matrix(coords)
-  N = nrow(coords)
+  coords <- as.matrix(coords)
+  N <- nrow(coords)
   # compute inter-centroid distances
-  d = sp::spDists(coords, longlat = longlat)
+  d <- sp::spDists(coords, longlat = longlat)
 
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
-  nn = scan.nn(d, pop, ubpop)
-  nnn = unlist(lapply(nn, length), use.names = FALSE)
+  nn <- scan.nn(d, pop, ubpop)
+  nnn <- unlist(lapply(nn, length), use.names = FALSE)
 
   # determine total number of cases in each successive
   # window, total number of cases
-  yin = nn.cumsum(nn, cases)
-  ty = sum(cases) # sum of all cases
+  yin <- nn.cumsum(nn, cases)
+  ty <- sum(cases) # sum of all cases
 
   # compute test statistics for observed data
   if (type == "poisson") {
-    ein = nn.cumsum(nn, ex)
-    eout = sum(ex) - ein
+    ein <- nn.cumsum(nn, ex)
+    eout <- sum(ex) - ein
     # correct for the situation when the expected number of cases
     # is not the same as the observed number of cases
-    mult = ty / sum(ex)
-    ein = ein * mult
-    eout = eout * mult
-    logein = log(ein)
-    logeout = log(eout)
-    popin = NULL
-    popout = NULL
-    logpopin = NULL
-    logpopout = NULL
-    tpop = NULL
-    tobs = stat_poisson_adj(yin, ty, logein, logeout,
-                            min.cases = min.cases)
+    mult <- ty / sum(ex)
+    ein <- ein * mult
+    eout <- eout * mult
+    logein <- log(ein)
+    logeout <- log(eout)
+    popin <- NULL
+    popout <- NULL
+    logpopin <- NULL
+    logpopout <- NULL
+    tpop <- NULL
+    tobs <- stat_poisson_adj(yin, ty, logein, logeout,
+      min.cases = min.cases
+    )
   } else if (type == "binomial") {
-    logein = NULL
-    logeout = NULL
-    tpop = sum(pop)
-    popin = nn.cumsum(nn, pop)
-    popout = tpop - popin
-    logpopin = log(popin)
-    logpopout = log(popout)
-    tobs = stat_binom_adj(yin, ty, popin, popout,
-                          logpopin = logpopin,
-                          logpopout = logpopout,
-                          tpop = tpop,
-                          min.cases = min.cases)
+    logein <- NULL
+    logeout <- NULL
+    tpop <- sum(pop)
+    popin <- nn.cumsum(nn, pop)
+    popout <- tpop - popin
+    logpopin <- log(popin)
+    logpopout <- log(popout)
+    tobs <- stat_binom_adj(yin, ty, popin, popout,
+      logpopin = logpopin,
+      logpopout = logpopout,
+      tpop = tpop,
+      min.cases = min.cases
+    )
   }
   # tobs in nn format
-  tobs_nn = split(tobs, f = rep(seq_along(nn), times = nnn))
+  tobs_nn <- split(tobs, f = rep(seq_along(nn), times = nnn))
 
-  noc_info = noc_nn(nn, tobs_nn)
-  tobs = noc_info$tobs
+  noc_info <- noc_nn(nn, tobs_nn)
+  tobs <- noc_info$tobs
 
   # compute test statistics for simulated data
   if (nsim > 0) {
     message("computing statistics for simulated data:")
-    tsim = scan.sim.adj(nsim = nsim, nn = nn, ty = ty,
-                        ex = ex, type = type,
-                        logein = logein,
-                        logeout = logeout,
-                        popin = popin,
-                        popout = popout, tpop = tpop,
-                        logpopin = logpopin,
-                        logpopout = logpopout,
-                        cl = cl,
-                        simdist = simdist, pop = pop,
-                        min.cases = min.cases)
-    pvalue = mc.pvalue(tobs, tsim)
+    tsim <- scan.sim.adj(
+      nsim = nsim, nn = nn, ty = ty,
+      ex = ex, type = type,
+      logein = logein,
+      logeout = logeout,
+      popin = popin,
+      popout = popout, tpop = tpop,
+      logpopin = logpopin,
+      logpopout = logpopout,
+      cl = cl,
+      simdist = simdist, pop = pop,
+      min.cases = min.cases
+    )
+    pvalue <- mc.pvalue(tobs, tsim)
   } else {
-    pvalue = rep(1, length(tobs))
+    pvalue <- rep(1, length(tobs))
   }
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_prune(tobs = tobs, zones = noc_info$clusts,
-                     pvalue = pvalue, alpha = alpha)
+  pruned <- sig_prune(
+    tobs = tobs, zones = noc_info$clusts,
+    pvalue = pvalue, alpha = alpha
+  )
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "circular scan",
-                rel_param = list(type = type,
-                                 simdist = simdist,
-                                 nsim = nsim,
-                                 ubpop = ubpop,
-                                 min.cases = min.cases),
-                alpha = alpha,
-                w = NULL, d = d)
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "circular scan",
+    rel_param = list(
+      type = type,
+      simdist = simdist,
+      nsim = nsim,
+      ubpop = ubpop,
+      min.cases = min.cases
+    ),
+    alpha = alpha,
+    w = NULL, d = d
+  )
 }
 
 #' Argument checking for scan tests
@@ -217,34 +235,32 @@ scan.test = function(coords, cases, pop,
 #' @param min.cases Minimum number of cases. Only for scan.test.
 #' @return NULL
 #' @noRd
-arg_check_scan_test =
+arg_check_scan_test <-
   function(coords, cases, pop, ex, nsim, alpha,
            nreport = NULL,
            ubpop, longlat, parallel = NULL, k, w, type = NULL,
            simdist = NULL, min.cases = NULL) {
-  arg_check_coords(coords)
-  N = nrow(coords)
-  arg_check_cases(cases, N)
-  arg_check_pop(pop, N)
-  arg_check_ex(ex, N)
-  arg_check_nsim(nsim)
-  arg_check_alpha(alpha)
-  # nreport no check, deprecated
-  arg_check_ubpop(ubpop)
-  arg_check_longlat(longlat)
-  # parallel no check, deprecated
-  arg_check_k(k, N)
-  arg_check_w(w, N)
-  if (!is.null(type)) {
-    arg_check_type(type)
-  }
-  if (!is.null(simdist)) {
+    arg_check_coords(coords)
+    N <- nrow(coords)
+    arg_check_cases(cases, N)
+    arg_check_pop(pop, N)
+    arg_check_ex(ex, N)
+    arg_check_nsim(nsim)
+    arg_check_alpha(alpha)
+    # nreport no check, deprecated
+    arg_check_ubpop(ubpop)
+    arg_check_longlat(longlat)
+    # parallel no check, deprecated
+    arg_check_k(k, N)
+    arg_check_w(w, N)
+    if (!is.null(type)) {
+      arg_check_type(type)
+    }
+    if (!is.null(simdist)) {
+      arg_check_simdist(simdist)
+    }
     arg_check_simdist(simdist)
+    if (!is.null(min.cases)) {
+      arg_check_min_cases(min.cases)
+    }
   }
-  arg_check_simdist(simdist)
-  if (!is.null(min.cases)) {
-    arg_check_min_cases(min.cases)
-  }
-}
-
-

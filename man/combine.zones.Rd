@@ -20,7 +20,7 @@ and \code{z2} into a single list, returning only the
 unique zones.
 }
 \examples{
-z1 = list(1:2, 1:3)
-z2 = list(2:1, 1:4)
+z1 <- list(1:2, 1:3)
+z2 <- list(2:1, 1:4)
 combine.zones(z1, z2)
 }

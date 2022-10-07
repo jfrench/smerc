@@ -79,9 +79,9 @@ the elements of \code{idx}.
 data(nydf)
 data(nyw)
 # determine 50 nn of region 1 for NY data
-coords = as.matrix(nydf[,c("longitude", "latitude")])
-nn3 = knn(coords, longlat = TRUE, k = 3)
-z1 = scsg2(nn3, nyw)
-z2 = flex.zones(coords, nyw, k = 3, longlat = TRUE)
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
+nn3 <- knn(coords, longlat = TRUE, k = 3)
+z1 <- scsg2(nn3, nyw)
+z2 <- flex.zones(coords, nyw, k = 3, longlat = TRUE)
 all.equal(z1, z2)
 }

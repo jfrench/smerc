@@ -22,6 +22,6 @@ function such as \code{\link{nnpop}} or
 returned by \code{\link{nn2zones}}.
 }
 \examples{
-nn = list(1:3, c(2:1, 4))
+nn <- list(1:3, c(2:1, 4))
 nndup(nn, 4)
 }

@@ -40,9 +40,12 @@ for \code{\link{elliptic.test}}.
 \examples{
 \dontrun{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-out = elliptic.zones(coords = coords, pop = nydf$pop,
-                     shape = 1.5, nangle = 4)}
+coords <- with(nydf, cbind(longitude, latitude))
+out <- elliptic.zones(
+  coords = coords, pop = nydf$pop,
+  shape = 1.5, nangle = 4
+)
+}
 
 }
 \references{

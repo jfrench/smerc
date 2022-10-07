@@ -83,12 +83,16 @@ optimal choice of upper bound. The smallest value must be at least
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-ubpop_stats = optimal_ubpop(coords = coords, cases  = nydf$cases,
-                            pop = nydf$pop, nsim = 49,
-                            ubpop = seq(0.05, 0.5, by = 0.05))
+coords <- with(nydf, cbind(longitude, latitude))
+ubpop_stats <- optimal_ubpop(
+  coords = coords, cases = nydf$cases,
+  pop = nydf$pop, nsim = 49,
+  ubpop = seq(0.05, 0.5, by = 0.05)
+)
 ubpop_stats
-\dontrun{plot(ubpop_stats)}
+\dontrun{
+plot(ubpop_stats)
+}
 }
 \references{
 Meysami, Mohammad, French, Joshua P., and Lipner, Ettie M. The estimation of

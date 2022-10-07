@@ -16,53 +16,57 @@
 #'   list will have \code{nsim} elements.
 #' @export
 #' @keywords internal
-seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
-                    ein = NULL, eout = NULL,
-                    tpop = NULL, popin = NULL, popout = NULL,
-                    cl = NULL,
-                    simdist = "multinomial",
-                    pop = NULL,
-                    min.cases = 0,
-                    ldup = NULL,
-                    lseq_zones) {
+seq_scan_sim <- function(nsim = 1, nn, ty, ex, type = "poisson",
+                         ein = NULL, eout = NULL,
+                         tpop = NULL, popin = NULL, popout = NULL,
+                         cl = NULL,
+                         simdist = "multinomial",
+                         pop = NULL,
+                         min.cases = 0,
+                         ldup = NULL,
+                         lseq_zones) {
   # match simdist with options
-  simdist = match.arg(simdist, c("multinomial", "poisson", "binomial"))
-  arg_check_seq_scan_sim(nsim = nsim, ty = ty, ex = ex, type = type,
-                nn = nn, ein = ein, eout = eout, tpop = tpop,
-                popin = popin, popout = popout, static = TRUE,
-                simdist = simdist, pop = pop,
-                w = diag(length(ex)),
-                ldup = ldup,
-                lseq_zones = lseq_zones)
+  simdist <- match.arg(simdist, c("multinomial", "poisson", "binomial"))
+  arg_check_seq_scan_sim(
+    nsim = nsim, ty = ty, ex = ex, type = type,
+    nn = nn, ein = ein, eout = eout, tpop = tpop,
+    popin = popin, popout = popout, static = TRUE,
+    simdist = simdist, pop = pop,
+    w = diag(length(ex)),
+    ldup = ldup,
+    lseq_zones = lseq_zones
+  )
   # assume there are no duplicates if ldup not provided
-  if(is.null(ldup)) {
-    ldup = rep(FALSE, length(unlist(nn)))
+  if (is.null(ldup)) {
+    ldup <- rep(FALSE, length(unlist(nn)))
   }
 
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pbsapply(seq_len(nsim), function(i) {
+  tsim <- pbapply::pbsapply(seq_len(nsim), function(i) {
     # simulate new data
     if (simdist == "multinomial") {
-      ysim = stats::rmultinom(1, size = ty, prob = ex)
+      ysim <- stats::rmultinom(1, size = ty, prob = ex)
     } else if (simdist == "poisson") {
-      ysim = stats::rpois(length(ex), lambda = ex)
-      ty = sum(ysim)
-      mult = ty / sum(ex)
-      ein = ein * mult
-      eout = eout * mult
+      ysim <- stats::rpois(length(ex), lambda = ex)
+      ty <- sum(ysim)
+      mult <- ty / sum(ex)
+      ein <- ein * mult
+      eout <- eout * mult
     } else if (simdist == "binomial") {
-      ysim = stats::rbinom(n = length(ex), size = pop,
-                           prob = ex / pop)
-      ty = sum(ysim)
+      ysim <- stats::rbinom(
+        n = length(ex), size = pop,
+        prob = ex / pop
+      )
+      ty <- sum(ysim)
     }
     # compute test statistics for each zone that aren't duplicated
-    yin = nn.cumsum(nn, ysim)[!ldup]
+    yin <- nn.cumsum(nn, ysim)[!ldup]
     if (type == "poisson") {
-      tall = stat.poisson(yin, ty - yin, ein, eout)
+      tall <- stat.poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {
-      tall = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
+      tall <- stat.binom(yin, ty - yin, ty, popin, popout, tpop)
     }
-    tall[yin < min.cases] = 0
+    tall[yin < min.cases] <- 0
 
     # return sequence of maximum statistic for each element
     # of lseq_zones
@@ -99,24 +103,24 @@ seq_scan_sim = function(nsim = 1, nn, ty, ex, type = "poisson",
 
 #' @return NULL
 #' @noRd
-arg_check_seq_scan_sim = function(nsim, ty, ex, type,
-                         nn = NULL, zones = NULL,
-                         ein = NULL, eout = NULL,
-                         tpop = NULL, popin = NULL,
-                         popout = NULL, w = NULL,
-                         pop = NULL, ubpop = NULL,
-                         static = FALSE,
-                         simdist = "multinomial",
-                         ldup = NULL,
-                         lseq_zones) {
+arg_check_seq_scan_sim <- function(nsim, ty, ex, type,
+                                   nn = NULL, zones = NULL,
+                                   ein = NULL, eout = NULL,
+                                   tpop = NULL, popin = NULL,
+                                   popout = NULL, w = NULL,
+                                   pop = NULL, ubpop = NULL,
+                                   static = FALSE,
+                                   simdist = "multinomial",
+                                   ldup = NULL,
+                                   lseq_zones) {
   arg_check_nsim(nsim)
   arg_check_ty(ty)
-  N = length(ex)
+  N <- length(ex)
   arg_check_ex(ex, N)
   arg_check_type(type)
   if (!is.null(nn)) {
     if (!is.list(nn)) stop("nn must be a list")
-    nz = sum(sapply(nn, length))
+    nz <- sum(sapply(nn, length))
   }
   if (!is.null(zones)) {
     if (!is.list(zones)) stop("zones must be a list")
@@ -139,7 +143,7 @@ arg_check_seq_scan_sim = function(nsim, ty, ex, type,
   if (!is.list(lseq_zones)) {
     stop("lseq_zones must be a list")
   }
-  lseq_zones_lengths = sapply(lseq_zones, length)
+  lseq_zones_lengths <- sapply(lseq_zones, length)
   if (min(lseq_zones_lengths) != max(lseq_zones_lengths)) {
     stop("lseq_zones_lengths must all be the same")
   }
@@ -149,4 +153,3 @@ arg_check_seq_scan_sim = function(nsim, ty, ex, type,
     stop("sum(!ldup) should be the same as the length of each element of lseq_zones")
   }
 }
-

@@ -29,7 +29,7 @@ statistic proposed by Walter (1992).
 \examples{
 data(nydf)
 data(nyw)
-ex = sum(nydf$cases)/sum(nydf$pop)*nydf$pop
+ex <- sum(nydf$cases) / sum(nydf$pop) * nydf$pop
 morancr.sim(nsim = 10, cases = nydf$cases, w = nyw, ex = ex)
 }
 \references{

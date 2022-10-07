@@ -49,10 +49,10 @@ better understanding the implementation of the test.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-pop = nydf$pop
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-tsim = fast.sim(1, ty, ex, pop = pop, ubpop = 0.5)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+tsim <- fast.sim(1, ty, ex, pop = pop, ubpop = 0.5)
 }

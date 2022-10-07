@@ -106,11 +106,13 @@ is returned.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-out = mlf.test(coords = coords, cases = floor(nydf$cases),
-                  pop = nydf$pop, w = nyw,
-                  alpha = 0.12, longlat = TRUE,
-                  nsim = 10, ubpop = 0.1, ubd = 0.5)
+coords <- with(nydf, cbind(longitude, latitude))
+out <- mlf.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, w = nyw,
+  alpha = 0.12, longlat = TRUE,
+  nsim = 10, ubpop = 0.1, ubd = 0.5
+)
 data(nypoly)
 library(sp)
 plot(nypoly, col = color.clusters(out))

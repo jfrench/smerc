@@ -66,19 +66,21 @@ for better understanding the implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-pop = nydf$pop
-enn = elliptic.nn(coords, pop, ubpop = 0.5)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-yin = nn.cumsum(enn$nn, cases)
-ein = nn.cumsum(enn$nn, ex)
-logein = log(ein)
-logeout = log(ty - ein)
-pen = elliptic.penalty(0.5, enn$shape_all)
-tsim = elliptic.sim.adj(nsim = 3, ex = ex,
-                         nn = enn$nn, ty = ty,
-                         logein = logein, logeout = logeout,
-                         a = 0.5, pen = pen)
+coords <- with(nydf, cbind(longitude, latitude))
+pop <- nydf$pop
+enn <- elliptic.nn(coords, pop, ubpop = 0.5)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+yin <- nn.cumsum(enn$nn, cases)
+ein <- nn.cumsum(enn$nn, ex)
+logein <- log(ein)
+logeout <- log(ty - ein)
+pen <- elliptic.penalty(0.5, enn$shape_all)
+tsim <- elliptic.sim.adj(
+  nsim = 3, ex = ex,
+  nn = enn$nn, ty = ty,
+  logein = logein, logeout = logeout,
+  a = 0.5, pen = pen
+)
 }

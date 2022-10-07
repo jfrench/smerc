@@ -29,8 +29,8 @@ the original zones).
 zones order from most significant to least significant.
 }
 \examples{
-tobs = c(1, 3, 2)
-zones = list(1:2, 1:3, 2:3)
-pvalue = c(0.5, 0.01, 0.02)
+tobs <- c(1, 3, 2)
+zones <- list(1:2, 1:3, 2:3)
+pvalue <- c(0.5, 0.01, 0.02)
 sig_noc(tobs, zones, pvalue, alpha = 0.05)
 }

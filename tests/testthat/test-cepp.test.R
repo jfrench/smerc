@@ -25,7 +25,7 @@ cepp <- function(varx = 0,
   ind <- 1:length(varx)
 
   for (i in 1:length(varx)) {
-    dist[i, ] <- sqrt((varx[i] - varx) ^ 2 + (vary[i] - vary) ^ 2)
+    dist[i, ] <- sqrt((varx[i] - varx)^2 + (vary[i] - vary)^2)
     pop.ord <- pop[order(dist[i, ])]
     cas.ord <- cases[order(dist[i, ])]
     ind.ord <- order(dist[i, ])
@@ -61,13 +61,15 @@ cepp <- function(varx = 0,
     if (type == "multinomial") {
       test <- runif(sum(cases))
       rand.var <- hist(test,
-                       breaks = c(0, (cumsum(cases) / sum(cases))), plot =
-                         F)$counts
+        breaks = c(0, (cumsum(cases) / sum(cases))), plot =
+          F
+      )$counts
     }
 
     if (type == "poisson") {
       rand.var <- rpois(length(cases),
-                        lambda = (sum(cases) / sum(pop)) * pop)
+        lambda = (sum(cases) / sum(pop)) * pop
+      )
     }
 
     test <- wt.cepp %*% rand.var
@@ -75,13 +77,12 @@ cepp <- function(varx = 0,
     max.sim[sim] <- max(test)
     ind.max.count[ind[test[ind] == max(test)]] <-
       ind.max.count[ind[test[ind] == max(test)]] + 1
-
   }
 
   for (i in 1:length(cases)) {
     p.val[i] <-
       length(turn.stat.sim[i, ][turn.stat.sim[i, ] > turn.stat.obs[i]]) /
-      (numsim + 1)
+        (numsim + 1)
   }
 
   # make histogram
@@ -104,31 +105,37 @@ cepp <- function(varx = 0,
 
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(x, y))
-cases = nydf$cases
-pop = nydf$pop
+coords <- with(nydf, cbind(x, y))
+cases <- nydf$cases
+pop <- nydf$pop
 
-cepp1 = cepp(varx = coords[,1], vary = coords[,2],
-             cases = cases, pop = pop, pop.radius = 15000,
-             numsim = 9, type = "poisson")
+cepp1 <- cepp(
+  varx = coords[, 1], vary = coords[, 2],
+  cases = cases, pop = pop, pop.radius = 15000,
+  numsim = 9, type = "poisson"
+)
 
-cepp2 = suppressWarnings(cepp.test(coords = coords, cases = cases, pop = pop,
-                  nstar = 15000, alpha = 1, nsim = 0))
+cepp2 <- suppressWarnings(cepp.test(
+  coords = coords, cases = cases, pop = pop,
+  nstar = 15000, alpha = 1, nsim = 0
+))
 
-d = sp::spDists(coords)
+d <- sp::spDists(coords)
 # find smallest windows with cumulative population of
 # at least n* = 15000
-nn = casewin(d, pop, 15000)
+nn <- casewin(d, pop, 15000)
 # compute weights
-w = cepp.weights(nn, pop, 15000)
+w <- cepp.weights(nn, pop, 15000)
 
 context("check accuracy of cepp.test")
 test_that("check accuracy for cepp.test for NY data", {
   for (i in seq_along(w)) {
-    wts1i = cepp1$wt.cepp[i, ]
+    wts1i <- cepp1$wt.cepp[i, ]
     expect_equal(sort(wts1i[wts1i > 0]), sort(w[[i]]))
   }
-  expect_equal(max(cepp1$turn.stat.obs),
-               cepp2$clusters[[1]]$test_statistic)
+  expect_equal(
+    max(cepp1$turn.stat.obs),
+    cepp2$clusters[[1]]$test_statistic
+  )
 })
 # End Exclude Linting

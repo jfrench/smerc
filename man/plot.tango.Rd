@@ -32,11 +32,11 @@ the \code{gof.sim} versus \code{sa.sim} is compared to the observed values
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("x", "y")])
-w = dweights(coords, kappa = 1)
-x1 = tango.test(nydf$cases, nydf$pop, w)
+coords <- as.matrix(nydf[, c("x", "y")])
+w <- dweights(coords, kappa = 1)
+x1 <- tango.test(nydf$cases, nydf$pop, w)
 plot(x1)
-x2 = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
+x2 <- tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 plot(x2)
 }
 \seealso{

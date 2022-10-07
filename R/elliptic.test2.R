@@ -38,77 +38,87 @@
 #' <doi:10.1002/sim.2490>
 #' @examples
 #' data(nydf)
-#' coords = nydf[,c("x", "y")]
-#' out = elliptic.test(coords = coords,
-#'                    cases = floor(nydf$cases),
-#'                    pop = nydf$pop, ubpop = 0.1,
-#'                    nsim = 2,
-#'                    alpha = 0.12)
-elliptic.test = function(coords, cases, pop,
-                     ex = sum(cases) / sum(pop) * pop,
-                     nsim = 499, alpha = 0.1,
-                     ubpop = 0.5,
-                     shape = c(1, 1.5, 2, 3, 4, 5),
-                     nangle = c(1, 4, 6, 9, 12, 15),
-                     a = 0.5,
-                     cl = NULL,
-                     type = "poisson",
-                     min.cases = 2) {
+#' coords <- nydf[, c("x", "y")]
+#' out <- elliptic.test(
+#'   coords = coords,
+#'   cases = floor(nydf$cases),
+#'   pop = nydf$pop, ubpop = 0.1,
+#'   nsim = 2,
+#'   alpha = 0.12
+#' )
+elliptic.test <- function(coords, cases, pop,
+                          ex = sum(cases) / sum(pop) * pop,
+                          nsim = 499, alpha = 0.1,
+                          ubpop = 0.5,
+                          shape = c(1, 1.5, 2, 3, 4, 5),
+                          nangle = c(1, 4, 6, 9, 12, 15),
+                          a = 0.5,
+                          cl = NULL,
+                          type = "poisson",
+                          min.cases = 2) {
   # argument checking
-  arg_check_scan_test(coords = coords, cases = cases,
-                      pop = pop, ex = ex, nsim = nsim,
-                      alpha = alpha,
-                      ubpop = ubpop, longlat = FALSE,
-                      parallel = FALSE, k = 1,
-                      w = diag(nrow(coords)),
-                      type = type, min.cases = min.cases)
+  arg_check_scan_test(
+    coords = coords, cases = cases,
+    pop = pop, ex = ex, nsim = nsim,
+    alpha = alpha,
+    ubpop = ubpop, longlat = FALSE,
+    parallel = FALSE, k = 1,
+    w = diag(nrow(coords)),
+    type = type, min.cases = min.cases
+  )
   arg_check_elliptic_test(shape = shape, nangle = nangle, a = a)
 
   # convert to proper format
-  coords = as.matrix(coords)
-  N = nrow(coords)
+  coords <- as.matrix(coords)
+  N <- nrow(coords)
 
-  enn = elliptic.nn(coords, pop = pop, ubpop = ubpop,
-                    shape = shape, nangle = nangle)
+  enn <- elliptic.nn(coords,
+    pop = pop, ubpop = ubpop,
+    shape = shape, nangle = nangle
+  )
   # determine the expected cases in each successive
   # zone, on log scale, total number of cases,
   # log of expected cases outside zone
-  ein = nn.cumsum(enn$nn, ex)
-  logein = log(ein)
-  ty = sum(cases) # sum of all cases
-  logeout = log(ty - ein)
+  ein <- nn.cumsum(enn$nn, ex)
+  logein <- log(ein)
+  ty <- sum(cases) # sum of all cases
+  logeout <- log(ty - ein)
 
   # determine yin and yout for all windows for observed data
-  yin = nn.cumsum(enn$nn, cases)
+  yin <- nn.cumsum(enn$nn, cases)
 
   ### calculate scan statistics for observed data
   # of distance from observation centroid
-  pen = elliptic.penalty(a, enn$shape_all)
-  tobs = stat_poisson_adj(yin = yin, ty = ty,
-                          logein = logein, logeout = logeout,
-                          a = a, pen = pen,
-                          min.cases = min.cases)
+  pen <- elliptic.penalty(a, enn$shape_all)
+  tobs <- stat_poisson_adj(
+    yin = yin, ty = ty,
+    logein = logein, logeout = logeout,
+    a = a, pen = pen,
+    min.cases = min.cases
+  )
 
   # tobs in nn format
-  nnn = unlist(lapply(enn$nn, length), use.names = FALSE)
-  tobs_nn = split(tobs, f = rep(seq_along(enn$nn), times = nnn))
+  nnn <- unlist(lapply(enn$nn, length), use.names = FALSE)
+  tobs_nn <- split(tobs, f = rep(seq_along(enn$nn), times = nnn))
 
   # determine non-overlapping clusters in order of significance
-  noc_info = noc_enn(enn$nn, tobs_nn, enn$shape_nn, enn$angle_nn)
-  tobs = noc_info$tobs
+  noc_info <- noc_enn(enn$nn, tobs_nn, enn$shape_nn, enn$angle_nn)
+  tobs <- noc_info$tobs
 
   # setup list for call
   if (nsim > 0) {
-    tsim = elliptic.sim.adj(nsim = nsim, ex = ex,
-                            nn = enn$nn, ty = ty,
-                            logein = logein, logeout = logeout,
-                            a = a, pen = pen, min.cases = min.cases,
-                            cl = cl)
+    tsim <- elliptic.sim.adj(
+      nsim = nsim, ex = ex,
+      nn = enn$nn, ty = ty,
+      logein = logein, logeout = logeout,
+      a = a, pen = pen, min.cases = min.cases,
+      cl = cl
+    )
 
     # p-values associated with these max statistics for each centroid
-    pvalue = mc.pvalue(tobs, tsim)
+    pvalue <- mc.pvalue(tobs, tsim)
   } else {
-    pvalue = rep(1, length(tobs))
+    pvalue <- rep(1, length(tobs))
   }
 
   # # construct all zones
@@ -122,28 +132,33 @@ elliptic.test = function(coords, cases, pop,
   #                  order_by = "tobs")
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_prune(tobs = tobs, zones = noc_info$clusts,
-                     pvalue = pvalue, alpha = alpha)
-  shape_all = noc_info$shape[seq_along(pruned$tobs)]
-  angle_all = noc_info$angle[seq_along(pruned$tobs)]
+  pruned <- sig_prune(
+    tobs = tobs, zones = noc_info$clusts,
+    pvalue = pvalue, alpha = alpha
+  )
+  shape_all <- noc_info$shape[seq_along(pruned$tobs)]
+  angle_all <- noc_info$angle[seq_along(pruned$tobs)]
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = FALSE, method = "elliptic",
-                rel_param = list(type = type,
-                                 simdist = "multinomial",
-                                 nsim = nsim,
-                                 ubpop = ubpop,
-                                 min.cases = min.cases,
-                                 a_penalty = a,
-                                 shapes = shape,
-                                 nangles = nangle),
-                alpha = alpha,
-                w = NULL, d = NULL, a = a,
-                shape_all = shape_all,
-                angle_all = angle_all)
-
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = FALSE, method = "elliptic",
+    rel_param = list(
+      type = type,
+      simdist = "multinomial",
+      nsim = nsim,
+      ubpop = ubpop,
+      min.cases = min.cases,
+      a_penalty = a,
+      shapes = shape,
+      nangles = nangle
+    ),
+    alpha = alpha,
+    w = NULL, d = NULL, a = a,
+    shape_all = shape_all,
+    angle_all = angle_all
+  )
 }
 
 #' Additional argument checking for elliptic_test
@@ -153,7 +168,7 @@ elliptic.test = function(coords, cases, pop,
 #' @param a A penalty parameter (a >= 0)
 #' @return NULL
 #' @noRd
-arg_check_elliptic_test =
+arg_check_elliptic_test <-
   function(shape, nangle, a) {
     if (length(shape) != length(nangle)) {
       stop("The length of shape and nangle must match.")

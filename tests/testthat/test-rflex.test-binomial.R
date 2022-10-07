@@ -2,17 +2,21 @@ context("check accuracy of rflex.test binomial")
 set.seed(15)
 data(nydf)
 data(nyw)
-outb = rflex.test(coords = cbind(nydf$longitude, nydf$latitude),
-                  cases = floor(nydf$cases),
-                  pop = nydf$population,
-                  w = nyw, k = 50,
-                  nsim = 99, alpha = 1, longlat = FALSE,
-                  alpha1 = 0.2,
-                  type = "binomial")
+outb <- rflex.test(
+  coords = cbind(nydf$longitude, nydf$latitude),
+  cases = floor(nydf$cases),
+  pop = nydf$population,
+  w = nyw, k = 50,
+  nsim = 99, alpha = 1, longlat = FALSE,
+  alpha1 = 0.2,
+  type = "binomial"
+)
 # results taken from rflex_test_ny_binomial_50nn_cartesian
 test_that("check accuracy for rflex.test binomial ", {
-  expect_equal(sort(outb$clusters[[1]]$locids),
-               c(1:2, 13, 15, 27, 35, 37:38, 43, 46:47, 49, 51:53))
+  expect_equal(
+    sort(outb$clusters[[1]]$locids),
+    c(1:2, 13, 15, 27, 35, 37:38, 43, 46:47, 49, 51:53)
+  )
   expect_equal(round(outb$clusters[[1]]$max_dist, 5), 0.22483)
   expect_equal(outb$clusters[[1]]$cases, 79)
   expect_equal(round(outb$clusters[[1]]$exp, 4), 36.1025)
@@ -32,8 +36,10 @@ test_that("check accuracy for rflex.test binomial ", {
   # in future versions since these were manually checked
   expect_equal(round(outb$clusters[[2]]$pvalue, 1), 0.3)
 
-  expect_equal(sort(outb$clusters[[12]]$locids),
-               c(135, 146, 208, 210))
+  expect_equal(
+    sort(outb$clusters[[12]]$locids),
+    c(135, 146, 208, 210)
+  )
   expect_equal(round(outb$clusters[[12]]$max_dist, 6), 0.030934)
   expect_equal(outb$clusters[[12]]$cases, 12)
   expect_equal(round(outb$clusters[[12]]$exp, 5), 5.59582)

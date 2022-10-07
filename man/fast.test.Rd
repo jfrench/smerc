@@ -93,11 +93,13 @@ returned (along with a warning).
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-out = fast.test(coords = coords, cases = floor(nydf$cases),
-               pop = nydf$pop,
-               alpha = 0.05, longlat = TRUE,
-               nsim = 49, ubpop = 0.5)
+coords <- with(nydf, cbind(longitude, latitude))
+out <- fast.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop,
+  alpha = 0.05, longlat = TRUE,
+  nsim = 49, ubpop = 0.5
+)
 }
 \references{
 Neill, D. B. (2012), Fast subset scan for

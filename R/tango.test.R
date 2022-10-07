@@ -49,57 +49,61 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("x", "y")])
-#' w = dweights(coords, kappa = 1)
-#' results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
-tango.test = function(cases, pop, w, nsim = 0) {
+#' coords <- as.matrix(nydf[, c("x", "y")])
+#' w <- dweights(coords, kappa = 1)
+#' results <- tango.test(nydf$cases, nydf$pop, w, nsim = 49)
+tango.test <- function(cases, pop, w, nsim = 0) {
   arg_check_tango_test(cases, pop, w, nsim)
-  N = length(cases)
-  yplus = sum(cases)
-  r = cases / yplus
-  p = pop / sum(pop)
-  ee = r - p
-  gof = sum(ee ^ 2)
-  sa = (crossprod(ee, w - diag(N)) %*% ee)[1, 1]
-  tstat = gof + sa
+  N <- length(cases)
+  yplus <- sum(cases)
+  r <- cases / yplus
+  p <- pop / sum(pop)
+  ee <- r - p
+  gof <- sum(ee^2)
+  sa <- (crossprod(ee, w - diag(N)) %*% ee)[1, 1]
+  tstat <- gof + sa
 
   # compute standardized tstat
-  vp = diag(p) - tcrossprod(p)
+  vp <- diag(p) - tcrossprod(p)
 
-  wvp = w %*% vp
-  wvp2 = wvp %*% wvp
-  wvp3 = wvp2 %*% wvp
-  ec = sum(diag(wvp)) / yplus
-  vc = sum(diag(wvp2)) * 2 / yplus ^ 2
-  skc = 2 * sqrt(2) * sum(diag(wvp3)) / (sum(diag(wvp2)) ^ (1.5))
-  dfc = 8 / skc ^ 2
+  wvp <- w %*% vp
+  wvp2 <- wvp %*% wvp
+  wvp3 <- wvp2 %*% wvp
+  ec <- sum(diag(wvp)) / yplus
+  vc <- sum(diag(wvp2)) * 2 / yplus^2
+  skc <- 2 * sqrt(2) * sum(diag(wvp3)) / (sum(diag(wvp2))^(1.5))
+  dfc <- 8 / skc^2
 
-  tstat.std = (tstat - ec) / sqrt(vc)
-  tstat.chisq = dfc + tstat.std * sqrt(2 * dfc)
-  pvalue.chisq = 1 - stats::pchisq(tstat.chisq, dfc)
-  out = list(tstat = tstat, gof = gof, sa = sa,
-             tstat.chisq = tstat.chisq, pvalue.chisq = pvalue.chisq,
-             dfc = dfc)
+  tstat.std <- (tstat - ec) / sqrt(vc)
+  tstat.chisq <- dfc + tstat.std * sqrt(2 * dfc)
+  pvalue.chisq <- 1 - stats::pchisq(tstat.chisq, dfc)
+  out <- list(
+    tstat = tstat, gof = gof, sa = sa,
+    tstat.chisq = tstat.chisq, pvalue.chisq = pvalue.chisq,
+    dfc = dfc
+  )
   if (nsim > 0) {
     # simulate new data
-    ysim = stats::rmultinom(n = nsim, size = sum(cases),
-                             prob = pop / sum(pop))
+    ysim <- stats::rmultinom(
+      n = nsim, size = sum(cases),
+      prob = pop / sum(pop)
+    )
     # compute r and ee for simulated data
-    rsim = ysim / yplus
-    eesim = rsim - p
+    rsim <- ysim / yplus
+    eesim <- rsim - p
 
     # compute gof and sa components of statistic for
     # each simulated data
-    gof.sim = colSums(eesim ^ 2)
-    sa.sim = rowSums(crossprod(eesim, w - diag(N)) * t(eesim))
-    tstat.sim = gof.sim + sa.sim
-    out$gof.sim = gof.sim
-    out$sa.sim = sa.sim
-    out$tstat.sim = tstat.sim
-    pvalue.sim = (1 + sum(tstat.sim >= tstat)) / (1 + nsim)
-    out$pvalue.sim = pvalue.sim
+    gof.sim <- colSums(eesim^2)
+    sa.sim <- rowSums(crossprod(eesim, w - diag(N)) * t(eesim))
+    tstat.sim <- gof.sim + sa.sim
+    out$gof.sim <- gof.sim
+    out$sa.sim <- sa.sim
+    out$tstat.sim <- tstat.sim
+    pvalue.sim <- (1 + sum(tstat.sim >= tstat)) / (1 + nsim)
+    out$pvalue.sim <- pvalue.sim
   }
-  class(out) = "tango"
+  class(out) <- "tango"
   return(out)
 }
 
@@ -108,11 +112,10 @@ tango.test = function(cases, pop, w, nsim = 0) {
 #' Check the arguments of the tango.test function
 #' @return NULL
 #' @noRd
-arg_check_tango_test = function(cases, pop, w, nsim) {
-  N = length(cases)
+arg_check_tango_test <- function(cases, pop, w, nsim) {
+  N <- length(cases)
   arg_check_cases(cases, N)
   arg_check_pop(pop, N)
   arg_check_tango_w(w, N)
   arg_check_nsim(nsim)
 }
-

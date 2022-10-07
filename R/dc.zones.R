@@ -32,34 +32,40 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
 #' # find zone with max statistic starting from each individual region
-#' all_zones = dc.zones(coords, cases = floor(nydf$cases),
-#'                      nydf$pop, w = nyw, ubpop = 0.25,
-#'                      ubd = .25, longlat = TRUE)
-dc.zones = function(coords, cases, pop, w,
-                    ex = sum(cases) / sum(pop) * pop,
-                    ubpop = 0.5, ubd = 1, longlat = FALSE,
-                    cl = NULL, progress = TRUE) {
+#' all_zones <- dc.zones(coords,
+#'   cases = floor(nydf$cases),
+#'   nydf$pop, w = nyw, ubpop = 0.25,
+#'   ubd = .25, longlat = TRUE
+#' )
+dc.zones <- function(coords, cases, pop, w,
+                     ex = sum(cases) / sum(pop) * pop,
+                     ubpop = 0.5, ubd = 1, longlat = FALSE,
+                     cl = NULL, progress = TRUE) {
   # sanity checking
-  arg_check_dmst_zones(coords = coords, cases = cases,
-                       pop = pop, w = w, ex = ex,
-                       ubpop = ubpop, ubd = ubd,
-                       longlat = longlat, type = "all",
-                       progress = progress)
+  arg_check_dmst_zones(
+    coords = coords, cases = cases,
+    pop = pop, w = w, ex = ex,
+    ubpop = ubpop, ubd = ubd,
+    longlat = longlat, type = "all",
+    progress = progress
+  )
   # setup various arguments and such
-  ty = sum(cases)   # total number of cases
+  ty <- sum(cases) # total number of cases
   # intercentroid distances
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- sp::spDists(as.matrix(coords), longlat = longlat)
   # upperbound for population in zone
-  max_pop = ubpop * sum(pop)
+  max_pop <- ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound
-  nn = nndist(d, ubd)
+  nn <- nndist(d, ubd)
 
-  out = mst.all(neighbors = nn, cases = cases, pop = pop,
-                w = w, ex = ex, ty = ty, max_pop = max_pop,
-                type = "all", nlinks = "two", early = TRUE,
-                cl = cl, progress = progress)
+  out <- mst.all(
+    neighbors = nn, cases = cases, pop = pop,
+    w = w, ex = ex, ty = ty, max_pop = max_pop,
+    type = "all", nlinks = "two", early = TRUE,
+    cl = cl, progress = progress
+  )
   # return results in a list
   prep.mst(out)
 }

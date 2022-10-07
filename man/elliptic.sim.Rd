@@ -70,17 +70,21 @@ for better understanding the implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-pop = nydf$pop
-enn = elliptic.nn(coords, pop, ubpop = 0.1,
-                  shape = c(1, 1.5), nangle = c(1, 4))
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-yin = nn.cumsum(enn$nn, cases)
-ein = nn.cumsum(enn$nn, ex)
-tsim = elliptic.sim(nsim = 2, nn = enn$nn, ty = ty, ex = ex,
-                    a = 0.5, shape_all = enn$shape_all,
-                    ein = ein, eout = ty - ein)
+coords <- with(nydf, cbind(longitude, latitude))
+pop <- nydf$pop
+enn <- elliptic.nn(coords, pop,
+  ubpop = 0.1,
+  shape = c(1, 1.5), nangle = c(1, 4)
+)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+yin <- nn.cumsum(enn$nn, cases)
+ein <- nn.cumsum(enn$nn, ex)
+tsim <- elliptic.sim(
+  nsim = 2, nn = enn$nn, ty = ty, ex = ex,
+  a = 0.5, shape_all = enn$shape_all,
+  ein = ein, eout = ty - ein
+)
 }
 \keyword{internal}

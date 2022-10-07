@@ -92,17 +92,18 @@ of \code{\link[smerc]{stat.binom}}.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-enn = elliptic.nn(coords, nydf$pop, ubpop = 0.015)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(nydf$pop) * nydf$pop
-yin = nn.cumsum(enn$nn, cases)
-ein = nn.cumsum(enn$nn, ex)
-logein = log(ein)
-logeout = log(ty - ein)
-pen = elliptic.penalty(a = 0.5, enn$shape_all)
+coords <- with(nydf, cbind(longitude, latitude))
+enn <- elliptic.nn(coords, nydf$pop, ubpop = 0.015)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(nydf$pop) * nydf$pop
+yin <- nn.cumsum(enn$nn, cases)
+ein <- nn.cumsum(enn$nn, ex)
+logein <- log(ein)
+logeout <- log(ty - ein)
+pen <- elliptic.penalty(a = 0.5, enn$shape_all)
 stat.poisson.adj(yin, ty, logein, logeout,
-                 a = 0.5, pen = pen, return.max = TRUE)
+  a = 0.5, pen = pen, return.max = TRUE
+)
 }
 \keyword{internal}

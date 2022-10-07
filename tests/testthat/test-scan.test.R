@@ -1,17 +1,21 @@
 context("check scan.test accuracy")
 set.seed(2)
-coords = runif(8)
-coords = data.frame(x = runif(4), y = runif(4))
+coords <- runif(8)
+coords <- data.frame(x = runif(4), y = runif(4))
 data(nydf)
 ## update test to be faster by restricting population
-out = scan.test(coords = cbind(nydf$longitude, nydf$latitude),
-                cases = floor(nydf$cases), pop = nydf$population,
-                longlat = FALSE, nsim = 49, alpha = 1,
-                ubpop = 0.1)
-cl1 = c(49, 48, 50, 47, 1, 15, 51, 2, 13, 14, 3, 35, 16,
-        52, 36, 37, 12, 11, 5, 17, 10, 4, 6, 38, 18, 9)
-cl2 = c(89, 88, 87, 84, 90, 86, 92, 85)
-cl7 = c(166, 159, 167)
+out <- scan.test(
+  coords = cbind(nydf$longitude, nydf$latitude),
+  cases = floor(nydf$cases), pop = nydf$population,
+  longlat = FALSE, nsim = 49, alpha = 1,
+  ubpop = 0.1
+)
+cl1 <- c(
+  49, 48, 50, 47, 1, 15, 51, 2, 13, 14, 3, 35, 16,
+  52, 36, 37, 12, 11, 5, 17, 10, 4, 6, 38, 18, 9
+)
+cl2 <- c(89, 88, 87, 84, 90, 86, 92, 85)
+cl7 <- c(166, 159, 167)
 
 test_that("check accuracy for scan.test with SatScan for NY data", {
   expect_equal(out$clusters[[1]]$locids, cl1)

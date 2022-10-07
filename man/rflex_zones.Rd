@@ -85,19 +85,23 @@ region must be less than \code{alpha1}.
 \examples{
 data(nydf)
 data(nyw)
-coords = cbind(nydf$x, nydf$y)
-nn = knn(coords, k = 5)
-cases = floor(nydf$cases)
-pop = nydf$pop
-ex = pop * sum(cases)/sum(pop)
+coords <- cbind(nydf$x, nydf$y)
+nn <- knn(coords, k = 5)
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ex <- pop * sum(cases) / sum(pop)
 # zones for poisson model
-pzones = rflex_zones(nn, w = nyw, cases = cases, ex = ex)
+pzones <- rflex_zones(nn, w = nyw, cases = cases, ex = ex)
 \dontrun{
-pzones = rflex_zones(nn, w = nyw, cases = cases,
-                      ex = ex, verbose = TRUE)
+pzones <- rflex_zones(nn,
+  w = nyw, cases = cases,
+  ex = ex, verbose = TRUE
+)
 # zones for binomial model
-bzones = rflex_zones(nn, w = nyw, cases = cases, ex = ex,
-                     type = "binomial", pop = pop)
+bzones <- rflex_zones(nn,
+  w = nyw, cases = cases, ex = ex,
+  type = "binomial", pop = pop
+)
 }
 }
 \references{

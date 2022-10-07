@@ -23,15 +23,15 @@ noc_enn <- function(nn, tobs_nn, shape_nn, angle_nn, nnoc = length(nn)) {
   current_tobs_max <- 1
   starting_region_list <- unlist(lapply(nn, `[`, i = 1))
 
-  while(length(remaining) > 0 &
-        length(clusts) < nnoc &
-        current_tobs_max > 0) {
-    #find the max of tobs_nn and corresponding index for
+  while (length(remaining) > 0 &
+    length(clusts) < nnoc &
+    current_tobs_max > 0) {
+    # find the max of tobs_nn and corresponding index for
     # each nn row
     # tobs_nn_max_idx <- unlist(lapply(tobs_nn[remaining], which.max))
     tobs_nn_max <- unlist(lapply(tobs_nn[remaining], max))
 
-    #find the max over tobs_max_nn and corresponding index
+    # find the max over tobs_max_nn and corresponding index
     # mlc <- max(unlist(tobs_nn_max))
     mlc_max_idx <- which.max(tobs_nn_max)
     mlc_max_seq_idx <- which.max(tobs_nn[remaining][[mlc_max_idx]])
@@ -55,9 +55,10 @@ noc_enn <- function(nn, tobs_nn, shape_nn, angle_nn, nnoc = length(nn)) {
       }
     }
   }
-  return(list(clusts = clusts,
-              tobs = unlist(tobs_noc, use.names = FALSE),
-              shape = unlist(shape_noc, use.names = FALSE),
-              angle = unlist(angle_noc, use.names = FALSE)))
+  return(list(
+    clusts = clusts,
+    tobs = unlist(tobs_noc, use.names = FALSE),
+    shape = unlist(shape_noc, use.names = FALSE),
+    angle = unlist(angle_noc, use.names = FALSE)
+  ))
 }
-

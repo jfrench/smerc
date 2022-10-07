@@ -25,27 +25,28 @@
 #' @author Joshua French
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' d = sp::spDists(coords, longlat = FALSE)
-#' cwins = bn.zones(d, cases = nydf$cases, cstar = 6)
-bn.zones = function(d, cases, cstar) {
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' d <- sp::spDists(coords, longlat = FALSE)
+#' cwins <- bn.zones(d, cases = nydf$cases, cstar = 6)
+bn.zones <- function(d, cases, cstar) {
   # order distances for each region
   # results has each column showing order of indices from
   # smallest to largest distance
-  od = apply(d, 2, order)
+  od <- apply(d, 2, order)
 
   # for each row of ordered distance matrix sum the
   # cumulative number of cases for the expanding collection
   # of regions return the smallest collection of regions for
   # which the cumulative population is less than the desired
   # proportion of the total popuation
-  wins = apply(od, 2, FUN = function(x) cumsum(cases[x]))
-  size_cwin = apply(wins >= cstar, 2, which.max)
-  return(lapply(seq_along(size_cwin),
-                function(i) od[seq_len(size_cwin[i]), i]
+  wins <- apply(od, 2, FUN = function(x) cumsum(cases[x]))
+  size_cwin <- apply(wins >= cstar, 2, which.max)
+  return(lapply(
+    seq_along(size_cwin),
+    function(i) od[seq_len(size_cwin[i]), i]
   ))
 }
 
 #' @rdname bn.zones
 #' @export
-casewin = bn.zones
+casewin <- bn.zones

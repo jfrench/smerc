@@ -55,8 +55,8 @@ d_{ij}^2/\kappa^2)}.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
-w = tango.weights(coords, kappa = 1, longlat = TRUE)
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
+w <- tango.weights(coords, kappa = 1, longlat = TRUE)
 }
 \references{
 Tango, T.  (1995) A class of tests for

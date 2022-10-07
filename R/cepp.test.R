@@ -30,75 +30,87 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(x, y))
-#' cases = nydf$cases
-#' pop = nydf$pop
-#' out = cepp.test(coords = coords, cases = cases, pop = pop,
-#'                 nstar = 1000, alpha = 0.99)
+#' coords <- with(nydf, cbind(x, y))
+#' cases <- nydf$cases
+#' pop <- nydf$pop
+#' out <- cepp.test(
+#'   coords = coords, cases = cases, pop = pop,
+#'   nstar = 1000, alpha = 0.99
+#' )
 #' plot(out)
 #' summary(out)
 #'
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-cepp.test = function(coords, cases, pop, nstar,
-                     ex = sum(cases) / sum(pop) * pop,
-                     nsim = 499, alpha = 0.10,
-                     longlat = FALSE,
-                     simdist = "multinomial") {
+cepp.test <- function(coords, cases, pop, nstar,
+                      ex = sum(cases) / sum(pop) * pop,
+                      nsim = 499, alpha = 0.10,
+                      longlat = FALSE,
+                      simdist = "multinomial") {
   # sanity checking
-  arg_check_cepp_test(coords = coords, cases = cases,
-                      pop = pop, nstar = nstar, ex = ex,
-                      nsim = nsim, alpha = alpha,
-                      longlat = longlat, simdist = simdist)
+  arg_check_cepp_test(
+    coords = coords, cases = cases,
+    pop = pop, nstar = nstar, ex = ex,
+    nsim = nsim, alpha = alpha,
+    longlat = longlat, simdist = simdist
+  )
 
-  coords = as.matrix(coords)
+  coords <- as.matrix(coords)
 
   # intercentroid distances
-  d = sp::spDists(coords, longlat = longlat)
+  d <- sp::spDists(coords, longlat = longlat)
 
   # find smallest windows with at least n* pop
-  nn = casewin(d, pop, nstar)
+  nn <- casewin(d, pop, nstar)
 
   # determine nn weights
-  wts = cepp.weights(nn, pop, nstar)
+  wts <- cepp.weights(nn, pop, nstar)
 
   # observed number of cases in each window
-  cstar = sapply(seq_along(nn), function(i) {
+  cstar <- sapply(seq_along(nn), function(i) {
     sum(cases[nn[[i]]] * wts[[i]])
   }, USE.NAMES = FALSE)
 
-  csim = cepp.sim(nsim = nsim, nn = nn, ty = sum(cases),
-                  ex = ex, wts = wts, simdist = simdist)
+  csim <- cepp.sim(
+    nsim = nsim, nn = nn, ty = sum(cases),
+    ex = ex, wts = wts, simdist = simdist
+  )
 
-  pvalue = mc.pvalue(cstar, csim)
+  pvalue <- mc.pvalue(cstar, csim)
 
-  op = order(cstar, decreasing = TRUE)
+  op <- order(cstar, decreasing = TRUE)
 
   # for the unique, non-overlapping clusters in order of
   # significance, find the associated test statistic,
   # p-value, centroid, window radius, cases in window,
   # expected cases in window, population in window,
   # standarized mortality ratio, relative risk
-  sig_regions = nn[op]
-  sig_tstat = cstar[op]
-  sig_p = pvalue[op]
-  sig_wts = wts[op]
+  sig_regions <- nn[op]
+  sig_tstat <- cstar[op]
+  sig_p <- pvalue[op]
+  sig_wts <- wts[op]
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_noc_mod(tobs = cstar, zones = nn, pvalue = pvalue,
-                       alpha = alpha, order_by = "tobs")
+  pruned <- sig_noc_mod(
+    tobs = cstar, zones = nn, pvalue = pvalue,
+    alpha = alpha, order_by = "tobs"
+  )
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "CEPP",
-                rel_param = list(nstar = nstar,
-                                 simdist = simdist,
-                                 nsim = nsim),
-                alpha = alpha, w = NULL, d = d,
-                weights = sig_wts[pruned$sig])
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "CEPP",
+    rel_param = list(
+      nstar = nstar,
+      simdist = simdist,
+      nsim = nsim
+    ),
+    alpha = alpha, w = NULL, d = d,
+    weights = sig_wts[pruned$sig]
+  )
 }
 
 #' Argument checking for cepp.test
@@ -117,11 +129,11 @@ cepp.test = function(coords, cases, pop, nstar,
 #'
 #' @return NULL
 #' @noRd
-arg_check_cepp_test = function(coords, cases, pop, nstar,
-                               ex, nsim, longlat, alpha,
-                               simdist) {
+arg_check_cepp_test <- function(coords, cases, pop, nstar,
+                                ex, nsim, longlat, alpha,
+                                simdist) {
   arg_check_coords(coords)
-  N = nrow(coords)
+  N <- nrow(coords)
   arg_check_cases(cases, N)
   arg_check_pop(pop, N)
   arg_check_nstar(nstar, pop)

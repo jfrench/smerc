@@ -15,25 +15,25 @@
 #'
 #' @examples
 #' data(nydf)
-#' coords = nydf[,c("longitude", "latitude")]
+#' coords <- nydf[, c("longitude", "latitude")]
 #' knn(coords, longlat = TRUE, k = 4)
-knn = function(coords, longlat = FALSE, k = 1, d = NULL) {
+knn <- function(coords, longlat = FALSE, k = 1, d = NULL) {
   arg_check_knn(coords, longlat, k, d)
   if (is.null(d)) {
-    d = sp::spDists(as.matrix(coords), longlat = longlat)
+    d <- sp::spDists(as.matrix(coords), longlat = longlat)
   }
   # return list of sorted nn indices for each row of d
   lapply(seq_len(nrow(d)), function(i) order(d[i, ])[seq_len(k)])
 }
 
-arg_check_knn = function(coords, longlat, k, d) {
+arg_check_knn <- function(coords, longlat, k, d) {
   if (is.null(dim(coords))) {
     stop("coords must be matrix-like")
   }
   if (length(longlat) != 1 | !is.logical(longlat)) {
     stop("longlat must be a logical value")
   }
-  n = nrow(coords)
+  n <- nrow(coords)
   if (k < 1 | k > n) {
     stop("k must be between 1 and n")
   }

@@ -73,11 +73,11 @@ better understanding the implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(nydf$pop) * nydf$pop
-ein = zones.sum(zones, ex)
-tsim = flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
+coords <- with(nydf, cbind(longitude, latitude))
+zones <- flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(nydf$pop) * nydf$pop
+ein <- zones.sum(zones, ex)
+tsim <- flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
 }

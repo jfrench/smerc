@@ -27,15 +27,15 @@
 #' @rdname scan.nn
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' d = as.matrix(dist(coords))
-#' nn = scan.nn(d, pop = nydf$pop, ubpop = 0.1)
-nnpop = function(d, pop, ubpop) {
-  tpop = sum(pop) # total population
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' d <- as.matrix(dist(coords))
+#' nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
+nnpop <- function(d, pop, ubpop) {
+  tpop <- sum(pop) # total population
   # order distances for each region
   # results has each column showing order of indices
   # from shortest to largest distance
-  od = apply(d, 1, order)
+  od <- apply(d, 1, order)
 
   # for each row of ordered distance matrix
   # sum the cumulative population size for
@@ -45,12 +45,13 @@ nnpop = function(d, pop, ubpop) {
   # cumulative population is less than the desired
   # proportion of the total popuation
   return(apply(od, 2,
-               FUN = function(x) {
-                 csum = cumsum(pop[x])
-                 x[which(csum <= tpop * ubpop)]
-               }))
+    FUN = function(x) {
+      csum <- cumsum(pop[x])
+      x[which(csum <= tpop * ubpop)]
+    }
+  ))
 }
 
 #' @export
 #' @rdname scan.nn
-scan.nn = nnpop
+scan.nn <- nnpop

@@ -21,11 +21,15 @@ if they want to create a custom plot.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-ubpop_stats = optimal_ubpop(coords = coords, cases  = nydf$cases,
-                            pop = nydf$pop, nsim = 49,
-                            ubpop = seq(0.05, 0.5, by = 0.05))
-\dontrun{plot(ubpop_stats)}
+coords <- with(nydf, cbind(longitude, latitude))
+ubpop_stats <- optimal_ubpop(
+  coords = coords, cases = nydf$cases,
+  pop = nydf$pop, nsim = 49,
+  ubpop = seq(0.05, 0.5, by = 0.05)
+)
+\dontrun{
+plot(ubpop_stats)
+}
 plot(ubpop_stats, method = "elbow")
 plot(ubpop_stats$ubpop_seq, ubpop_stats$elbow_method$stats)
 plot(ubpop_stats, method = "gini")

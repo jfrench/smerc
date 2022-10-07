@@ -20,9 +20,11 @@ Print \code{smerc_cluster} object
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(x, y))
-out = scan.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, nsim = 49,
-                longlat = TRUE, alpha = 0.12)
+coords <- with(nydf, cbind(x, y))
+out <- scan.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, nsim = 49,
+  longlat = TRUE, alpha = 0.12
+)
 out
 }

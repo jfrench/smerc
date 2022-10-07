@@ -61,10 +61,12 @@ and Newell (1991) for finding disease clusters.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(x, y))
-out = bn.test(coords = coords, cases = nydf$cases,
-              pop = nydf$pop, cstar = 6,
-              alpha = 0.1)
+coords <- with(nydf, cbind(x, y))
+out <- bn.test(
+  coords = coords, cases = nydf$cases,
+  pop = nydf$pop, cstar = 6,
+  alpha = 0.1
+)
 plot(out)
 
 data(nypoly)

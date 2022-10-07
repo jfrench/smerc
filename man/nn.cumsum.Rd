@@ -28,15 +28,15 @@ contained in \code{nn}.
 \examples{
 # show nn.cumsum example for a circular scan setting
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-d = sp::spDists(coords, longlat = TRUE)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+d <- sp::spDists(coords, longlat = TRUE)
 # compute circular nearest neigbhors
-nn = nnpop(d, pop = nydf$pop, ubpop = 0.1)
+nn <- nnpop(d, pop = nydf$pop, ubpop = 0.1)
 # compute cumulative sums over all nn
-cnn = nn.cumsum(nn, cases)
+cnn <- nn.cumsum(nn, cases)
 # compute cumulative sums over just the first set of nn
-cnn1 = cumsum(cases[nn[[1]]])
+cnn1 <- cumsum(cases[nn[[1]]])
 # check equality
 all.equal(cnn1, cnn[seq_along(cnn1)])
 }

@@ -32,43 +32,49 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = flex_test(coords = coords, cases = floor(nydf$cases),
-#'                 w = nyw, k = 3,
-#'                 pop = nydf$pop, nsim = 49,
-#'                 alpha = 0.12, longlat = TRUE)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- flex_test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   w = nyw, k = 3,
+#'   pop = nydf$pop, nsim = 49,
+#'   alpha = 0.12, longlat = TRUE
+#' )
 #'
 #' data(nypoly)
 #' library(sp)
 #' # plot(nypoly, col = color.clusters(out))
-flex_test = function(coords, cases, pop, w, k = 10,
-                     ex = sum(cases) / sum(pop) * pop,
-                     type = "poisson", nsim = 499,
-                     alpha = 0.1, longlat = FALSE,
-                     cl = NULL,
-                     lonlat = longlat, ...) {
+flex_test <- function(coords, cases, pop, w, k = 10,
+                      ex = sum(cases) / sum(pop) * pop,
+                      type = "poisson", nsim = 499,
+                      alpha = 0.1, longlat = FALSE,
+                      cl = NULL,
+                      lonlat = longlat, ...) {
   if (!identical(lonlat, longlat)) {
-    longlat = lonlat
+    longlat <- lonlat
     warning("lonlat is deprecated. Please use longlat.")
   }
   # arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
   #                     nsim + 1, 0.5, longlat, FALSE, k = k,
   #                     w = w, type = type)
 
-  coords = as.matrix(coords)
+  coords <- as.matrix(coords)
   # get list of nearest neighbors
-  nn = knn(coords, longlat = longlat, k = k)
+  nn <- knn(coords, longlat = longlat, k = k)
   # get vector of log primes
-  lprimes = log(randtoolbox::get.primes(nrow(w)))
+  lprimes <- log(randtoolbox::get.primes(nrow(w)))
   # convert type to integer
-  itype = ifelse(type == "poisson", 0, 1)
+  itype <- ifelse(type == "poisson", 0, 1)
   # run flex_test via cpp
-  pruned = flex_test_cpp(nn = nn, cases = cases, pop = pop, w = w, k = k,
-                         ex = ex, type = itype, nsim = nsim, alpha = alpha,
-                         lprimes = lprimes, verbose = TRUE)
-  pruned = sig_noc(tobs = pruned$tobs, zones = pruned$zones,
-                   pvalue = pruned$pvalues, alpha = alpha,
-                   order_by = "tobs")
+  pruned <- flex_test_cpp(
+    nn = nn, cases = cases, pop = pop, w = w, k = k,
+    ex = ex, type = itype, nsim = nsim, alpha = alpha,
+    lprimes = lprimes, verbose = TRUE
+  )
+  pruned <- sig_noc(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalues, alpha = alpha,
+    order_by = "tobs"
+  )
   # pruned2 = NULL
   # pruned2$zones = logical2zones(pruned$zones, nn)
   # # convert tobs and pvalues from nested lists of vectors to vectors
@@ -86,15 +92,19 @@ flex_test = function(coords, cases, pop, w, k = 10,
   # pruned = sig_noc(tobs = pruned$tobs, zones = pruned$zones,
   #                  pvalue = pruned$pvalue, alpha = alpha,
   #                  order_by = "tobs")
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "flexible",
-                rel_param = list(type = type,
-                                 simdist = "multinomial",
-                                 nsim = nsim,
-                                 k = k,
-                                 nn = nn),
-                alpha = alpha,
-                w = w, d = NULL)
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "flexible",
+    rel_param = list(
+      type = type,
+      simdist = "multinomial",
+      nsim = nsim,
+      k = k,
+      nn = nn
+    ),
+    alpha = alpha,
+    w = w, d = NULL
+  )
 }

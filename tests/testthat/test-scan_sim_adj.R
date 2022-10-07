@@ -8,25 +8,29 @@ cases <- floor(nydf$cases)
 ty <- sum(cases)
 e <- ty / sum(nydf$population) * nydf$population
 ein <- nn.cumsum(nn, e)
+eout <- ty - ein
 tpop <- sum(nydf$population)
 popin <- nn.cumsum(nn, nydf$population)
-sa <- scan.sim(nsim, nn,
+popout <- tpop - popin
+sa <- scan.sim.adj(nsim, nn,
   ty = ty, ex = e, type = "poisson",
-  ein = ein, eout = ty - ein, simdist = "multinomial",
+  logein = log(ein), logeout = log(eout), simdist = "multinomial",
   pop = nydf$pop
 )
 
-sb <- scan.sim(nsim, nn,
+sb <- scan.sim.adj(nsim, nn,
   ty = ty, ex = e, type = "poisson",
-  ein = ein, eout = ty - ein, simdist = "poisson",
+  logein = log(ein), logeout = log(eout),
+  simdist = "poisson",
   pop = nydf$pop
 )
 
-sc <- scan.sim(nsim, nn,
+sc <- scan.sim.adj(nsim, nn,
   ty = ty, ex = e, type = "binomial",
-  ein = ein, eout = ty - ein, simdist = "binomial",
-  tpop = tpop, popin = popin,
-  popout = tpop - popin, pop = nydf$pop
+  logein = log(eout), logeout = log(eout), simdist = "binomial",
+  tpop = tpop, popin = popin, logpopin = log(popin),
+  popout = tpop - popin, logpopout = log(popout),
+  pop = nydf$pop
 )
 summa <- summary(sa)
 summb <- summary(sb)

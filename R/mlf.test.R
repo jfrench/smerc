@@ -57,90 +57,105 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = mlf.test(coords = coords, cases = floor(nydf$cases),
-#'                   pop = nydf$pop, w = nyw,
-#'                   alpha = 0.12, longlat = TRUE,
-#'                   nsim = 10, ubpop = 0.1, ubd = 0.5)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- mlf.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, w = nyw,
+#'   alpha = 0.12, longlat = TRUE,
+#'   nsim = 10, ubpop = 0.1, ubd = 0.5
+#' )
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-mlf.test = function(coords, cases, pop, w,
-                    ex = sum(cases) / sum(pop) * pop,
-                    nsim = 499, alpha = 0.1,
-                    ubpop = 0.5, ubd = 0.5,
-                    longlat = FALSE, cl = NULL) {
+mlf.test <- function(coords, cases, pop, w,
+                     ex = sum(cases) / sum(pop) * pop,
+                     nsim = 499, alpha = 0.1,
+                     ubpop = 0.5, ubd = 0.5,
+                     longlat = FALSE, cl = NULL) {
   # sanity checking
   arg_check_scan_test(coords, cases, pop, ex, nsim, alpha,
-                      nsim + 1, ubpop, longlat, FALSE,
-                      k = 1, w = w)
+    nsim + 1, ubpop, longlat, FALSE,
+    k = 1, w = w
+  )
 
-  coords = as.matrix(coords)
-  ty = sum(cases) # sum of all cases
+  coords <- as.matrix(coords)
+  ty <- sum(cases) # sum of all cases
 
   # calculate test statistics for each individual region
   # yin, ein, eout, ty
-  eout = ty - ex
-  tobs = scan.stat(cases, ex, eout, ty)
+  eout <- ty - ex
+  tobs <- scan.stat(cases, ex, eout, ty)
 
   # determine starting region for maxima likelihood first
   # algorithm
-  start = which.max(tobs)
+  start <- which.max(tobs)
 
   # intercentroid distances
-  d = sp::spDists(coords, longlat = longlat)
+  d <- sp::spDists(coords, longlat = longlat)
 
   # upperbound for population in zone
-  max_pop = ubpop * sum(pop)
+  max_pop <- ubpop * sum(pop)
   # upperbound for distance between centroids in zone
-  max_dist = ubd * max(d)
+  max_dist <- ubd * max(d)
 
   # find neighbors for starting region
-  all_neighbors = lapply(seq_along(cases),
-                         function(i) which(d[i, ] <= max_dist))
+  all_neighbors <- lapply(
+    seq_along(cases),
+    function(i) which(d[i, ] <= max_dist)
+  )
 
   # return sequence of candidate zones (or a subset depending on type)
-  max_zone = mst.seq(start, all_neighbors[[start]], cases,
-                     pop, w, ex, ty, max_pop, "pruned")
+  max_zone <- mst.seq(
+    start, all_neighbors[[start]], cases,
+    pop, w, ex, ty, max_pop, "pruned"
+  )
 
   # determine which call for simulations
-  fcall = pbapply::pblapply
+  fcall <- pbapply::pblapply
   # setup list for call
-  fcall_list = list(X = as.list(seq_len(nsim)), FUN = function(i) {
+  fcall_list <- list(X = as.list(seq_len(nsim)), FUN = function(i) {
     # simulate new data set
-    ysim = stats::rmultinom(1, size = ty, prob = ex)
+    ysim <- stats::rmultinom(1, size = ty, prob = ex)
 
-    sim_tstat = scan.stat(ysim, ex, eout, ty)
+    sim_tstat <- scan.stat(ysim, ex, eout, ty)
     # determine starting region for maxima likelihood first algorithm
-    sim_start = which.max(sim_tstat)
+    sim_start <- which.max(sim_tstat)
 
     # find max statistic for best candidate zone
     mst.seq(sim_start, all_neighbors[[sim_start]], cases,
-            pop, w, ex, ty, max_pop, type = "maxonly")
+      pop, w, ex, ty, max_pop,
+      type = "maxonly"
+    )
   }, cl = cl)
 
   # get max statistics for simulated data sets
-  tsim = unlist(do.call(fcall, fcall_list), use.names = FALSE)
+  tsim <- unlist(do.call(fcall, fcall_list), use.names = FALSE)
 
   # p-values associated with these max statistics for each centroid
-  pvalue = (sum(tsim >= max_zone$loglikrat) + 1) / (nsim + 1)
+  pvalue <- (sum(tsim >= max_zone$loglikrat) + 1) / (nsim + 1)
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_noc(tobs = max_zone$loglikrat,
-                   zones = list(max_zone$locids),
-                   pvalue = pvalue, alpha = alpha,
-                   order_by = "tobs")
+  pruned <- sig_noc(
+    tobs = max_zone$loglikrat,
+    zones = list(max_zone$locids),
+    pvalue = pvalue, alpha = alpha,
+    order_by = "tobs"
+  )
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "maxima likelihood first",
-                rel_param = list(type = "poisson",
-                                 simdist = "multinomial",
-                                 nsim = nsim,
-                                 ubpop = ubpop,
-                                 ubd = ubd),
-                alpha = alpha,
-                w = w, d = NULL)
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "maxima likelihood first",
+    rel_param = list(
+      type = "poisson",
+      simdist = "multinomial",
+      nsim = nsim,
+      ubpop = ubpop,
+      ubd = ubd
+    ),
+    alpha = alpha,
+    w = w, d = NULL
+  )
 }

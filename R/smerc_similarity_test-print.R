@@ -7,7 +7,7 @@
 #' @param digits Number of significant digits to print.
 #' @param \dots Not currently implemented.
 #' @export
-print.smerc_similarity_test = function(x, ..., digits = 2) {
+print.smerc_similarity_test <- function(x, ..., digits = 2) {
   cat("\n")
   cat("Walter (1992) Constant-risk Moran's I\n")
   cat("\n")
@@ -19,8 +19,8 @@ print.smerc_similarity_test = function(x, ..., digits = 2) {
   } else if (x$alternative == "less") {
     cat("alternative hypothesis: rho < 0", "\n")
   }
-  cat("test statistic:", round(x$test_statistic, digits = digits),"\n")
+  cat("test statistic:", round(x$test_statistic, digits = digits), "\n")
   cat("p-value:", round(x$pvalue, digits = digits), "\n")
-  cat("nsim:", x$nsim,"\n")
+  cat("nsim:", x$nsim, "\n")
   cat("simulation procedure: ", x$simdist, "\n")
 }

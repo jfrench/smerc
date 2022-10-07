@@ -29,35 +29,36 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' enn = elliptic.nn(coords, nydf$pop, ubpop = 0.015)
-#' cases = floor(nydf$cases)
-#' ty = sum(cases)
-#' ex = ty/sum(nydf$pop) * nydf$pop
-#' yin = nn.cumsum(enn$nn, cases)
-#' ein = nn.cumsum(enn$nn, ex)
-#' logein = log(ein)
-#' logeout = log(ty - ein)
-#' pen = elliptic.penalty(a = 0.5, enn$shape_all)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' enn <- elliptic.nn(coords, nydf$pop, ubpop = 0.015)
+#' cases <- floor(nydf$cases)
+#' ty <- sum(cases)
+#' ex <- ty / sum(nydf$pop) * nydf$pop
+#' yin <- nn.cumsum(enn$nn, cases)
+#' ein <- nn.cumsum(enn$nn, ex)
+#' logein <- log(ein)
+#' logeout <- log(ty - ein)
+#' pen <- elliptic.penalty(a = 0.5, enn$shape_all)
 #' stat.poisson.adj(yin, ty, logein, logeout,
-#'                  a = 0.5, pen = pen, return.max = TRUE)
-stat.poisson.adj = function(yin, ty, logein, logeout, a = 0,
-                            pen = 1, min.cases = 2,
-                            return.max = FALSE) {
-  yout = ty - yin
+#'   a = 0.5, pen = pen, return.max = TRUE
+#' )
+stat.poisson.adj <- function(yin, ty, logein, logeout, a = 0,
+                             pen = 1, min.cases = 2,
+                             return.max = FALSE) {
+  yout <- ty - yin
   # determine if there will be any problematic statistics
-  good = which(yin >= min.cases)
+  good <- which(yin >= min.cases)
   # create vector for storage
-  tall = numeric(length(yin))
+  tall <- numeric(length(yin))
   # log ratio observed/expected (in and out) for good locations
-  lrin =  log(yin[good]) - logein[good]
-  lrout = log(yout[good]) - logeout[good]
+  lrin <- log(yin[good]) - logein[good]
+  lrout <- log(yout[good]) - logeout[good]
   # compute statistics for good locations
-  tall[good] = yin[good] * lrin + yout[good] * lrout
+  tall[good] <- yin[good] * lrin + yout[good] * lrout
   # if indicator not satisfied (yin/ein > yout/eout), set to 0
-  tall[good][lrin < lrout] = 0
+  tall[good][lrin < lrout] <- 0
   if (a > 0) {
-    tall = tall * pen
+    tall <- tall * pen
   }
   if (return.max) {
     return(max(tall))
@@ -68,9 +69,9 @@ stat.poisson.adj = function(yin, ty, logein, logeout, a = 0,
 
 #' @export
 #' @rdname stat.poisson.adj
-stat_poisson_adj = function(yin, ty, logein, logeout, a = 0,
-                            pen = 1, min.cases = 2,
-                            return.max = FALSE) {
+stat_poisson_adj <- function(yin, ty, logein, logeout, a = 0,
+                             pen = 1, min.cases = 2,
+                             return.max = FALSE) {
   .Call(`_smerc_stat_poisson_adj_cpp`, yin, ty, logein, logeout, a, pen, min.cases, return.max)
 }
 
@@ -80,6 +81,8 @@ stat_binom_adj <- function(yin, ty, popin, popout,
                            logpopin, logpopout, tpop,
                            min.cases = 2,
                            return.max = FALSE) {
-  .Call(`_smerc_stat_binom_adj_cpp`, yin, ty, popin, popout,
-        logpopin, logpopout, tpop, min.cases, return.max)
+  .Call(
+    `_smerc_stat_binom_adj_cpp`, yin, ty, popin, popout,
+    logpopin, logpopout, tpop, min.cases, return.max
+  )
 }

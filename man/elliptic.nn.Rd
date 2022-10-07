@@ -43,7 +43,8 @@ shape and angle.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-enn = elliptic.nn(coords, nydf$pop, 0.1,
-                  shape = c(1, 1.5), nangle = c(1, 4))
+coords <- with(nydf, cbind(longitude, latitude))
+enn <- elliptic.nn(coords, nydf$pop, 0.1,
+  shape = c(1, 1.5), nangle = c(1, 4)
+)
 }

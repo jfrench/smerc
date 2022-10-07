@@ -15,7 +15,7 @@
 #' @keywords internal
 #' @examples
 #' mc.pvalue(8:10, 1:9)
-mc.pvalue = function(tobs, tsim) {
-  nsim = length(tsim)
+mc.pvalue <- function(tobs, tsim) {
+  nsim <- length(tsim)
   unname(sapply(tobs, function(x) (sum(tsim >= x) + 1) / (nsim + 1)))
 }
