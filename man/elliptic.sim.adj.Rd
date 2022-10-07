@@ -36,8 +36,8 @@ cases in each candidate zone.}
 \item{logeout}{The \code{log} of the expected number of
 cases outside of each candidate zone.}
 
-\item{a}{The penalty for the spatial scan statistic.  The
-default is 0.5.}
+\item{a}{A tuning parameter for the adjusted
+log-likelihood ratio.  See details.}
 
 \item{pen}{The eccentricity penalty for each candidate
 zone.}

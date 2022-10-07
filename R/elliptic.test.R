@@ -26,7 +26,6 @@
 #' \code{\link{plot.smerc_cluster}},
 #' \code{\link{scan.stat}}, \code{\link{scan.test}}
 #' @author Joshua French
-#' @export
 #' @references Kulldorff, M. (1997) A spatial scan
 #'   statistic. Communications in Statistics - Theory and
 #'   Methods, 26(6): 1481-1496,
@@ -45,7 +44,7 @@
 #'                    nsim = 2,
 #'                    alpha = 0.12,
 #'                    shape = 1.5, nangle = 4)
-elliptic.test = function(coords, cases, pop,
+elliptic.test.old = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5,

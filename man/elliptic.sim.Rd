@@ -30,8 +30,8 @@ simulations to perform.}
 The default is calculated under the constant risk
 hypothesis.}
 
-\item{a}{The penalty for the spatial scan statistic.  The
-default is 0.5.}
+\item{a}{A tuning parameter for the adjusted
+log-likelihood ratio.  See details.}
 
 \item{shape_all}{A vector of the shapes associated with
 all of the possible zones constructed from \code{nn}.

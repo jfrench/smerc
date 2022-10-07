@@ -12,8 +12,13 @@
 #' be a cluster.  If no significant clusters are found, then
 #' the most likely cluster is returned (along with a
 #' warning).
-#' @inheritParams stat.poisson.adj
-#' @inheritParams elliptic.test
+#' @inheritParams scan.test
+#' @param shape The ratios of the major and minor axes of
+#'   the desired ellipses.
+#' @param nangle The number of angles (between 0 and 180) to
+#'   consider for each shape.
+#' @param a The penalty for the spatial scan statistic.  The
+#'   default is 0.5.
 #'
 #' @inherit scan.test return params
 #' @seealso \code{\link{print.smerc_cluster}},
@@ -33,7 +38,7 @@
 #' <doi:10.1002/sim.2490>
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
+#' coords = nydf[,c("x", "y")]
 #' set.seed(1)
 #' out = elliptic.test(coords = coords,
 #'                    cases = floor(nydf$cases),
@@ -41,12 +46,12 @@
 #'                    nsim = 99,
 #'                    alpha = 0.12)
 #' set.seed(1)
-#' out2 = elliptic.test2(coords = coords,
+#' out2 = elliptic.test.old(coords = coords,
 #'                    cases = floor(nydf$cases),
 #'                    pop = nydf$pop, ubpop = 0.1,
 #'                    nsim = 99,
 #'                    alpha = 0.12)
-elliptic.test2 = function(coords, cases, pop,
+elliptic.test = function(coords, cases, pop,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,
                      ubpop = 0.5,
@@ -147,3 +152,20 @@ elliptic.test2 = function(coords, cases, pop,
                 angle_all = angle_all)
 
 }
+
+#' Additional argument checking for elliptic_test
+#'
+#' @param shape A vector of shapes (values >= 1)
+#' @param nangle A vector of angles for each shape (values >= 1)
+#' @param a A penalty parameter (a >= 0)
+#' @return NULL
+#' @noRd
+arg_check_elliptic_test =
+  function(shape, nangle, a) {
+    if (length(shape) != length(nangle)) {
+      stop("The length of shape and nangle must match.")
+    }
+    arg_check_shape(shape)
+    arg_check_nangle(nangle)
+    arg_check_a(a)
+  }

@@ -14,3 +14,5 @@
 1.4 Add optimal_ubpop for choosing a population upper bound.
 1.5 Add function to easily extract clusters.
 1.6 Add constant-risk version of Moran's I. Correct parallel processing bug (thanks to Insang Song).
+1.7 Improve efficiency of scan.test and elliptic.test by removing
+    redundancies.
