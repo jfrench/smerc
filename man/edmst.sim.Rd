@@ -38,6 +38,9 @@ or an integer to indicate number of child-processes
 \value{
 A vector with the maximum test statistic for each
   simulated data set.
+
+A vector with the maximum test statistic for each
+  simulated data set.
 }
 \description{
 \code{edmst.sim} efficiently performs
