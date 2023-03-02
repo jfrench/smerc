@@ -48,7 +48,8 @@ nnpop <- function(d, pop, ubpop) {
     FUN = function(x) {
       csum <- cumsum(pop[x])
       x[which(csum <= tpop * ubpop)]
-    }
+    },
+    simplify = FALSE
   ))
 }
 

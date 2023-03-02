@@ -1,7 +1,7 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.7
+Version: 1.7.3
 Authors@R: 
     c(person(given = "Joshua",
             family = "French",
@@ -14,11 +14,7 @@ Authors@R:
             comment = c(ORCID = "0000-0002-3322-5244")))      
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 BugReports: https://github.com/jfrench/smerc/issues
-Description: Implements statistical methods for analyzing the counts of areal data,
-    with a focus on the detection of spatial clusters and clustering.  The package
-    has a heavy emphasis on spatial scan methods, which were first introduced
-    by Kulldorff and Nagarwalla (1995) <doi:10.1002/sim.4780140809> and
-    Kulldorff (1997) <doi:10.1080/03610929708831995>.
+Description: Implements statistical methods for analyzing the counts of areal data, with a focus on the detection of spatial clusters and clustering.  The package has a heavy emphasis on spatial scan methods, which were first introduced by Kulldorff and Nagarwalla (1995) <doi:10.1002/sim.4780140809> and Kulldorff (1997) <doi:10.1080/03610929708831995>.
 License: GPL (>=2)
 LazyLoad: yes
 Depends: R (>= 3.6)
@@ -37,7 +33,7 @@ Suggests:
     knitr,
     rmarkdown
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
