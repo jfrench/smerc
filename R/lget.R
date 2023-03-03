@@ -14,31 +14,36 @@
 #' \code{name} parts of each element of \code{X}.
 #' @export
 #' @examples
-#' e1 = list(x = rnorm(5),
-#'           y = letters[c(1:2, 2:1, 3)],
-#'           z = c(TRUE, TRUE, FALSE, TRUE, TRUE)
+#' e1 <- list(
+#'   x = rnorm(5),
+#'   y = letters[c(1:2, 2:1, 3)],
+#'   z = c(TRUE, TRUE, FALSE, TRUE, TRUE)
 #' )
-#' e2 = list(x = rnorm(5),
-#'           y = letters[c(1:4, 1)],
-#'           z = c(FALSE, TRUE, FALSE, TRUE, FALSE))
-#' X = list(e1, e2)
+#' e2 <- list(
+#'   x = rnorm(5),
+#'   y = letters[c(1:4, 1)],
+#'   z = c(FALSE, TRUE, FALSE, TRUE, FALSE)
+#' )
+#' X <- list(e1, e2)
 #' lget(X, name = "x")
 #' sget(X, name = "y")
-lget = function(X, name) {
+lget <- function(X, name) {
   base::lapply(X, FUN = getElement, name = name)
 }
 
 #' @rdname lget
 #' @export
-lgetElement = lget
+lgetElement <- lget
 
 #' @rdname lget
 #' @export
-sget = function(X, name, simplify = TRUE, USE.NAMES = TRUE) {
-  base::sapply(X, FUN = getElement, name = name,
-               simplify = simplify, USE.NAMES = USE.NAMES)
+sget <- function(X, name, simplify = TRUE, USE.NAMES = TRUE) {
+  base::sapply(X,
+    FUN = getElement, name = name,
+    simplify = simplify, USE.NAMES = USE.NAMES
+  )
 }
 
 #' @rdname lget
 #' @export
-sgetElement = sget
+sgetElement <- sget

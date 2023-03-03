@@ -36,6 +36,6 @@ observations is its closest neighbor.
 }
 \examples{
 data(nydf)
-coords = nydf[,c("longitude", "latitude")]
+coords <- nydf[, c("longitude", "latitude")]
 knn(coords, longlat = TRUE, k = 4)
 }

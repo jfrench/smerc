@@ -20,40 +20,43 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' zones = flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
-#' cases = floor(nydf$cases)
-#' ty = sum(cases)
-#' ex = ty/sum(nydf$pop) * nydf$pop
-#' ein = zones.sum(zones, ex)
-#' tsim = flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
-flex.sim = function(nsim = 1, zones, ty, ex, type = "poisson",
-                    ein = NULL, eout = NULL,
-                    tpop = NULL, popin = NULL, popout = NULL,
-                    cl = NULL) {
-
-  arg_check_flex_sim(nsim, zones, ty, ex, ein, eout,
-                     tpop, popin, popout, type)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' zones <- flex.zones(coords, w = nyw, k = 3, longlat = TRUE)
+#' cases <- floor(nydf$cases)
+#' ty <- sum(cases)
+#' ex <- ty / sum(nydf$pop) * nydf$pop
+#' ein <- zones.sum(zones, ex)
+#' tsim <- flex.sim(nsim = 2, zones, ty, ex, ein = ein, eout = ty - ein)
+flex.sim <- function(nsim = 1, zones, ty, ex, type = "poisson",
+                     ein = NULL, eout = NULL,
+                     tpop = NULL, popin = NULL, popout = NULL,
+                     cl = NULL) {
+  arg_check_flex_sim(
+    nsim, zones, ty, ex, ein, eout,
+    tpop, popin, popout, type
+  )
 
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim <- pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
-    ysim = stats::rmultinom(1, size = ty, prob = ex)
+    ysim <- stats::rmultinom(1, size = ty, prob = ex)
     # compute test statistics for each zone
-    yin = zones.sum(zones, ysim)
+    yin <- zones.sum(zones, ysim)
     if (type == "poisson") {
-      tall = stat.poisson(yin, ty - yin, ein, eout)
+      tall <- stat.poisson(yin, ty - yin, ein, eout)
     } else if (type == "binomial") {
-      tall = stat.binom(yin, ty - yin, ty,
-                        popin, popout, tpop)
+      tall <- stat.binom(
+        yin, ty - yin, ty,
+        popin, popout, tpop
+      )
     }
     max(tall)
   }, cl = cl)
   unlist(tsim, use.names = FALSE)
 }
 
-arg_check_flex_sim = function(nsim, zones, ty, ex, ein, eout,
-                              tpop, popin, popout, type) {
+arg_check_flex_sim <- function(nsim, zones, ty, ex, ein, eout,
+                               tpop, popin, popout, type) {
   if (length(nsim) != 1 | !is.numeric(nsim) | nsim < 1) {
     stop("nsim must be a positive integer")
   }

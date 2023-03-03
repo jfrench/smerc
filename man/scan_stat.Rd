@@ -75,18 +75,22 @@ See references.
 \examples{
 # New York leukemia data
 # total cases
-ty = 552
+ty <- 552
 # total population
-tpop = 1057673
+tpop <- 1057673
 
 # poisson example with yin = 106 and ein = 62.13
 scan_stat(yin = 106, ty = ty, ein = 62.13)
-stat_poisson(yin = 106, yout = 552 - 106,
-             ein = 62.13, eout = 552 - 62.13)
+stat_poisson(
+  yin = 106, yout = 552 - 106,
+  ein = 62.13, eout = 552 - 62.13
+)
 
 # binomial example with yin = 41 and popin = 38999
-scan_stat(yin = 41, ty = ty,
-          popin = 38999, tpop = tpop, type = "binomial")
+scan_stat(
+  yin = 41, ty = ty,
+  popin = 38999, tpop = tpop, type = "binomial"
+)
 stat_binom(41, ty - 41, ty, 38999, tpop - 38999, tpop)
 }
 \references{

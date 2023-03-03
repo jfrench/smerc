@@ -86,9 +86,11 @@ the maximum intercentroid distance across all regions}.
 \examples{
 data(nydf)
 data(nyw)
-coords = as.matrix(nydf[,c("x", "y")])
-mlf.zones(coords, cases = floor(nydf$cases),
-          pop = nydf$pop, w = nyw, longlat = TRUE)
+coords <- as.matrix(nydf[, c("x", "y")])
+mlf.zones(coords,
+  cases = floor(nydf$cases),
+  pop = nydf$pop, w = nyw, longlat = TRUE
+)
 }
 \references{
 Yao, Z., Tang, J., & Zhan, F. B. (2011).

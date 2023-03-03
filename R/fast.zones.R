@@ -29,12 +29,12 @@
 #'   <doi:10.1111/j.1467-9868.2011.01014.x>
 #' @examples
 #' data(nydf)
-#' cases = nydf$cases
-#' pop = nydf$pop
+#' cases <- nydf$cases
+#' pop <- nydf$pop
 #' # compare output format
 #' fast.zones(cases, pop, ubpop = 0.05)
 #' fast.zones(cases, pop, ubpop = 0.05, simple = FALSE)
-fast.zones = function(cases, pop, ubpop = 0.5, simple = TRUE) {
+fast.zones <- function(cases, pop, ubpop = 0.5, simple = TRUE) {
   if (length(cases) != length(pop)) {
     stop("length(cases) != length(pop)")
   }
@@ -49,13 +49,13 @@ fast.zones = function(cases, pop, ubpop = 0.5, simple = TRUE) {
   }
 
   # order rates from largest to smallest
-  or = order(cases / pop, decreasing = TRUE)
-  max_pop = sum(pop) * ubpop
+  or <- order(cases / pop, decreasing = TRUE)
+  max_pop <- sum(pop) * ubpop
 
   if (simple) {
     return(or[cumsum(pop[or]) <= max_pop])
   } else {
-    or = or[cumsum(pop[or]) <= max_pop]
+    or <- or[cumsum(pop[or]) <= max_pop]
     return(lapply(seq_along(or), function(i) or[seq_len(i)]))
   }
 }

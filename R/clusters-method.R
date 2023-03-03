@@ -11,12 +11,14 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 19,
-#'                 alpha = 0.2, longlat = TRUE)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, nsim = 19,
+#'   alpha = 0.2, longlat = TRUE
+#' )
 #' clusters(out)
 #' clusters(out, idx = 1:2)
-clusters = function(x, idx = seq_along(x$clusters), ...) {
+clusters <- function(x, idx = seq_along(x$clusters), ...) {
   UseMethod("clusters")
 }

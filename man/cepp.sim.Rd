@@ -40,16 +40,16 @@ better understanding the implementation of the test.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(longitude, latitude))
-d = sp::spDists(as.matrix(coords), longlat = TRUE)
-nn = casewin(d, cases = nydf$pop, cstar = 15000)
-cases = floor(nydf$cases)
-ty = sum(cases)
-ex = ty/sum(nydf$pop) * nydf$pop
+coords <- with(nydf, cbind(longitude, latitude))
+d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+nn <- casewin(d, cases = nydf$pop, cstar = 15000)
+cases <- floor(nydf$cases)
+ty <- sum(cases)
+ex <- ty / sum(nydf$pop) * nydf$pop
 # find smallest windows with at least n* pop
-nstar = 1000
-nn = casewin(d, cases = nydf$pop, cstar = nstar)
+nstar <- 1000
+nn <- casewin(d, cases = nydf$pop, cstar = nstar)
 # determine ts
-wts = cepp.weights(nn, nydf$pop, nstar)
-tsim = cepp.sim(1, nn = nn, ty = ty, ex = ex, wts = wts)
+wts <- cepp.weights(nn, nydf$pop, nstar)
+tsim <- cepp.sim(1, nn = nn, ty = ty, ex = ex, wts = wts)
 }

@@ -12,11 +12,11 @@
 #' @export
 #'
 #' @examples
-#' nn = list(1:3, c(2:1, 4))
+#' nn <- list(1:3, c(2:1, 4))
 #' nndup(nn, 4)
-nndup = function(nn, N = max(unlist(nn))) {
+nndup <- function(nn, N = max(unlist(nn))) {
   # get prime numbers
-  pri = randtoolbox::get.primes(N)
+  pri <- randtoolbox::get.primes(N)
   # determine the el
   duplicated(unlist(lapply(nn, function(x) {
     cumsum(log(pri[x]))

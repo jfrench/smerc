@@ -20,7 +20,7 @@ come from functions such as \code{\link{nnpop}} or
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(x, y))
-nn = knn(coords, k = 2)
+coords <- with(nydf, cbind(x, y))
+nn <- knn(coords, k = 2)
 nn2zones(nn)
 }

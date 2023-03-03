@@ -21,23 +21,23 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' w = dweights(coords, kappa = 1, type = "tango", longlat = TRUE)
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' w <- dweights(coords, kappa = 1, type = "tango", longlat = TRUE)
 #' tango.stat(nydf$cases, nydf$pop, w)
-tango.stat = function(cases, pop, w) {
+tango.stat <- function(cases, pop, w) {
   arg_check_tango_stat(cases, pop, w)
-  N = length(cases)
-  pcases = cases / sum(cases)
-  p = pop / sum(pop)
-  pd = pcases - p
-  gof = sum(pd ^ 2)
-  sa = (crossprod(pd, w - diag(N)) %*% pd)[1, 1]
-  tstat = gof + sa
+  N <- length(cases)
+  pcases <- cases / sum(cases)
+  p <- pop / sum(pop)
+  pd <- pcases - p
+  gof <- sum(pd^2)
+  sa <- (crossprod(pd, w - diag(N)) %*% pd)[1, 1]
+  tstat <- gof + sa
   return(list(tstat = tstat, gof = gof, sa = sa))
 }
 
-arg_check_tango_stat = function(cases, pop, w) {
-  N = length(cases)
+arg_check_tango_stat <- function(cases, pop, w) {
+  N <- length(cases)
   if (!is.numeric(cases)) {
     stop("cases should be a numeric vector")
   }

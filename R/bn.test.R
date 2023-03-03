@@ -28,58 +28,72 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = with(nydf, cbind(x, y))
-#' out = bn.test(coords = coords, cases = nydf$cases,
-#'               pop = nydf$pop, cstar = 6,
-#'               alpha = 0.1)
+#' coords <- with(nydf, cbind(x, y))
+#' out <- bn.test(
+#'   coords = coords, cases = nydf$cases,
+#'   pop = nydf$pop, cstar = 6,
+#'   alpha = 0.1
+#' )
 #' plot(out)
 #'
 #' data(nypoly)
 #' library(sp)
 #' plot(nypoly, col = color.clusters(out))
-bn.test = function(coords, cases, pop, cstar,
-                   ex = sum(cases) / sum(pop) * pop,
-                   alpha = 0.10,
-                   longlat = FALSE,
-                   modified = FALSE) {
+bn.test <- function(coords, cases, pop, cstar,
+                    ex = sum(cases) / sum(pop) * pop,
+                    alpha = 0.10,
+                    longlat = FALSE,
+                    modified = FALSE) {
   # sanity checking
-  arg_check_bn_test(coords = coords, cases = cases,
-                    pop = pop, cstar = cstar,
-                    longlat = longlat, alpha = alpha,
-                    ex = ex, modified = modified)
+  arg_check_bn_test(
+    coords = coords, cases = cases,
+    pop = pop, cstar = cstar,
+    longlat = longlat, alpha = alpha,
+    ex = ex, modified = modified
+  )
 
-  coords = as.matrix(coords)
+  coords <- as.matrix(coords)
   # intercentroid distances
-  d = sp::spDists(coords, longlat = longlat)
+  d <- sp::spDists(coords, longlat = longlat)
 
   # find smallest windows with at least c* cases
-  cwins = casewin(d, cases, cstar)
+  cwins <- casewin(d, cases, cstar)
   # determine size of each window
-  l = sapply(cwins, length)
+  l <- sapply(cwins, length)
   # determine cases and expected in each window
-  case_cwins = zones.sum(cwins, cases)
-  ex_cwins = zones.sum(cwins, ex)
+  case_cwins <- zones.sum(cwins, cases)
+  ex_cwins <- zones.sum(cwins, ex)
 
   if (!modified) {
-    pvalue = stats::ppois(cstar - 1, lambda = ex_cwins,
-                          lower.tail = FALSE)
-    } else {
-    pvalue = stats::ppois(case_cwins - 1, lambda = ex_cwins,
-                          lower.tail = FALSE)
+    pvalue <- stats::ppois(cstar - 1,
+      lambda = ex_cwins,
+      lower.tail = FALSE
+    )
+  } else {
+    pvalue <- stats::ppois(case_cwins - 1,
+      lambda = ex_cwins,
+      lower.tail = FALSE
+    )
   }
 
   # significant, ordered, non-overlapping clusters and
   # information
-  pruned = sig_noc(tobs = l, zones = cwins, pvalue = pvalue,
-                   alpha = alpha, order_by = "pvalue")
+  pruned <- sig_noc(
+    tobs = l, zones = cwins, pvalue = pvalue,
+    alpha = alpha, order_by = "pvalue"
+  )
 
-  smerc_cluster(tobs = pruned$tobs, zones = pruned$zones,
-                pvalue = pruned$pvalue, coords = coords,
-                cases = cases, pop = pop, ex = ex,
-                longlat = longlat, method = "Besag-Newell",
-                rel_param = list(cstar = cstar,
-                                 modified = modified),
-                alpha = alpha, w = NULL, d = d)
+  smerc_cluster(
+    tobs = pruned$tobs, zones = pruned$zones,
+    pvalue = pruned$pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat, method = "Besag-Newell",
+    rel_param = list(
+      cstar = cstar,
+      modified = modified
+    ),
+    alpha = alpha, w = NULL, d = d
+  )
 }
 
 #' Argument checking for bn.test
@@ -118,11 +132,11 @@ bn.test = function(coords, cases, pop, cstar,
 #' @param ex A vector of expected counts
 #' @param modified A logical value for whether the test should be "modified"
 #' @noRd
-arg_check_bn_test = function(coords, cases, pop, cstar,
-                             longlat, alpha, ex,
-                             modified) {
+arg_check_bn_test <- function(coords, cases, pop, cstar,
+                              longlat, alpha, ex,
+                              modified) {
   arg_check_coords(coords)
-  N = nrow(coords)
+  N <- nrow(coords)
   arg_check_cases(cases, N)
   arg_check_pop(pop, N)
   arg_check_cstar(cstar, cases)
@@ -131,4 +145,3 @@ arg_check_bn_test = function(coords, cases, pop, cstar,
   arg_check_ex(ex, N)
   arg_check_modified(modified)
 }
-

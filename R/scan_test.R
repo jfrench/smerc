@@ -46,7 +46,6 @@
 #' #' \code{\link{plot.smerc_cluster}},
 #' #' \code{\link{scan.stat}}
 #' #' @author Joshua French
-#' #' @export
 #' #' @references Kulldorff, M. (1997) A spatial scan
 #' #'   statistic. Communications in Statistics - Theory and
 #' #'   Methods, 26(6): 1481-1496,
@@ -141,37 +140,28 @@
 #'     }
 #'     tobs = compute_scan_stat(yin, ein, popin, type = type,
 #'                              ty = ty, tpop = tpop, tex = tex,
-#'                              mult = mult, max_only = FALSE)
+#'                              mult = mult, max_only = FALSE,
+#'                              min.cases = min.cases)
 #'     tmax = vapply(seq_len(nsim), FUN = function(i) {
 #'       compute_scan_stat(yin = yinsim[,i], ein, popin, type = type,
 #'                         ty = ty, tpop = tpop, tex = tex,
-#'                         mult = multsim[i], max_only = TRUE)
+#'                         mult = multsim[i], max_only = TRUE,
+#'                         min.cases = min.cases)
 #'     }, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
 #'     return(list(tobs = tobs,
 #'            tmax = tmax,
-#'            cmax_tobs = max(tobs)))
+#'            cmax_tobs = max(tobs),
+#'            nnseq = nnseq))
 #'   })
 #'
-#'   # compute test statistics for observed data
-#'   if (type == "poisson") {
-#'     eout = sum(ex) - ein
-#'     # correct for the situation when the expected number of cases
-#'     # is not the same as the observed number of cases
-#'     mult = ty / sum(ex)
-#'     ein = ein * mult
-#'     eout = eout * mult
-#'     popin = NULL
-#'     popout = NULL
-#'     tpop = NULL
-#'     tobs = stat.poisson(yin, ty - yin, ein, eout)
-#'   } else if (type == "binomial") {
-#'     ein = NULL
-#'     eout = NULL
-#'     tpop = sum(pop)
-#'     popin = nn.cumsum(nn, pop)
-#'     popout = tpop - popin
-#'     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
-#'   }
+#'   tmaxv = apply(sget(simout, "tmax"), 1, max)
+#'   tobs_list = lget(simout, "tobs")
+#'   remaining = seq_len(N)
+#'   wmaxv = sapply(tobs_list, which.max)
+#'   maxv = sapply(tobs_list, max)
+#'
+#'   # get nearest neighbors
+#'   nn = lget(simout, "nnseq")
 #'
 #'   # determine distinct zones
 #'   wdup = nndup(nn, N)
@@ -181,6 +171,7 @@
 #'   w0 = which(tobs == 0 | yin < min.cases | wdup)
 #'
 #'   # determine zones
+#'   tobs = unlist(tobs_list, use.names = FALSE)
 #'   zones = nn2zones(nn)
 #'
 #'   # remove zones with a test statistic of 0
@@ -189,12 +180,6 @@
 #'
 #'   # compute test statistics for simulated data
 #'   if (nsim > 0) {
-#'     message("computing statistics for simulated data:")
-#'     tsim = scan.sim(nsim = nsim, nn = nn, ty = ty,
-#'                     ex = ex, type = type, ein = ein,
-#'                     eout = eout, popin = popin,
-#'                     popout = popout, tpop = tpop, cl = cl,
-#'                     simdist = simdist, pop = pop)
 #'     pvalue = mc.pvalue(tobs, tsim)
 #'   } else {
 #'     pvalue = rep(1, length(tobs))
@@ -278,7 +263,7 @@
 #' }
 #'
 #' compute_scan_stat = function(yin, ein = NULL, popin = NULL, type, ty, tpop, tex,
-#'                              mult, max_only = FALSE) {
+#'                              mult, max_only = FALSE, min.cases = 2) {
 #'   # compute test statistics for observed data
 #'   if (type == "poisson") {
 #'     eout = tex - ein
@@ -293,6 +278,9 @@
 #'     popout = tpop - popin
 #'     tobs = stat.binom(yin, ty - yin, ty, popin, popout, tpop)
 #'   }
+#'   # ensure min.cases constraint
+#'   tobs[yin < min.cases] = 0
+#'
 #'   if (max_only) {
 #'     return(max(tobs))
 #'   } else {

@@ -52,14 +52,17 @@ list using \code{\link[base]{lapply}}. \code{sget} and
 \code{sapply}.
 }
 \examples{
-e1 = list(x = rnorm(5),
-          y = letters[c(1:2, 2:1, 3)],
-          z = c(TRUE, TRUE, FALSE, TRUE, TRUE)
+e1 <- list(
+  x = rnorm(5),
+  y = letters[c(1:2, 2:1, 3)],
+  z = c(TRUE, TRUE, FALSE, TRUE, TRUE)
 )
-e2 = list(x = rnorm(5),
-          y = letters[c(1:4, 1)],
-          z = c(FALSE, TRUE, FALSE, TRUE, FALSE))
-X = list(e1, e2)
+e2 <- list(
+  x = rnorm(5),
+  y = letters[c(1:4, 1)],
+  z = c(FALSE, TRUE, FALSE, TRUE, FALSE)
+)
+X <- list(e1, e2)
 lget(X, name = "x")
 sget(X, name = "y")
 }

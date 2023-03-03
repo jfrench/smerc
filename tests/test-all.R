@@ -5,4 +5,3 @@ if (requireNamespace("testthat", quietly = TRUE)) {
 } else {
   message("tests could not be run because testthat is not installed")
 }
-

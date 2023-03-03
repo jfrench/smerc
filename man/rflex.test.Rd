@@ -99,11 +99,13 @@ most likely cluster is returned (along with a warning).
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-out = rflex.test(coords = coords, cases = floor(nydf$cases),
-                 w = nyw, k = 10,
-                 pop = nydf$pop, nsim = 49,
-                 alpha = 0.05, longlat = TRUE)
+coords <- with(nydf, cbind(longitude, latitude))
+out <- rflex.test(
+  coords = coords, cases = floor(nydf$cases),
+  w = nyw, k = 10,
+  pop = nydf$pop, nsim = 49,
+  alpha = 0.05, longlat = TRUE
+)
 
 data(nypoly)
 library(sp)

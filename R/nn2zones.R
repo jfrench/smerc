@@ -12,10 +12,10 @@
 #'
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(x, y))
-#' nn = knn(coords, k = 2)
+#' coords <- with(nydf, cbind(x, y))
+#' nn <- knn(coords, k = 2)
 #' nn2zones(nn)
-nn2zones = function(nn) {
+nn2zones <- function(nn) {
   unlist(lapply(nn, function(x) {
     sapply(seq_along(x), function(i) {
       x[seq_len(i)]

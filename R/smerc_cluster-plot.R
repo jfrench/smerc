@@ -28,42 +28,45 @@
 #' @method plot smerc_cluster
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, nsim = 0,
-#'                 longlat = TRUE, alpha = 1)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, nsim = 0,
+#'   longlat = TRUE, alpha = 1
+#' )
 #' # plot only 3 most likely clusters
 #' plot(out, idx = 1:3)
 #' ## plot output for new york state
 #' # specify desired argument values
-#' mapargs = list(database = "county", region = "new york",
-#'                xlim = range(out$coords[,1]),
-#'                ylim = range(out$coords[,2]))
+#' mapargs <- list(
+#'   database = "county", region = "new york",
+#'   xlim = range(out$coords[, 1]),
+#'   ylim = range(out$coords[, 2])
+#' )
 #' # needed for "county" database (unless you execute library(maps))
 #' data(countyMapEnv, package = "maps")
 #' # plot only the 1st and 3rd clusters
 #' plot(out, idx = 1:3, usemap = TRUE, mapargs = mapargs)
-plot.smerc_cluster = function(x, ...,
-                              idx = seq_along(x$clusters),
-                              nclusters = NULL,
-                              ccol = NULL, cpch = NULL,
-                              add = FALSE, usemap = FALSE,
-                              mapargs = list()) {
-
+plot.smerc_cluster <- function(x, ...,
+                               idx = seq_along(x$clusters),
+                               nclusters = NULL,
+                               ccol = NULL, cpch = NULL,
+                               add = FALSE, usemap = FALSE,
+                               mapargs = list()) {
   if (min(idx) < 1 | max(idx) > length(x$clusters)) {
     stop("invalid idx values")
   }
-  nclusters = length(idx)
+  nclusters <- length(idx)
   arg_check_nclusters(nclusters, length(x$clusters))
   # number of centroids
-  nc = nclusters
+  nc <- nclusters
 
   # set default values
   if (is.null(ccol)) {
-    ccol = grDevices::hcl.colors(nclusters, palette = "viridis")
-  }# seq_len(nclusters) + 1
-  if (is.null(cpch)) cpch = rep(20, nclusters)
-  if (nc > 1) cpch[2:nclusters] = 3:(nclusters + 1)
+    ccol <- grDevices::hcl.colors(nclusters, palette = "viridis")
+  } # seq_len(nclusters) + 1
+  if (is.null(cpch)) cpch <- rep(20, nclusters)
+  if (nc > 1) cpch[2:nclusters] <- 3:(nclusters + 1)
 
   # more sanity checking
   if (length(ccol) != nclusters) {
@@ -74,7 +77,7 @@ plot.smerc_cluster = function(x, ...,
   }
 
   # extract coordinates and cluster coordinates
-  coords = x$coords
+  coords <- x$coords
 
   if (!add) {
     if (usemap) {
@@ -93,15 +96,19 @@ plot.smerc_cluster = function(x, ...,
   # plot clusters
   for (i in idx) {
     graphics::points(coords[x$clusters[[i]]$locids, 1],
-                     coords[x$clusters[[i]]$locids, 2],
-                     col = ccol[i], pch = cpch[i])
+      coords[x$clusters[[i]]$locids, 2],
+      col = ccol[i], pch = cpch[i]
+    )
 
     if (!is.null(x$clusters[[i]]$w)) {
       if (length(x$clusters[[i]]$w) > 1) {
-      seg = w2segments(x$clusters[[i]]$w,
-                       coords[x$clusters[[i]]$locids, ])
-      graphics::segments(seg[, 1], seg[, 2], seg[, 3], seg[, 4],
-                         col = ccol[i], pch = cpch[i])
+        seg <- w2segments(
+          x$clusters[[i]]$w,
+          coords[x$clusters[[i]]$locids, ]
+        )
+        graphics::segments(seg[, 1], seg[, 2], seg[, 3], seg[, 4],
+          col = ccol[i], pch = cpch[i]
+        )
       }
     }
   }
@@ -115,18 +122,18 @@ plot.smerc_cluster = function(x, ...,
 #' @return NULL
 #' @export
 #' @keywords internal
-w2segments = function(w, coords) {
-  nnb = sum(w != 0)
-  count = 0
-  seg = matrix(0, nrow = nnb, ncol = 4)
+w2segments <- function(w, coords) {
+  nnb <- sum(w != 0)
+  count <- 0
+  seg <- matrix(0, nrow = nnb, ncol = 4)
   for (i in seq_len(nrow(w))) {
-    nbi = which(w[i, ] != 0)
-    nnbi = length(nbi)
-    seg[count + seq_len(nnbi), 1] = coords[i, 1]
-    seg[count + seq_len(nnbi), 2] = coords[i, 2]
-    seg[count + seq_along(nbi), 3] = coords[nbi, 1]
-    seg[count + seq_along(nbi), 4] = coords[nbi, 2]
-    count = count + nnbi
+    nbi <- which(w[i, ] != 0)
+    nnbi <- length(nbi)
+    seg[count + seq_len(nnbi), 1] <- coords[i, 1]
+    seg[count + seq_len(nnbi), 2] <- coords[i, 2]
+    seg[count + seq_along(nbi), 3] <- coords[nbi, 1]
+    seg[count + seq_along(nbi), 4] <- coords[nbi, 2]
+    count <- count + nnbi
   }
   return(seg)
 }

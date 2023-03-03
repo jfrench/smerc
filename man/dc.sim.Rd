@@ -38,6 +38,9 @@ or an integer to indicate number of child-processes
 \value{
 A vector with the maximum test statistic for each
   simulated data set.
+
+A vector with the maximum test statistic for each
+  simulated data set.
 }
 \description{
 \code{dc.sim} efficiently performs \code{\link{dc.test}}
@@ -49,14 +52,16 @@ implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-pop = nydf$pop
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-d = sp::spDists(coords, longlat = TRUE)
-nn = nndist(d, ubd = 0.05)
-max_pop = sum(pop) * 0.25
-tsim = dc.sim(1, nn, ty, ex, nyw, pop = pop,
-              max_pop = max_pop)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+d <- sp::spDists(coords, longlat = TRUE)
+nn <- nndist(d, ubd = 0.05)
+max_pop <- sum(pop) * 0.25
+tsim <- dc.sim(1, nn, ty, ex, nyw,
+  pop = pop,
+  max_pop = max_pop
+)
 }

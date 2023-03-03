@@ -19,65 +19,69 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = cbind(nydf$x, nydf$y)
-#' zones = flex.zones(coords, w = nyw, k = 3)
+#' coords <- cbind(nydf$x, nydf$y)
+#' zones <- flex.zones(coords, w = nyw, k = 3)
 #' \dontrun{
 #' # see what happens when verbose = TRUE
-#' zones = flex.zones(coords, w = nyw, k = 3, verbose = TRUE)
+#' zones <- flex.zones(coords, w = nyw, k = 3, verbose = TRUE)
 #' }
-flex.zones = function(coords, w, k = 10, longlat = FALSE,
-                      cl = NULL, loop = FALSE,
-                      verbose = FALSE, pfreq = 1) {
-  nn = knn(coords = coords, longlat = longlat, k = k)
-  N = nrow(coords)
+flex.zones <- function(coords, w, k = 10, longlat = FALSE,
+                       cl = NULL, loop = FALSE,
+                       verbose = FALSE, pfreq = 1) {
+  nn <- knn(coords = coords, longlat = longlat, k = k)
+  N <- nrow(coords)
 
   if (!loop) {
-    fcall_list = list(X = seq_len(N), function(i, ...) {
+    fcall_list <- list(X = seq_len(N), function(i, ...) {
       scsg2(nn, w, idx = i)
     }, cl = cl)
 
     # determine which apply function to use
     if (verbose) {
       message("constructing connected subgraphs:")
-      fcall = pbapply::pblapply
-      fcall_list = list(X = seq_len(N), function(i, ...) {
+      fcall <- pbapply::pblapply
+      fcall_list <- list(X = seq_len(N), function(i, ...) {
         scsg2(nn, w, idx = i)
       }, cl = cl)
       # determine zones
-      czones = unlist(do.call(fcall, fcall_list),
-                      use.names = FALSE, recursive = FALSE)
+      czones <- unlist(do.call(fcall, fcall_list),
+        use.names = FALSE, recursive = FALSE
+      )
       return(czones[distinct(czones)])
     } else {
       return(scsg2(nn, w))
     }
 
     # determine zones
-    czones = unlist(do.call(fcall, fcall_list),
-                    use.names = FALSE, recursive = FALSE)
+    czones <- unlist(do.call(fcall, fcall_list),
+      use.names = FALSE, recursive = FALSE
+    )
   } else {
-    czones = list()
-    pri = randtoolbox::get.primes(N)
-    czones_id = numeric(0) # unique identifier of each zone
+    czones <- list()
+    pri <- randtoolbox::get.primes(N)
+    czones_id <- numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
         if ((i %% pfreq) == 0) {
-          message(i, "/", N, ". Starting region ", i,
-                  " at ", Sys.time(), ".")
+          message(
+            i, "/", N, ". Starting region ", i,
+            " at ", Sys.time(), "."
+          )
         }
       }
       # zones for idxi
-      izones = scsg2(nn, w, idx = i)
+      izones <- scsg2(nn, w, idx = i)
       # determine unique ids for izones
-      izones_id = sapply(izones, function(xi) sum(log(pri[xi])))
+      izones_id <- sapply(izones, function(xi) sum(log(pri[xi])))
       # determine if some izones are duplicated with czones
       # remove duplicates and then combine with czones
-      dup_id = which(izones_id %in% czones_id)
+      dup_id <- which(izones_id %in% czones_id)
       if (length(dup_id) > 0) {
-        czones = combine.zones(czones, izones[-dup_id])
-        czones_id = c(czones_id, izones_id[-dup_id])
+        czones <- combine.zones(czones, izones[-dup_id])
+        czones_id <- c(czones_id, izones_id[-dup_id])
       } else {
-        czones = combine.zones(czones, izones)
-        czones_id = c(czones_id, izones_id)
+        czones <- combine.zones(czones, izones)
+        czones_id <- c(czones_id, izones_id)
       }
     }
     return(czones)

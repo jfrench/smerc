@@ -77,47 +77,53 @@
 #' data(nyw)
 #'
 #' # create relevant data
-#' coords = nydf[,c("longitude", "latitude")]
-#' cases = floor(nydf$cases)
-#' pop = nydf$population
-#' w = nyw
-#' ex = sum(cases)/sum(pop)*pop
-#' ubpop = 0.5
-#' ubd = 0.5
-#' ty = sum(cases)   # total number of cases
+#' coords <- nydf[, c("longitude", "latitude")]
+#' cases <- floor(nydf$cases)
+#' pop <- nydf$population
+#' w <- nyw
+#' ex <- sum(cases) / sum(pop) * pop
+#' ubpop <- 0.5
+#' ubd <- 0.5
+#' ty <- sum(cases) # total number of cases
 #' # intercentroid distances
-#' d = sp::spDists(as.matrix(coords), longlat = TRUE)
+#' d <- sp::spDists(as.matrix(coords), longlat = TRUE)
 #' # upperbound for population in zone
-#' max_pop = ubpop * sum(pop)
+#' max_pop <- ubpop * sum(pop)
 #' # upperbound for distance between centroids in zone
-#' max_dist = ubd * max(d)
+#' max_dist <- ubd * max(d)
 #' # create list of neighbors for each region
 #' # (inclusive of region itself)
-#' all_neighbors = nndist(d, ubd)
+#' all_neighbors <- nndist(d, ubd)
 #' # find the dmst max zone
 #' \dontrun{
-#' out = mst.all(all_neighbors, cases, pop, w, ex, ty, max_pop,
-#'               type = "maxonly")
+#' out <- mst.all(all_neighbors, cases, pop, w, ex, ty, max_pop,
+#'   type = "maxonly"
+#' )
 #' head(out)
 #'
-#' out = mst.all(all_neighbors, cases, pop, w, ex, ty, max_pop,
-#'               type = "pruned")
+#' out <- mst.all(all_neighbors, cases, pop, w, ex, ty, max_pop,
+#'   type = "pruned"
+#' )
 #' head(out)
 #' }
-mst.all = function(neighbors, cases, pop, w, ex, ty, max_pop,
-                   type = "maxonly", nlinks = "one",
-                   early = FALSE, cl = NULL, progress = FALSE) {
+mst.all <- function(neighbors, cases, pop, w, ex, ty, max_pop,
+                    type = "maxonly", nlinks = "one",
+                    early = FALSE, cl = NULL, progress = FALSE) {
   if (!progress) {
-    max_zones = lapply(seq_along(cases), function(i) {
-      mst.seq(i, neighbors[[i]], cases,
-              pop, w, ex, ty, max_pop, type,
-              nlinks, early)
+    max_zones <- lapply(seq_along(cases), function(i) {
+      mst.seq(
+        i, neighbors[[i]], cases,
+        pop, w, ex, ty, max_pop, type,
+        nlinks, early
+      )
     })
   } else {
-    max_zones = pbapply::pblapply(seq_along(cases), function(i) {
-      mst.seq(i, neighbors[[i]], cases,
-              pop, w, ex, ty, max_pop, type,
-              nlinks, early)
+    max_zones <- pbapply::pblapply(seq_along(cases), function(i) {
+      mst.seq(
+        i, neighbors[[i]], cases,
+        pop, w, ex, ty, max_pop, type,
+        nlinks, early
+      )
     }, cl = cl)
   }
   if (type == "maxonly") {

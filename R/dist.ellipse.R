@@ -17,27 +17,29 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("x", "y")])
-#' d = dist.ellipse(coords, 4, 15)
-dist.ellipse = function(coords, shape, angle) {
+#' coords <- as.matrix(nydf[, c("x", "y")])
+#' d <- dist.ellipse(coords, 4, 15)
+dist.ellipse <- function(coords, shape, angle) {
   arg_check_dist_ellipse(coords, shape, angle)
-  rad = angle * pi / 180
-  N = nrow(coords)
+  rad <- angle * pi / 180
+  N <- nrow(coords)
 
-  sinr = rep(sin(rad), N)
-  cosr = rep(cos(rad), N)
+  sinr <- rep(sin(rad), N)
+  cosr <- rep(cos(rad), N)
   t(sapply(seq_len(N), function(i) {
-    coordsi = matrix(coords[i, ], byrow = TRUE,
-                     ncol = 2, nrow = N)
-    cdiff = (coords - coordsi)
-    dx = cdiff[, 1]
-    dy = cdiff[, 2]
+    coordsi <- matrix(coords[i, ],
+      byrow = TRUE,
+      ncol = 2, nrow = N
+    )
+    cdiff <- (coords - coordsi)
+    dx <- cdiff[, 1]
+    dy <- cdiff[, 2]
     # formula based on https://math.stackexchange.com/
     # questions/426150/what-is-the-general-equation-of-the-
     # ellipse-that-is-not-in-the-origin-and-rotate
-    m1 = (dx * cosr + dy * sinr) / shape
-    m2 = (dx * sinr - dy * cosr)
-    sqrt(m1 ^ 2 + m2 ^ 2)
+    m1 <- (dx * cosr + dy * sinr) / shape
+    m2 <- (dx * sinr - dy * cosr)
+    sqrt(m1^2 + m2^2)
   }))
 }
 
@@ -45,7 +47,7 @@ dist.ellipse = function(coords, shape, angle) {
 #' @return NULL
 #' @export
 #' @keywords internal
-arg_check_dist_ellipse = function(coords, shape, angle) {
+arg_check_dist_ellipse <- function(coords, shape, angle) {
   if (!is.matrix(coords)) {
     stop("coords must be a matrix")
   }
@@ -67,9 +69,9 @@ arg_check_dist_ellipse = function(coords, shape, angle) {
 #' @return NULL
 #' @export
 #' @keywords internal
-all_shape_dists = function(s, na, coords) {
-  angle = seq(90, 270, len = na + 1)[seq_len(na)]
-  d = lapply(seq_along(angle), function(j) {
+all_shape_dists <- function(s, na, coords) {
+  angle <- seq(90, 270, len = na + 1)[seq_len(na)]
+  d <- lapply(seq_along(angle), function(j) {
     dist.ellipse(coords, shape = s, angle = angle[j])
   })
   do.call(rbind, d)

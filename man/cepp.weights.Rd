@@ -27,13 +27,13 @@ Compute region weights for \code{cepp.test}
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(x, y))
-pop = nydf$pop
+coords <- with(nydf, cbind(x, y))
+pop <- nydf$pop
 # intercentroid distances
-d = sp::spDists(coords)
+d <- sp::spDists(coords)
 # find smallest windows with cumulative population of
 # at least n* = 1000
-nn = casewin(d, pop, 1000)
+nn <- casewin(d, pop, 1000)
 # compute weights
-w = cepp.weights(nn, pop, 1000)
+w <- cepp.weights(nn, pop, 1000)
 }

@@ -41,8 +41,8 @@ The zones returned must have a total population less than
 }
 \examples{
 data(nydf)
-cases = nydf$cases
-pop = nydf$pop
+cases <- nydf$cases
+pop <- nydf$pop
 # compare output format
 fast.zones(cases, pop, ubpop = 0.05)
 fast.zones(cases, pop, ubpop = 0.05, simple = FALSE)

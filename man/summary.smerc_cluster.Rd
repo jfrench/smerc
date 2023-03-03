@@ -39,10 +39,12 @@ Summary of object of class \code{smerc_cluster}.
 }
 \examples{
 data(nydf)
-coords = with(nydf, cbind(x, y))
-out = scan.test(coords = coords, cases = floor(nydf$cases),
-                pop = nydf$pop, nsim = 49,
-                longlat = TRUE, alpha = 0.2)
+coords <- with(nydf, cbind(x, y))
+out <- scan.test(
+  coords = coords, cases = floor(nydf$cases),
+  pop = nydf$pop, nsim = 49,
+  longlat = TRUE, alpha = 0.2
+)
 # summarize all clusters
 summary(out)
 # summarize clusters 1 and 3

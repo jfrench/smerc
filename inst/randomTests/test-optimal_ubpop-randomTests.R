@@ -3,7 +3,7 @@ context("test optimal_ubpop for correctness")
 data(nydf, package = "smerc")
 cases = nydf$cases
 pop = nydf$population
-coords = nydf[,c("x", "y")]
+coords = nydf[, c("x", "y")]
 
 set.seed(28)
 estats = optimal_ubpop(coords = coords,

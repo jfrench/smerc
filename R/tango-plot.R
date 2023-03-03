@@ -23,32 +23,32 @@
 #' @seealso \code{\link{tango.test}}
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("x", "y")])
-#' w = dweights(coords, kappa = 1)
-#' x1 = tango.test(nydf$cases, nydf$pop, w)
+#' coords <- as.matrix(nydf[, c("x", "y")])
+#' w <- dweights(coords, kappa = 1)
+#' x1 <- tango.test(nydf$cases, nydf$pop, w)
 #' plot(x1)
-#' x2 = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
+#' x2 <- tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 #' plot(x2)
-plot.tango = function(x, ...,
-                      obs.list = list(pch = 20),
-                      sim.list = list(pch = 2)) {
-  if (class(x) != "tango") {
+plot.tango <- function(x, ...,
+                       obs.list = list(pch = 20),
+                       sim.list = list(pch = 2)) {
+  if (!is.element("tango", class(x))) {
     stop("x should be a tango object")
   }
 
   if (!is.null(x$gof.sim)) {
-    gof = c(x$gof.sim, x$gof)
-    sa = c(x$sa.sim, x$sa)
+    gof <- c(x$gof.sim, x$gof)
+    sa <- c(x$sa.sim, x$sa)
     graphics::plot(sa, gof, type = "n", ...)
-    sim.list$x = x$sa.sim
-    sim.list$y = x$gof.sim
+    sim.list$x <- x$sa.sim
+    sim.list$y <- x$gof.sim
     do.call(graphics::points, sim.list)
-    obs.list$x = x$sa
-    obs.list$y = x$gof
+    obs.list$x <- x$sa
+    obs.list$y <- x$gof
     do.call(graphics::points, obs.list)
   } else {
-    tstat = seq(0, max(x$tstat.chisq, stats::qchisq(.99, df = x$dfc)))
-    density = stats::dchisq(tstat, df = x$dfc)
+    tstat <- seq(0, max(x$tstat.chisq, stats::qchisq(.99, df = x$dfc)))
+    density <- stats::dchisq(tstat, df = x$dfc)
     graphics::plot(tstat, density, type = "l", ...)
     graphics::abline(v = x$tstat.chisq)
   }

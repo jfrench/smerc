@@ -37,7 +37,7 @@ where each element of \code{x[[i]]} appears only once,
 though it should work for repeats also.
 }
 \examples{
-x = list(1:3, 3:1, 1:4, 4:1, c(1, 2, 4, 6), c(6, 4, 1, 2))
+x <- list(1:3, 3:1, 1:4, 4:1, c(1, 2, 4, 6), c(6, 4, 1, 2))
 x[distinct(x)]
 }
 \references{

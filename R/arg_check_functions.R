@@ -2,7 +2,7 @@
 #'
 #' @param coords An matrix-like object with N rows
 #' @noRd
-arg_check_coords = function(coords) {
+arg_check_coords <- function(coords) {
   if (!(is.matrix(coords) | is.data.frame(coords))) {
     stop("coords should be a matrix or a data frame")
   }
@@ -16,7 +16,7 @@ arg_check_coords = function(coords) {
 #' @param cases A numeric vector of cases
 #' @param N The number of rows in coords
 #' @noRd
-arg_check_cases = function(cases, N) {
+arg_check_cases <- function(cases, N) {
   if (length(cases) != N) {
     stop("length(cases) != nrow(coords)")
   }
@@ -36,7 +36,7 @@ arg_check_cases = function(cases, N) {
 #' @param pop A vector of population values
 #' @param N The number of rows in coords
 #' @noRd
-arg_check_pop = function(pop, N) {
+arg_check_pop <- function(pop, N) {
   if (length(pop) != N) {
     stop("length(pop) != nrow(coords)")
   }
@@ -56,7 +56,7 @@ arg_check_pop = function(pop, N) {
 #' @param cstar Case radius
 #' @param cases Numeric vector of cases
 #' @noRd
-arg_check_cstar = function(cstar, cases) {
+arg_check_cstar <- function(cstar, cases) {
   if (length(cstar) != 1 || !is.numeric(cstar)) {
     stop("cstar should be a numeric vector of length 1")
   }
@@ -70,7 +70,7 @@ arg_check_cstar = function(cstar, cases) {
 #' @param longlat A logical value indicating whether longlat
 #' distance should be used (TRUE)
 #' @noRd
-arg_check_longlat = function(longlat) {
+arg_check_longlat <- function(longlat) {
   if (length(longlat) != 1) {
     stop("length(longlat) != 1")
   }
@@ -83,7 +83,7 @@ arg_check_longlat = function(longlat) {
 #'
 #' @param alpha Signifcance level (single value > 0 and <= 1)
 #' @noRd
-arg_check_alpha = function(alpha) {
+arg_check_alpha <- function(alpha) {
   if (length(alpha) != 1 || !is.numeric(alpha)) {
     stop("alpha should be a numeric vector of length 1")
   }
@@ -96,7 +96,7 @@ arg_check_alpha = function(alpha) {
 #'
 #' @param noc Logical value. Should only non-overlapping clusters be returned.
 #' @noRd
-arg_check_noc = function(noc) {
+arg_check_noc <- function(noc) {
   if (length(noc) != 1) {
     stop("length(noc) != 1")
   }
@@ -110,7 +110,7 @@ arg_check_noc = function(noc) {
 #' @param ex A vector of expected counts
 #' @param N nrow(coords)
 #' @noRd
-arg_check_ex = function(ex, N) {
+arg_check_ex <- function(ex, N) {
   if (length(ex) != N) {
     stop("length(ex) != nrow(coords)")
   }
@@ -127,7 +127,7 @@ arg_check_ex = function(ex, N) {
 #' @param modified A logicical value. should bn.test be modified (TRUE)
 #' @return NULL
 #' @noRd
-arg_check_modified = function(modified) {
+arg_check_modified <- function(modified) {
   if (length(modified) != 1) {
     stop("length(modified) != 1")
   }
@@ -143,7 +143,7 @@ arg_check_modified = function(modified) {
 #' @param tobs Vector of observed test statistics
 #' @return NULL
 #' @noRd
-arg_check_tobs = function(tobs) {
+arg_check_tobs <- function(tobs) {
   if (!is.numeric(tobs)) {
     stop("tobs (the vector of observed test statistics) should be numeric values")
   }
@@ -151,9 +151,9 @@ arg_check_tobs = function(tobs) {
     stop("tobs (the vector of observed test statistics) should be a vector")
   }
   # compute minimum observed statistic
-  min_tobs = min(tobs)
+  min_tobs <- min(tobs)
   if (min_tobs < 0) {
-    warning("tobs values (the vector of observed test statistics) should be >= 0. The smallest negative value detected is: ", min_tobs ,". If the smallest negative value is nearly zero, then this is likely a numeric precision issue that can be ignored. If the smallest negative value is not close to zero, then a more serious problem may be present.")
+    warning("tobs values (the vector of observed test statistics) should be >= 0. The smallest negative value detected is: ", min_tobs, ". If the smallest negative value is nearly zero, then this is likely a numeric precision issue that can be ignored. If the smallest negative value is not close to zero, then a more serious problem may be present.")
   }
 }
 
@@ -165,7 +165,7 @@ arg_check_tobs = function(tobs) {
 #' @param N Number of tobs
 #' @return NULL
 #' @noRd
-arg_check_zones = function(zones, N) {
+arg_check_zones <- function(zones, N) {
   if (length(zones) != N) {
     stop("length(zones) != length(tobs)")
   }
@@ -182,7 +182,7 @@ arg_check_zones = function(zones, N) {
 #' @param N length(tobs)
 #' @return NULL
 #' @noRd
-arg_check_pvalue = function(pvalue, N) {
+arg_check_pvalue <- function(pvalue, N) {
   if (length(pvalue) != N) {
     stop("length(pvalue) != nrow(coords)")
   }
@@ -197,7 +197,7 @@ arg_check_pvalue = function(pvalue, N) {
   }
 }
 
-arg_check_d = function(d, N) {
+arg_check_d <- function(d, N) {
   if (!is.matrix(d)) {
     stop("d must be a matrix")
   }
@@ -212,7 +212,7 @@ arg_check_d = function(d, N) {
 #' the method name.
 #' @return NULL
 #' @noRd
-arg_check_method = function(method) {
+arg_check_method <- function(method) {
   if (length(method) != 1) {
     stop("method must be a vector of length 1")
   }
@@ -230,7 +230,7 @@ arg_check_method = function(method) {
 #' the method name.
 #' @return NULL
 #' @noRd
-arg_check_rel_param = function(rel_param) {
+arg_check_rel_param <- function(rel_param) {
   if (!is.list(rel_param)) {
     stop("rel_param must be a list")
   }
@@ -244,7 +244,7 @@ arg_check_rel_param = function(rel_param) {
 #' @param N length(tobs)
 #' @return NULL
 #' @noRd
-arg_check_shape_all = function(shape_all, N) {
+arg_check_shape_all <- function(shape_all, N) {
   if (length(shape_all) != N) {
     stop("length(shapes_all) != length(tobs)")
   }
@@ -267,7 +267,7 @@ arg_check_shape_all = function(shape_all, N) {
 #' @param N length(tobs)
 #' @return NULL
 #' @noRd
-arg_check_angle_all = function(angle_all, N) {
+arg_check_angle_all <- function(angle_all, N) {
   if (length(angle_all) != N) {
     stop("length(shapes_all) != length(tobs)")
   }
@@ -287,7 +287,7 @@ arg_check_angle_all = function(angle_all, N) {
 #' @param a Penalty parameter for elliptic.test
 #' @return NULL
 #' @noRd
-arg_check_a = function(a) {
+arg_check_a <- function(a) {
   if (length(a) != 1) {
     stop("a must be a single value")
   }
@@ -308,7 +308,7 @@ arg_check_a = function(a) {
 #' @param N nrow(coords)
 #' @return NULL
 #' @noRd
-arg_check_w = function(w, N) {
+arg_check_w <- function(w, N) {
   if (!is.matrix(w) & !is.data.frame(w)) {
     stop("w must be a matrix or data.frame")
   }
@@ -326,7 +326,7 @@ arg_check_w = function(w, N) {
 #'
 #' @return NULL
 #' @noRd
-arg_check_nsim = function(nsim) {
+arg_check_nsim <- function(nsim) {
   if (length(nsim) != 1) {
     stop("nsim must be a single value")
   }
@@ -346,7 +346,7 @@ arg_check_nsim = function(nsim) {
 #' @param ubpop A positive value
 #' @return NULL
 #' @noRd
-arg_check_ubpop = function(ubpop) {
+arg_check_ubpop <- function(ubpop) {
   if (length(ubpop) != 1) {
     stop("ubpop must be a single value")
   }
@@ -361,7 +361,7 @@ arg_check_ubpop = function(ubpop) {
   }
 }
 
-arg_check_k = function(k, N) {
+arg_check_k <- function(k, N) {
   if (length(k) != 1) {
     stop("k must have length 1")
   }
@@ -384,7 +384,7 @@ arg_check_k = function(k, N) {
 #' @param simdist Distribution of simulation, single character value
 #' @return NULL
 #' @noRd
-arg_check_simdist = function(simdist) {
+arg_check_simdist <- function(simdist) {
   if (!is.null(simdist)) {
     if (length(simdist) != 1) {
       stop("simdist must be of length 1")
@@ -395,7 +395,7 @@ arg_check_simdist = function(simdist) {
   }
 }
 
-arg_check_min_cases = function(min.cases) {
+arg_check_min_cases <- function(min.cases) {
   if (length(min.cases) != 1) {
     stop("min.cases must be a single value")
   }
@@ -410,7 +410,7 @@ arg_check_min_cases = function(min.cases) {
   }
 }
 
-arg_check_type = function(type) {
+arg_check_type <- function(type) {
   if (length(type) != 1) {
     stop("type must be a single value")
   }
@@ -427,7 +427,7 @@ arg_check_type = function(type) {
 #' @param shape A vector of shape values >= 1
 #' @return NULL
 #' @noRd
-arg_check_shape = function(shape) {
+arg_check_shape <- function(shape) {
   if (!is.numeric(shape)) {
     stop("shape must be a numeric vector")
   }
@@ -444,7 +444,7 @@ arg_check_shape = function(shape) {
 #' @param nangle A vector of nangle values >= 1
 #' @return NULL
 #' @noRd
-arg_check_nangle = function(nangle) {
+arg_check_nangle <- function(nangle) {
   if (!is.numeric(nangle)) {
     stop("nangle must be a numeric vector")
   }
@@ -462,7 +462,7 @@ arg_check_nangle = function(nangle) {
 #' for cepp.test.
 #' @return NULL
 #' @noRd
-arg_check_nstar = function(nstar, pop) {
+arg_check_nstar <- function(nstar, pop) {
   if (length(nstar) != 1) {
     stop("nstar should be a single value")
   }
@@ -485,7 +485,7 @@ arg_check_nstar = function(nstar, pop) {
 #' @param type A character vector: basic, rogerson, tango
 #' @return NULL
 #' @noRd
-arg_check_dweights_type = function(type) {
+arg_check_dweights_type <- function(type) {
   if (length(type) != 1) {
     stop("type must be a single name")
   }
@@ -505,7 +505,7 @@ arg_check_dweights_type = function(type) {
 #' @param kappa A positive value
 #' @return NULL
 #' @noRd
-arg_check_dweights_kappa = function(kappa) {
+arg_check_dweights_kappa <- function(kappa) {
   if (length(kappa) != 1) {
     stop("kappa should be a single value")
   }
@@ -526,7 +526,7 @@ arg_check_dweights_kappa = function(kappa) {
 #' @param N nrow(coords)
 #' @return NULL
 #' @noRd
-arg_check_tango_w = function(w, N) {
+arg_check_tango_w <- function(w, N) {
   if (!is.matrix(w) & !is.data.frame(w)) {
     stop("w must be a matrix or data.frame")
   }
@@ -543,7 +543,7 @@ arg_check_tango_w = function(w, N) {
 #' @param check.unique A single logical value
 #' @return NULL
 #' @noRd
-arg_check_check_unique = function(check.unique) {
+arg_check_check_unique <- function(check.unique) {
   if (length(check.unique) != 1) {
     stop("check.unique must be a single value")
   }
@@ -560,7 +560,7 @@ arg_check_check_unique = function(check.unique) {
 #' @param tpop Total population
 #' @return NULL
 #' @noRd
-arg_check_tpop = function(tpop) {
+arg_check_tpop <- function(tpop) {
   if (length(tpop) != 1) {
     stop("tpop must be a single value")
   }
@@ -580,7 +580,7 @@ arg_check_tpop = function(tpop) {
 #' @param ty Total cases
 #' @return NULL
 #' @noRd
-arg_check_ty = function(ty) {
+arg_check_ty <- function(ty) {
   if (length(ty) != 1) {
     stop("ty must be a single value")
   }
@@ -602,7 +602,7 @@ arg_check_ty = function(ty) {
 #' @param nz The number of zones
 #' @return NULL
 #' @noRd
-arg_check_sim_poisson_type = function(ein, eout, nz) {
+arg_check_sim_poisson_type <- function(ein, eout, nz) {
   if (is.null(ein) | is.null(eout)) {
     stop("ein and eout must be provided when type='poisson'")
   }
@@ -626,7 +626,7 @@ arg_check_sim_poisson_type = function(ein, eout, nz) {
   }
 }
 
-arg_check_sim_binomial_type = function(popin, popout, tpop, nz) {
+arg_check_sim_binomial_type <- function(popin, popout, tpop, nz) {
   if (is.null(popin) | is.null(popout) | is.null(tpop)) {
     stop("popin, popout, and tpop must be provided when type='binomial'")
   }
@@ -656,7 +656,7 @@ arg_check_sim_binomial_type = function(popin, popout, tpop, nz) {
 #' @param ubd Distance upperbound (in terms of proportion)
 #' @return NULL
 #' @noRd
-arg_check_ubd = function(ubd) {
+arg_check_ubd <- function(ubd) {
   if (length(ubd) != 1) {
     stop("ubd must be a single number")
   }
@@ -678,7 +678,7 @@ arg_check_ubd = function(ubd) {
 #'
 #' @return NULL
 #' @noRd
-arg_check_nclusters = function(nclusters, N) {
+arg_check_nclusters <- function(nclusters, N) {
   if (length(nclusters) != 1) {
     stop("nclusters must have length 1")
   }
@@ -701,7 +701,7 @@ arg_check_nclusters = function(nclusters, N) {
 #' @param ldup A logical vector
 #' @return NULL
 #' @noRd
-arg_check_ldup = function(ldup) {
+arg_check_ldup <- function(ldup) {
   if (!is.null(ldup)) {
     if (!is.vector(ldup)) {
       stop("ldup must be a vector")
@@ -717,7 +717,7 @@ arg_check_ldup = function(ldup) {
 #' @param return_type "max" or "all"
 #' @return NULL
 #' @noRd
-arg_check_return_type_scan_sim = function(return_type) {
+arg_check_return_type_scan_sim <- function(return_type) {
   if (length(return_type) != 1) {
     stop("return_type must be a single character string")
   }
@@ -734,7 +734,7 @@ arg_check_return_type_scan_sim = function(return_type) {
 #' @param ubpop_seq A sequence of values in (0, 1)
 #' @return NULL
 #' @noRd
-arg_check_ubpop_seq = function(ubpop_seq, lb) {
+arg_check_ubpop_seq <- function(ubpop_seq, lb) {
   if (!is.numeric(ubpop_seq)) {
     stop("ubpop_seq must be numeric")
   }
@@ -754,6 +754,3 @@ arg_check_ubpop_seq = function(ubpop_seq, lb) {
     stop("ubpop_seq must be a (strictly) increasing sequence of values")
   }
 }
-
-
-

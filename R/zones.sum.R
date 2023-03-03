@@ -13,18 +13,20 @@
 #' @examples
 #' # show nn.cumsum example for a circular scan setting
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' cases = floor(nydf$cases)
-#' zones = scan.zones(coords, pop = nydf$pop, ubpop = 0.1)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' cases <- floor(nydf$cases)
+#' zones <- scan.zones(coords, pop = nydf$pop, ubpop = 0.1)
 #' # compute cumulative sums over all nn
-#' szones = zones.sum(zones, cases)
+#' szones <- zones.sum(zones, cases)
 #' # compute cumulative sums over just the first set of nn
-#' szones2 = sapply(zones, function(x) sum(cases[x]))
+#' szones2 <- sapply(zones, function(x) sum(cases[x]))
 #' # check equality
 #' all.equal(szones, szones2)
-zones.sum = function(zones, y) {
+zones.sum <- function(zones, y) {
   if (!is.list(zones)) stop("zones must be a list")
   if (!is.numeric(y)) stop("y must be a numeric vector")
-  vapply(zones, function(x) sum(y[x]), FUN.VALUE = numeric(1),
-         USE.NAMES = FALSE)
+  vapply(zones, function(x) sum(y[x]),
+    FUN.VALUE = numeric(1),
+    USE.NAMES = FALSE
+  )
 }

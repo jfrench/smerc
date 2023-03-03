@@ -18,22 +18,26 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = with(nydf, cbind(longitude, latitude))
-#' out = scan.test(coords = coords, cases = floor(nydf$cases),
-#'                 pop = nydf$pop, alpha = 0.2, longlat = TRUE,
-#'                 nsim = 9)
+#' coords <- with(nydf, cbind(longitude, latitude))
+#' out <- scan.test(
+#'   coords = coords, cases = floor(nydf$cases),
+#'   pop = nydf$pop, alpha = 0.2, longlat = TRUE,
+#'   nsim = 9
+#' )
 #' data(nypoly)
 #' library(sp)
 #' # plot all clusters
 #' plot(nypoly, col = color.clusters(out), axes = TRUE)
 #' # zoom in on small cluster
-#' plot(nypoly, col = color.clusters(out),
-#'      xlim = c(400000, 450000),
-#'      ylim = c(4750000, 4800000))
+#' plot(nypoly,
+#'   col = color.clusters(out),
+#'   xlim = c(400000, 450000),
+#'   ylim = c(4750000, 4800000)
+#' )
 #' # plot only clusters 1 and 3
 #' plot(nypoly, col = color.clusters(out, idx = c(1, 3)))
-color.clusters = function(x, idx = seq_along(x$clusters), col = grDevices::hcl.colors(length(idx))) {
-  if (class(x) != "scan" & class(x) != "smerc_cluster") {
+color.clusters <- function(x, idx = seq_along(x$clusters), col = grDevices::hcl.colors(length(idx))) {
+  if (!any(is.element(class(x), c("scan", "smerc_cluster")))) {
     stop("x should be an object of class scan or smerc_cluster.")
   }
   if (min(idx) < 1 | max(idx) > length(x$clusters)) {
@@ -43,9 +47,9 @@ color.clusters = function(x, idx = seq_along(x$clusters), col = grDevices::hcl.c
     stop("The number of colors must match the length of idx.")
   }
 
-  mycol = numeric(nrow(x$coords))
+  mycol <- numeric(nrow(x$coords))
   for (i in seq_along(x$clusters)) {
-    mycol[x$clusters[[i]]$loc] = col[i]
+    mycol[x$clusters[[i]]$loc] <- col[i]
   }
   return(mycol)
 }

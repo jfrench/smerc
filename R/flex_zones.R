@@ -20,53 +20,55 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' coords = cbind(nydf$x, nydf$y)
-#' zones = flex_zones(coords, w = nyw, k = 3)
+#' coords <- cbind(nydf$x, nydf$y)
+#' zones <- flex_zones(coords, w = nyw, k = 3)
 #' \dontrun{
 #' # see what happens when verbose = TRUE
-#' zones = flex_zones(coords, w = nyw, k = 3, verbose = TRUE)
+#' zones <- flex_zones(coords, w = nyw, k = 3, verbose = TRUE)
 #' }
-flex_zones = function(coords, w, k = 10, longlat = FALSE,
+flex_zones <- function(coords, w, k = 10, longlat = FALSE,
                        cl = NULL, loop = FALSE,
                        verbose = FALSE, pfreq = 1) {
-  nn = knn(coords = coords, longlat = longlat, k = k)
-  N = nrow(coords)
-  idx = seq_along(nn)
-  lprimes = log(randtoolbox::get.primes(N))
+  nn <- knn(coords = coords, longlat = longlat, k = k)
+  N <- nrow(coords)
+  idx <- seq_along(nn)
+  lprimes <- log(randtoolbox::get.primes(N))
 
   if (!loop) {
     # get list of list of logical vectors
-    czones = scsg2_cpp(nn, w, idx = idx, nlevel = k, lprimes = lprimes, verbose = verbose)
+    czones <- scsg2_cpp(nn, w, idx = idx, nlevel = k, lprimes = lprimes, verbose = verbose)
     # convert to zone indices
-    czones = logical2zones(czones, nn, idx)
+    czones <- logical2zones(czones, nn, idx)
     # return distinct zones
     return(czones[distinct(czones)])
   } else {
-    czones = list()
-    pri = randtoolbox::get.primes(N)
-    czones_id = numeric(0) # unique identifier of each zone
+    czones <- list()
+    pri <- randtoolbox::get.primes(N)
+    czones_id <- numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
         if ((i %% pfreq) == 0) {
-          message(i, "/", N, ". Starting region ", i,
-                  " at ", Sys.time(), ".")
+          message(
+            i, "/", N, ". Starting region ", i,
+            " at ", Sys.time(), "."
+          )
         }
       }
       # logical vector zones for idxi
-      izones = scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
+      izones <- scsg2_cpp(nn, w, i, k, lprimes, verbose = FALSE)
       # convert to region ids
-      izones = logical2zones(izones, nn, idx = i)
+      izones <- logical2zones(izones, nn, idx = i)
       # determine unique ids for izones
-      izones_id = sapply(izones, function(xi) sum(lprimes[xi]))
+      izones_id <- sapply(izones, function(xi) sum(lprimes[xi]))
       # determine if some izones are duplicated with czones
       # remove duplicates and then combine with czones
-      dup_id = which(izones_id %in% czones_id)
+      dup_id <- which(izones_id %in% czones_id)
       if (length(dup_id) > 0) {
-        czones = combine.zones(czones, izones[-dup_id])
-        czones_id = c(czones_id, izones_id[-dup_id])
+        czones <- combine.zones(czones, izones[-dup_id])
+        czones_id <- c(czones_id, izones_id[-dup_id])
       } else {
-        czones = combine.zones(czones, izones)
-        czones_id = c(czones_id, izones_id)
+        czones <- combine.zones(czones, izones)
+        czones_id <- c(czones_id, izones_id)
       }
     }
     return(czones)
@@ -81,7 +83,7 @@ flex_zones = function(coords, w, k = 10, longlat = FALSE,
 #' @return List of list of zones
 #' @export
 #' @keywords internal
-logical2zones = function(czones, nn, idx = seq_along(nn)) {
+logical2zones <- function(czones, nn, idx = seq_along(nn)) {
   # for each element of czones,
   # strip the element (which is a list of logical vectors)
   # for each element of the list of logical vectors
@@ -92,4 +94,3 @@ logical2zones = function(czones, nn, idx = seq_along(nn)) {
     })
   }), recursive = FALSE)
 }
-

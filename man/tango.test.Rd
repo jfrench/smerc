@@ -50,9 +50,9 @@ Tango (1995), Rogerson (1999), or a basic style.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("x", "y")])
-w = dweights(coords, kappa = 1)
-results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
+coords <- as.matrix(nydf[, c("x", "y")])
+w <- dweights(coords, kappa = 1)
+results <- tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 }
 \references{
 Tango, T.  (1995) A class of tests for

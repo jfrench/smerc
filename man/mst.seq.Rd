@@ -108,29 +108,35 @@ data(nydf)
 data(nyw)
 
 # create relevant data
-coords = nydf[,c("longitude", "latitude")]
-cases = floor(nydf$cases)
-pop = nydf$population
-w = nyw
-ex = sum(cases)/sum(pop)*pop
-ubpop = 0.5
-ubd = 0.5
-ty = sum(cases)   # total number of cases
+coords <- nydf[, c("longitude", "latitude")]
+cases <- floor(nydf$cases)
+pop <- nydf$population
+w <- nyw
+ex <- sum(cases) / sum(pop) * pop
+ubpop <- 0.5
+ubd <- 0.5
+ty <- sum(cases) # total number of cases
 # intercentroid distances
-d = sp::spDists(as.matrix(coords), longlat = TRUE)
+d <- sp::spDists(as.matrix(coords), longlat = TRUE)
 # upperbound for population in zone
-max_pop = ubpop * sum(pop)
+max_pop <- ubpop * sum(pop)
 # upperbound for distance between centroids in zone
-max_dist = ubd * max(d)
+max_dist <- ubd * max(d)
 # create list of neighbors for each region (inclusive of region itself)
-all_neighbors = nndist(d, ubd)
+all_neighbors <- nndist(d, ubd)
 # find the dmst max zone
-mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex,
-        ty, max_pop)
-mst.seq(start = 1, all_neighbors[[1]], cases, pop, w, ex,
-        ty, max_pop, "pruned")
-bigout = mst.seq(start = 1, all_neighbors[[1]], cases, pop,
-                 w, ex, ty, max_pop, "all")
+mst.seq(
+  start = 1, all_neighbors[[1]], cases, pop, w, ex,
+  ty, max_pop
+)
+mst.seq(
+  start = 1, all_neighbors[[1]], cases, pop, w, ex,
+  ty, max_pop, "pruned"
+)
+bigout <- mst.seq(
+  start = 1, all_neighbors[[1]], cases, pop,
+  w, ex, ty, max_pop, "all"
+)
 head(bigout)
 }
 \author{

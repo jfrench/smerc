@@ -47,34 +47,34 @@
 #' data(nydf)
 #' data(nyw)
 #' # determine 50 nn of region 1 for NY data
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' nn3 = knn(coords, longlat = TRUE, k = 3)
-#' z1 = scsg2(nn3, nyw)
-#' z2 = flex.zones(coords, nyw, k = 3, longlat = TRUE)
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' nn3 <- knn(coords, longlat = TRUE, k = 3)
+#' z1 <- scsg2(nn3, nyw)
+#' z2 <- flex.zones(coords, nyw, k = 3, longlat = TRUE)
 #' all.equal(z1, z2)
 #' @export
 #' @rdname csg
-csg2 = function(cz, cnn, cw) {
+csg2 <- function(cz, cnn, cw) {
 
   # determine neighbors of current set
-  nb = which(((cz + colSums(cw[cz, , drop = FALSE])) >= 1) - cz == 1)
+  nb <- which(((cz + colSums(cw[cz, , drop = FALSE])) >= 1) - cz == 1)
 
   # if there are some neighbors
   if (length(nb) > 0) {
     # return new set of candidate zones
     lapply(nb, function(i, tcz) {
-      tcz[i] = TRUE
+      tcz[i] <- TRUE
       tcz
     }, tcz = cz)
-  } else {# return NULL if there are no neighbors
+  } else { # return NULL if there are no neighbors
     return(logical(0))
   }
 }
 
 #' @export
 #' @rdname csg
-lcsg2 = function(lcz, cnn, cw) {
-  x = unlist(lapply(lcz, function(cz) {
+lcsg2 <- function(lcz, cnn, cw) {
+  x <- unlist(lapply(lcz, function(cz) {
     csg2(cz, cnn, cw)
   }), recursive = FALSE)
 
@@ -87,60 +87,66 @@ lcsg2 = function(lcz, cnn, cw) {
 
 #' @export
 #' @rdname csg
-scsg2 = function(nn, w, idx = seq_along(nn),
-                 nlevel = NULL, verbose = FALSE,
-                 logical = FALSE) {
+scsg2 <- function(nn, w, idx = seq_along(nn),
+                  nlevel = NULL, verbose = FALSE,
+                  logical = FALSE) {
   if (is.null(nlevel)) {
-    nlevel = max(sapply(nn, length))
+    nlevel <- max(sapply(nn, length))
   }
   # list to store all results
-  lcz_all = vector("list", length(nn))
+  lcz_all <- vector("list", length(nn))
 
   # set stopping conditions
   # stop if nidx == 1, otherwise, consider expanding subgraph
   for (i in idx) {
     # create temporary list to store results for region i
-    temp = vector("list", nlevel)
-    temp[[1]] = list(logical(length(nn[[i]])))
-    temp[[1]][[1]][1] = TRUE
-    clevel =  1
+    temp <- vector("list", nlevel)
+    temp[[1]] <- list(logical(length(nn[[i]])))
+    temp[[1]][[1]][1] <- TRUE
+    clevel <- 1
     # while we haven't reached the max level
     while (clevel < nlevel) {
       # increment current level
-      clevel = clevel + 1
+      clevel <- clevel + 1
       # print message, if necessary
       if (verbose) {
-        txt = paste("region ", i, ": ", clevel, "/", nlevel,
-                    " at ", Sys.time(), ".", sep = "")
+        txt <- paste("region ", i, ": ", clevel, "/", nlevel,
+          " at ", Sys.time(), ".",
+          sep = ""
+        )
         message(txt)
       }
       # determine next set of candidate zones from
       # previous set of candidate zones
-      temp[[clevel]] = lcsg2(lcz = temp[[clevel - 1]],
-                             cnn = nn[[i]],
-                             cw = w[nn[[i]], nn[[i]], drop = FALSE])
+      temp[[clevel]] <- lcsg2(
+        lcz = temp[[clevel - 1]],
+        cnn = nn[[i]],
+        cw = w[nn[[i]], nn[[i]], drop = FALSE]
+      )
       # if there are no more connected neighbors for
       # any of the previous level of zones, end algorithm
       if (length(temp[[clevel]]) < 1) {
-        clevel = nlevel
+        clevel <- nlevel
       }
     }
 
     if (!logical) {
-    lcz_all[[i]] = lapply(unlist(temp, recursive = FALSE),
-                          function(x) {
-                            z = logical(nrow(w))
-                            z[nn[[i]][x]] = TRUE
-                            return(z)
-                          })
+      lcz_all[[i]] <- lapply(
+        unlist(temp, recursive = FALSE),
+        function(x) {
+          z <- logical(nrow(w))
+          z[nn[[i]][x]] <- TRUE
+          return(z)
+        }
+      )
     } else {
-      lcz_all[[i]] = unlist(temp, recursive = FALSE)
+      lcz_all[[i]] <- unlist(temp, recursive = FALSE)
     }
   }
 
   if (!logical) {
-    lcz_all = unlist(lcz_all, recursive = FALSE)
-    lcz_all = lapply(lcz_all, which)
+    lcz_all <- unlist(lcz_all, recursive = FALSE)
+    lcz_all <- lapply(lcz_all, which)
     return(lcz_all[smerc::distinct(lcz_all, N = nrow(w))])
   } else {
     return(lcz_all)

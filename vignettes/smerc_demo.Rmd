@@ -4,7 +4,7 @@ author: "Joshua P. French"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Demonstration of **smerc** package}
+  %\VignetteIndexEntry{Demonstration of smerc package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

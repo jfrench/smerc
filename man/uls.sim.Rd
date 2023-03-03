@@ -54,6 +54,9 @@ or an integer to indicate number of child-processes
 \value{
 A vector with the maximum test statistic for each
   simulated data set.
+
+A vector with the maximum test statistic for each
+  simulated data set.
 }
 \description{
 \code{uls.sim} efficiently performs
@@ -65,10 +68,10 @@ better understanding the implementation of the test.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(longitude, latitude))
-cases = floor(nydf$cases)
-pop = nydf$pop
-ty = sum(cases)
-ex = ty/sum(pop) * pop
-tsim = uls.sim(1, ty, ex, nyw, pop = pop, ubpop = 0.5)
+coords <- with(nydf, cbind(longitude, latitude))
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ty <- sum(cases)
+ex <- ty / sum(pop) * pop
+tsim <- uls.sim(1, ty, ex, nyw, pop = pop, ubpop = 0.5)
 }

@@ -11,4 +11,3 @@
 #' @name smerc
 #' @docType package
 NULL
-

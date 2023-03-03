@@ -68,34 +68,38 @@
 #' \item{angle}{The rotation angle of the ellipse.}
 #' \item{shape}{The shape of the ellipse.}
 #' @export
-smerc_cluster = function(tobs, zones, pvalue,
-                         coords, cases, pop, ex, longlat,
-                         method, rel_param,
-                         alpha,
-                         w = NULL, d = NULL,
-                         a = NULL, shape_all = NULL,
-                         angle_all = NULL,
-                         weights = NULL) {
-  arg_check_smerc_cluster(tobs = tobs, zones = zones,
-                          pvalue = pvalue, coords = coords,
-                          cases = cases, pop = pop, ex = ex,
-                          longlat = longlat,
-                          method = method,
-                          rel_param = rel_param,
-                          w = w, d = d, a = a,
-                          shape_all = shape_all,
-                          angle_all = angle_all,
-                          alpha)
-  new_smerc_cluster(tobs = tobs, zones = zones,
-                    pvalue = pvalue, coords = coords,
-                    cases = cases, pop = pop, ex = ex,
-                    longlat = longlat,
-                    method = method,
-                    rel_param = rel_param, alpha = alpha,
-                    w = w, d = d, a = a,
-                    shape_all = shape_all,
-                    angle_all = angle_all,
-                    weights = weights)
+smerc_cluster <- function(tobs, zones, pvalue,
+                          coords, cases, pop, ex, longlat,
+                          method, rel_param,
+                          alpha,
+                          w = NULL, d = NULL,
+                          a = NULL, shape_all = NULL,
+                          angle_all = NULL,
+                          weights = NULL) {
+  arg_check_smerc_cluster(
+    tobs = tobs, zones = zones,
+    pvalue = pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat,
+    method = method,
+    rel_param = rel_param,
+    w = w, d = d, a = a,
+    shape_all = shape_all,
+    angle_all = angle_all,
+    alpha
+  )
+  new_smerc_cluster(
+    tobs = tobs, zones = zones,
+    pvalue = pvalue, coords = coords,
+    cases = cases, pop = pop, ex = ex,
+    longlat = longlat,
+    method = method,
+    rel_param = rel_param, alpha = alpha,
+    w = w, d = d, a = a,
+    shape_all = shape_all,
+    angle_all = angle_all,
+    weights = weights
+  )
 }
 
 #' Construct \code{smerc_cluster}
@@ -104,111 +108,115 @@ smerc_cluster = function(tobs, zones, pvalue,
 #' \code{smerc_cluster}
 #' @return A \code{smerc_cluster}
 #' @noRd
-new_smerc_cluster = function(tobs, zones, pvalue, coords,
-                             cases, pop, ex, longlat,
-                             method, rel_param, alpha, w, d,
-                             a, shape_all, angle_all,
-                             weights) {
+new_smerc_cluster <- function(tobs, zones, pvalue, coords,
+                              cases, pop, ex, longlat,
+                              method, rel_param, alpha, w, d,
+                              a, shape_all, angle_all,
+                              weights) {
   # total cases and population
-  ty = sum(cases)
-  tpop = sum(pop)
+  ty <- sum(cases)
+  tpop <- sum(pop)
 
   # for the unique, non-overlapping clusters in order of significance,
   # find the associated centroid,
   # zone radius, cases in window, expected cases in window,
   # population in window, standarized mortality ratio, relative risk
-  centroid_id = sapply(zones, utils::head, n = 1)
-  boundary_id = sapply(zones, utils::tail, n = 1)
+  centroid_id <- sapply(zones, utils::head, n = 1)
+  boundary_id <- sapply(zones, utils::tail, n = 1)
 
   if (!is.null(d)) {
-    zone_r = d[cbind(centroid_id, boundary_id)]
+    zone_r <- d[cbind(centroid_id, boundary_id)]
   } else {
-    zone_r = rep(NA, length(centroid_id))
+    zone_r <- rep(NA, length(centroid_id))
   }
   # maximum centroid distance
-  max_dist = unname(sapply(zones, function(x) {
-    max(sp::spDists(coords[x,, drop = FALSE], longlat = longlat))
+  max_dist <- unname(sapply(zones, function(x) {
+    max(sp::spDists(coords[x, , drop = FALSE], longlat = longlat))
   }))
   # zone centroid
   # cases, expected, population in zone
-  centroid = coords[centroid_id,, drop = FALSE]
-  yin = zones.sum(zones, cases)
-  ein = zones.sum(zones, ex)
-  popin = zones.sum(zones, pop)
+  centroid <- coords[centroid_id, , drop = FALSE]
+  yin <- zones.sum(zones, cases)
+  ein <- zones.sum(zones, ex)
+  popin <- zones.sum(zones, pop)
   if (!is.null(weights)) {
-    yin = sapply(seq_along(zones), function(i) {
+    yin <- sapply(seq_along(zones), function(i) {
       sum(cases[zones[[i]]] * weights[[i]])
     })
-    ein = sapply(seq_along(zones), function(i) {
+    ein <- sapply(seq_along(zones), function(i) {
       sum(ex[zones[[i]]] * weights[[i]])
     })
-    popin = sapply(seq_along(zones), function(i) {
+    popin <- sapply(seq_along(zones), function(i) {
       sum(pop[zones[[i]]] * weights[[i]])
     })
   }
-  smr = yin / ein
-  rr_num = yin / popin
-  rr_den = (ty - yin) / (tpop - popin)
-  rr = rr_num / rr_den
+  smr <- yin / ein
+  rr_num <- yin / popin
+  rr_den <- (ty - yin) / (tpop - popin)
+  rr <- rr_num / rr_den
   if (is.null(w)) {
-    sig_w = lapply(zones, function(x) {
+    sig_w <- lapply(zones, function(x) {
       matrix(c(0, rep(1, length(x) - 1)), nrow = 1)
     })
   } else {
-    sig_w = sapply(zones, function(x) {
+    sig_w <- sapply(zones, function(x) {
       w[x, x, drop = FALSE]
     }, simplify = FALSE)
   }
   if (!is.null(a)) {
-    minor = unname(sapply(seq_along(zones), function(i) {
-      first = zones[[i]][1]
-      last = utils::tail(zones[[i]], 1)
-      dist.ellipse(coords[c(first, last),, drop = FALSE],
-                   shape = shape_all[i],
-                   angle = angle_all[i])[1, 2]
+    minor <- unname(sapply(seq_along(zones), function(i) {
+      first <- zones[[i]][1]
+      last <- utils::tail(zones[[i]], 1)
+      dist.ellipse(coords[c(first, last), , drop = FALSE],
+        shape = shape_all[i],
+        angle = angle_all[i]
+      )[1, 2]
     }))
-    major = minor * shape_all
-    loglikrat = stat.poisson(yin, ty - yin, ein, ty - ein)
+    major <- minor * shape_all
+    loglikrat <- stat.poisson(yin, ty - yin, ein, ty - ein)
   } else if (method == "Besag-Newell") {
-    loglikrat = NA
+    loglikrat <- NA
   } else {
-    loglikrat = tobs
+    loglikrat <- tobs
   }
 
   # reformat output for return
-  clusters = vector("list", length(zones))
+  clusters <- vector("list", length(zones))
   for (i in seq_along(clusters)) {
-    clusters[[i]]$locids = zones[[i]]
-    clusters[[i]]$centroid = centroid[i,, drop = FALSE]
-    clusters[[i]]$r = zone_r[i]
-    clusters[[i]]$max_dist = max_dist[i]
+    clusters[[i]]$locids <- zones[[i]]
+    clusters[[i]]$centroid <- centroid[i, , drop = FALSE]
+    clusters[[i]]$r <- zone_r[i]
+    clusters[[i]]$max_dist <- max_dist[i]
     if (!is.null(a)) {
-      clusters[[i]]$semiminor_axis = minor[i]
-      clusters[[i]]$semimajor_axis = major[i]
-      clusters[[i]]$angle = angle_all[i]
-      clusters[[i]]$shape = shape_all[i]
+      clusters[[i]]$semiminor_axis <- minor[i]
+      clusters[[i]]$semimajor_axis <- major[i]
+      clusters[[i]]$angle <- angle_all[i]
+      clusters[[i]]$shape <- shape_all[i]
     }
-    clusters[[i]]$population = popin[i]
-    clusters[[i]]$cases = yin[i]
-    clusters[[i]]$expected = ein[i]
-    clusters[[i]]$smr = smr[i]
-    clusters[[i]]$rr = rr[i]
-    clusters[[i]]$loglikrat = loglikrat[i]
-    clusters[[i]]$test_statistic = tobs[i]
-    clusters[[i]]$pvalue = pvalue[i]
-    clusters[[i]]$w = sig_w[[i]]
+    clusters[[i]]$population <- popin[i]
+    clusters[[i]]$cases <- yin[i]
+    clusters[[i]]$expected <- ein[i]
+    clusters[[i]]$smr <- smr[i]
+    clusters[[i]]$rr <- rr[i]
+    clusters[[i]]$loglikrat <- loglikrat[i]
+    clusters[[i]]$test_statistic <- tobs[i]
+    clusters[[i]]$pvalue <- pvalue[i]
+    clusters[[i]]$w <- sig_w[[i]]
   }
-  structure(list(clusters = clusters,
-                 coords = coords,
-                 number_of_regions = length(cases),
-                 total_population = tpop,
-                 total_cases = ty,
-                 cases_per_100k = ty / tpop * 1e5,
-                 method = method,
-                 rel_param = rel_param,
-                 alpha = alpha,
-                 longlat = longlat),
-            class = "smerc_cluster")
+  structure(list(
+    clusters = clusters,
+    coords = coords,
+    number_of_regions = length(cases),
+    total_population = tpop,
+    total_cases = ty,
+    cases_per_100k = ty / tpop * 1e5,
+    method = method,
+    rel_param = rel_param,
+    alpha = alpha,
+    longlat = longlat
+  ),
+  class = "smerc_cluster"
+  )
 }
 
 #' Check arguments for \code{smerc_cluster}
@@ -234,18 +242,18 @@ new_smerc_cluster = function(tobs, zones, pvalue, coords,
 #' @param alpha The significance level.
 #' @return A \code{smerc_cluster} object
 #' @noRd
-arg_check_smerc_cluster = function(tobs, zones, pvalue,
-                                   coords, cases, pop, ex,
-                                   longlat, method,
-                                   rel_param, w, d, a,
-                                   shape_all, angle_all,
-                                   alpha) {
+arg_check_smerc_cluster <- function(tobs, zones, pvalue,
+                                    coords, cases, pop, ex,
+                                    longlat, method,
+                                    rel_param, w, d, a,
+                                    shape_all, angle_all,
+                                    alpha) {
   arg_check_tobs(tobs)
-  Ntobs = length(tobs)
+  Ntobs <- length(tobs)
   arg_check_zones(zones, Ntobs)
   arg_check_pvalue(pvalue, Ntobs)
   arg_check_coords(coords)
-  N = nrow(coords)
+  N <- nrow(coords)
   arg_check_cases(cases, N)
   arg_check_pop(pop, N)
   arg_check_ex(ex, N)

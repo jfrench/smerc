@@ -21,8 +21,8 @@ between each point and the line passing through the end points.
 }
 \examples{
 # generate some data
-x = c(0, 0.5, 1)
-y = c(1, 0.1, 0)
+x <- c(0, 0.5, 1)
+y <- c(1, 0.1, 0)
 # plot data (the second point is clearly the elbow)
 plot(x, y)
 elbow_point(x, y)

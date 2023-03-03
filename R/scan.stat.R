@@ -55,88 +55,94 @@
 #' @examples
 #' # New York leukemia data
 #' # total cases
-#' ty = 552
+#' ty <- 552
 #' # total population
-#' tpop = 1057673
+#' tpop <- 1057673
 #'
 #' # poisson example with yin = 106 and ein = 62.13
 #' scan.stat(yin = 106, ty = ty, ein = 62.13)
-#' stat.poisson(yin = 106, yout = 552 - 106,
-#'              ein = 62.13, eout = 552 - 62.13)
+#' stat.poisson(
+#'   yin = 106, yout = 552 - 106,
+#'   ein = 62.13, eout = 552 - 62.13
+#' )
 #'
 #' # binomial example with yin = 41 and popin = 38999
-#' scan.stat(yin = 41, ty = ty,
-#'           popin = 38999, tpop = tpop, type = "binomial")
+#' scan.stat(
+#'   yin = 41, ty = ty,
+#'   popin = 38999, tpop = tpop, type = "binomial"
+#' )
 #' stat.binom(41, ty - 41, ty, 38999, tpop - 38999, tpop)
-scan.stat = function(yin, ein = NULL, eout = NULL, ty,
-                     type = "poisson",
-                     popin = NULL, tpop = NULL,
-                     a = 0, shape = 1,
-                     yout = NULL,
-                     popout = NULL) {
-  arg_check_scan_stat(yin = yin, ty = ty, ein = ein,
-                      popin = popin, tpop = tpop,
-                      type = type, a = a, shape = shape)
-  B = length(yin)
+scan.stat <- function(yin, ein = NULL, eout = NULL, ty,
+                      type = "poisson",
+                      popin = NULL, tpop = NULL,
+                      a = 0, shape = 1,
+                      yout = NULL,
+                      popout = NULL) {
+  arg_check_scan_stat(
+    yin = yin, ty = ty, ein = ein,
+    popin = popin, tpop = tpop,
+    type = type, a = a, shape = shape
+  )
+  B <- length(yin)
   # double check yout argument
-  if (is.null(yout)) yout = ty - yin
+  if (is.null(yout)) yout <- ty - yin
   if (B != length(yout)) stop("length(yin) != length(yout)")
 
   if (type == "poisson") {
     # check eout argument
-    if (is.null(eout)) eout = ty - ein
+    if (is.null(eout)) eout <- ty - ein
     if (B != length(eout)) stop("length(yin) != length(eout)")
 
-    tall = stat.poisson(yin, yout, ein, eout, a, shape)
+    tall <- stat.poisson(yin, yout, ein, eout, a, shape)
   } else if (type == "binomial") {
     # check eout argument
-    if (is.null(popout)) popout = tpop - popin
+    if (is.null(popout)) popout <- tpop - popin
     if (B != length(popout)) stop("length(yin) != length(popout)")
-    tall = stat.binom(yin, yout, ty, popin, popout, tpop)
+    tall <- stat.binom(yin, yout, ty, popin, popout, tpop)
   }
   return(tall)
 }
 
 #' @export
 #' @rdname scan.stat
-stat.poisson = function(yin, yout, ein, eout, a = 0, shape = 1) {
+stat.poisson <- function(yin, yout, ein, eout, a = 0, shape = 1) {
   # determine if there will be any problematic statistics
-  good = which(yin > 0)
+  good <- which(yin > 0)
   # create vector for storage
-  tall = numeric(length(yin))
+  tall <- numeric(length(yin))
   # log ratio observed/expected (in and out) for good locations
-  lrin =  log(yin[good]) - log(ein[good])
-  lrout = log(yout[good]) - log(eout[good])
+  lrin <- log(yin[good]) - log(ein[good])
+  lrout <- log(yout[good]) - log(eout[good])
   # compute statistics for good locations
-  tall[good] = yin[good] * lrin + yout[good] * lrout
+  tall[good] <- yin[good] * lrin + yout[good] * lrout
   # if indicator not satisfied (yin/ein > yout/eout), set to 0
-  tall[good][lrin < lrout] = 0
+  tall[good][lrin < lrout] <- 0
   if (a > 0) {
-    i = which(shape > 1)
-    tall[i] = tall[i] * (4 * shape[i] / (shape[i] + 1) ^ 2) ^ a
+    i <- which(shape > 1)
+    tall[i] <- tall[i] * (4 * shape[i] / (shape[i] + 1)^2)^a
   }
   return(tall)
 }
 
 #' @export
 #' @rdname scan.stat
-stat.binom = function(yin, yout, ty, popin, popout, tpop) {
-  py_in = popin - yin
-  py_out = popout - yout
+stat.binom <- function(yin, yout, ty, popin, popout, tpop) {
+  py_in <- popin - yin
+  py_out <- popout - yout
 
-  tall = yin * (log(yin) - log(popin)) +
+  tall <- yin * (log(yin) - log(popin)) +
     py_in * (log(py_in) - log(popin)) +
     yout * (log(yout) - log(popout)) +
     py_out * (log(py_out) - log(popout)) -
     ty * log(ty) - (tpop - ty) * log(tpop - ty) +
     tpop * log(tpop)
   # correct test statistics for NaNs
-  tall[yin / popin <= yout / popout | is.nan(tall)] = 0
+  tall[yin / popin <= yout / popout | is.nan(tall)] <- 0
   return(tall)
 }
 
-arg_check_scan_stat = function(yin, ty, ein, tpop, popin, type,
-                               a, shape) {
+arg_check_scan_stat <- function(yin, ty, ein, tpop, popin, type,
+                                a, shape) {
   if (is.null(ein) & is.null(popin)) {
     stop("One of ein and popin must be provided")
   }

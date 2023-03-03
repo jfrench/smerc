@@ -29,14 +29,14 @@
 #' @references Algorithm based on suggestion at
 #'   \url{https://stackoverflow.com/a/29824978}.
 #' @examples
-#' x = list(1:3, 3:1, 1:4, 4:1, c(1, 2, 4, 6), c(6, 4, 1, 2))
+#' x <- list(1:3, 3:1, 1:4, 4:1, c(1, 2, 4, 6), c(6, 4, 1, 2))
 #' x[distinct(x)]
-distinct = function(x, N = max(unlist(x))) {
-  pri = randtoolbox::get.primes(N)
+distinct <- function(x, N = max(unlist(x))) {
+  pri <- randtoolbox::get.primes(N)
   if (capabilities()[["long.double"]]) {
-    sums = sapply(x, function(xi) sum(log(pri[xi])))
+    sums <- sapply(x, function(xi) sum(log(pri[xi])))
   } else {
-    sums = sapply(x, function(xi) sum(sort(log(pri[xi]))))
+    sums <- sapply(x, function(xi) sum(sort(log(pri[xi]))))
   }
   which(!duplicated(sums))
 }

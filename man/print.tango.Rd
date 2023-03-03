@@ -19,8 +19,8 @@ is installed, then the results are printed in color.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("x", "y")])
-w = dweights(coords, kappa = 1)
-results = tango.test(nydf$cases, nydf$pop, w, nsim = 49)
+coords <- as.matrix(nydf[, c("x", "y")])
+w <- dweights(coords, kappa = 1)
+results <- tango.test(nydf$cases, nydf$pop, w, nsim = 49)
 results
 }

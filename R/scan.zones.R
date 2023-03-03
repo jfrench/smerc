@@ -16,22 +16,24 @@
 #' <doi:10.1080/03610929708831995>
 #' @examples
 #' data(nydf)
-#' coords = cbind(nydf$longitude, nydf$latitude)
-#' zones = scan.zones(coords = coords, pop = nydf$pop,
-#'                    ubpop = 0.1, longlat = TRUE)
-scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
+#' coords <- cbind(nydf$longitude, nydf$latitude)
+#' zones <- scan.zones(
+#'   coords = coords, pop = nydf$pop,
+#'   ubpop = 0.1, longlat = TRUE
+#' )
+scan.zones <- function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   # argument checking
   arg_check_scan_zones(coords, pop, ubpop, longlat)
 
   # compute intercentroid distance
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- sp::spDists(as.matrix(coords), longlat = longlat)
 
   # for each region, determine sorted nearest neighbors
   # subject to population constraint
-  nn = nnpop(d, pop, ubpop)
+  nn <- nnpop(d, pop, ubpop)
 
   # use nearest neighbors to construct all zones
-  zones = nn2zones(nn)
+  zones <- nn2zones(nn)
 
   # return only unique zones
   return(zones[distinct(zones)])
@@ -47,10 +49,10 @@ scan.zones = function(coords, pop, ubpop = 0.5, longlat = FALSE) {
 #' @return NULL
 #' @noRd
 # argument checking for all scan zones
-arg_check_scan_zones = function(coords, pop,
-                                ubpop, longlat) {
+arg_check_scan_zones <- function(coords, pop,
+                                 ubpop, longlat) {
   arg_check_coords(coords)
-  N = nrow(coords)
+  N <- nrow(coords)
   arg_check_pop(pop, N)
   arg_check_ubpop(ubpop)
   arg_check_longlat(longlat)

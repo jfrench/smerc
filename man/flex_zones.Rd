@@ -69,11 +69,11 @@ search to find all subgraphs connected to each vertex
 \examples{
 data(nydf)
 data(nyw)
-coords = cbind(nydf$x, nydf$y)
-zones = flex_zones(coords, w = nyw, k = 3)
+coords <- cbind(nydf$x, nydf$y)
+zones <- flex_zones(coords, w = nyw, k = 3)
 \dontrun{
 # see what happens when verbose = TRUE
-zones = flex_zones(coords, w = nyw, k = 3, verbose = TRUE)
+zones <- flex_zones(coords, w = nyw, k = 3, verbose = TRUE)
 }
 }
 \references{

@@ -62,11 +62,13 @@ for finding disease clusters.
 \examples{
 data(nydf)
 data(nyw)
-coords = with(nydf, cbind(x, y))
-cases = nydf$cases
-pop = nydf$pop
-out = cepp.test(coords = coords, cases = cases, pop = pop,
-                nstar = 1000, alpha = 0.99)
+coords <- with(nydf, cbind(x, y))
+cases <- nydf$cases
+pop <- nydf$pop
+out <- cepp.test(
+  coords = coords, cases = cases, pop = pop,
+  nstar = 1000, alpha = 0.99
+)
 plot(out)
 summary(out)
 

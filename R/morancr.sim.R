@@ -15,19 +15,19 @@
 #' @examples
 #' data(nydf)
 #' data(nyw)
-#' ex = sum(nydf$cases)/sum(nydf$pop)*nydf$pop
+#' ex <- sum(nydf$cases) / sum(nydf$pop) * nydf$pop
 #' morancr.sim(nsim = 10, cases = nydf$cases, w = nyw, ex = ex)
-morancr.sim = function(nsim = 1, cases, w, ex) {
-  simdist = "multinomial"
-  ty = sum(cases)
+morancr.sim <- function(nsim = 1, cases, w, ex) {
+  simdist <- "multinomial"
+  ty <- sum(cases)
   # compute max test stat for nsim simulated data sets
-  tsim = pbapply::pblapply(seq_len(nsim), function(i) {
+  tsim <- pbapply::pblapply(seq_len(nsim), function(i) {
     # simulate new data
     if (simdist == "multinomial") {
-      ysim = stats::rmultinom(1, size = ty, prob = ex)
+      ysim <- stats::rmultinom(1, size = ty, prob = ex)
     }
-    y_std = matrix((ysim - ex)/sqrt(ex))
-    return(sum(w * y_std %*% t(y_std))/sum(w))
+    y_std <- matrix((ysim - ex) / sqrt(ex))
+    return(sum(w * y_std %*% t(y_std)) / sum(w))
   })
   unlist(tsim, use.names = FALSE)
 }

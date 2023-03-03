@@ -40,9 +40,9 @@ is matched with the same position in \code{cases}.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
-d = sp::spDists(coords, longlat = FALSE)
-cwins = bn.zones(d, cases = nydf$cases, cstar = 6)
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
+d <- sp::spDists(coords, longlat = FALSE)
+cwins <- bn.zones(d, cases = nydf$cases, cstar = 6)
 }
 \references{
 Besag, J. and Newell, J.  (1991). The

@@ -33,9 +33,9 @@ between the starting centroid and the farthest neighbor.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("longitude", "latitude")])
-d = as.matrix(dist(coords))
-nn = nndist(d, ubd = 0.01)
+coords <- as.matrix(nydf[, c("longitude", "latitude")])
+d <- as.matrix(dist(coords))
+nn <- nndist(d, ubd = 0.01)
 }
 \author{
 Joshua French

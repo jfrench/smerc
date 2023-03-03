@@ -60,11 +60,11 @@ better understanding the implementation of the test.
 data(nydf)
 data(nyw)
 # determine knn
-coords = with(nydf, cbind(longitude, latitude))
-nn = knn(coords, longlat = TRUE, k = 50)
+coords <- with(nydf, cbind(longitude, latitude))
+nn <- knn(coords, longlat = TRUE, k = 50)
 # determine expected number of cases in each region
-cases = floor(nydf$cases)
-pop = nydf$pop
-ex = pop * sum(cases)/sum(pop)
-tsim = rflex.sim(nsim = 5, nn = nn, w = nyw, ex = ex)
+cases <- floor(nydf$cases)
+pop <- nydf$pop
+ex <- pop * sum(cases) / sum(pop)
+tsim <- rflex.sim(nsim = 5, nn = nn, w = nyw, ex = ex)
 }

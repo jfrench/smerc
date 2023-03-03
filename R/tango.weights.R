@@ -38,27 +38,27 @@
 #' @export
 #' @examples
 #' data(nydf)
-#' coords = as.matrix(nydf[,c("longitude", "latitude")])
-#' w = tango.weights(coords, kappa = 1, longlat = TRUE)
-tango.weights = function(coords, kappa = 1, longlat = FALSE,
-                         type = "basic", pop = NULL) {
-  type = match.arg(type, c("basic", "rogerson", "tango"))
+#' coords <- as.matrix(nydf[, c("longitude", "latitude")])
+#' w <- tango.weights(coords, kappa = 1, longlat = TRUE)
+tango.weights <- function(coords, kappa = 1, longlat = FALSE,
+                          type = "basic", pop = NULL) {
+  type <- match.arg(type, c("basic", "rogerson", "tango"))
   arg_check_dweights(coords, kappa, longlat, type, pop)
-  d = sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- sp::spDists(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
-    w = exp(-d / kappa)
+    w <- exp(-d / kappa)
   } else if (type == "rogerson") {
-    popp = pop / sum(pop)
-    w = exp(-d / kappa) / sqrt(outer(popp, popp))
+    popp <- pop / sum(pop)
+    w <- exp(-d / kappa) / sqrt(outer(popp, popp))
   } else if (type == "tango") {
-    w = exp(-4 * (d / kappa) ^ 2)
+    w <- exp(-4 * (d / kappa)^2)
   }
   return(w)
 }
 
 #' @rdname tango.weights
 #' @export
-dweights = tango.weights
+dweights <- tango.weights
 
 #' Argument checking for dweights/tango.weights
 #'
@@ -71,9 +71,9 @@ dweights = tango.weights
 #'
 #' @return NULL
 #' @noRd
-arg_check_dweights = function(coords, kappa, longlat, type, pop) {
+arg_check_dweights <- function(coords, kappa, longlat, type, pop) {
   arg_check_coords(coords)
-  N = nrow(coords)
+  N <- nrow(coords)
   arg_check_dweights_kappa(kappa)
   arg_check_longlat(longlat)
   if (!is.null(pop)) {
@@ -84,4 +84,3 @@ arg_check_dweights = function(coords, kappa, longlat, type, pop) {
     stop("pop must be provided when type = 'rogerson'")
   }
 }
-

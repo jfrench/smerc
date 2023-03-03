@@ -35,9 +35,11 @@ Kulldorff (1997).
 }
 \examples{
 data(nydf)
-coords = cbind(nydf$longitude, nydf$latitude)
-zones = scan.zones(coords = coords, pop = nydf$pop,
-                   ubpop = 0.1, longlat = TRUE)
+coords <- cbind(nydf$longitude, nydf$latitude)
+zones <- scan.zones(
+  coords = coords, pop = nydf$pop,
+  ubpop = 0.1, longlat = TRUE
+)
 }
 \references{
 Kulldorff, M. (1997) A spatial

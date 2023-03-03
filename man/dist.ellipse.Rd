@@ -28,6 +28,6 @@ from a starting coordinate.
 }
 \examples{
 data(nydf)
-coords = as.matrix(nydf[,c("x", "y")])
-d = dist.ellipse(coords, 4, 15)
+coords <- as.matrix(nydf[, c("x", "y")])
+d <- dist.ellipse(coords, 4, 15)
 }
