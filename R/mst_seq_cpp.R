@@ -1,92 +1,107 @@
-# library(Rcpp)
-#
-# stat_pois <- '
-# Rcpp::NumericVector stat_poisson_cp(Rcpp::NumericVector yin,
-#                                double ty,
-#                                Rcpp::NumericVector ein,
-#                                Rcpp::NumericVector eout,
-#                                unsigned int min_cases,
-#                                Rcpp::NumericVector popin,
-#                                double max_pop) {
-#   unsigned int yin_length = yin.length();
-#   double lrin, lrout;
-#   Rcpp::NumericVector tall(yin_length, 0);
-#   Rcpp::NumericVector yout(yin_length, 0);
-#
-#   // determine if there will be any problematic statistics
-#   for (unsigned int i = 0; i < yin_length; i++) {
-#     // compute statistic for good locations
-#     // yin > 0 and yin/ein > yout/ein
-#     if (yin[i] >= min_cases & popin[i] <= max_pop) {
-#       yout[i] = ty - yin[i];
-#       lrin = log(yin[i]) - log(ein[i]);
-#       lrout = log(yout[i]) - log(eout[i]);
-#       if (lrin > lrout) {
-#         tall[i] = yin[i] * lrin + yout[i] * lrout;
-#       }
-#     }
-#   }
-#
-#   return tall;
-# }
-# '
-#
-# cppFunction(stat_pois)
-#
-# smerc::stat.poisson(
-#   yin = 106, yout = 552 - 106,
-#   ein = 62.13, eout = 552 - 62.13
-# )
-#
-# stat_poisson_cp(106,
-#                 552,
-#                 62.13,
-#                 552 - 62.13,
-#                 2,
-#                 15000,
-#                 20000)
-#
-#
-# mst_seq <- 'Rcpp::List(int region,
-#                       Rcpp::IntegerVector neighbors,
-#                       Rcpp::NumericVector cases,
-#                       Rcpp::NumericVector pop,
-#                       Rcpp::NumericVector ex,
-#                       Rcpp::IntegerMatrix w,
-#                       double ty,
-#                       double max_pop,
-#                       unsigned int type,
-#                       unsigned int nlinks,
-#                       bool early
-#                       unsigned int min_cases) {
-#   // initialize objects
-#   unsigned int nneighbs = neighbors.size();
-#   loglikrat = Rcpp::NumericVector(nneighbs);
-#   yin = Rcpp::NumericVector(nneighbs);
-#   ein = Rcpp::NumericVector(nneighbs);
-#   popin = Rcpp::NumericVector(nneighbs);
-#
-#   // first step
-#   yin[0] = cases[region];
-#   ein[0] = ex[region];
-#   popin[0] = pop[region];
-#   loglikrat = stat_poisson_cp(yin, ty, ein, eout, min_cases, popin, max_pop);
-#
-#   // loglikrat[1] <- scan.stat(yin[1], ein[1], ty - ein[1], ty)
-#   // uz <- max_neighbors <- vector("list", length(neighbors))
-#   // uz[[1]] <- region
-#   // max_neighbors[[1]] <- setdiff(neighbors, region)
-#
-#   return List::create(
-#     Named("loglikrat") = loglikrat,
-#     Named("cases") = yin,
-#     Named("expected") = ein,
-#     Named("population") = popin
-#   );
-# }
-# '
-#
-# cppFunction(code = mst_seq, includes = stat_pois)
+library(Rcpp)
+
+stat_pois <- '
+Rcpp::NumericVector stat_poisson_cp(Rcpp::NumericVector yin,
+                               double ty,
+                               Rcpp::NumericVector ein,
+                               Rcpp::NumericVector eout,
+                               unsigned int min_cases,
+                               Rcpp::NumericVector popin,
+                               double max_pop) {
+  unsigned int yin_length = yin.length();
+  double lrin, lrout;
+  Rcpp::NumericVector tall(yin_length, 0);
+  Rcpp::NumericVector yout(yin_length, 0);
+
+  // determine if there will be any problematic statistics
+  for (unsigned int i = 0; i < yin_length; i++) {
+    // compute statistic for good locations
+    // yin > 0 and yin/ein > yout/ein
+    if ((yin[i] >= min_cases) & (popin[i] <= max_pop)) {
+      yout[i] = ty - yin[i];
+      lrin = log(yin[i]) - log(ein[i]);
+      lrout = log(yout[i]) - log(eout[i]);
+      if (lrin > lrout) {
+        tall[i] = yin[i] * lrin + yout[i] * lrout;
+      }
+    }
+  }
+
+  return tall;
+}
+'
+
+cppFunction(stat_pois)
+
+smerc::stat.poisson(
+  yin = 106, yout = 552 - 106,
+  ein = 62.13, eout = 552 - 62.13
+)
+
+stat_poisson_cp(106,
+                552,
+                62.13,
+                552 - 62.13,
+                2,
+                15000,
+                20000)
+
+mst_seq <- 'Rcpp::List mst_seq_cp(int region,
+                       Rcpp::IntegerVector neighbors,
+                       Rcpp::NumericVector cases,
+                       Rcpp::NumericVector pop,
+                       Rcpp::NumericVector ex,
+                       Rcpp::IntegerMatrix w,
+                       double ty,
+                       double max_pop,
+                       unsigned int type,
+                       unsigned int nlinks,
+                       bool early,
+                       unsigned int min_cases) {
+  // initialize objects
+  unsigned int nneighbs = neighbors.size();
+  Rcpp::NumericVector loglikrat(0, nneighbs);
+  Rcpp::NumericVector yin(0, nneighbs);
+  Rcpp::NumericVector ein(0, nneighbs);
+  Rcpp::NumericVector eout(0, nneighbs);
+  Rcpp::NumericVector popin(0, nneighbs);
+
+  // first step
+  yin[0] = cases[region - 1];
+  ein[0] = ex[region - 1];
+  eout[0] = ty - ein[0];
+  popin[0] = pop[region - 1];
+  loglikrat = stat_poisson_cp(yin, ty, ein, eout, min_cases, popin, max_pop);
+
+  // uz <- max_neighbors <- vector("list", length(neighbors))
+  // uz[[1]] <- region
+  // max_neighbors[[1]] <- setdiff(neighbors, region)
+
+  /*uz <- max_neighbors <- vector("list", length(neighbors))
+  uz[[1]] <- region
+  max_neighbors[[1]] <- setdiff(neighbors, region)
+
+  bool stop = FALSE;
+
+  // double check that pop constraint is satisfied
+  // if not, stop and set loglikrat to 0 (so that its not
+  // the maximum in the search)
+  if (popin[0] > max_pop) {
+    stop = true;
+    loglikrat[0] <- 0
+  }
+  */
+
+  return Rcpp::List::create(
+    Named("loglikrat") = loglikrat,
+    Named("cases") = yin,
+    Named("expected") = ein,
+    Named("population") = popin
+  );
+}
+'
+
+cppFunction(code = mst_seq, includes = stat_pois)
 #
 #
 #
