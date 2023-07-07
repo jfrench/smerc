@@ -86,7 +86,7 @@ rflex_zones <- function(nn, w, cases, ex, alpha1 = 0.2,
 
     N <- nrow(w)
     idx <- keep
-    lprimes <- log(smerc::primes100k[seq_len(N)])
+    lprimes <- log(primes100k[seq_len(N)])
 
     if (!loop) {
       # get list of list of logical vectors
@@ -97,7 +97,7 @@ rflex_zones <- function(nn, w, cases, ex, alpha1 = 0.2,
       return(czones[distinct(czones)])
     } else {
       czones <- list()
-      pri <- smerc::primes100k[seq_len(N)]
+      pri <- primes100k[seq_len(N)]
       czones_id <- numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {

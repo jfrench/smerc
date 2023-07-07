@@ -32,7 +32,7 @@ flex_zones <- function(coords, w, k = 10, longlat = FALSE,
   nn <- knn(coords = coords, longlat = longlat, k = k)
   N <- nrow(coords)
   idx <- seq_along(nn)
-  lprimes <- log(smerc::primes100k[seq_len(N)])
+  lprimes <- log(primes100k[seq_len(N)])
 
   if (!loop) {
     # get list of list of logical vectors
@@ -43,7 +43,7 @@ flex_zones <- function(coords, w, k = 10, longlat = FALSE,
     return(czones[distinct(czones)])
   } else {
     czones <- list()
-    pri <- smerc::primes100k[seq_len(N)]
+    pri <- primes100k[seq_len(N)]
     czones_id <- numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {
