@@ -18,7 +18,7 @@
 #'
 #' The maximum intercentroid distance can be found by
 #' executing the command:
-#' \code{sp::spDists(as.matrix(coords), longlat = longlat)},
+#' \code{gedist(as.matrix(coords), longlat = longlat)},
 #' based on the specified values of \code{coords} and
 #' \code{longlat}.
 #'
@@ -63,7 +63,7 @@ mlink.test <- function(coords, cases, pop, w,
   ty <- sum(cases) # sum of all cases
 
   # intercentroid distances
-  d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+  d <- gedist(as.matrix(coords), longlat = TRUE)
   # upperbound for zone population
   max_pop <- ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound

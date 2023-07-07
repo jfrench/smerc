@@ -58,7 +58,7 @@ flex.zones <- function(coords, w, k = 10, longlat = FALSE,
     )
   } else {
     czones <- list()
-    pri <- randtoolbox::get.primes(N)
+    pri <- smerc::primes100k[seq_len(N)]
     czones_id <- numeric(0) # unique identifier of each zone
     for (i in seq_len(N)) {
       if (verbose) {

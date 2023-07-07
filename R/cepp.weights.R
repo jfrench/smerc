@@ -15,7 +15,7 @@
 #' coords <- with(nydf, cbind(x, y))
 #' pop <- nydf$pop
 #' # intercentroid distances
-#' d <- sp::spDists(coords)
+#' d <- gedist(coords)
 #' # find smallest windows with cumulative population of
 #' # at least n* = 1000
 #' nn <- casewin(d, pop, 1000)

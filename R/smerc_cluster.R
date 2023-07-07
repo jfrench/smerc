@@ -131,7 +131,7 @@ new_smerc_cluster <- function(tobs, zones, pvalue, coords,
   }
   # maximum centroid distance
   max_dist <- unname(sapply(zones, function(x) {
-    max(sp::spDists(coords[x, , drop = FALSE], longlat = longlat))
+    max(gedist(coords[x, , drop = FALSE], longlat = longlat))
   }))
   # zone centroid
   # cases, expected, population in zone

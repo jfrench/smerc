@@ -16,7 +16,7 @@
 #' nndup(nn, 4)
 nndup <- function(nn, N = max(unlist(nn))) {
   # get prime numbers
-  pri <- randtoolbox::get.primes(N)
+  pri <- smerc::primes100k[seq_len(N)]
   # determine the el
   duplicated(unlist(lapply(nn, function(x) {
     cumsum(log(pri[x]))

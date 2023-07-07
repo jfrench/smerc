@@ -61,7 +61,7 @@ flex_test <- function(coords, cases, pop, w, k = 10,
   # get list of nearest neighbors
   nn <- knn(coords, longlat = longlat, k = k)
   # get vector of log primes
-  lprimes <- log(randtoolbox::get.primes(nrow(w)))
+  lprimes <- log(smerc::primes100k[seq_len(nrow(w))])
   # convert type to integer
   itype <- ifelse(type == "poisson", 0, 1)
   # run flex_test via cpp

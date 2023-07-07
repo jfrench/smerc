@@ -37,7 +37,7 @@ seq_scan_test <- function(coords, cases, pop,
   coords <- as.matrix(coords)
   N <- nrow(coords)
   # compute inter-centroid distances
-  d <- sp::spDists(coords, longlat = longlat)
+  d <- gedist(coords, longlat = longlat)
 
   # total number of cases
   ty <- sum(cases)

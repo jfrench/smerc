@@ -65,7 +65,7 @@ mlf.zones <- function(coords, cases, pop, w,
   start <- which.max(tobs)
 
   # intercentroid distances
-  d <- sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- gedist(as.matrix(coords), longlat = longlat)
 
   # upperbound for population in zone
   max_pop <- ubpop * sum(pop)

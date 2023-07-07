@@ -26,7 +26,7 @@
 #' @examples
 #' data(nydf)
 #' coords <- as.matrix(nydf[, c("longitude", "latitude")])
-#' d <- sp::spDists(coords, longlat = FALSE)
+#' d <- gedist(coords, longlat = FALSE)
 #' cwins <- bn.zones(d, cases = nydf$cases, cstar = 6)
 bn.zones <- function(d, cases, cstar) {
   # order distances for each region

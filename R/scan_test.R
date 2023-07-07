@@ -104,7 +104,7 @@
 #'   coords = as.matrix(coords)
 #'   N = nrow(coords)
 #'   # compute inter-centroid distances
-#'   d = sp::spDists(coords, longlat = longlat)
+#'   d = gedist(coords, longlat = longlat)
 #'   # total cases, population, expected, multiplier
 #'   ty = sum(cases)
 #'   tpop = sum(pop)

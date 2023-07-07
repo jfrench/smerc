@@ -27,12 +27,12 @@ data(nydf) # load data
 str(nydf) # look at structure
 ```
 
-A `SpatialPolygonsDataFrame` associated with the regions is included in the `nypoly` data set, which we plot below.
+We plot the study area below using information in the \code{nysf} data object.
 
 ```{r}
-data(nypoly) # load nypoly data
-library(sp) # load sp package for plotting
-plot(nypoly) # plot SpatialPolygonsDataFrame
+data(nysf) # load nysf data
+library(sf) # load sf package for plotting
+plot(st_geometry(nysf)) # plot study area
 ```
 
 ## Scan methods
@@ -78,9 +78,9 @@ If you want to extract the detected clusters from a `smerc_cluster` object, then
 clusters(scan_out)
 ```
 
-If a polygon-like structure is associated with each region, then the `color.clusters` can be used to easily produce nicer plots. E.g., we can use the `nypoly` object to create a nicer map of our results.
+If a polygon-like structure is associated with each region, then the `color.clusters` can be used to easily produce nicer plots. E.g., we can use the `nysf` object to create a nicer map of our results.
 ```{r}
-plot(nypoly, col = color.clusters(scan_out)) #nicer plot of scan.test results
+plot(st_geometry(nysf), col = color.clusters(scan_out)) #nicer plot of scan.test results
 ```
 
 Other scan methods available include:

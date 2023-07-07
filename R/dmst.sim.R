@@ -20,7 +20,7 @@
 #' pop <- nydf$pop
 #' ty <- sum(cases)
 #' ex <- ty / sum(pop) * pop
-#' d <- sp::spDists(coords, longlat = TRUE)
+#' d <- gedist(coords, longlat = TRUE)
 #' nn <- nndist(d, ubd = 0.05)
 #' max_pop <- sum(pop) * 0.25
 #' tsim <- dmst.sim(1, nn, ty, ex, nyw,

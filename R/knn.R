@@ -20,7 +20,7 @@
 knn <- function(coords, longlat = FALSE, k = 1, d = NULL) {
   arg_check_knn(coords, longlat, k, d)
   if (is.null(d)) {
-    d <- sp::spDists(as.matrix(coords), longlat = longlat)
+    d <- gedist(as.matrix(coords), longlat = longlat)
   }
   # return list of sorted nn indices for each row of d
   lapply(seq_len(nrow(d)), function(i) order(d[i, ])[seq_len(k)])

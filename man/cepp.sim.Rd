@@ -41,7 +41,7 @@ better understanding the implementation of the test.
 \examples{
 data(nydf)
 coords <- with(nydf, cbind(longitude, latitude))
-d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+d <- gedist(as.matrix(coords), longlat = TRUE)
 nn <- casewin(d, cases = nydf$pop, cstar = 15000)
 cases <- floor(nydf$cases)
 ty <- sum(cases)

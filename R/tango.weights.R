@@ -44,7 +44,7 @@ tango.weights <- function(coords, kappa = 1, longlat = FALSE,
                           type = "basic", pop = NULL) {
   type <- match.arg(type, c("basic", "rogerson", "tango"))
   arg_check_dweights(coords, kappa, longlat, type, pop)
-  d <- sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- gedist(as.matrix(coords), longlat = longlat)
   if (type == "basic") {
     w <- exp(-d / kappa)
   } else if (type == "rogerson") {

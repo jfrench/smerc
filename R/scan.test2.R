@@ -119,7 +119,7 @@ scan.test <- function(coords, cases, pop,
   coords <- as.matrix(coords)
   N <- nrow(coords)
   # compute inter-centroid distances
-  d <- sp::spDists(coords, longlat = longlat)
+  d <- gedist(coords, longlat = longlat)
 
   # for each region, determine sorted nearest neighbors
   # subject to population constraint

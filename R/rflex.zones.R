@@ -103,7 +103,7 @@ rflex.zones <- function(nn, w, cases, ex, alpha1 = 0.2,
       czones <- list()
 
       count <- 1
-      pri <- randtoolbox::get.primes(length(cases))
+      pri <- smerc::primes100k[seq_len(length(cases))]
       czones_id <- numeric(0) # unique identifier of each zone
       for (i in keep) {
         if (verbose) {

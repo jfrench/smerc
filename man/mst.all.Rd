@@ -60,6 +60,8 @@ A cluster object created by \code{\link{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).
+It can also be \code{"future"} to use a future backend (see Details),
+\code{NULL} (default) refers to sequential evaluation.
 }
 
 \item{progress}{A logical value indicating whether a
@@ -122,7 +124,7 @@ ubpop <- 0.5
 ubd <- 0.5
 ty <- sum(cases) # total number of cases
 # intercentroid distances
-d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+d <- gedist(as.matrix(coords), longlat = TRUE)
 # upperbound for population in zone
 max_pop <- ubpop * sum(pop)
 # upperbound for distance between centroids in zone

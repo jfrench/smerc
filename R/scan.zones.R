@@ -26,7 +26,7 @@ scan.zones <- function(coords, pop, ubpop = 0.5, longlat = FALSE) {
   arg_check_scan_zones(coords, pop, ubpop, longlat)
 
   # compute intercentroid distance
-  d <- sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- gedist(as.matrix(coords), longlat = longlat)
 
   # for each region, determine sorted nearest neighbors
   # subject to population constraint

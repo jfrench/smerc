@@ -17,7 +17,7 @@
 #' @examples
 #' data(nydf)
 #' coords <- with(nydf, cbind(longitude, latitude))
-#' d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+#' d <- gedist(as.matrix(coords), longlat = TRUE)
 #' nn <- scan.nn(d, pop = nydf$pop, ubpop = 0.1)
 #' cases <- floor(nydf$cases)
 #' ty <- sum(cases)

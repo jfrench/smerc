@@ -21,7 +21,6 @@ Depends: R (>= 3.6)
 Imports:
     MESS,
     pbapply,
-    randtoolbox,
     Rcpp
 Suggests:
     crayon,

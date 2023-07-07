@@ -79,7 +79,7 @@
 #' ubd <- 0.5
 #' ty <- sum(cases) # total number of cases
 #' # intercentroid distances
-#' d <- sp::spDists(as.matrix(coords), longlat = TRUE)
+#' d <- gedist(as.matrix(coords), longlat = TRUE)
 #' # upperbound for population in zone
 #' max_pop <- ubpop * sum(pop)
 #' # upperbound for distance between centroids in zone

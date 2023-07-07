@@ -30,7 +30,7 @@ contained in \code{nn}.
 data(nydf)
 coords <- with(nydf, cbind(longitude, latitude))
 cases <- floor(nydf$cases)
-d <- sp::spDists(coords, longlat = TRUE)
+d <- gedist(coords, longlat = TRUE)
 # compute circular nearest neigbhors
 nn <- nnpop(d, pop = nydf$pop, ubpop = 0.1)
 # compute cumulative sums over all nn

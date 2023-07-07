@@ -54,7 +54,7 @@ dc.zones <- function(coords, cases, pop, w,
   # setup various arguments and such
   ty <- sum(cases) # total number of cases
   # intercentroid distances
-  d <- sp::spDists(as.matrix(coords), longlat = longlat)
+  d <- gedist(as.matrix(coords), longlat = longlat)
   # upperbound for population in zone
   max_pop <- ubpop * sum(pop)
   # find all neighbors from each starting zone within distance upperbound

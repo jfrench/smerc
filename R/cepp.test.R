@@ -59,7 +59,7 @@ cepp.test <- function(coords, cases, pop, nstar,
   coords <- as.matrix(coords)
 
   # intercentroid distances
-  d <- sp::spDists(coords, longlat = longlat)
+  d <- gedist(coords, longlat = longlat)
 
   # find smallest windows with at least n* pop
   nn <- casewin(d, pop, nstar)
