@@ -33,9 +33,6 @@
 #'  \item{y}{y-coordinate associated with the centroid of each region.}
 #'  \item{geometry}{The geometry list column of the object.}
 #'  }
-#' @source Waller, L.A. and Gotway, C.A. (2005).
-#' Applied Spatial Statistics for Public Health Data.
-#' Hoboken, NJ: Wiley.
 #'
 #' @docType data
 #' @usage data(nysf)

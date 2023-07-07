@@ -28,10 +28,6 @@ A \code{sf} with 281 rows and 18 columns:
  }
 }
 \source{
-Waller, L.A. and Gotway, C.A. (2005).
-Applied Spatial Statistics for Public Health Data.
-Hoboken, NJ: Wiley.
-
 Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V.,
 and Pebesma, E. J. (2013). Applied Spatial Data Analysis
 with R, 2nd edition. New York: Springer.

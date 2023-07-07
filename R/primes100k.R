@@ -5,11 +5,8 @@
 #'
 #' @name primes100k
 #' @docType data
-#' @references The data were adapted from information at
-#'   Project Gutenburg
+#' @source The data were adapted from information at
+#'   Project Gutenburg, which can be accessed at
 #'   \url{https://www.gutenberg.org/dirs/6/65/65.txt}.
-#'
-#' @keywords data
-#' @examples
-#' data(primes100k)[1:10]
+#' @usage data(primes100k)
 NULL
