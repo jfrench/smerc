@@ -56,7 +56,6 @@
 #' Waller, L.A. and Gotway, C.A. (2005). Applied Spatial
 #' Statistics for Public Health Data. Hoboken, NJ: Wiley.
 #' @examples
-#' #' @examples
 #' data(nydf)
 #' coords <- with(nydf, cbind(longitude, latitude))
 #' out <- scan.test(

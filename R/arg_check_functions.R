@@ -754,3 +754,20 @@ arg_check_ubpop_seq <- function(ubpop_seq, lb) {
     stop("ubpop_seq must be a (strictly) increasing sequence of values")
   }
 }
+
+#' Argument check tol_prob
+#'
+#' @param tol_prob A single numeric value in (0, 1)
+#' @return NULL
+#' @noRd
+arg_check_tol_prob = function(tol_prob) {
+  if (length(tol_prob) != 1) {
+    stop("tol_prob must be a single value")
+  }
+  if (!is.numeric(tol_prob)) {
+    stop("tol_prob must be a numeric value")
+  }
+  if (tol_prob <= 0 | tol_prob >= 1) {
+    stop("tol_prob must be in the interval (0, 1)")
+  }
+}

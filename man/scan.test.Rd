@@ -84,7 +84,6 @@ the most likely cluster is returned (along with a
 warning).
 }
 \examples{
-#' @examples
 data(nydf)
 coords <- with(nydf, cbind(longitude, latitude))
 out <- scan.test(
