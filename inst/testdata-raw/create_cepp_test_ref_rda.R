@@ -14,4 +14,4 @@ fname = paste(fpath, "/cepp_test_ref.rda", sep = "")
 save(cepp_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)

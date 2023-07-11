@@ -10,4 +10,4 @@ fname = paste(fpath, "/flex5_zones_ref.rda", sep = "")
 save(flex5_zones_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)

@@ -14,7 +14,7 @@ fname = paste(fpath, "/uls_test_ref.rda", sep = "")
 save(uls_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 rflex_test_ref = rflex.test(coords = coords, cases = floor(nydf$cases),
@@ -25,7 +25,7 @@ fname = paste(fpath, "/rflex_test_ref.rda", sep = "")
 save(rflex_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 mlink_test_ref = mlink.test(coords = coords, cases = floor(nydf$cases),
@@ -36,7 +36,7 @@ fname = paste(fpath, "/mlink_test_ref.rda", sep = "")
 save(mlink_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 flex_test_ref = flex.test(coords = coords, cases = floor(nydf$cases),
@@ -47,7 +47,7 @@ fname = paste(fpath, "/flex_test_ref.rda", sep = "")
 save(flex_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 fast_test_ref = fast.test(coords = coords, cases = floor(nydf$cases),
@@ -58,7 +58,7 @@ fname = paste(fpath, "/fast_test_ref.rda", sep = "")
 save(fast_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 mlf_test_ref = mlf.test(coords = coords, cases = floor(nydf$cases),
@@ -69,7 +69,7 @@ fname = paste(fpath, "/mlf_test_ref.rda", sep = "")
 save(mlf_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 elliptic_test_ref = elliptic.test(coords = coords,
@@ -81,7 +81,7 @@ fname = paste(fpath, "/elliptic_test_ref.rda", sep = "")
 save(elliptic_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 edmst_test_ref = edmst.test(coords = coords, cases = floor(nydf$cases),
@@ -92,7 +92,7 @@ fname = paste(fpath, "/edmst_test_ref.rda", sep = "")
 save(edmst_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 dmst_test_ref = dmst.test(coords = coords, cases = floor(nydf$cases),
@@ -103,7 +103,7 @@ fname = paste(fpath, "/dmst_test_ref.rda", sep = "")
 save(dmst_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
 
 set.seed(1)
 dc_test_ref = dc.test(coords = coords, cases = floor(nydf$cases),
@@ -114,4 +114,4 @@ fname = paste(fpath, "/dc_test_ref.rda", sep = "")
 save(dc_test_ref,
      compress = "bzip2",
      file = fname,
-     version = 2)
+     version = 3)
