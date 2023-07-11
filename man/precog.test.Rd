@@ -8,8 +8,8 @@ precog.test(
   coords,
   cases,
   pop,
-  ex,
   w,
+  ex = sum(cases)/sum(pop) * pop,
   nsim = 499,
   tol_prob = 0.9,
   alpha = 0.1,
@@ -29,12 +29,12 @@ coordinates for the regions in the form (x, y) or
 \item{pop}{The population size associated with each
 region.}
 
+\item{w}{A binary spatial adjacency matrix for the
+regions.}
+
 \item{ex}{The expected number of cases for each region.
 The default is calculated under the constant risk
 hypothesis.}
-
-\item{w}{A binary spatial adjacency matrix for the
-regions.}
 
 \item{nsim}{The number of simulations from which to
 compute the p-value.}
