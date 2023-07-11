@@ -30,4 +30,5 @@ Add ex argument to bn.test.
 # 1.8
 - Add neast.
 - Add gedist function to remove dependency on sp package.
-- Add primes100k data set to remove dependency on randtoolbox package.
+- Add primes100k data set to sysdata.rda to remove dependency on randtoolbox package.
+- Add nclusters function.
