@@ -13,8 +13,8 @@
 #'   Miller, Laurence S. Freedman; Breast Cancer Clusters in
 #'   the Northeast United States: A Geographic Analysis,
 #'   American Journal of Epidemiology, Volume 146, Issue 2,
-#'   15 July 1997, Pages 161–170,
-#'   \url{https://doi.org/10.1093/oxfordjournals.aje.a009247}
+#'   15 July 1997, Pages 161–170.
+#'   \doi{10.1093/oxfordjournals.aje.a009247}.
 #'
 #' @keywords data
 #' @seealso neast
