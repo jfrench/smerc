@@ -1,3 +1,24 @@
+#' Perform \code{precog.test} on simulated data.
+#'
+#' \code{procog.sim} efficiently performs
+#' \code{\link[smerc]{precog.test}} on a simulated data set.
+#' The function is meant to be used internally by the
+#' \code{\link[smerc]{precog.test}} function, but is
+#' informative for better understanding the implementation
+#' of the test.
+#'
+#' @inheritParams precog.test
+#' @inheritParams scan.sim.adj
+#' @inheritParams smerc_cluster
+#' @param zones A list with of candidate zones that includes
+#'   each regions and its adjacent neighbors.
+#' @param max_pop The maximum population size allowable for
+#'   a cluster.
+#'
+#' @return A list with the vector of tolerance quantiles
+#'   associated with each region and a vector with the
+#'   maximum test statistic for each simulated data set.
+#' @export
 precog.sim <- function(nsim = 1, zones, ty, ex, w, pop,
                        max_pop, logein, logeout, d,
                        cl = NULL, tol_prob = 0.90,

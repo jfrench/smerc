@@ -56,9 +56,6 @@ It can also be \code{"future"} to use a future backend (see Details),
 \value{
 A vector with the maximum test statistic for each
   simulated data set.
-
-A vector with the maximum test statistic for each
-  simulated data set.
 }
 \description{
 \code{uls.sim} efficiently performs
