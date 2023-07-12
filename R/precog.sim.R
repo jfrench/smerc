@@ -53,7 +53,7 @@ precog.sim <- function(nsim = 1, zones, ty, ex, w, pop,
                                        function(i) {
     keep <- cc_keep[[i]]
     if (length(keep) > 0) {
-      tall <- mst.all(nndist(d[keep, keep], 1),
+      tall <- mst.all(nndist(d[keep, keep, drop = FALSE], 1),
                       cases = ysim[i, keep], pop = pop[keep],
                       w = w[keep, keep],
                       ex = ex[keep], ty = ty,
