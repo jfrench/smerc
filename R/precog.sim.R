@@ -52,15 +52,19 @@ precog.sim <- function(nsim = 1, zones, ty, ex, w, pop,
   max_stats2_null <- pbapply::pblapply(seq_along(cc_keep),
                                        function(i) {
     keep <- cc_keep[[i]]
-    tall <- mst.all(nndist(d[keep, keep], 1),
-                    cases = ysim[i, keep], pop = pop[keep],
-                    w = w[keep, keep],
-                    ex = ex[keep], ty = ty,
-                    max_pop = max_pop, type = "maxonly",
-                    early = FALSE, nlinks = "one",
-                    progress = FALSE
-    )
-    return(max(tall))
+    if (length(keep) > 0) {
+      tall <- mst.all(nndist(d[keep, keep], 1),
+                      cases = ysim[i, keep], pop = pop[keep],
+                      w = w[keep, keep],
+                      ex = ex[keep], ty = ty,
+                      max_pop = max_pop, type = "maxonly",
+                      early = FALSE, nlinks = "one",
+                      progress = FALSE
+      )
+      return(max(tall))
+    } else {
+      return(0L)
+    }
   }, cl = cl)
   # reformat test statistics
   tsim <- unlist(max_stats2_null, use.names = FALSE)
