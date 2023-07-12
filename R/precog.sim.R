@@ -55,7 +55,7 @@ precog.sim <- function(nsim = 1, zones, ty, ex, w, pop,
     if (length(keep) > 0) {
       tall <- mst.all(nndist(d[keep, keep, drop = FALSE], 1),
                       cases = ysim[i, keep], pop = pop[keep],
-                      w = w[keep, keep],
+                      w = w[keep, keep, drop = FALSE],
                       ex = ex[keep], ty = ty,
                       max_pop = max_pop, type = "maxonly",
                       early = FALSE, nlinks = "one",
