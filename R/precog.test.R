@@ -18,7 +18,7 @@
 #' @seealso \code{\link{print.smerc_cluster}},
 #'   \code{\link{summary.smerc_cluster}},
 #'   \code{\link{plot.smerc_cluster}},
-#' @author Joshua French
+#' @author Joshua French and Mohammad Meysami
 #' @export
 #' @examples
 #' data(nydf)

@@ -18,6 +18,7 @@
 #' @return A list with the vector of tolerance quantiles
 #'   associated with each region and a vector with the
 #'   maximum test statistic for each simulated data set.
+#' @author Joshua French and Mohammad Meysami
 #' @export
 precog.sim <- function(nsim = 1, zones, ty, ex, w, pop,
                        max_pop, logein, logeout, d,

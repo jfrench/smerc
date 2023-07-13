@@ -93,5 +93,5 @@ plot(out)
   \code{\link{plot.smerc_cluster}},
 }
 \author{
-Joshua French
+Joshua French and Mohammad Meysami
 }

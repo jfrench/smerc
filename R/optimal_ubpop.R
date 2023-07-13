@@ -46,6 +46,10 @@ optimal_ubpop <- function(coords, cases, pop,
                           type = "poisson",
                           min.cases = 0,
                           simdist = "multinomial") {
+  if (!requireNamespace("MESS", quietly = TRUE)) {
+    stop("The MESS package must be installed to enable this functionality.")
+  }
+
   # argument checking
   type <- match.arg(type, c("poisson", "binomial"))
   simdist <- match.arg(simdist, c("multinomial", "poisson", "binomial"))

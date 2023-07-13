@@ -83,3 +83,6 @@ The function is meant to be used internally by the
 informative for better understanding the implementation
 of the test.
 }
+\author{
+Joshua French and Mohammad Meysami
+}

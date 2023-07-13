@@ -1,7 +1,7 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.8
+Version: 1.8-7
 Authors@R: 
     c(person(given = "Joshua",
             family = "French",
@@ -19,7 +19,6 @@ License: GPL (>=2)
 LazyLoad: yes
 Depends: R (>= 3.6)
 Imports:
-    MESS,
     pbapply,
     Rcpp
 Suggests:
@@ -31,7 +30,8 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    sp
+    sp,
+    MESS
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr

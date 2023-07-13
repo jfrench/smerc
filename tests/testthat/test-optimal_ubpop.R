@@ -1,3 +1,4 @@
+if (require(MESS)) {
 context("test optimal_ubpop for correctness")
 # test optimal_ubpop function
 data(nydf, package = "smerc")
@@ -33,3 +34,4 @@ test_that("check accuracy for optimal_ubpop for NY data", {
   expect_equal(0.1, estats$elbow_ubpop)
   expect_equal(0.1, estats$gini_ubpop)
 })
+}
