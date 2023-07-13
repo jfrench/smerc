@@ -80,9 +80,11 @@ Prefiltered Component-based Greedy Scan Method.
 }
 \examples{
 data(nydf)
-out <- scan.test(
-  coords = nydf[,c("x", "y")], cases = floor(nydf$cases),
-  pop = nydf$pop, nsim = 19, alpha = 0.2)
+data(nyw)
+out <- precog.test(coords = nydf[,c("x", "y")],
+                   cases = floor(nydf$cases),
+                   pop = nydf$pop, w = nyw, nsim = 19,
+                   alpha = 0.2)
 plot(out)
 }
 \seealso{
