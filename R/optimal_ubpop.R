@@ -32,7 +32,7 @@
 #' ubpop_stats <- optimal_ubpop(
 #'   coords = coords, cases = nydf$cases,
 #'   pop = nydf$pop, nsim = 49,
-#'   ubpop = seq(0.05, 0.5, by = 0.05)
+#'   ubpop_seq = seq(0.05, 0.5, by = 0.05)
 #' )
 #' ubpop_stats
 #' \dontrun{
@@ -46,10 +46,6 @@ optimal_ubpop <- function(coords, cases, pop,
                           type = "poisson",
                           min.cases = 0,
                           simdist = "multinomial") {
-  if (!requireNamespace("MESS", quietly = TRUE)) {
-    stop("The MESS package must be installed to enable this functionality.")
-  }
-
   # argument checking
   type <- match.arg(type, c("poisson", "binomial"))
   simdist <- match.arg(simdist, c("multinomial", "poisson", "binomial"))
@@ -104,7 +100,20 @@ gini_coeff <- function(casein, exin, ty) {
   cp_exin <- cumsum(exin[o]) / ty
 
   # compute gini coefficient
-  2 * (.5 - MESS::auc(c(0, cp_casein, 1), c(0, cp_exin, 1)))
+  # 2 * (.5 - MESS::auc(c(0, cp_casein, 1), c(0, cp_exin, 1)))
+  # ensure x and y have appropriate structure
+  lin_approx <-
+    stats::approx(x = c(0, cp_casein, 1),
+                  y = c(0, cp_exin, 1),
+                  xout = sort(unique(c(0, cp_casein, 1))))
+  # change in x
+  dx <- diff(lin_approx$x)
+  # sum of y endpoints
+  sy <- lin_approx$y[-length(lin_approx$y)] + lin_approx$y[-1]
+  # trapezoid rule area
+  auc <- sum(dx * sy)/2
+  # gini coefficient
+  2 * (.5 - auc)
 }
 
 #' Compute statistics for elbow method

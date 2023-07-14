@@ -63,9 +63,10 @@
 #'   alpha = 0.05, longlat = TRUE,
 #'   nsim = 9, ubpop = 0.5
 #' )
-#' data(nypoly)
-#' library(sp)
-#' plot(nypoly, col = color.clusters(out))
+#' if (require("sp", quietly = TRUE)) {
+#'   data(nypoly)
+#'   plot(nypoly, col = color.clusters(out))
+#' }
 uls.test <- function(coords, cases, pop, w,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,

@@ -1,7 +1,7 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.8
+Version: 1.8-11
 Authors@R: 
     c(person(given = "Joshua",
             family = "French",
@@ -30,8 +30,7 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    sp,
-    MESS
+    sp
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr

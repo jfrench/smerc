@@ -7,7 +7,7 @@ cases = nydf$cases
 pop = nydf$population
 
 set.seed(1)
-if (require("SpatialEpi")) {
+if (requireNamespace("SpatialEpi", quietly = TRUE)) {
   bnse23 = SpatialEpi::besag_newell(geo = coords,
                                     cases = cases,
                                     population = pop,

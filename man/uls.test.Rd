@@ -117,9 +117,10 @@ out <- uls.test(
   alpha = 0.05, longlat = TRUE,
   nsim = 9, ubpop = 0.5
 )
-data(nypoly)
-library(sp)
-plot(nypoly, col = color.clusters(out))
+if (require("sp", quietly = TRUE)) {
+  data(nypoly)
+  plot(nypoly, col = color.clusters(out))
+}
 }
 \references{
 Patil, G.P. & Taillie, C. Upper level set

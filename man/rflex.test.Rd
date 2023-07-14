@@ -109,9 +109,10 @@ out <- rflex.test(
   alpha = 0.05, longlat = TRUE
 )
 
-data(nypoly)
-library(sp)
-plot(nypoly, col = color.clusters(out))
+if (require("sp", quietly = TRUE)) {
+  data(nypoly)
+  plot(nypoly, col = color.clusters(out))
+}
 }
 \references{
 Tango, T. and Takahashi, K. (2012), A

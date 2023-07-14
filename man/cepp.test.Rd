@@ -72,9 +72,10 @@ out <- cepp.test(
 plot(out)
 summary(out)
 
-data(nypoly)
-library(sp)
-plot(nypoly, col = color.clusters(out))
+if (require("sp", quietly = TRUE)) {
+  data(nypoly)
+  plot(nypoly, col = color.clusters(out))
+}
 }
 \references{
 Bruce W. Turnbull, Eric J. Iwano, William S. Burnett,

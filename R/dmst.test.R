@@ -47,9 +47,10 @@
 #'   alpha = 0.12, longlat = TRUE,
 #'   nsim = 2, ubpop = 0.05, ubd = 0.1
 #' )
-#' data(nypoly)
-#' library(sp)
-#' plot(nypoly, col = color.clusters(out))
+#' if (require("sp", quietly = TRUE)) {
+#'   data(nypoly)
+#'   plot(nypoly, col = color.clusters(out))
+#' }
 dmst.test <- function(coords, cases, pop, w,
                       ex = sum(cases) / sum(pop) * pop,
                       nsim = 499, alpha = 0.1, ubpop = 0.5,

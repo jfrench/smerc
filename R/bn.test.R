@@ -35,10 +35,10 @@
 #'   alpha = 0.1
 #' )
 #' plot(out)
-#'
-#' data(nypoly)
-#' library(sp)
-#' plot(nypoly, col = color.clusters(out))
+#' if (require("sp", quietly = TRUE)) {
+#'   data(nypoly)
+#'   plot(nypoly, col = color.clusters(out))
+#' }
 bn.test <- function(coords, cases, pop, cstar,
                     ex = sum(cases) / sum(pop) * pop,
                     alpha = 0.10,

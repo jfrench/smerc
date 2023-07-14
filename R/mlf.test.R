@@ -64,9 +64,10 @@
 #'   alpha = 0.12, longlat = TRUE,
 #'   nsim = 10, ubpop = 0.1, ubd = 0.5
 #' )
-#' data(nypoly)
-#' library(sp)
-#' plot(nypoly, col = color.clusters(out))
+#' if (require("sp", quietly = TRUE)) {
+#'   data(nypoly)
+#'   plot(nypoly, col = color.clusters(out))
+#' }
 mlf.test <- function(coords, cases, pop, w,
                      ex = sum(cases) / sum(pop) * pop,
                      nsim = 499, alpha = 0.1,

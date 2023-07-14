@@ -103,9 +103,10 @@ out <- dc.test(
   alpha = 0.12, longlat = TRUE,
   nsim = 5, ubpop = 0.1, ubd = 0.2
 )
-data(nypoly)
-library(sp)
-plot(nypoly, col = color.clusters(out))
+if (require("sp", quietly = TRUE)) {
+  data(nypoly)
+  plot(nypoly, col = color.clusters(out))
+}
 }
 \references{
 Costa, M.A. and Assuncao, R.M. and Kulldorff,

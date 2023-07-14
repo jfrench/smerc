@@ -41,8 +41,9 @@ out <- scan.test(
   pop = nydf$pop, alpha = 0.2, longlat = TRUE,
   nsim = 9
 )
+# run only if sp available
+if (require("sp", quietly = TRUE)) {
 data(nypoly)
-library(sp)
 # plot all clusters
 plot(nypoly, col = color.clusters(out), axes = TRUE)
 # zoom in on small cluster
@@ -53,6 +54,7 @@ plot(nypoly,
 )
 # plot only clusters 1 and 3
 plot(nypoly, col = color.clusters(out, idx = c(1, 3)))
+}
 }
 \author{
 Joshua French
