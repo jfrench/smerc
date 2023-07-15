@@ -1,10 +1,12 @@
 #' @name nypoly
-#' @title SpatialPolygonsDataFrame for New York leukemia data.
-#' @description A SpatialPolygonsDataFrame for the New York
-#' leukemia data in \code{nydf}.  Note that the coordinates
-#' in the polygon have been projected to a different
-#' coordinate system (UTM, zone 18), but the order of the
-#' regions/polygons is the same as in \code{nydf}.
+#' @title \code{SpatialPolygons} object for New York
+#'   leukemia data.
+#' @description A \code{SpatialPolygons} object for the
+#'   New York leukemia data in \code{nydf}.  Note that the
+#'   coordinates in the polygon have been projected to a
+#'   different coordinate system (UTM, zone 18), but the
+#'   order of the regions/polygons is the same as in
+#'   \code{nydf}.
 #'
 #' @docType data
 #' @usage data(nypoly)

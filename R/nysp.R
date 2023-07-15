@@ -1,15 +1,27 @@
 #' @name nysp
-#' @title \code{SpatialPolygonsDataFrame} for New York leukemia data.
-#' @description The number of incident leukemia cases from 1978-1982 per census tract for an 8-county region
-#' of upstate New York.
+#' @title \code{SpatialPolygonsDataFrame} for New York
+#'   leukemia data.
+#' @description
 #'
-#' This is the same data as in \code{nydf} in a different format.
+#' A \code{SpatialPolygonsDataFrame} object containing New
+#' York leukemia data. Methods for
+#' \code{SpatialPolygonsDataFrame} are provided by the
+#' \code{sp} package, which must be loaded to make full use
+#' of this data format.
 #'
-#' Note that the coordinates in the polygons have been projected to a different
-#' coordinate system (UTM, zone 18) compared to \code{nydf}, but the order of the
+#' The number of incident leukemia cases from 1978-1982 per
+#' census tract for an 8-county region of upstate New York.
+#'
+#' This is the same data as in \code{nydf} in a different
+#' format.
+#'
+#' Note that the coordinates in the polygons have been
+#' projected to a different coordinate system (UTM, zone 18)
+#' compared to \code{nydf}, but the order of the
 #' regions/polygons is the same as in \code{nydf}.
 #'
-#' @format A \code{SpatialPolygonsDataFrame} with 281 rows and 17 columns:
+#' @format A \code{SpatialPolygonsDataFrame} with 281 rows
+#'   and 17 columns:
 #' \describe{
 #'  \item{areaname}{The name of the region.}
 #'  \item{areakey}{Census tract id.}
@@ -29,14 +41,14 @@
 #'  \item{x}{x-coordinate associated with the centroid of each region.}
 #'  \item{y}{y-coordinate associated with the centroid of each region.}
 #' }
-#' @source Waller, L.A. and Gotway, C.A. (2005).
-#' Applied Spatial Statistics for Public Health Data.
-#' Hoboken, NJ: Wiley.
+#' @source Waller, L.A. and Gotway, C.A. (2005). Applied
+#'   Spatial Statistics for Public Health Data. Hoboken, NJ:
+#'   Wiley.
 #'
 #' @docType data
 #' @usage data(nysp)
 #'
 #' @source Bivand, R. S., Pebesma, E. J., Gomez-Rubio, V.,
-#' and Pebesma, E. J. (2013). Applied Spatial Data Analysis
-#' with R, 2nd edition. New York: Springer.
+#'   and Pebesma, E. J. (2013). Applied Spatial Data
+#'   Analysis with R, 2nd edition. New York: Springer.
 NULL

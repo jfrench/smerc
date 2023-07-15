@@ -40,9 +40,10 @@
 #' plot(out)
 #' summary(out)
 #'
-#' if (require("sp", quietly = TRUE)) {
-#'   data(nypoly)
-#'   plot(nypoly, col = color.clusters(out))
+#' # better plotting
+#' if (require("sf", quietly = TRUE)) {
+#'    data(nysf)
+#'    plot(st_geometry(nysf), col = color.clusters(out))
 #' }
 cepp.test <- function(coords, cases, pop, nstar,
                       ex = sum(cases) / sum(pop) * pop,

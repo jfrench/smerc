@@ -115,10 +115,7 @@ out <- mlf.test(
   alpha = 0.12, longlat = TRUE,
   nsim = 10, ubpop = 0.1, ubd = 0.5
 )
-if (require("sp", quietly = TRUE)) {
-  data(nypoly)
-  plot(nypoly, col = color.clusters(out))
-}
+plot(out)
 }
 \references{
 Yao, Z., Tang, J., & Zhan, F. B. (2011).

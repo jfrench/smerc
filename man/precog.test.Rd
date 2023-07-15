@@ -85,7 +85,11 @@ out <- precog.test(coords = nydf[,c("x", "y")],
                    cases = floor(nydf$cases),
                    pop = nydf$pop, w = nyw, nsim = 19,
                    alpha = 0.2)
-plot(out)
+# better plotting
+if (require("sf", quietly = TRUE)) {
+   data(nysf)
+   plot(st_geometry(nysf), col = color.clusters(out))
+}
 }
 \seealso{
 \code{\link{print.smerc_cluster}},

@@ -32,3 +32,6 @@ Add ex argument to bn.test.
 - Add gedist function to remove dependency on sp package.
 - Add primes100k data set to sysdata.rda to remove dependency on randtoolbox package.
 - Add nclusters function.
+- Remove nysf and nypoly rda files from data. Replace with 
+functions that create them from nysf. This is related to the point below.
+- Remove sp from Depends and move to Suggests.

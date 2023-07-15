@@ -103,9 +103,10 @@ out <- dc.test(
   alpha = 0.12, longlat = TRUE,
   nsim = 5, ubpop = 0.1, ubd = 0.2
 )
-if (require("sp", quietly = TRUE)) {
-  data(nypoly)
-  plot(nypoly, col = color.clusters(out))
+# better plotting
+if (require("sf", quietly = TRUE)) {
+   data(nysf)
+   plot(st_geometry(nysf), col = color.clusters(out))
 }
 }
 \references{

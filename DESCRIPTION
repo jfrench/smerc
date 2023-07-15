@@ -1,7 +1,7 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.8.1
+Version: 1.8-13
 Authors@R: 
     c(person(given = "Joshua",
             family = "French",

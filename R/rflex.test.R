@@ -56,9 +56,10 @@
 #'   alpha = 0.05, longlat = TRUE
 #' )
 #'
-#' if (require("sp", quietly = TRUE)) {
-#'   data(nypoly)
-#'   plot(nypoly, col = color.clusters(out))
+#' # better plotting
+#' if (require("sf", quietly = TRUE)) {
+#'    data(nysf)
+#'    plot(st_geometry(nysf), col = color.clusters(out))
 #' }
 rflex.test <- function(coords, cases, pop, w, k = 50,
                        ex = sum(cases) / sum(pop) * pop,

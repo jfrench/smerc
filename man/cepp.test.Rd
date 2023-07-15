@@ -72,9 +72,10 @@ out <- cepp.test(
 plot(out)
 summary(out)
 
-if (require("sp", quietly = TRUE)) {
-  data(nypoly)
-  plot(nypoly, col = color.clusters(out))
+# better plotting
+if (require("sf", quietly = TRUE)) {
+   data(nysf)
+   plot(st_geometry(nysf), col = color.clusters(out))
 }
 }
 \references{

@@ -34,6 +34,7 @@ e.g., \code{scan.test} or \code{uls.test}.  Regions that
 are not part of any cluster have no color.
 }
 \examples{
+set.seed(1)
 data(nydf)
 coords <- with(nydf, cbind(longitude, latitude))
 out <- scan.test(
@@ -41,19 +42,14 @@ out <- scan.test(
   pop = nydf$pop, alpha = 0.2, longlat = TRUE,
   nsim = 9
 )
-# run only if sp available
-if (require("sp", quietly = TRUE)) {
-data(nypoly)
-# plot all clusters
-plot(nypoly, col = color.clusters(out), axes = TRUE)
-# zoom in on small cluster
-plot(nypoly,
-  col = color.clusters(out),
-  xlim = c(400000, 450000),
-  ylim = c(4750000, 4800000)
-)
-# plot only clusters 1 and 3
-plot(nypoly, col = color.clusters(out, idx = c(1, 3)))
+#' # better plotting
+if (require("sf", quietly = TRUE)) {
+   data(nysf)
+   plot(st_geometry(nysf), col = color.clusters(out))
+   # plot only clusters 2 and 3
+   plot(st_geometry(nysf),
+        col = color.clusters(out, idx = c(2, 3)),
+        border = "white")
 }
 }
 \author{

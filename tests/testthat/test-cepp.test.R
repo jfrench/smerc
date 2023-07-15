@@ -120,7 +120,7 @@ cepp2 <- suppressWarnings(cepp.test(
   nstar = 15000, alpha = 1, nsim = 0
 ))
 
-d <- sp::spDists(coords)
+d <- gedist(coords)
 # find smallest windows with cumulative population of
 # at least n* = 15000
 nn <- casewin(d, pop, 15000)

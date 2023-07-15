@@ -13,10 +13,11 @@
 #' distance alone.
 #'
 #' The algorithm used when \code{longlat = TRUE} is a C++
-#' port of the C code written by Roger Bivand for
-#' \code{\link[sp]{spDists}}, which appears to be based on a
-#' special case of the Vincenty formula with a slight
-#' correction based on the WGS84 flattening constant. See
+#' port of the C code written by Roger Bivand for the
+#' \code{spDists} function in the \code{sp} package, which
+#' appears to be based on a special case of the Vincenty
+#' formula with a slight correction based on the WGS84
+#' flattening constant. See
 #' \url{https://en.wikipedia.org/wiki/Great-circle_distance}.
 #'
 #' @param x A two-dimensional matrix of coordinates.

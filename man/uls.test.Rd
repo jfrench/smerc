@@ -117,9 +117,10 @@ out <- uls.test(
   alpha = 0.05, longlat = TRUE,
   nsim = 9, ubpop = 0.5
 )
-if (require("sp", quietly = TRUE)) {
-  data(nypoly)
-  plot(nypoly, col = color.clusters(out))
+# better plotting
+if (require("sf", quietly = TRUE)) {
+   data(nysf)
+   plot(st_geometry(nysf), col = color.clusters(out))
 }
 }
 \references{
