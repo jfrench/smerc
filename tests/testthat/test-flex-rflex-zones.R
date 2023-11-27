@@ -70,10 +70,10 @@ primes100k <- get0("primes100k",
                    envir = asNamespace("smerc"))
 lprimes <- log(primes100k[seq_along(nn)])
 # compare list of zones with possibly different orderings
-zcompare <- function(z1, z2, lprimes) {
-  s1 <- sapply(z1, function(x) sum(lprimes[x]))
-  s2 <- sapply(z2, function(x) sum(lprimes[x]))
-  all.equal(sort(s1), sort(s2))
+zcompare <- function(z1, z2) {
+  s1 <- sapply(z1, sort)
+  s2 <- sapply(z2, sort)
+  all.equal(s1, s2)
 }
 
 test_that("compare flex.zones and rflex.zones w/ and w/o loop/verbose", {
@@ -84,14 +84,14 @@ test_that("compare flex.zones and rflex.zones w/ and w/o loop/verbose", {
   expect_equal(rzones2, rzones3)
   expect_equal(rzones2, rzones4)
 
-  expect_true(zcompare(fzones1, fzones1b, lprimes))
-  expect_true(zcompare(fzones1, fzones2b, lprimes))
-  expect_true(zcompare(fzones1, fzones3b, lprimes))
-  expect_true(zcompare(fzones1, fzones4b, lprimes))
-  expect_true(zcompare(rzones1, rzones1b, lprimes))
-  expect_true(zcompare(rzones1b, rzones2b, lprimes))
-  expect_true(zcompare(rzones1b, rzones3b, lprimes))
-  expect_true(zcompare(rzones1b, rzones4b, lprimes))
+  expect_true(zcompare(fzones1, fzones1b))
+  expect_true(zcompare(fzones1, fzones2b))
+  expect_true(zcompare(fzones1, fzones3b))
+  expect_true(zcompare(fzones1, fzones4b))
+  expect_true(zcompare(rzones1, rzones1b))
+  expect_true(zcompare(rzones1b, rzones2b))
+  expect_true(zcompare(rzones1b, rzones3b))
+  expect_true(zcompare(rzones1b, rzones4b))
 })
 
 # some debugging junk

@@ -179,9 +179,11 @@ scan.test <- function(coords, cases, pop,
       min.cases = min.cases
     )
   }
-  # tobs in nn format
-  tobs_nn <- split(tobs, f = rep(seq_along(nn), times = nnn))
-
+  # tobs in nn format. Make sure to keep all levels.
+  tobs_nn <- split(tobs,
+                   f = factor(rep(seq_along(nn),
+                                  times = nnn),
+                              levels = seq_len(N)))
   noc_info <- noc_nn(nn, tobs_nn)
   tobs <- noc_info$tobs
 

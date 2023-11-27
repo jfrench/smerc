@@ -15,7 +15,9 @@
 #' @export
 #' @keywords internal
 noc_nn <- function(nn, tobs_nn, nnoc = length(nn)) {
-  remaining <- seq_along(nn)
+  # fix bug when ubpop is smaller than proportion of maximum
+  # population region
+  remaining <- which(lapply(nn, length) > 0) # seq_along(nn)
   clusts <- list()
   tobs_noc <- list()
   current_tobs_max <- 1
