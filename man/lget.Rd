@@ -19,7 +19,7 @@ sgetElement(X, name, simplify = TRUE, USE.NAMES = TRUE)
 \item{X}{A list.}
 
 \item{name}{
-    A literal character string or a \link[base]{name} (possibly \link[base]{backtick}
+    a literal character string or a \link[base]{name} (possibly \link[base]{backtick}
     quoted).  For extraction, this is normally (see under
     \sQuote{Environments}) partially matched to the \code{\link[base]{names}}
     of the object.

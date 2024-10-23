@@ -2,8 +2,8 @@
 % Please edit documentation in R/smerc-package.R
 \docType{package}
 \name{smerc}
-\alias{smerc}
 \alias{smerc-package}
+\alias{smerc}
 \title{smerc}
 \description{
 *S*tatistical *ME*thods for *R*egional *C*ounts
