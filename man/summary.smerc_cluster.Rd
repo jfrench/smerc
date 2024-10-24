@@ -9,11 +9,7 @@
 \arguments{
 \item{object}{An object of class \code{smerc_cluster}.}
 
-\item{...}{
-  Arguments passed on to \code{\link[base:summary]{base::summary}}
-  \describe{
-    \item{\code{}}{}
-  }}
+\item{...}{Additional arguments affecting the summary produced.}
 
 \item{idx}{An index vector indicating the elements of
 \code{object$clusters} to print information for. The default
