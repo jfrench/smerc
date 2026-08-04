@@ -1,7 +1,7 @@
 Package: smerc
 Type: Package
 Title: Statistical Methods for Regional Counts
-Version: 1.8.4
+Version: 1.8.6
 Authors@R: 
     c(person(given = "Joshua",
             family = "French",
@@ -32,8 +32,8 @@ Suggests:
     sf,
     sp
 Encoding: UTF-8
-RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp,
     RcppProgress
+Config/roxygen2/version: 8.0.0

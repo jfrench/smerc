@@ -1,4 +1,5 @@
 context("check precog.test accuracy")
+RNGversion("4.6")
 set.seed(112)
 library(smerc)
 

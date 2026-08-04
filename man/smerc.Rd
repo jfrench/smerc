@@ -24,6 +24,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Joshua French \email{joshua.french@ucdenver.edu} (\href{https://orcid.org/0000-0002-9708-3353}{ORCID})
 
+Authors:
+\itemize{
+  \item Joshua French \email{joshua.french@ucdenver.edu} (\href{https://orcid.org/0000-0002-9708-3353}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Mohammad Meysami (\href{https://orcid.org/0000-0002-3322-5244}{ORCID}) [contributor]

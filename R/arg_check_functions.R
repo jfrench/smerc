@@ -771,3 +771,28 @@ arg_check_tol_prob = function(tol_prob) {
     stop("tol_prob must be in the interval (0, 1)")
   }
 }
+
+#' Argument check formula
+#'
+#' @param formula An object of class formula
+#' @return NULL
+#' @noRd
+arg_check_formula <- function(formula) {
+  if(!inherits(formula, "formula")) {
+    stop("formula is not a valid formula")
+  }
+}
+
+#' Argument check family
+#'
+#' @param family An object of class family
+#' @return NULL
+#' @noRd
+arg_check_family <- function(family) {
+  if (family$family != "poisson") {
+    stop("only the poisson family is currently supported")
+  }
+  if (family$family == "poisson" & family$link != "log") {
+    stop("only the log link is supported for the Poisson family")
+  }
+}

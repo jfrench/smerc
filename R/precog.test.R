@@ -29,8 +29,8 @@
 #'                    alpha = 0.2)
 #' # better plotting
 #' if (require("sf", quietly = TRUE)) {
-#'    data(nysf)
-#'    plot(st_geometry(nysf), col = color.clusters(out))
+#'    data(neast)
+#'    plot(st_geometry(neast), col = color.clusters(out))
 #' }
 precog.test <- function(coords,
                         cases,

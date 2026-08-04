@@ -35,3 +35,5 @@ Add ex argument to bn.test.
 - Remove nysf and nypoly rda files from data. Replace with 
 functions that create them from nysf. This is related to the point below.
 - Remove sp from Depends and move to Suggests.
+- Fix test-precog bug related to updating BTPE algorithm for rbinom().
+- Also correct code section of precog.test (nysf used instead of the correct neast).
